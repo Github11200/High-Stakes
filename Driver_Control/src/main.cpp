@@ -20,8 +20,10 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
+#include <iostream>
 
 using namespace vex;
+using namespace std;
 competition Competition;
 
 void pre_auton(void) {
@@ -33,7 +35,6 @@ void autonomous(void) {
 
 void usercontrol(void) {
   while (1) {
-    wait(20, msec);
   }
 }
 
