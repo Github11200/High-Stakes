@@ -5,24 +5,22 @@ using signature = vision::signature;
 using code = vision::code;
 
 // A global instance of brain used for printing to the V5 Brain screen
-brain  Brain;
+brain Brain;
 
 // VEXcode device constructors
-motor leftMotorA = motor(PORT1, ratio18_1, false);
-motor leftMotorB = motor(PORT10, ratio18_1, false);
-motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
+motor left1 = motor(PORT1, ratio6_1, false);
+motor left2 = motor(PORT2, ratio6_1, false);
+motor left3 = motor(PORT3, ratio6_1, false);
 
-motor rightMotorA = motor(PORT11, ratio18_1, true); 
-motor rightMotorB = motor(PORT20, ratio18_1, true); 
-motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
+motor right1 = motor(PORT11, ratio6_1, true); 
+motor right2 = motor(PORT12, ratio6_1, true); 
+motor right3 = motor(PORT13, ratio6_1, true);
 
-drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 295, 40, mm, 1);
-motor ArmMotor = motor(PORT3, ratio18_1, false);
-motor ClawMotor = motor(PORT8, ratio18_1, false);
+controller Controller1 = controller(primary);
 
 // VEXcode generated functions
 
-
+bool RemoteControlCodeEnabled = true;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

@@ -14,14 +14,26 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 10, 11, 20   
-// ArmMotor             motor         3               
-// ClawMotor            motor         8               
+// FrontLeft            motor         1               
+// MiddleLeft           motor         2               
+// BackLeft             motor         3               
+// FrontRight           motor         8               
+// MiddleRight          motor         9               
+// BackRight            motor         10              
+// Puncher              motor         20              
+// Intake               motor         11              
+// Inertial             inertial      16              
+// Controller1          controller                    
+// Wings                digital_out   G               
+// Balance              digital_out   H               
+// PuncherB             motor         13              
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
+#include <iostream>
 
 using namespace vex;
+using namespace std;
 competition Competition;
 
 void pre_auton(void) {
@@ -33,7 +45,6 @@ void autonomous(void) {
 
 void usercontrol(void) {
   while (1) {
-    wait(20, msec);
   }
 }
 
