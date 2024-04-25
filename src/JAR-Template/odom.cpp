@@ -34,7 +34,7 @@ void Odom::update_position(float ForwardTracker_position, float SidewaysTracker_
     local_Y_position = (2*sin(orientation_delta_rad/2))*((Forward_delta/orientation_delta_rad)+ForwardTracker_center_distance);
   }
 
-  float local_polar_angle;
+  float local_polar_angle; 
   float local_polar_length;
 
   if (local_X_position == 0 && local_Y_position == 0){
