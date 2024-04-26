@@ -349,69 +349,16 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
   DriveR.stop(hold);
 }
 
-void Drive::holonomic_drive_to_point(float X_position, float Y_position){
-  holonomic_drive_to_point(X_position, Y_position, get_absolute_heading(), drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
-}
-
-void Drive::holonomic_drive_to_point(float X_position, float Y_position, float angle){
-  holonomic_drive_to_point(X_position, Y_position, angle, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
-}
-
-void Drive::holonomic_drive_to_point(float X_position, float Y_position, float angle, float drive_max_voltage, float heading_max_voltage){
-  holonomic_drive_to_point(X_position, Y_position, angle, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
-}
-
-void Drive::holonomic_drive_to_point(float X_position, float Y_position, float angle, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout){
-  holonomic_drive_to_point(X_position, Y_position, angle, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
-}
-
-void Drive::holonomic_drive_to_point(float X_position, float Y_position, float angle, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti){
-  desired_heading = angle;
-  PID drivePID(hypot(X_position-get_X_position(),Y_position-get_Y_position()), drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
-  PID turnPID(reduce_negative_180_to_180(to_deg(atan2(X_position-get_X_position(),Y_position-get_Y_position()))-get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
-  while(!(drivePID.is_settled() && turnPID.is_settled() ) ){
-    float drive_error = hypot(X_position-get_X_position(),Y_position-get_Y_position());
-    float turn_error = reduce_negative_180_to_180(to_deg(atan2(X_position-get_X_position(),Y_position-get_Y_position()))-get_absolute_heading());
-
-    float drive_output = drivePID.compute(drive_error);
-    float turn_output = turnPID.compute(turn_error);
-
-    drive_output = clamp(drive_output, drive_max_voltage, drive_max_voltage);
-    turn_output = clamp(turn_output, -heading_max_voltage, heading_max_voltage);
-
-    float heading_error = atan2(Y_position-get_Y_position(), X_position-get_X_position());
-
-    DriveLF.spin(fwd, drive_output*cos(to_rad(get_absolute_heading()) + heading_error - M_PI/4) + turn_output, volt);
-    DriveLB.spin(fwd, drive_output*cos(-to_rad(get_absolute_heading()) - heading_error + 3*M_PI/4) + turn_output, volt);
-    DriveRB.spin(fwd, drive_output*cos(to_rad(get_absolute_heading()) + heading_error - M_PI/4) - turn_output, volt);
-    DriveRF.spin(fwd, drive_output*cos(-to_rad(get_absolute_heading()) - heading_error + 3*M_PI/4) - turn_output, volt);
-    //These scalings on the drive output ensure that the drive always goes toward the desired point.
-    task::sleep(10);
-  }
-  DriveLF.stop(hold);
-  DriveLB.stop(hold);
-  DriveRB.stop(hold);
-  DriveRF.stop(hold);
-}
-
 // The usercontrol functions use deadband=5 everywhere. This value pretty much gets the job done,
 // but it can be changed with no repercussions.
 
 void Drive::control_arcade(){
   float throttle = deadband(controller(primary).Axis3.value(), 5);
   float turn = deadband(controller(primary).Axis1.value(), 5);
+  throttle = pow(throttle, 3);
+  turn = pow(turn, 3);
   DriveL.spin(fwd, to_volt(throttle+turn), volt);
   DriveR.spin(fwd, to_volt(throttle-turn), volt);
-}
-
-void Drive::control_holonomic(){
-  float throttle = deadband(controller(primary).Axis3.value(), 5);
-  float turn = deadband(controller(primary).Axis1.value(), 5);
-  float strafe = deadband(controller(primary).Axis4.value(), 5);
-  DriveLF.spin(fwd, to_volt(throttle+turn+strafe), volt);
-  DriveRF.spin(fwd, to_volt(throttle-turn-strafe), volt);
-  DriveLB.spin(fwd, to_volt(throttle+turn-strafe), volt);
-  DriveRB.spin(fwd, to_volt(throttle-turn+strafe), volt);
 }
 
 void Drive::control_tank(){
