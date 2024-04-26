@@ -355,8 +355,8 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
 void Drive::control_arcade(){
   float throttle = deadband(controller(primary).Axis3.value(), 5);
   float turn = deadband(controller(primary).Axis1.value(), 5);
-  throttle = pow(throttle, 3);
-  turn = pow(turn, 3);
+  throttle = pow(throttle, 3) / 10000;
+  turn = pow(turn, 3) / 10000;
   DriveL.spin(fwd, to_volt(throttle+turn), volt);
   DriveR.spin(fwd, to_volt(throttle-turn), volt);
 }
