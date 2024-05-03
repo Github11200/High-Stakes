@@ -16,11 +16,31 @@ void odom_constants(){
   chassis.drive_settle_error = 3;
 }
 
-void drive_test(){
+void test(){
   odom_constants();
   chassis.set_coordinates(0, 0, 0);
   chassis.turn_to_point(24, 24);
   chassis.drive_to_point(24,24);
   chassis.drive_to_point(0,0);
   chassis.turn_to_angle(0);
+}
+
+void one(){
+  odom_constants();
+}
+
+void two(){
+  odom_constants();
+}
+
+void three(){
+  odom_constants();
+}
+
+void four(){
+  odom_constants();
+}
+
+void five(){
+  odom_constants();
 }

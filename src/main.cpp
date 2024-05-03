@@ -81,11 +81,61 @@ bool auto_started = false;
 void pre_auton(void) {
   vexcodeInit();
   default_constants();
+  while(auto_started == false){            //Changing the names below will only change their names on the
+    Brain.Screen.clearScreen();            //brain screen for auton selection.
+    switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
+      case 0:
+        Brain.Screen.printAt(50, 50, "Test");
+        break;
+      case 1:
+        Brain.Screen.printAt(50, 50, "One");
+        break;
+      case 2:
+        Brain.Screen.printAt(50, 50, "Two");
+        break;
+      case 3:
+        Brain.Screen.printAt(50, 50, "Three");
+        break;
+      case 4:
+        Brain.Screen.printAt(50, 50, "Four");
+        break;
+      case 5:
+        Brain.Screen.printAt(50, 50, "Five");
+        break;
+    }
+    if(Brain.Screen.pressing()){
+      while(Brain.Screen.pressing()) {}
+      current_auton_selection ++;
+    } 
+    else if (current_auton_selection == 8){
+      current_auton_selection = 0;
+    }
+    task::sleep(10);
+  }
 }
 
 void autonomous(void) {
   auto_started = true;
-  drive_test();
+  switch(current_auton_selection){  
+    case 0:
+      test(); //This is the default auton, if you don't select from the brain.
+      break;        //Change these to be your own auton functions in order to use the auton selector.
+    case 1:         //Tap the screen to cycle through autons.
+      one();
+      break;
+    case 2:
+      two();
+      break;
+    case 3:
+      three();
+      break;
+    case 4:
+      four();
+      break;
+    case 5:
+      five();
+      break;
+  }
 }
 
 void usercontrol(void) {
