@@ -82,35 +82,43 @@ void pre_auton(void) {
   vexcodeInit();
   default_constants();
   while(auto_started == false){            //Changing the names below will only change their names on the
-    Brain.Screen.clearScreen();            //brain screen for auton selection.
+    Brain.Screen.clearScreen();
+    Brain.Screen.setPenColor(red);
+    Brain.Screen.setFillColor(red);
+    Brain.Screen.drawRectangle(0, 0, 130, 30);
+    Brain.Screen.setPenColor(white);
+    Brain.Screen.printAt(5, 20, "Auton:");            //brain screen for auton selection.
     switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
       case 0:
-        Brain.Screen.printAt(50, 50, "Test");
+        Brain.Screen.printAt(65, 20, "Test");
         break;
       case 1:
-        Brain.Screen.printAt(50, 50, "One");
+        Brain.Screen.printAt(65, 20, "One");
         break;
       case 2:
-        Brain.Screen.printAt(50, 50, "Two");
+        Brain.Screen.printAt(65, 20, "Two");
         break;
       case 3:
-        Brain.Screen.printAt(50, 50, "Three");
+        Brain.Screen.printAt(65, 20, "Three");
         break;
       case 4:
-        Brain.Screen.printAt(50, 50, "Four");
+        Brain.Screen.printAt(65, 20, "Four");
         break;
       case 5:
-        Brain.Screen.printAt(50, 50, "Five");
+        Brain.Screen.printAt(65, 20, "Five");
         break;
     }
     if(Brain.Screen.pressing()){
       while(Brain.Screen.pressing()) {}
       current_auton_selection ++;
+      if(current_auton_selection == 6){
+        current_auton_selection = 0;
+      }
     } 
     else if (current_auton_selection == 8){
       current_auton_selection = 0;
     }
-    task::sleep(10);
+    task::sleep(100);
   }
 }
 
