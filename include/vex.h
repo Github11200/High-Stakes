@@ -13,12 +13,13 @@
 #include "JAR-Template/util.h"
 #include "JAR-Template/PID.h"
 #include "autons.h"
+#include "../lvgl/lvgl.h"
 
+#define waitUntil(condition) \
+    do                       \
+    {                        \
+        wait(5, msec);       \
+    } while (!(condition))
 
-#define waitUntil(condition)                                                   \
-  do {                                                                         \
-    wait(5, msec);                                                             \
-  } while (!(condition))
-
-#define repeat(iterations)                                                     \
-  for (int iterator = 0; iterator < iterations; iterator++)
+#define repeat(iterations) \
+    for (int iterator = 0; iterator < iterations; iterator++)
