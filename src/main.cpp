@@ -78,47 +78,96 @@ PORT3,     -PORT4,
 int current_auton_selection = 0;
 bool auto_started = false;
 
+void setColor(vex::color colour) {
+  Brain.Screen.setPenColor(colour);
+  Brain.Screen.setFillColor(colour);
+}
+
+void updateScreen() {
+  setColor(red);
+  Brain.Screen.drawRectangle(0, 0, 160, 120);
+  setColor(blue);
+  Brain.Screen.drawRectangle(0, 120, 160, 120);
+  setColor(green);
+  Brain.Screen.drawRectangle(160, 0, 160, 120);
+  setColor(orange);
+  Brain.Screen.drawRectangle(160, 120, 160, 120);
+  setColor(black);
+  Brain.Screen.drawRectangle(320, 0, 160, 120);
+  setColor(purple);
+  Brain.Screen.drawRectangle(320, 120, 160, 120);
+
+  Brain.Screen.setPenColor(white);
+  Brain.Screen.setFillColor(red);
+  Brain.Screen.printAt(5, 20, "Test");
+  Brain.Screen.setFillColor(green);
+  Brain.Screen.printAt(165, 20, "One");
+  Brain.Screen.setFillColor(black);
+  Brain.Screen.printAt(325, 20, "Two");
+  Brain.Screen.setFillColor(blue);
+  Brain.Screen.printAt(5, 140, "Three");
+  Brain.Screen.setFillColor(orange);
+  Brain.Screen.printAt(165, 140, "Four");
+  Brain.Screen.setFillColor(purple);
+  Brain.Screen.printAt(325, 140, "Five");
+  Brain.Screen.setFillColor(black);
+}
+
 void pre_auton(void) {
   vexcodeInit();
   default_constants();
+  updateScreen();
   while(auto_started == false){            //Changing the names below will only change their names on the
-    Brain.Screen.clearScreen();
-    Brain.Screen.setPenColor(red);
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(0, 0, 130, 30);
-    Brain.Screen.setPenColor(white);
-    Brain.Screen.printAt(5, 20, "Auton:");            //brain screen for auton selection.
-    switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
+    switch(current_auton_selection){
       case 0:
-        Brain.Screen.printAt(65, 20, "Test");
+        Brain.Screen.printAt(5, 100, "SELECTED");
         break;
       case 1:
-        Brain.Screen.printAt(65, 20, "One");
+        Brain.Screen.printAt(165, 100, "SELECTED");
         break;
       case 2:
-        Brain.Screen.printAt(65, 20, "Two");
+        Brain.Screen.printAt(325, 100, "SELECTED");
         break;
       case 3:
-        Brain.Screen.printAt(65, 20, "Three");
+        Brain.Screen.printAt(5, 220, "SELECTED");
         break;
       case 4:
-        Brain.Screen.printAt(65, 20, "Four");
+        Brain.Screen.printAt(165, 220, "SELECTED");
         break;
       case 5:
-        Brain.Screen.printAt(65, 20, "Five");
+        Brain.Screen.printAt(325, 220, "SELECTED");
         break;
     }
     if(Brain.Screen.pressing()){
       while(Brain.Screen.pressing()) {}
-      current_auton_selection ++;
-      if(current_auton_selection == 6){
-        current_auton_selection = 0;
+      if(Brain.Screen.xPosition() < 160) {
+        if(Brain.Screen.yPosition() < 120) {
+          current_auton_selection = 0;
+        }
+        else {
+          current_auton_selection = 3;
+        }
       }
-    } 
-    else if (current_auton_selection == 8){
-      current_auton_selection = 0;
+      else if(Brain.Screen.xPosition() < 320) {
+        if(Brain.Screen.yPosition() < 120) {
+          current_auton_selection = 1;
+        }
+        else {
+          current_auton_selection = 4;
+        }
+      }
+      else {
+        if(Brain.Screen.yPosition() < 120) {
+          current_auton_selection = 2;
+        }
+        else {
+          current_auton_selection = 5;
+        }
+      }
+      Brain.Screen.clearScreen();
+      updateScreen();
     }
-    task::sleep(100);
+    task::sleep(20);
   }
 }
 
