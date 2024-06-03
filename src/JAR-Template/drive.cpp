@@ -363,10 +363,10 @@ void Drive::control_arcade(){
     turnL -= throttle+turnL-100;
   }
   else if(throttle+turnL < -100){
-    turnL += throttle+turnL+100;
+    turnL -= throttle+turnL+100;
   }
   float turnR = turn-turnL;
-  
+
   DriveL.spin(fwd, to_volt(throttle+turnL), volt);
   DriveR.spin(fwd, to_volt(throttle-turnR), volt);
 }
