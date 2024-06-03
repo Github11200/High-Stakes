@@ -357,8 +357,18 @@ void Drive::control_arcade(){
   float turn = deadband(controller(primary).Axis1.value(), 5);
   throttle = pow(throttle, 3) / 10000;
   turn = pow(turn, 3) / 10000;
-  DriveL.spin(fwd, to_volt(throttle+turn), volt);
-  DriveR.spin(fwd, to_volt(throttle-turn), volt);
+
+  float turnL = turn / 2;
+  if(throttle+turnL > 100){
+    turnL -= throttle+turnL-100;
+  }
+  else if(throttle+turnL < -100){
+    turnL += throttle+turnL+100;
+  }
+  float turnR = turn-turnL;
+  
+  DriveL.spin(fwd, to_volt(throttle+turnL), volt);
+  DriveR.spin(fwd, to_volt(throttle-turnR), volt);
 }
 
 void Drive::control_tank(){
