@@ -1,4 +1,5 @@
 #include "vex.h"
+#include <iostream>
 
 Drive::Drive(enum::drive_setup drive_setup, motor_group DriveL, motor_group DriveR, int gyro_port, float wheel_diameter, float wheel_ratio, float gyro_scale, int DriveLF_port, int DriveRF_port, int DriveLB_port, int DriveRB_port, int ForwardTracker_port, float ForwardTracker_diameter, float ForwardTracker_center_distance, int SidewaysTracker_port, float SidewaysTracker_diameter, float SidewaysTracker_center_distance) :
   wheel_diameter(wheel_diameter),
@@ -354,21 +355,42 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
 
 void Drive::control_arcade(){
   float throttle = deadband(controller(primary).Axis3.value(), 5);
-  float turn = deadband(controller(primary).Axis1.value(), 5);
+  throttle = throttle / 1.27;
+  float influence = deadband(controller(primary).Axis1.value(), 5);
+  influence = influence / 1.27;
+  std::cout << influence << std::endl;
+  float leftpow;
+  float rightpow;
+  
+
   throttle = pow(throttle, 3) / 10000;
-  turn = pow(turn, 3) / 10000;
-
-  float turnL = turn / 2;
-  if(throttle+turnL > 100){
-    turnL -= throttle+turnL-100;
+  influence = pow(influence, 3) / 20000;
+  if((throttle+influence) > 100) {
+    leftpow = 100;
+    rightpow = throttle - influence + (100-throttle-influence);
   }
-  else if(throttle+turnL < -100){
-    turnL -= throttle+turnL+100;
+  else if((throttle+influence) < -100) {
+    leftpow = -100;
+    rightpow = throttle - influence + (-100-throttle-influence);
   }
-  float turnR = turn-turnL;
-
-  DriveL.spin(fwd, to_volt(throttle+turnL), volt);
-  DriveR.spin(fwd, to_volt(throttle-turnR), volt);
+  else if((throttle-influence) > 100) {
+    rightpow = 100;
+    leftpow = throttle + influence + (100-throttle+influence);
+  }
+  else if((-throttle+influence) < -100) {
+    rightpow = -100;
+    leftpow = throttle + influence + (-100-throttle+influence);
+  }
+  else{
+    leftpow = throttle + influence;
+    rightpow = throttle - influence;
+  }
+  if(leftpow == 0 and rightpow == 0) {
+    DriveL.stop(brake);
+    DriveR.stop(brake);
+  }
+  DriveL.spin(fwd, to_volt(leftpow), volt);
+  DriveR.spin(fwd, to_volt(rightpow), volt);
 }
 
 void Drive::control_tank(){
