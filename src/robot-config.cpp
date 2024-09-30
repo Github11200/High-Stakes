@@ -16,6 +16,8 @@ motor MiddleRight = motor(PORT17, ratio6_1, false); // Done
 motor MiddleLeft = motor(PORT9, ratio6_1, true);    // Done
 motor BackRight = motor(PORT18, ratio6_1, false);   // Done
 motor BackLeft = motor(PORT8, ratio6_1, true);      // Done
+motor Intake = motor(PORT1, ratio6_1, false);   // Done
+motor Arm = motor(PORT2, ratio36_1, false);      // Done
 
 void vexcodeInit(void)
 {

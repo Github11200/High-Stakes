@@ -11,5 +11,9 @@ extern motor MiddleRight;
 extern motor MiddleLeft;
 extern motor BackRight;
 extern motor BackLeft;
+extern motor Intake;
+extern motor Arm;
+digital_out Clamp;
+digital_out Doinker;
 
 void vexcodeInit(void);

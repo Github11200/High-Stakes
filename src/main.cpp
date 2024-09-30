@@ -199,16 +199,66 @@ void autonomous(void)
 
 void usercontrol(void)
 {
-
-    while (1)
-    {
-        // Replace this line with chassis.control_tank(); for tank drive
-        // or chassis.control_holonomic(); for holo drive.
-        chassis.control_arcade();
-
-        wait(20, msec); // Sleep the task for a short amount of time to
-                        // prevent wasted resources.
+  while (1)
+  {
+    // Replace this line with chassis.control_tank(); for tank drive
+    // or chassis.control_holonomic(); for holo drive.
+    chassis.control_arcade();
+    if(Controller.ButtonA.pressing()){
+      Intake.spin(fwd, 12, volt);
     }
+    else if(Controller.ButtonB.pressing()){
+      Intake.spin(reverse, 12, volt);
+    }
+    else{
+      Intake.stop(coast);
+    }
+
+    if(Controller.ButtonL2.pressing()){
+      Arm.spin(fwd, 12, volt);
+    }
+    else if(Controller.ButtonR2.pressing()){
+      Arm.spin(reverse, 12, volt);
+    }
+    else{
+      Arm.stop(hold);
+    }
+
+    if(Controller.ButtonL1.pressing()){
+      if(L1_pressing == false){
+        clamped = !clamped;
+        L1_pressing = true;
+      }
+    }
+    else{
+      L1_pressing = false;
+    }
+
+    if(clamped){
+      Clamp.set(true);
+    }
+    else{
+      Clamp.set(false);
+    }
+
+    if(Controller.ButtonR1.pressing()){
+      if(R1_pressing == false){
+        doinked = !doinked;
+        R1_pressing = true;
+      }
+    }
+    else{
+      R1_pressing = false;
+    }
+
+    if(doinked){
+      Doinker.set(true);
+    }
+    else{
+      Doinker.set(false);
+    }
+    wait(20, msec);
+  }
 }
 
 int main()
