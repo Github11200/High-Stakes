@@ -14,6 +14,7 @@
 #include "JAR-Template/drive.h"
 #include "JAR-Template/util.h"
 #include "JAR-Template/PID.h"
+#include "global-variables.h"
 #include "autons.h"
 
 #define waitUntil(condition) \
