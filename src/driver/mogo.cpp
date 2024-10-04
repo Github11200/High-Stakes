@@ -22,5 +22,7 @@ void MogoControl::toggle()
             Clamp.set(false);
             this->mogoState = RELEASED;
         }
+
+        wait(25, vex::timeUnits::msec);
     }
 }

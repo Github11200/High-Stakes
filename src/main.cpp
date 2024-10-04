@@ -1,5 +1,10 @@
 #include "vex.h"
+
+#include "../include/driver/doinker.h"
 #include "../include/driver/intake.h"
+#include "../include/driver/joystick.h"
+#include "../include/driver/mogo.h"
+#include "../include/driver/redirect.h"
 
 using namespace vex;
 competition Competition;
@@ -215,8 +220,44 @@ void autonomous(void)
   }
 }
 
+int buttonsWrapper()
+{
+  DoinkerControl doinkerControl(Controller.ButtonB);
+  IntakeControl intakeControl(12, Controller.ButtonR1, Controller.ButtonR2);
+  MogoControl mogoControl(Controller.ButtonA);
+  RedirectControl redirectControl(12, Controller.ButtonL1, Controller.ButtonL2);
+
+  while (true)
+  {
+    // Doinker
+    if (doinkerControl.toggleButton.pressing())
+      doinkerControl.toggle();
+
+    // Intake
+    if (intakeControl.intakeButton.pressing())
+      intakeControl.intake();
+    else if (intakeControl.outtakeButton.pressing())
+      intakeControl.outtake();
+
+    // Mogo
+    if (mogoControl.toggleButton.pressing())
+      mogoControl.toggle();
+
+    // Redirect
+    if (redirectControl.liftRedirectButton.pressing())
+      redirectControl.liftRedirect();
+    else if (redirectControl.redirectLowerButton.pressing())
+      redirectControl.lowerRedirect();
+
+    vex::wait(20, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
 void usercontrol(void)
 {
+  task buttons = task(buttonsWrapper);
+
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive

@@ -8,13 +8,12 @@ using namespace std;
 
 class IntakeControl
 {
-private:
+public:
     // Speed is in volts
     int speed;
-    vex::controller::button forwardButton;
-    vex::controller::button reverseButton;
+    vex::controller::button intakeButton;
+    vex::controller::button outtakeButton;
 
-public:
     /// @brief Sets the speed, button to turn the intake forward, and button to turn it in reverse
     /// @param speed The speed in VOLTS
     /// @param forwardButton Spins the motor to intake a ring

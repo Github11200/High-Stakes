@@ -22,5 +22,7 @@ void DoinkerControl::toggle()
             Doinker.set(false);
             this->doinkerState = READY_TO_DOINK;
         }
+
+        wait(25, vex::timeUnits::msec);
     }
 }

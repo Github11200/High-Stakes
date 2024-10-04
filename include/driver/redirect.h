@@ -8,13 +8,12 @@ using namespace vex;
 
 class RedirectControl
 {
-private:
+public:
     // Speed is in VOLTS
     int speed;
-    vex::controller::button redirectUpButton;
-    vex::controller::button redirectDownButton;
+    vex::controller::button liftRedirectButton;
+    vex::controller::button redirectLowerButton;
 
-public:
     /// @brief Sets the speed of the redirect, and what buttons are used to move it
     /// @param speed Speed is in volts
     /// @param redirectUpButton The button that moves the redirect up

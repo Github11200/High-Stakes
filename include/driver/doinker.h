@@ -14,11 +14,10 @@ enum DoinkerState
 
 class DoinkerControl
 {
-private:
+public:
     vex::controller::button toggleButton;
     DoinkerState doinkerState;
 
-public:
     /// @brief Controls the doinker either doinking or just staying there :()
     /// @param toggleButton
     DoinkerControl(vex::controller::button toggleButton);
