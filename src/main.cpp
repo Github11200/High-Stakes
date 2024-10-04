@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "../include/driver/intake.h"
 
 using namespace vex;
 competition Competition;
@@ -78,12 +79,14 @@ Drive chassis(
 int current_auton_selection = 0;
 bool auto_started = false;
 
-void setColor(vex::color colour) {
+void setColor(vex::color colour)
+{
   Brain.Screen.setPenColor(colour);
   Brain.Screen.setFillColor(colour);
 }
 
-void updateScreen() {
+void updateScreen()
+{
   setColor(red);
   Brain.Screen.drawRectangle(0, 0, 160, 120);
   setColor(blue);
@@ -113,54 +116,69 @@ void updateScreen() {
   Brain.Screen.setFillColor(black);
 }
 
-void pre_auton(void) {
+void pre_auton(void)
+{
   vexcodeInit();
   default_constants();
   updateScreen();
-  while(auto_started == false){            //Changing the names below will only change their names on the
-    switch(current_auton_selection){
-      case 0:
-        Brain.Screen.printAt(5, 100, "SELECTED");
-        break;
-      case 1:
-        Brain.Screen.printAt(165, 100, "SELECTED");
-        break;
-      case 2:
-        Brain.Screen.printAt(325, 100, "SELECTED");
-        break;
-      case 3:
-        Brain.Screen.printAt(5, 220, "SELECTED");
-        break;
-      case 4:
-        Brain.Screen.printAt(165, 220, "SELECTED");
-        break;
-      case 5:
-        Brain.Screen.printAt(325, 220, "SELECTED");
-        break;
+  while (auto_started == false)
+  { // Changing the names below will only change their names on the
+    switch (current_auton_selection)
+    {
+    case 0:
+      Brain.Screen.printAt(5, 100, "SELECTED");
+      break;
+    case 1:
+      Brain.Screen.printAt(165, 100, "SELECTED");
+      break;
+    case 2:
+      Brain.Screen.printAt(325, 100, "SELECTED");
+      break;
+    case 3:
+      Brain.Screen.printAt(5, 220, "SELECTED");
+      break;
+    case 4:
+      Brain.Screen.printAt(165, 220, "SELECTED");
+      break;
+    case 5:
+      Brain.Screen.printAt(325, 220, "SELECTED");
+      break;
     }
-    if(Brain.Screen.pressing()){
-      while(Brain.Screen.pressing()) {}
-      if(Brain.Screen.xPosition() < 160) {
-        if(Brain.Screen.yPosition() < 120) {
+    if (Brain.Screen.pressing())
+    {
+      while (Brain.Screen.pressing())
+      {
+      }
+      if (Brain.Screen.xPosition() < 160)
+      {
+        if (Brain.Screen.yPosition() < 120)
+        {
           current_auton_selection = 0;
         }
-        else {
+        else
+        {
           current_auton_selection = 3;
         }
       }
-      else if(Brain.Screen.xPosition() < 320) {
-        if(Brain.Screen.yPosition() < 120) {
+      else if (Brain.Screen.xPosition() < 320)
+      {
+        if (Brain.Screen.yPosition() < 120)
+        {
           current_auton_selection = 1;
         }
-        else {
+        else
+        {
           current_auton_selection = 4;
         }
       }
-      else {
-        if(Brain.Screen.yPosition() < 120) {
+      else
+      {
+        if (Brain.Screen.yPosition() < 120)
+        {
           current_auton_selection = 2;
         }
-        else {
+        else
+        {
           current_auton_selection = 5;
         }
       }
@@ -173,28 +191,28 @@ void pre_auton(void) {
 
 void autonomous(void)
 {
-    auto_started = true;
-    switch (current_auton_selection)
-    {
-    case 0:
-        test(); // This is the default auton, if you don't select from the brain.
-        break;  // Change these to be your own auton functions in order to use the auton selector.
-    case 1:     // Tap the screen to cycle through autons.
-        one();
-        break;
-    case 2:
-        two();
-        break;
-    case 3:
-        three();
-        break;
-    case 4:
-        four();
-        break;
-    case 5:
-        five();
-        break;
-    }
+  auto_started = true;
+  switch (current_auton_selection)
+  {
+  case 0:
+    test(); // This is the default auton, if you don't select from the brain.
+    break;  // Change these to be your own auton functions in order to use the auton selector.
+  case 1:   // Tap the screen to cycle through autons.
+    one();
+    break;
+  case 2:
+    two();
+    break;
+  case 3:
+    three();
+    break;
+  case 4:
+    four();
+    break;
+  case 5:
+    five();
+    break;
+  }
 }
 
 void usercontrol(void)
@@ -204,72 +222,20 @@ void usercontrol(void)
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
     chassis.control_arcade();
-    if(Controller.ButtonA.pressing()){
-      Intake.spin(fwd, 12, volt);
-    }
-    else if(Controller.ButtonB.pressing()){
-      Intake.spin(reverse, 12, volt);
-    }
-    else{
-      Intake.stop(coast);
-    }
 
-    if(Controller.ButtonL2.pressing()){
-      Arm.spin(fwd, 12, volt);
-    }
-    else if(Controller.ButtonR2.pressing()){
-      Arm.spin(reverse, 12, volt);
-    }
-    else{
-      Arm.stop(hold);
-    }
-
-    if(Controller.ButtonL1.pressing()){
-      if(L1_pressing == false){
-        clamped = !clamped;
-        L1_pressing = true;
-      }
-    }
-    else{
-      L1_pressing = false;
-    }
-
-    if(clamped){
-      Clamp.set(true);
-    }
-    else{
-      Clamp.set(false);
-    }
-
-    if(Controller.ButtonR1.pressing()){
-      if(R1_pressing == false){
-        doinked = !doinked;
-        R1_pressing = true;
-      }
-    }
-    else{
-      R1_pressing = false;
-    }
-
-    if(doinked){
-      Doinker.set(true);
-    }
-    else{
-      Doinker.set(false);
-    }
     wait(20, msec);
   }
 }
 
 int main()
 {
-    Competition.autonomous(autonomous);
-    Competition.drivercontrol(usercontrol);
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(usercontrol);
 
-    pre_auton();
+  pre_auton();
 
-    while (true)
-    {
-        wait(100, msec);
-    }
+  while (true)
+  {
+    wait(100, msec);
+  }
 }
