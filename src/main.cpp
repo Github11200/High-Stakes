@@ -5,6 +5,7 @@
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
 #include "../include/driver/redirect.h"
+#include <robot-config.h>
 
 using namespace vex;
 competition Competition;
@@ -14,7 +15,7 @@ Drive chassis(
     // Specify your drive setup below. There are eight options:
     // ZERO_TRACKER_NO_ODOM, ZERO_TRACKER_ODOM, TANK_ONE_ENCODER, TANK_ONE_ROTATION, TANK_TWO_ENCODER, TANK_TWO_ROTATION, HOLONOMIC_TWO_ENCODER, and HOLONOMIC_TWO_ROTATION
     // For example, if you are not using odometry, put ZERO_TRACKER_NO_ODOM below:
-    ZERO_TRACKER_NO_ODOM,
+    TANK_ONE_ENCODER,
 
     // Add the names of your Drive motors into the motor groups below, separated by commas, i.e. motor_group(Motor1,Motor2,Motor3).
     // You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
@@ -223,7 +224,7 @@ void autonomous(void)
 int buttonsWrapper()
 {
   DoinkerControl doinkerControl(Controller.ButtonB);
-  IntakeControl intakeControl(12, Controller.ButtonR1, Controller.ButtonR2);
+  IntakeControl intakeControl(12, 3, Controller.ButtonR1, Controller.ButtonR2, Controller.ButtonA);
   MogoControl mogoControl(Controller.ButtonA);
   RedirectControl redirectControl(12, Controller.ButtonL1, Controller.ButtonL2);
 
@@ -238,6 +239,8 @@ int buttonsWrapper()
       intakeControl.intake();
     else if (intakeControl.outtakeButton.pressing())
       intakeControl.outtake();
+    else if (intakeControl.redirectButton.pressing())
+      intakeControl.intakeToRedirect();
 
     // Mogo
     if (mogoControl.toggleButton.pressing())
@@ -248,6 +251,23 @@ int buttonsWrapper()
       redirectControl.liftRedirect();
     else if (redirectControl.redirectLowerButton.pressing())
       redirectControl.lowerRedirect();
+
+    vex::wait(20, vex::timeUnits::msec);
+  }
+
+  return 1;
+}
+
+int joystickWrapper()
+{
+  Joystick joystickControl(5);
+
+  while (true)
+  {
+    pair<double, double> values = joystickControl.cheesy();
+
+    Left.spin(vex::directionType::fwd, values.first, vex::voltageUnits::volt);
+    Right.spin(vex::directionType::fwd, values.second, vex::voltageUnits::volt);
 
     vex::wait(20, vex::timeUnits::msec);
   }

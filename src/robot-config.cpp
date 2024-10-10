@@ -20,6 +20,10 @@ motor Intake = motor(PORT1, ratio6_1, false);
 motor Redirect = motor(PORT2, ratio36_1, false);
 digital_out Clamp = digital_out(Brain.ThreeWirePort.A);
 digital_out Doinker = digital_out(Brain.ThreeWirePort.B);
+limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.C);
+
+motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
+motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
 
 void vexcodeInit(void)
 {

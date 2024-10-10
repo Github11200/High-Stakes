@@ -15,5 +15,8 @@ extern motor Intake;
 extern motor Redirect;
 extern digital_out Clamp;
 extern digital_out Doinker;
+extern limit RedirectLimitSwitch;
+extern motor_group Left;
+extern motor_group Right;
 
 void vexcodeInit(void);
