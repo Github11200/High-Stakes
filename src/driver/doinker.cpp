@@ -1,28 +1,29 @@
 #include "../../include/driver/doinker.h"
 
 using namespace vex;
+using namespace std;
 
-DoinkerControl::DoinkerControl(vex::controller::button toggleButton)
+DoinkerControl::DoinkerControl()
 {
-    this->toggleButton = toggleButton;
-    this->doinkerState = READY_TO_DOINK;
+    cout << "please work" << endl;
+    // this->toggleButton = Controller.ButtonA;
 }
 
 void DoinkerControl::toggle()
 {
-    if (this->toggleButton.pressing())
-    {
-        if (this->doinkerState == READY_TO_DOINK)
-        {
-            Doinker.set(true);
-            this->doinkerState = DOINKED;
-        }
-        else
-        {
-            Doinker.set(false);
-            this->doinkerState = READY_TO_DOINK;
-        }
+    // if (Controller.ButtonA.pressing())
+    // {
+    //     if (this->doinkerState == READY_TO_DOINK)
+    //     {
+    //         Doinker.set(true);
+    //         this->doinkerState = DOINKED;
+    //     }
+    //     else
+    //     {
+    //         Doinker.set(false);
+    //         this->doinkerState = READY_TO_DOINK;
+    //     }
 
-        wait(25, vex::timeUnits::msec);
-    }
+    //     wait(25, vex::timeUnits::msec);
+    // }
 }

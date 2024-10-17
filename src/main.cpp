@@ -223,41 +223,34 @@ void autonomous(void)
 
 int buttonsWrapper()
 {
-  /*
-  // idk why I made this function
-  // wait, I think it's cause it made it like actually work, otherwise it crashed idk
-  // if it works, LEAVE IT
-  // looks useless, but pls dont delete
-  // yeah
-  */
-  DoinkerControl doinkerControl(Controller.ButtonB);
-  IntakeControl intakeControl(12, 3, Controller.ButtonR1, Controller.ButtonR2, Controller.ButtonA);
-  MogoControl mogoControl(Controller.ButtonA);
-  RedirectControl redirectControl(12, Controller.ButtonL1, Controller.ButtonL2);
+  // DoinkerControl doinkerControl;
+  IntakeControl intakeControl(12, 3);
+  // MogoControl mogoControl(Controller.ButtonA);
+  // RedirectControl redirectControl(12, Controller.ButtonL1, Controller.ButtonL2);
 
   while (true)
   {
     // Doinker
-    if (doinkerControl.toggleButton.pressing())
-      doinkerControl.toggle();
+    // if (doinkerControl.toggleButton.pressing())
+    //   doinkerControl.toggle();
 
     // Intake
-    if (intakeControl.intakeButton.pressing())
+    if (Controller.ButtonR1.pressing())
       intakeControl.intake();
-    else if (intakeControl.outtakeButton.pressing())
+    else if (Controller.ButtonR2.pressing())
       intakeControl.outtake();
-    else if (intakeControl.redirectButton.pressing())
+    else if (Controller.ButtonA.pressing())
       intakeControl.intakeToRedirect();
 
-    // Mogo
-    if (mogoControl.toggleButton.pressing())
-      mogoControl.toggle();
+    // // Mogo
+    // if (mogoControl.toggleButton.pressing())
+    //   mogoControl.toggle();
 
-    // Redirect
-    if (redirectControl.liftRedirectButton.pressing())
-      redirectControl.liftRedirect();
-    else if (redirectControl.redirectLowerButton.pressing())
-      redirectControl.lowerRedirect();
+    // // Redirect
+    // if (redirectControl.liftRedirectButton.pressing())
+    //   redirectControl.liftRedirect();
+    // else if (redirectControl.redirectLowerButton.pressing())
+    //   redirectControl.lowerRedirect();
 
     vex::wait(20, vex::timeUnits::msec);
   }

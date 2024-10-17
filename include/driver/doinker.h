@@ -19,8 +19,7 @@ public:
     DoinkerState doinkerState;
 
     /// @brief Controls the doinker either doinking or just staying there :()
-    /// @param toggleButton
-    DoinkerControl(vex::controller::button toggleButton);
+    DoinkerControl();
 
     /// @brief Will toggle between doinked and not doinked based on the state
     void toggle();

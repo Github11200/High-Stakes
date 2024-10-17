@@ -12,15 +12,12 @@ public:
     // Speed is in volts
     int speed;
     int numberOfSecondsToRedirect;
-    vex::controller::button intakeButton;
-    vex::controller::button outtakeButton;
-    vex::controller::button redirectButton;
 
     /// @brief Sets the speed, button to turn the intake forward, and button to turn it in reverse
     /// @param speed The speed in VOLTS
     /// @param forwardButton Spins the motor to intake a ring
     /// @param reverseButton Spins the motor to outtake a ring
-    IntakeControl(int speed, int numberOfSecondsToRedirect, vex::controller::button intakeButton, vex::controller::button outtakeButton, vex::controller::button redirectButton);
+    IntakeControl(int speed, int numberOfSecondsToRedirect);
 
     /// @brief Spin the intake to take in a ring
     void intake();
