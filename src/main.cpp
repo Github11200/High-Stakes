@@ -223,6 +223,13 @@ void autonomous(void)
 
 int buttonsWrapper()
 {
+  /*
+  // idk why I made this function
+  // wait, I think it's cause it made it like actually work, otherwise it crashed idk
+  // if it works, LEAVE IT
+  // looks useless, but pls dont delete
+  // yeah
+  */
   DoinkerControl doinkerControl(Controller.ButtonB);
   IntakeControl intakeControl(12, 3, Controller.ButtonR1, Controller.ButtonR2, Controller.ButtonA);
   MogoControl mogoControl(Controller.ButtonA);
@@ -260,7 +267,8 @@ int buttonsWrapper()
 
 int joystickWrapper()
 {
-  Joystick joystickControl(5);
+  // I don't know what these values do
+  Joystick joystickControl(5, 0.02, 0.01, 0.01);
 
   while (true)
   {
