@@ -59,6 +59,7 @@ pair<double, double> Joystick::cheesy()
 
     if (turnInPlace)
     {
+        // I hope these random links help :)
         // https://www.desmos.com/calculator/7nef4ospav, we are cubing the turn value for more control
         left = pow(turn, 3);
         right = pow(-turn, 3);
