@@ -16,6 +16,14 @@ extern motor Redirect;
 extern digital_out Clamp;
 extern digital_out Doinker;
 extern limit RedirectLimitSwitch;
+
+extern vex::controller::button IntakeButton;
+extern vex::controller::button OuttakeButton;
+extern vex::controller::button RedirectLiftButton;
+extern vex::controller::button RedirectLowerButton;
+extern vex::controller::button DoinkerButton;
+extern vex::controller::button ClampButton;
+
 extern motor_group Left;
 extern motor_group Right;
 

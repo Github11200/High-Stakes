@@ -5,25 +5,24 @@ using namespace std;
 
 DoinkerControl::DoinkerControl()
 {
-    cout << "please work" << endl;
-    // this->toggleButton = Controller.ButtonA;
+  this->doinkerState = READY_TO_DOINK;
 }
 
 void DoinkerControl::toggle()
 {
-    // if (Controller.ButtonA.pressing())
-    // {
-    //     if (this->doinkerState == READY_TO_DOINK)
-    //     {
-    //         Doinker.set(true);
-    //         this->doinkerState = DOINKED;
-    //     }
-    //     else
-    //     {
-    //         Doinker.set(false);
-    //         this->doinkerState = READY_TO_DOINK;
-    //     }
+  if (DoinkerButton.pressing())
+  {
+    if (this->doinkerState == READY_TO_DOINK)
+    {
+      Doinker.set(true);
+      this->doinkerState = DOINKED;
+    }
+    else
+    {
+      Doinker.set(false);
+      this->doinkerState = READY_TO_DOINK;
+    }
 
-    //     wait(25, vex::timeUnits::msec);
-    // }
+    wait(25, vex::timeUnits::msec);
+  }
 }
