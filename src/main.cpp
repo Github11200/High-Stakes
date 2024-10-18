@@ -277,6 +277,8 @@ int joystickWrapper()
 
 void usercontrol(void)
 {
+  Brain.Screen.clearScreen();
+  Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
 
   while (1)
