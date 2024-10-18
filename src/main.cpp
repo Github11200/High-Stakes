@@ -83,7 +83,7 @@ Drive chassis(
 );
 
 int current_auton_selection = 0;
-bool auto_started = false;
+bool pre_match = true;
 
 void setColor(vex::color colour)
 {
@@ -127,7 +127,7 @@ void pre_auton(void)
   vexcodeInit();
   default_constants();
   updateScreen();
-  while (auto_started == false)
+  while (pre_match)
   { // Changing the names below will only change their names on the
     switch (current_auton_selection)
     {
@@ -197,7 +197,7 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  auto_started = true;
+  pre_match = false;
   switch (current_auton_selection)
   {
   case 0:
@@ -277,6 +277,7 @@ int joystickWrapper()
 
 void usercontrol(void)
 {
+  pre_match = false;
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
