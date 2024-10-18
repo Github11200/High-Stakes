@@ -223,34 +223,32 @@ void autonomous(void)
 
 int buttonsWrapper()
 {
-  // DoinkerControl doinkerControl;
+  DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
-  // MogoControl mogoControl(Controller.ButtonA);
-  // RedirectControl redirectControl(12, Controller.ButtonL1, Controller.ButtonL2);
+  MogoControl mogoControl;
+  RedirectControl redirectControl(12);
 
   while (true)
   {
     // Doinker
-    // if (doinkerControl.toggleButton.pressing())
-    //   doinkerControl.toggle();
+    if (DoinkerButton.pressing())
+      doinkerControl.toggle();
 
     // Intake
-    if (Controller.ButtonR1.pressing())
+    if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (Controller.ButtonR2.pressing())
+    else if (OuttakeButton.pressing())
       intakeControl.outtake();
-    else if (Controller.ButtonA.pressing())
-      intakeControl.intakeToRedirect();
 
-    // // Mogo
-    // if (mogoControl.toggleButton.pressing())
-    //   mogoControl.toggle();
+    // Mogo
+    if (ClampButton.pressing())
+      mogoControl.toggle();
 
-    // // Redirect
-    // if (redirectControl.liftRedirectButton.pressing())
-    //   redirectControl.liftRedirect();
-    // else if (redirectControl.redirectLowerButton.pressing())
-    //   redirectControl.lowerRedirect();
+    // Redirect
+    if (RedirectLiftButton.pressing())
+      redirectControl.liftRedirect();
+    else if (RedirectLowerButton.pressing())
+      redirectControl.lowerRedirect();
 
     vex::wait(20, vex::timeUnits::msec);
   }
