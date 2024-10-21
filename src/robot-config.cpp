@@ -19,7 +19,8 @@ motor BackLeft = motor(PORT15, ratio6_1, true);
 motor Intake = motor(PORT5, ratio6_1, false);
 motor Redirect = motor(PORT2, ratio36_1, false);
 digital_out Clamp = digital_out(Brain.ThreeWirePort.A);
-digital_out Doinker = digital_out(Brain.ThreeWirePort.B);
+triport ThreeWirePort = vex::triport(vex::PORT22);
+digital_out Doinker = digital_out(ThreeWirePort.A);
 limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.C);
 
 vex::controller::button IntakeButton = Controller.ButtonR1;

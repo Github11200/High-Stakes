@@ -223,16 +223,16 @@ void autonomous(void)
 
 int buttonsWrapper()
 {
-  DoinkerControl doinkerControl;
+  // DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
   RedirectControl redirectControl(12);
 
   while (true)
   {
-    // Doinker
-    if (DoinkerButton.pressing())
-      doinkerControl.toggle();
+    // // Doinker
+    // if (DoinkerButton.pressing())
+    //   doinkerControl.toggle();
 
     // Intake
     if (IntakeButton.pressing())
@@ -279,12 +279,13 @@ void usercontrol(void)
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
+  task joysticks = task(joystickWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    chassis.control_arcade();
+    // chassis.control_arcade();
 
     wait(20, msec);
   }

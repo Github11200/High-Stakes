@@ -38,8 +38,8 @@ void Joystick::updateAccumulators()
 pair<double, double> Joystick::cheesy()
 {
     bool turnInPlace = false;
-    double throttle = Controller.Axis1.position();
-    double turn = Controller.Axis2.position();
+    double throttle = Controller.Axis3.position();
+    double turn = Controller.Axis4.position();
     double left = 0;
     double right = 0;
 
@@ -75,7 +75,7 @@ pair<double, double> Joystick::cheesy()
                this->SENSITIVITY;
 
         left += throttle + turn;
-        right -= throttle + turn;
+        right += throttle - turn;
 
         updateAccumulators();
     }

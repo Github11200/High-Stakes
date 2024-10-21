@@ -6,17 +6,17 @@
 using namespace std;
 using namespace vex;
 
-enum DoinkerState
-{
-    DOINKED = true,
-    READY_TO_DOINK = false
-};
+// enum DoinkerState
+// {
+//     DOINKED = true,
+//     READY_TO_DOINK = false
+// };
 
 class DoinkerControl
 {
 public:
     vex::controller::button toggleButton;
-    DoinkerState doinkerState;
+    bool doinkerState;
 
     /// @brief Controls the doinker either doinking or just staying there :()
     DoinkerControl();
