@@ -49,10 +49,10 @@ pair<double, double> Joystick::cheesy()
         turnInPlace = true;
         throttle = 0;
     }
-    else if (throttle - this->previousThrottle > this->DRIVE_SLEW)
-        throttle += this->previousThrottle + DRIVE_SLEW;
-    else if (throttle - this->previousThrottle < -(DRIVE_SLEW * 2))
-        throttle += this->previousThrottle - (2 * DRIVE_SLEW);
+    // else if (throttle - this->previousThrottle > this->DRIVE_SLEW)
+    //     throttle += this->previousThrottle + DRIVE_SLEW;
+    // else if (throttle - this->previousThrottle < -(DRIVE_SLEW * 2))
+    //     throttle += this->previousThrottle - (2 * DRIVE_SLEW);
 
     // Remap the turn
     turn = this->calculateBezierOutput(turn);
@@ -76,6 +76,8 @@ pair<double, double> Joystick::cheesy()
 
         left += throttle + turn;
         right += throttle - turn;
+
+        cout << left << endl;
 
         updateAccumulators();
     }

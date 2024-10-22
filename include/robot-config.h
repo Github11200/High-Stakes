@@ -19,6 +19,7 @@ extern limit RedirectLimitSwitch;
 
 extern vex::controller::button IntakeButton;
 extern vex::controller::button OuttakeButton;
+extern vex::controller::button IntakeToRedirectButton;
 extern vex::controller::button RedirectLiftButton;
 extern vex::controller::button RedirectLowerButton;
 extern vex::controller::button DoinkerButton;

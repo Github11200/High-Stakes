@@ -235,10 +235,12 @@ int buttonsWrapper()
     //   doinkerControl.toggle();
 
     // Intake
-    if (IntakeButton.pressing())
-      intakeControl.intake();
-    else if (OuttakeButton.pressing())
+    if (OuttakeButton.pressing())
       intakeControl.outtake();
+    else if (IntakeButton.pressing())
+      intakeControl.intake();
+    else if (IntakeToRedirectButton.pressing())
+      intakeControl.intakeToRedirect();
 
     // Mogo
     if (ClampButton.pressing())
@@ -279,13 +281,13 @@ void usercontrol(void)
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
-  task joysticks = task(joystickWrapper);
+  // task joysticks = task(joystickWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    // chassis.control_arcade();
+    chassis.control_arcade();
 
     wait(20, msec);
   }

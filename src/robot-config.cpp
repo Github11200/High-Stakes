@@ -23,10 +23,11 @@ triport ThreeWirePort = vex::triport(vex::PORT22);
 digital_out Doinker = digital_out(ThreeWirePort.A);
 limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.C);
 
-vex::controller::button IntakeButton = Controller.ButtonR1;
-vex::controller::button OuttakeButton = Controller.ButtonR2;
-vex::controller::button RedirectLiftButton = Controller.ButtonL1;
-vex::controller::button RedirectLowerButton = Controller.ButtonL2;
+vex::controller::button IntakeButton = Controller.ButtonL1;
+vex::controller::button OuttakeButton = Controller.ButtonR1;
+vex::controller::button IntakeToRedirectButton = Controller.ButtonY;
+vex::controller::button RedirectLiftButton = Controller.ButtonL2;
+vex::controller::button RedirectLowerButton = Controller.ButtonR2;
 vex::controller::button DoinkerButton = Controller.ButtonA;
 vex::controller::button ClampButton = Controller.ButtonB;
 

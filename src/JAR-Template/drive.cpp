@@ -420,42 +420,47 @@ void Drive::control_arcade()
   throttle = throttle / 1.27;
   float influence = deadband(controller(primary).Axis1.value(), 5);
   influence = influence / 1.27;
-  std::cout << influence << std::endl;
   float leftpow;
   float rightpow;
 
   throttle = pow(throttle, 3) / 10000;
-  influence = pow(influence, 3) / 20000;
-  if ((throttle + influence) > 100)
-  {
-    leftpow = 100;
-    rightpow = throttle - influence + (100 - throttle - influence);
-  }
-  else if ((throttle + influence) < -100)
-  {
-    leftpow = -100;
-    rightpow = throttle - influence + (-100 - throttle - influence);
-  }
-  else if ((throttle - influence) > 100)
-  {
-    rightpow = 100;
-    leftpow = throttle + influence + (100 - throttle + influence);
-  }
-  else if ((-throttle + influence) < -100)
-  {
-    rightpow = -100;
-    leftpow = throttle + influence + (-100 - throttle + influence);
-  }
-  else
-  {
-    leftpow = throttle + influence;
-    rightpow = throttle - influence;
-  }
-  if (leftpow == 0 and rightpow == 0)
+  influence = pow(influence, 3) / 10000;
+  // if ((throttle + influence) > 100)
+  // {
+  //   leftpow = 100;
+  //   rightpow = throttle - influence + (100 - throttle - influence);
+  // }
+  // else if ((throttle + influence) < -100)
+  // {
+  //   leftpow = -100;
+  //   rightpow = throttle - influence + (-100 - throttle - influence);
+  // }
+  // else if ((throttle - influence) > 100)
+  // {
+  //   rightpow = 100;
+  //   leftpow = throttle + influence + (100 - throttle + influence);
+  // }
+  // else if ((-throttle + influence) < -100)
+  // {
+  //   rightpow = -100;
+  //   leftpow = throttle + influence + (-100 - throttle + influence);
+  // }
+  // else
+  // {
+  leftpow = throttle + influence;
+  rightpow = throttle - influence;
+  // }
+  if (leftpow == 0)
   {
     DriveL.stop(brake);
+  }
+  if (rightpow == 0)
+  {
     DriveR.stop(brake);
   }
+
+  std::cout << "Left: " << leftpow << std::endl;
+  std::cout << "Right: " << rightpow << std::endl;
   DriveL.spin(fwd, to_volt(leftpow), volt);
   DriveR.spin(fwd, to_volt(rightpow), volt);
 }
