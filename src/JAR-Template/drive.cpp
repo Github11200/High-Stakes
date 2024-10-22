@@ -1,6 +1,8 @@
 #include "vex.h"
 #include <iostream>
 
+using namespace std;
+
 Drive::Drive(enum ::drive_setup drive_setup, motor_group DriveL, motor_group DriveR, int gyro_port, float wheel_diameter, float wheel_ratio, float gyro_scale, int DriveLF_port, int DriveRF_port, int DriveLB_port, int DriveRB_port, int ForwardTracker_port, float ForwardTracker_diameter, float ForwardTracker_center_distance, int SidewaysTracker_port, float SidewaysTracker_diameter, float SidewaysTracker_center_distance) : wheel_diameter(wheel_diameter),
                                                                                                                                                                                                                                                                                                                                                                                                                                         wheel_ratio(wheel_ratio),
                                                                                                                                                                                                                                                                                                                                                                                                                                         gyro_scale(gyro_scale),
@@ -157,6 +159,7 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
     // shorter path when making a turn.
     float output = turnPID.compute(error);
     output = clamp(output, -turn_max_voltage, turn_max_voltage);
+
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
@@ -311,6 +314,13 @@ void Drive::set_heading(float orientation_deg)
 void Drive::set_coordinates(float X_position, float Y_position, float orientation_deg)
 {
   odom.set_position(X_position, Y_position, orientation_deg, get_ForwardTracker_position(), get_SidewaysTracker_position());
+
+  Gyro.calibrate();
+  while (Gyro.isCalibrating())
+  {
+    wait(50, msec);
+  }
+
   set_heading(orientation_deg);
   odom_task = task(position_track_task);
 }
@@ -459,8 +469,6 @@ void Drive::control_arcade()
     DriveR.stop(brake);
   }
 
-  std::cout << "Left: " << leftpow << std::endl;
-  std::cout << "Right: " << rightpow << std::endl;
   DriveL.spin(fwd, to_volt(leftpow), volt);
   DriveR.spin(fwd, to_volt(rightpow), volt);
 }
