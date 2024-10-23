@@ -30,7 +30,7 @@ Drive chassis(
     PORT9,
 
     // Input your wheel diameter. (4" omnis are actually closer to 4.125"):
-    2.6,
+    2.75,
 
     // External ratio, must be in decimal, in the format of input teeth/output teeth.
     // If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
@@ -64,7 +64,7 @@ Drive chassis(
     PORT6,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
-    2.75,
+    1000000000,
 
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -75,7 +75,7 @@ Drive chassis(
     1,
 
     // Sideways tracker diameter (reverse to make the direction switch):
-    -2.75,
+    2.75,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
     0
