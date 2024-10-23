@@ -193,6 +193,10 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
   PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
   float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
+
+  // TODO: Check what the forward tracker posiition function returns, does it return the same values as get_left_position_in()?
+  get_ForwardTracker_position();
+
   // Rather than resetting the drive position , this function just notes what the drive position started at
   // and determines error relative to that value.
   float average_position = start_average_position;
