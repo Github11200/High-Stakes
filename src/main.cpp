@@ -224,12 +224,12 @@ void autonomous(void)
 int buttonsWrapper()
 {
   // DoinkerControl doinkerControl;
-  IntakeControl intakeControl(10, 3);
+  IntakeControl intakeControl(11, 3);
   MogoControl mogoControl;
   RedirectControl redirectControl(12);
 
   // This starts the odometry task
-  test();
+  // test();
 
   while (true)
   {
