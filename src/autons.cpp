@@ -23,7 +23,7 @@ void test()
   chassis.set_coordinates(0, 0, 0);
   chassis.drive_distance(-3);
   // chassis.turn_to_point(24, 24);
-  //  chassis.drive_to_point(5, 100);
+  chassis.drive_to_point(5, 100);
   //  chassis.drive_to_point(0,0);
   //  chassis.turn_to_angle(180);
 }

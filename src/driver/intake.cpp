@@ -18,27 +18,17 @@ void IntakeControl::intake()
 void IntakeControl::intakeToRedirect()
 {
   // Intake the ring until it reaches the limit switch
-  cout << "g" << endl;
   while (RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-  {
     Intake.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
-  }
-  cout << "a" << endl;
+
   while (!RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-  {
-    Intake.spin(vex::directionType::fwd, 6.5, vex::voltageUnits::volt);
-    cout << "b" << endl;
-  }
-  cout << "e" << endl;
+    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
 
   // Now that it's at the top, spin it in reverse to put it into the redirect
   while (IntakeToRedirectButton.pressing())
-  {
     Intake.spin(vex::directionType::rev, 10, vex::voltageUnits::volt);
-    cout << "j" << endl;
-  }
   Intake.stop();
-  cout << "f" << endl;
+
   vex::wait(20, vex::timeUnits::msec);
 }
 
