@@ -33,22 +33,25 @@ void three_ring_ladder_blue_goal_side()
 {
   odom_constants();
   chassis.set_coordinates(120, 58, 0);
-  Intake.spin(fwd, 12, volt);
   chassis.turn_to_angle(30);
   chassis.drive_distance(-35);
   Clamp.set(true);
+  //got the goal, scoring preload
   Intake.spin(fwd, 12, volt);
   Redirect.spinToPosition(150, deg, false);
   chassis.turn_to_point(117.33, 70.20);
-  chassis.drive_distance(-35);
+  chassis.drive_distance(35);
   Redirect.spinToPosition(0, deg, false);
+  //raised redirect to eat 2nd ring on stack
   chassis.turn_to_point(117.33, 23.08);
   chassis.drive_to_point(117.33, 23.08);
   chassis.turn_to_point(93.77, 23.08);
   chassis.drive_to_point(93.77, 23.08);
+  //ate 2 more rings
   Redirect.spinToPosition(150, deg, false);
   chassis.turn_to_point(70.20, 70.20);
   chassis.drive_distance(-35);
+  //touched ladder
 }
 
 void solo_awp_empty_side()
@@ -59,26 +62,32 @@ void solo_awp_empty_side()
   Redirect.spinToPosition(150, deg, true);
   chassis.drive_distance(20);
   Redirect.spinToPosition(0, deg, false);
+  //scored a preload on the alliance stake
   chassis.drive_distance(-20);
   chassis.turn_to_angle(340);
   chassis.drive_distance(-35);
   Clamp.set(true);
+  //got the goal
   chassis.turn_to_point(93.77, 117.33);
   Intake.spin(fwd, 12, volt);
   chassis.drive_to_point(93.77, 117.33);
+  //ate a ring
   Redirect.spinToPosition(150, deg, false);
   chassis.turn_to_point(117.33, 70.20);
   chassis.drive_to_point(117.33, 70.20);
   Redirect.spinToPosition(0, deg, false);
+  //raised redirect to eat 2nd ring on stack
   chassis.drive_distance(-20);
   chassis.turn_to_angle(315);
   Intake.stop();
   chassis.drive_distance(15);
   chassis.turn_to_angle(270);
   chassis.drive_to_point(50, 128.41);
+  //maneuvering to the other side to push the other robot off the line
   chassis.drive_distance(-70);
   chassis.turn_to_point(70.20, 70.20);
   chassis.drive_distance(-35);
+  //touched ladder
 }
 
 void three()
