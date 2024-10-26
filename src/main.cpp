@@ -216,7 +216,7 @@ void autonomous(void)
     four();
     break;
   case 5:
-    five();
+    auton_skills();
     break;
   }
 }

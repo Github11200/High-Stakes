@@ -18,6 +18,24 @@ void odom_constants()
   chassis.drive_settle_error = 3;
 }
 
+void redirect_pls()
+{
+  // Intake the ring until it reaches the limit switch
+  while (RedirectLimitSwitch.pressing())
+    Intake.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
+  Intake.setVelocity(100, pct);
+  Intake.spinFor(fwd, 500, msec);
+  if (RedirectLimitSwitch.pressing()){
+    redirect_pls();
+    return;
+  }
+  while (!RedirectLimitSwitch.pressing())
+    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+
+  Intake.spinFor(reverse, 1000, msec);
+  Intake.stop();
+}
+
 void test()
 {
   chassis.set_coordinates(0, 0, 0);
@@ -100,7 +118,58 @@ void four()
   odom_constants();
 }
 
-void five()
+void auton_skills()
 {
   odom_constants();
+  chassis.set_coordinates(15, 70.20, 0);
+  chassis.turn_to_point(0, 70.20);
+  Redirect.spinToPosition(150, deg, true);
+  chassis.drive_distance(20);
+  Redirect.spinToPosition(0, deg, false);
+  //scored a preload on the alliance stake
+  chassis.turn_to_point(46.64, 93.77);
+  Intake.spin(fwd, 12, volt);
+  chassis.drive_distance(33);
+  Intake.stop();
+  chassis.drive_to_point(23.08, 70.20);
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(-20);
+  Clamp.set(true);
+  //got bottom left mogo
+  Intake.spin(fwd, 12, volt);
+  chassis.turn_to_point(46.64, 46.64);
+  chassis.drive_to_point(46.64, 46.64);
+  chassis.turn_to_point(46.64, 23.08);
+  chassis.drive_to_point(46.64, 23.08);
+  chassis.turn_to_point(11.30, 23.08);
+  chassis.drive_to_point(11.30, 23.08);
+  chassis.turn_to_point(23.08, 11.30);
+  chassis.drive_to_point(23.08, 11.30);
+  //cleaned up all bottom left rings
+  chassis.turn_to_angle(30);
+  chassis.drive_distance(-15);
+  Intake.stop();
+  Clamp.set(false);
+  //dropped goal in bottom left corner
+  Intake.spin(fwd, 12, volt);
+  chassis.turn_to_point(70.20, 70.20);
+  chassis.drive_to_point(70.20, 70.20);
+  chassis.turn_to_angle(333);
+  Intake.stop();
+  chassis.drive_distance(50);
+  Clamp.set(true);
+  //got upper left mogo
+  Intake.spin(fwd, 12, volt);
+  chassis.turn_to_point(46.64, 117.33);
+  chassis.drive_to_point(46.64, 117.33);
+  chassis.turn_to_point(11.30, 117.33);
+  chassis.drive_to_point(11.30, 117.33);
+  chassis.turn_to_point(23.08, 129);
+  chassis.drive_to_point(23.08, 129);
+  //cleaned up all upper left rings
+  chassis.turn_to_angle(335);
+  chassis.drive_distance(-15);
+  Intake.stop();
+  Clamp.set(false);
+  //dropped goal in upper left corner
 }

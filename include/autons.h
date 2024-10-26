@@ -12,4 +12,4 @@ void three_ring_ladder_blue_goal_side();
 void solo_awp_empty_side();
 void three();
 void four();
-void five();
+void auton_skills();
