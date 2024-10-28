@@ -17,21 +17,21 @@ void IntakeControl::intake()
 
 void IntakeControl::intakeToRedirect()
 {
-  // Intake the ring until it reaches the limit switch
   while (RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-    Intake.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
-  Intake.setVelocity(100, pct);
-  Intake.spinFor(fwd, 500, msec);
-  if (RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing()){
-    intakeToRedirect();
-    return;
-  }
-  while (!RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+
+  Intake.setVelocity(45, pct);
+  Intake.spinFor(fwd, 300, msec);
+  Intake.setVelocity(30, pct);
+  Intake.spinFor(fwd, 300, msec);
+  Intake.setVelocity(15, pct);
+  Intake.spinFor(fwd, 200, msec);
+  // while (!RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
+  //   Intake.spin(vex::directionType::fwd, 5, vex::voltageUnits::volt);
 
   // Now that it's at the top, spin it in reverse to put it into the redirect
   while (IntakeToRedirectButton.pressing())
-    Intake.spin(vex::directionType::rev, 10, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
   Intake.stop();
 
   vex::wait(20, vex::timeUnits::msec);
