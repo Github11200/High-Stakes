@@ -48,66 +48,66 @@ void test()
   //  chassis.turn_to_angle(180);
 }
 
+// DONE
 void three_ring_ladder_blue_goal_side()
 {
   odom_constants();
-  chassis.set_coordinates(115, 27, 0);
+  chassis.set_coordinates(115, 39.25, 0);
 
-  // chassis.turn_to_angle(30);
-  // chassis.drive_distance(-35);
-  // Clamp.set(true);
-  // //got the goal, scoring preload
-  // Intake.spin(fwd, 12, volt);
-  // Redirect.spinToPosition(150, deg, false);
-  // chassis.turn_to_point(117.33, 70.20);
-  // chassis.drive_distance(35);
-  // Redirect.spinToPosition(0, deg, false);
-  // //raised redirect to eat 2nd ring on stack
-  // chassis.turn_to_point(117.33, 23.08);
-  // chassis.drive_to_point(117.33, 23.08);
-  // chassis.turn_to_point(93.77, 23.08);
-  // chassis.drive_to_point(93.77, 23.08);
-  // //ate 2 more rings
-  // Redirect.spinToPosition(150, deg, false);
-  // chassis.turn_to_point(70.20, 70.20);
-  // chassis.drive_distance(-35);
-  // //touched ladder
+  // Move backwards and clamp onto the goal
+  chassis.drive_distance(-19.01);
+  Clamp.set(true);
+
+  // Intake the ring on the bottom, closest to the mogo rush goal
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  chassis.turn_to_angle(114);
+  chassis.drive_distance(23);
+  wait(1, vex::timeUnits::sec);
+  Intake.stop(vex::brakeType::coast);
+
+  // Turn around and intake the other ring that is on top of the stack closest to the ladder
+  chassis.turn_to_angle(297);
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  chassis.drive_distance(47);
+  wait(1, vex::timeUnits::sec);
+  Intake.stop(vex::brakeType::coast);
+
+  // Turn around and touch the ladder
+  chassis.turn_to_angle(172);
+  chassis.drive_distance(13);
 }
 
+// DONE
 void solo_awp_empty_side()
 {
   odom_constants();
-  chassis.set_coordinates(128.41, 58, 315);
-  chassis.drive_distance(-10);
-  Redirect.spinToPosition(150, deg, true);
-  chassis.drive_distance(20);
-  Redirect.spinToPosition(0, deg, false);
-  // scored a preload on the alliance stake
-  chassis.drive_distance(-20);
-  chassis.turn_to_angle(340);
-  chassis.drive_distance(-35);
+  chassis.set_coordinates(115, 86.25, 0);
+
+  // Move backwards and clamp onto the goal
+  chassis.drive_distance(-19.01);
   Clamp.set(true);
-  // got the goal
-  chassis.turn_to_point(93.77, 117.33);
-  Intake.spin(fwd, 12, volt);
-  chassis.drive_to_point(93.77, 117.33);
-  // ate a ring
-  Redirect.spinToPosition(150, deg, false);
-  chassis.turn_to_point(117.33, 70.20);
-  chassis.drive_to_point(117.33, 70.20);
-  Redirect.spinToPosition(0, deg, false);
-  // raised redirect to eat 2nd ring on stack
-  chassis.drive_distance(-20);
-  chassis.turn_to_angle(315);
-  Intake.stop();
-  chassis.drive_distance(15);
-  chassis.turn_to_angle(270);
-  chassis.drive_to_point(50, 128.41);
-  // maneuvering to the other side to push the other robot off the line
-  chassis.drive_distance(-70);
-  chassis.turn_to_point(70.20, 70.20);
-  chassis.drive_distance(-35);
-  // touched ladder
+
+  // Turn around and intake the ring on the bottom of the stack
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  chassis.turn_to_angle(246);
+  chassis.drive_distance(23);
+  wait(1, vex::timeUnits::sec);
+
+  // Intake the two rings that are on the bottom of the stacks one by one
+  // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
+  chassis.turn_to_angle(178);
+  chassis.drive_distance(17);
+  wait(1, vex::timeUnits::sec);
+  chassis.drive_distance(-17);
+  chassis.turn_to_angle(271);
+  wait(1, vex::timeUnits::sec);
+  chassis.drive_distance(17);
+  chassis.drive_distance(-17);
+  Intake.stop(vex::brakeType::coast);
+
+  // Turn to face the ladder and touch it
+  chassis.turn_to_angle(196);
+  chassis.drive_distance(23);
 }
 
 void three()
