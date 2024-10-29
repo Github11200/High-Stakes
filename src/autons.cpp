@@ -25,7 +25,8 @@ void redirect_pls()
     Intake.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
   Intake.setVelocity(100, pct);
   Intake.spinFor(fwd, 500, msec);
-  if (RedirectLimitSwitch.pressing()){
+  if (RedirectLimitSwitch.pressing())
+  {
     redirect_pls();
     return;
   }
@@ -40,7 +41,7 @@ void test()
 {
   chassis.set_coordinates(0, 0, 0);
   chassis.drive_distance(-3);
-  
+
   // chassis.turn_to_point(24, 24);
   chassis.drive_to_point(5, 100);
   //  chassis.drive_to_point(0,0);
@@ -50,26 +51,27 @@ void test()
 void three_ring_ladder_blue_goal_side()
 {
   odom_constants();
-  chassis.set_coordinates(120, 58, 0);
-  chassis.turn_to_angle(30);
-  chassis.drive_distance(-35);
-  Clamp.set(true);
-  //got the goal, scoring preload
-  Intake.spin(fwd, 12, volt);
-  Redirect.spinToPosition(150, deg, false);
-  chassis.turn_to_point(117.33, 70.20);
-  chassis.drive_distance(35);
-  Redirect.spinToPosition(0, deg, false);
-  //raised redirect to eat 2nd ring on stack
-  chassis.turn_to_point(117.33, 23.08);
-  chassis.drive_to_point(117.33, 23.08);
-  chassis.turn_to_point(93.77, 23.08);
-  chassis.drive_to_point(93.77, 23.08);
-  //ate 2 more rings
-  Redirect.spinToPosition(150, deg, false);
-  chassis.turn_to_point(70.20, 70.20);
-  chassis.drive_distance(-35);
-  //touched ladder
+  chassis.set_coordinates(115, 27, 0);
+
+  // chassis.turn_to_angle(30);
+  // chassis.drive_distance(-35);
+  // Clamp.set(true);
+  // //got the goal, scoring preload
+  // Intake.spin(fwd, 12, volt);
+  // Redirect.spinToPosition(150, deg, false);
+  // chassis.turn_to_point(117.33, 70.20);
+  // chassis.drive_distance(35);
+  // Redirect.spinToPosition(0, deg, false);
+  // //raised redirect to eat 2nd ring on stack
+  // chassis.turn_to_point(117.33, 23.08);
+  // chassis.drive_to_point(117.33, 23.08);
+  // chassis.turn_to_point(93.77, 23.08);
+  // chassis.drive_to_point(93.77, 23.08);
+  // //ate 2 more rings
+  // Redirect.spinToPosition(150, deg, false);
+  // chassis.turn_to_point(70.20, 70.20);
+  // chassis.drive_distance(-35);
+  // //touched ladder
 }
 
 void solo_awp_empty_side()
@@ -80,32 +82,32 @@ void solo_awp_empty_side()
   Redirect.spinToPosition(150, deg, true);
   chassis.drive_distance(20);
   Redirect.spinToPosition(0, deg, false);
-  //scored a preload on the alliance stake
+  // scored a preload on the alliance stake
   chassis.drive_distance(-20);
   chassis.turn_to_angle(340);
   chassis.drive_distance(-35);
   Clamp.set(true);
-  //got the goal
+  // got the goal
   chassis.turn_to_point(93.77, 117.33);
   Intake.spin(fwd, 12, volt);
   chassis.drive_to_point(93.77, 117.33);
-  //ate a ring
+  // ate a ring
   Redirect.spinToPosition(150, deg, false);
   chassis.turn_to_point(117.33, 70.20);
   chassis.drive_to_point(117.33, 70.20);
   Redirect.spinToPosition(0, deg, false);
-  //raised redirect to eat 2nd ring on stack
+  // raised redirect to eat 2nd ring on stack
   chassis.drive_distance(-20);
   chassis.turn_to_angle(315);
   Intake.stop();
   chassis.drive_distance(15);
   chassis.turn_to_angle(270);
   chassis.drive_to_point(50, 128.41);
-  //maneuvering to the other side to push the other robot off the line
+  // maneuvering to the other side to push the other robot off the line
   chassis.drive_distance(-70);
   chassis.turn_to_point(70.20, 70.20);
   chassis.drive_distance(-35);
-  //touched ladder
+  // touched ladder
 }
 
 void three()
@@ -126,7 +128,7 @@ void auton_skills()
   Redirect.spinToPosition(150, deg, true);
   chassis.drive_distance(20);
   Redirect.spinToPosition(0, deg, false);
-  //scored a preload on the alliance stake
+  // scored a preload on the alliance stake
   chassis.turn_to_point(46.64, 93.77);
   Intake.spin(fwd, 12, volt);
   chassis.drive_distance(33);
@@ -135,7 +137,7 @@ void auton_skills()
   chassis.turn_to_angle(90);
   chassis.drive_distance(-20);
   Clamp.set(true);
-  //got bottom left mogo
+  // got bottom left mogo
   Intake.spin(fwd, 12, volt);
   chassis.turn_to_point(46.64, 46.64);
   chassis.drive_to_point(46.64, 46.64);
@@ -145,12 +147,12 @@ void auton_skills()
   chassis.drive_to_point(11.30, 23.08);
   chassis.turn_to_point(23.08, 11.30);
   chassis.drive_to_point(23.08, 11.30);
-  //cleaned up all bottom left rings
+  // cleaned up all bottom left rings
   chassis.turn_to_angle(30);
   chassis.drive_distance(-15);
   Intake.stop();
   Clamp.set(false);
-  //dropped goal in bottom left corner
+  // dropped goal in bottom left corner
   Intake.spin(fwd, 12, volt);
   chassis.turn_to_point(70.20, 70.20);
   chassis.drive_to_point(70.20, 70.20);
@@ -158,7 +160,7 @@ void auton_skills()
   Intake.stop();
   chassis.drive_distance(50);
   Clamp.set(true);
-  //got upper left mogo
+  // got upper left mogo
   Intake.spin(fwd, 12, volt);
   chassis.turn_to_point(46.64, 117.33);
   chassis.drive_to_point(46.64, 117.33);
@@ -166,10 +168,10 @@ void auton_skills()
   chassis.drive_to_point(11.30, 117.33);
   chassis.turn_to_point(23.08, 129);
   chassis.drive_to_point(23.08, 129);
-  //cleaned up all upper left rings
+  // cleaned up all upper left rings
   chassis.turn_to_angle(335);
   chassis.drive_distance(-15);
   Intake.stop();
   Clamp.set(false);
-  //dropped goal in upper left corner
+  // dropped goal in upper left corner
 }
