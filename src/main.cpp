@@ -250,8 +250,9 @@ int buttonsWrapper()
       mogoControl.toggle();
 
     // Redirect
-    if (RedirectLiftButton.pressing())
+    if (RedirectLiftButton.pressing()) {
       redirectControl.liftRedirect();
+    }
     else if (RedirectLowerButton.pressing())
       redirectControl.lowerRedirect();
 
