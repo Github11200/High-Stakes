@@ -6,7 +6,7 @@
 using namespace std;
 using namespace vex;
 
-class RedirectControl
+class Fishy
 {
 public:
   // Speed is in VOLTS
@@ -14,13 +14,13 @@ public:
 
   /// @brief Sets the speed of the redirect, and what buttons are used to move it
   /// @param speed Speed is in volts
-  RedirectControl(int speed);
+  Fishy(int speed);
 
   /// @brief This lifts the redirect
-  void liftRedirect();
+  void liftFishy();
 
   /// @brief This moves the redirect down
-  void lowerRedirect();
+  void lowerFishy();
 };
 
 #endif

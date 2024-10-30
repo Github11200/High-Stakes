@@ -125,9 +125,9 @@ void auton_skills()
   odom_constants();
   chassis.set_coordinates(15, 70.20, 0);
   chassis.turn_to_point(0, 70.20);
-  Redirect.spinToPosition(150, deg, true);
+  FishyMech.spinToPosition(150, deg, true);
   chassis.drive_distance(20);
-  Redirect.spinToPosition(0, deg, false);
+  FishyMech.spinToPosition(0, deg, false);
   // scored a preload on the alliance stake
   chassis.turn_to_point(46.64, 93.77);
   Intake.spin(fwd, 12, volt);

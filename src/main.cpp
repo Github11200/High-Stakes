@@ -226,8 +226,8 @@ int buttonsWrapper()
   // DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
-  RedirectControl redirectControl(12);
-  Redirect.setPosition(0, degrees);
+  Fishy fishyControl(12);
+  FishyMech.setPosition(0, degrees);
 
   // This starts the odometry task
   // test();
@@ -249,11 +249,11 @@ int buttonsWrapper()
       mogoControl.toggle();
 
     // Redirect
-    if (RedirectLiftButton.pressing()) {
-      redirectControl.liftRedirect();
+    if (FishyLiftButton.pressing()) {
+      fishyControl.liftFishy();
     }
-    else if (RedirectLowerButton.pressing())
-      redirectControl.lowerRedirect();
+    else if (FishyLowerButton.pressing())
+      fishyControl.lowerFishy();
 
     vex::wait(20, vex::timeUnits::msec);
   }
