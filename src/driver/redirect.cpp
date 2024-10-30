@@ -10,10 +10,12 @@ RedirectControl::RedirectControl(int speed)
 void RedirectControl::liftRedirect()
 {
   while (RedirectLiftButton.pressing()) {
-    Redirect.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-    if(Redirect.position(degrees) > 240) {
+    if(Redirect.position(degrees) > 350) {
       Redirect.stop();
+    }
+    else {
+      Redirect.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
   }
   Intake.stop();
@@ -22,10 +24,13 @@ void RedirectControl::liftRedirect()
 
 void RedirectControl::lowerRedirect()
 {
+  Intake.spin(vex::directionType::rev, 8, vex::voltageUnits::volt);
   while (RedirectLowerButton.pressing()) {
-    Redirect.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
     if(Redirect.position(degrees) < 0) {
       Redirect.stop();
+    }
+    else {
+      Redirect.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
     }
   }
   Redirect.stop(hold);
