@@ -227,6 +227,7 @@ int buttonsWrapper()
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
   RedirectControl redirectControl(12);
+  Redirect.setPosition(0, degrees);
 
   // This starts the odometry task
   // test();
@@ -238,12 +239,10 @@ int buttonsWrapper()
     //   doinkerControl.toggle();
 
     // Intake
-    // if (OuttakeButton.pressing())
-    // intakeControl.outtake();
-    if (IntakeButton.pressing())
+    if (OuttakeButton.pressing())
+      intakeControl.outtake();
+    else if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (IntakeToRedirectButton.pressing())
-      intakeControl.intakeToRedirect();
 
     // Mogo
     if (ClampButton.pressing())
