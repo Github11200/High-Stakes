@@ -224,7 +224,7 @@ void autonomous(void)
 int buttonsWrapper()
 {
   // DoinkerControl doinkerControl;
-  IntakeControl intakeControl(11, 3);
+  IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
   RedirectControl redirectControl(12);
 
