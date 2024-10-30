@@ -14,12 +14,12 @@ void DoinkerControl::toggle()
   {
     if (this->doinkerState == true)
     {
-      // Doinker.set(true);
+      Doinker.set(true);
       this->doinkerState = false;
     }
     else
     {
-      // Doinker.set(false);
+      Doinker.set(false);
       this->doinkerState = false;
     }
 

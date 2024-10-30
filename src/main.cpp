@@ -226,17 +226,20 @@ int buttonsWrapper()
   // DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
-  Fishy fishyControl(12);
   FishyMech.setPosition(0, degrees);
+  Fishy fishyControl(12);
 
   // This starts the odometry task
   // test();
 
   while (true)
   {
-    // // Doinker
-    // if (DoinkerButton.pressing())
-    //   doinkerControl.toggle();
+    // Doinker
+    if (DoinkerButton.pressing())
+    {
+      Doinker.set(!Doinker.value());
+      wait(100, vex::timeUnits::msec);
+    }
 
     // Intake
     if (OuttakeButton.pressing())
@@ -249,7 +252,8 @@ int buttonsWrapper()
       mogoControl.toggle();
 
     // Redirect
-    if (FishyLiftButton.pressing()) {
+    if (FishyLiftButton.pressing())
+    {
       fishyControl.liftFishy();
     }
     else if (FishyLowerButton.pressing())
