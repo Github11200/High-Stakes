@@ -64,7 +64,7 @@ Drive chassis(
     PORT6,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
-    1000000000,
+    2.71,
 
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -110,9 +110,9 @@ void updateScreen()
   Brain.Screen.setFillColor(red);
   Brain.Screen.printAt(5, 20, "Test");
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "One");
+  Brain.Screen.printAt(165, 20, "3_ring_ladder_B_gside");
   Brain.Screen.setFillColor(black);
-  Brain.Screen.printAt(325, 20, "Two");
+  Brain.Screen.printAt(325, 20, "solo_awp_empty_side");
   Brain.Screen.setFillColor(blue);
   Brain.Screen.printAt(5, 140, "Three");
   Brain.Screen.setFillColor(orange);
@@ -204,10 +204,10 @@ void autonomous(void)
     test(); // This is the default auton, if you don't select from the brain.
     break;  // Change these to be your own auton functions in order to use the auton selector.
   case 1:   // Tap the screen to cycle through autons.
-    one();
+    three_ring_ladder_blue_goal_side();
     break;
   case 2:
-    two();
+    solo_awp_empty_side();
     break;
   case 3:
     three();
@@ -216,7 +216,7 @@ void autonomous(void)
     four();
     break;
   case 5:
-    five();
+    auton_skills();
     break;
   }
 }
@@ -239,7 +239,7 @@ int buttonsWrapper()
 
     // Intake
     // if (OuttakeButton.pressing())
-      // intakeControl.outtake();
+    // intakeControl.outtake();
     if (IntakeButton.pressing())
       intakeControl.intake();
     else if (IntakeToRedirectButton.pressing())

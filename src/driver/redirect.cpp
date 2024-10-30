@@ -10,11 +10,13 @@ RedirectControl::RedirectControl(int speed)
 void RedirectControl::liftRedirect()
 {
   while (RedirectLiftButton.pressing())
-    Redirect.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    Redirect.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+  Redirect.stop(hold);
 }
 
 void RedirectControl::lowerRedirect()
 {
   while (RedirectLowerButton.pressing())
-    Redirect.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    Redirect.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+  Redirect.stop(hold);
 }
