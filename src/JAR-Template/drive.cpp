@@ -431,6 +431,9 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
 
 void Drive::control_arcade()
 {
+  cout << "Front right: " << FrontRight.voltage(vex::voltageUnits::volt) << endl;
+  cout << "Front left: " << FrontLeft.voltage(vex::voltageUnits::volt) << endl;
+
   float throttle = deadband(controller(primary).Axis3.value(), 5);
   throttle = throttle / 1.27;
   float influence = deadband(controller(primary).Axis1.value(), 5);
