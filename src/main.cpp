@@ -287,14 +287,16 @@ void usercontrol(void)
   pre_match = false;
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
-  task buttons = task(buttonsWrapper);
+  // task buttons = task(buttonsWrapper);
   // task joysticks = task(joystickWrapper);
+
+  solo_awp_empty_side();
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    chassis.control_arcade();
+    // chassis.control_arcade();
 
     wait(20, msec);
   }

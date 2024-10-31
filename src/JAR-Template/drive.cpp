@@ -322,8 +322,9 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   Gyro.calibrate();
   while (Gyro.isCalibrating())
   {
-    wait(50, msec);
+    wait(100, msec);
   }
+  cout << "Calibrated!" << endl;
 
   set_heading(orientation_deg);
   odom_task = task(position_track_task);
