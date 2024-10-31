@@ -10,7 +10,7 @@ brain Brain;
 // VEXcode device constructors
 controller Controller;
 
-motor FrontRight = motor(PORT10, ratio6_1, false);
+motor FrontRight = motor(PORT9, ratio6_1, false);
 motor FrontLeft = motor(PORT16, ratio6_1, true);
 motor MiddleRight = motor(PORT19, ratio6_1, false);
 motor MiddleLeft = motor(PORT13, ratio6_1, true);
@@ -24,11 +24,11 @@ digital_out Doinker = digital_out(ThreeWirePort.D);
 limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.E);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
-vex::controller::button OuttakeButton = Controller.ButtonY;
+vex::controller::button OuttakeButton = Controller.ButtonR1;
 vex::controller::button FishyLiftButton = Controller.ButtonL2;
-vex::controller::button FishyLowerButton = Controller.ButtonR2;
+vex::controller::button FishyLowerButton = Controller.ButtonY;
 vex::controller::button DoinkerButton = Controller.ButtonX;
-vex::controller::button ClampButton = Controller.ButtonR1;
+vex::controller::button ClampButton = Controller.ButtonR2;
 
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
