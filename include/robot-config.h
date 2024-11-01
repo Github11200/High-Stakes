@@ -22,6 +22,7 @@ extern vex::controller::button OuttakeButton;
 extern vex::controller::button IntakeToRedirectButton;
 extern vex::controller::button FishyLiftButton;
 extern vex::controller::button FishyLowerButton;
+extern vex::controller::button FishyResetButton;
 extern vex::controller::button DoinkerButton;
 extern vex::controller::button ClampButton;
 

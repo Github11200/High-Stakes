@@ -1,4 +1,4 @@
-#include "../../include/driver/redirect.h"
+#include "../../include/driver/fishy.h"
 
 using namespace vex;
 
@@ -21,9 +21,13 @@ void Fishy::liftFishy()
       Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
       FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
+    if (FishyResetButton.pressing())
+      resetPosition();
   }
   while (FishyMech.position(degrees) > 3)
   {
+    if (FishyResetButton.pressing())
+      resetPosition();
     Intake.spin(vex::directionType::rev, 8, vex::voltageUnits::volt);
     FishyMech.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
   }
@@ -49,4 +53,10 @@ void Fishy::lowerFishy()
   }
   Intake.stop();
   FishyMech.stop(brake);
+}
+
+void Fishy::resetPosition()
+{
+  FishyMech.setPosition(0, vex::rotationUnits::deg);
+  wait(50, vex::timeUnits::msec);
 }

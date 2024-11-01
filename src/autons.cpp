@@ -87,10 +87,12 @@ void three_ring_ladder_blue_goal_side()
 void solo_awp_empty_side()
 {
   odom_constants();
-  chassis.set_coordinates(115, 86.25, 0);
+  chassis.set_coordinates(115, 86.25, 30);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-27, 0, 6.5, 6.5);
+  chassis.drive_distance(-23, 30);
+  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
+  // chassis.drive_distance(-27, 30, 6.5, 6.5);
   wait(0.1, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);

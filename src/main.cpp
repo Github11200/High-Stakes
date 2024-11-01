@@ -4,7 +4,7 @@
 #include "../include/driver/intake.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
-#include "../include/driver/redirect.h"
+#include "../include/driver/fishy.h"
 #include <robot-config.h>
 
 using namespace vex;
@@ -27,7 +27,7 @@ Drive chassis(
     motor_group(FrontRight, MiddleRight, BackRight),
 
     // Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-    PORT9,
+    PORT8,
 
     // Input your wheel diameter. (4" omnis are actually closer to 4.125"):
     2.75,
@@ -108,17 +108,17 @@ void updateScreen()
 
   Brain.Screen.setPenColor(white);
   Brain.Screen.setFillColor(red);
-  Brain.Screen.printAt(5, 20, "Test");
+  Brain.Screen.printAt(5, 20, "Three ring ladder blue side");
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "3_ring_ladder_B_gside");
+  Brain.Screen.printAt(165, 20, "Solo AWP empty side");
   Brain.Screen.setFillColor(black);
-  Brain.Screen.printAt(325, 20, "solo_awp_empty_side");
+  Brain.Screen.printAt(325, 20, "Auto skills");
   Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(5, 140, "Three");
+  Brain.Screen.printAt(5, 140, "Four");
   Brain.Screen.setFillColor(orange);
-  Brain.Screen.printAt(165, 140, "Four");
+  Brain.Screen.printAt(165, 140, "Five");
   Brain.Screen.setFillColor(purple);
-  Brain.Screen.printAt(325, 140, "Five");
+  Brain.Screen.printAt(325, 140, "Six");
   Brain.Screen.setFillColor(black);
 }
 
@@ -127,6 +127,7 @@ void pre_auton(void)
   vexcodeInit();
   default_constants();
   updateScreen();
+  FishyMech.setPosition(0, degrees);
   while (pre_match)
   { // Changing the names below will only change their names on the
     switch (current_auton_selection)
@@ -207,7 +208,7 @@ void autonomous(void)
     solo_awp_empty_side();
     break;
   case 2:
-    three();
+    auton_skills();
     break;
   case 3:
     three();
@@ -216,7 +217,7 @@ void autonomous(void)
     four();
     break;
   case 5:
-    auton_skills();
+    test();
     break;
   }
 }
@@ -226,7 +227,6 @@ int buttonsWrapper()
   // DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
-  FishyMech.setPosition(0, degrees);
   Fishy fishyControl(12);
 
   while (true)
@@ -252,10 +252,10 @@ int buttonsWrapper()
       mogoControl.toggle();
 
     // Redirect
-    if (FishyLiftButton.pressing())
-    {
+    if (FishyResetButton.pressing())
+      fishyControl.resetPosition();
+    else if (FishyLiftButton.pressing())
       fishyControl.liftFishy();
-    }
     else if (FishyLowerButton.pressing())
       fishyControl.lowerFishy();
 
@@ -287,14 +287,15 @@ void usercontrol(void)
   pre_match = false;
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
-  task buttons = task(buttonsWrapper);
-  // task joysticks = task(joystickWrapper);
+  // task buttons = task(buttonsWrapper);
+
+  solo_awp_empty_side();
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    chassis.control_arcade();
+    // chassis.control_arcade();
 
     wait(20, msec);
   }

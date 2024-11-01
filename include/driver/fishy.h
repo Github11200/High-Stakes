@@ -1,5 +1,5 @@
-#ifndef REDIRECT_H
-#define REDIRECT_H
+#ifndef FISHY_H
+#define FISHY_H
 
 #include "vex.h"
 
@@ -21,6 +21,9 @@ public:
 
   /// @brief This moves the redirect down
   void lowerFishy();
+
+  /// @brief When the down button is pressed it will say the current position is now 0
+  void resetPosition();
 };
 
 #endif

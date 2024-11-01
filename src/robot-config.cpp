@@ -27,6 +27,7 @@ vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button OuttakeButton = Controller.ButtonR1;
 vex::controller::button FishyLiftButton = Controller.ButtonL2;
 vex::controller::button FishyLowerButton = Controller.ButtonY;
+vex::controller::button FishyResetButton = Controller.ButtonDown;
 vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;
 
