@@ -6,6 +6,8 @@
 #include "../include/driver/mogo.h"
 #include "../include/driver/redirect.h"
 #include <robot-config.h>
+#include <string>
+#include <sstream>
 
 using namespace vex;
 competition Competition;
@@ -83,12 +85,21 @@ Drive chassis(
 );
 
 int current_auton_selection = 0;
+float chassisTemp = 0;
+float intakeTemp = 0;
 bool pre_match = true;
 
 void setColor(vex::color colour)
 {
   Brain.Screen.setPenColor(colour);
   Brain.Screen.setFillColor(colour);
+}
+
+std::string ToString(int val)
+{
+    std::stringstream stream;
+    stream << val;
+    return stream.str();
 }
 
 void updateScreen()
@@ -120,6 +131,17 @@ void updateScreen()
   Brain.Screen.setFillColor(purple);
   Brain.Screen.printAt(325, 140, "Five");
   Brain.Screen.setFillColor(black);
+}
+
+void senseTemp()
+{
+  Brain.Screen.setPenColor(white);
+  chassisTemp = FrontLeft.temperature();
+  intakeTemp = FrontLeft.temperature();
+  Brain.Screen.printAt(5, 20, "Chassis Temp");
+  Brain.Screen.printAt(5, 40, ToString(chassisTemp).c_str());
+  Brain.Screen.printAt(165, 20, "Intake Temp");
+  Brain.Screen.printAt(165, 40, ToString(intakeTemp).c_str());
 }
 
 void pre_auton(void)
@@ -288,7 +310,6 @@ void usercontrol(void)
 {
   pre_match = false;
   Brain.Screen.clearScreen();
-  Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
   // task joysticks = task(joystickWrapper);
 
@@ -297,7 +318,7 @@ void usercontrol(void)
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
     chassis.control_arcade();
-
+    senseTemp();
     wait(20, msec);
   }
 }
