@@ -63,9 +63,4 @@ void Odom::update_position(float ForwardTracker_position, float SidewaysTracker_
 
   X_position += X_position_delta;
   Y_position += Y_position_delta;
-
-  // cout << "Local Y position: " << local_Y_position << endl;
-  // cout << "Y position delta: " << Y_position_delta << endl;
-  cout << "X position: " << X_position << endl;
-  cout << "Y position: " << Y_position << endl;
 }

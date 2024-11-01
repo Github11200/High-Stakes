@@ -223,13 +223,13 @@ void autonomous(void)
   switch (current_auton_selection)
   {
   case 0:
-    test(); // This is the default auton, if you don't select from the brain.
-    break;  // Change these to be your own auton functions in order to use the auton selector.
-  case 1:   // Tap the screen to cycle through autons.
-    three_ring_ladder_blue_goal_side();
+    three_ring_ladder_blue_goal_side(); // This is the default auton, if you don't select from the brain.
+    break;                              // Change these to be your own auton functions in order to use the auton selector.
+  case 1:                               // Tap the screen to cycle through autons.
+    solo_awp_empty_side();
     break;
   case 2:
-    solo_awp_empty_side();
+    three();
     break;
   case 3:
     three();
@@ -251,16 +251,14 @@ int buttonsWrapper()
   FishyMech.setPosition(0, degrees);
   Fishy fishyControl(12);
 
-  // This starts the odometry task
-  // test();
-
   while (true)
   {
     // Doinker
     if (DoinkerButton.pressing())
     {
       Doinker.set(!Doinker.value());
-      while(DoinkerButton.pressing()) {
+      while (DoinkerButton.pressing())
+      {
         vex::wait(20, vex::timeUnits::msec);
       }
     }

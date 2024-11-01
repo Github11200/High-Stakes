@@ -322,8 +322,9 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   Gyro.calibrate();
   while (Gyro.isCalibrating())
   {
-    wait(50, msec);
+    wait(100, msec);
   }
+  cout << "Calibrated!" << endl;
 
   set_heading(orientation_deg);
   odom_task = task(position_track_task);
@@ -430,6 +431,9 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
 
 void Drive::control_arcade()
 {
+  cout << "Front right: " << FrontRight.voltage(vex::voltageUnits::volt) << endl;
+  cout << "Front left: " << FrontLeft.voltage(vex::voltageUnits::volt) << endl;
+
   float throttle = deadband(controller(primary).Axis3.value(), 5);
   throttle = throttle / 1.27;
   float influence = deadband(controller(primary).Axis1.value(), 5);

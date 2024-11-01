@@ -55,26 +55,32 @@ void three_ring_ladder_blue_goal_side()
   chassis.set_coordinates(115, 39.25, 0);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-19.01);
+  chassis.set_drive_exit_conditions(0.1, 2000, 1500);
+  chassis.drive_distance(-27, 0, 5, 5);
+  wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
+  wait(0.5, vex::timeUnits::sec);
+  default_constants();
 
   // Intake the ring on the bottom, closest to the mogo rush goal
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(114);
-  chassis.drive_distance(23);
-  wait(1, vex::timeUnits::sec);
+  chassis.turn_to_angle(95);
+  chassis.drive_distance(25);
+  wait(3, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::coast);
 
-  // Turn around and intake the other ring that is on top of the stack closest to the ladder
-  chassis.turn_to_angle(297);
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.drive_distance(47);
-  wait(1, vex::timeUnits::sec);
-  Intake.stop(vex::brakeType::coast);
+  // // Turn around and intake the other ring that is on top of the stack closest to the ladder
+  // chassis.turn_to_angle(297);
+  // Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  // chassis.drive_distance(47);
+  // wait(1, vex::timeUnits::sec);
+  // Intake.stop(vex::brakeType::coast);
 
   // Turn around and touch the ladder
-  chassis.turn_to_angle(172);
-  chassis.drive_distance(13);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(31);
+  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
+  FishyMech.stop(vex::brakeType::hold);
 }
 
 // DONE
@@ -84,30 +90,35 @@ void solo_awp_empty_side()
   chassis.set_coordinates(115, 86.25, 0);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-19.01);
+  chassis.drive_distance(-27, 0, 6.5, 6.5);
+  wait(0.1, vex::timeUnits::sec);
   Clamp.set(true);
+  wait(0.5, vex::timeUnits::sec);
 
   // Turn around and intake the ring on the bottom of the stack
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(246);
+  wait(0.2, vex::timeUnits::sec);
+  chassis.turn_to_angle(270);
   chassis.drive_distance(23);
-  wait(1, vex::timeUnits::sec);
+  wait(0.4, vex::timeUnits::sec);
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(178);
-  chassis.drive_distance(17);
-  wait(1, vex::timeUnits::sec);
+  chassis.turn_to_angle(170.5);
+  chassis.drive_distance(17, 170.5, 3.5, 3.5);
+  wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-17);
-  chassis.turn_to_angle(271);
-  wait(1, vex::timeUnits::sec);
-  chassis.drive_distance(17);
+  chassis.turn_to_angle(193);
+  wait(0.3, vex::timeUnits::sec);
+  chassis.drive_distance(17.5, 193, 4, 4);
+  wait(0.5, vex::timeUnits::sec);
   chassis.drive_distance(-17);
-  Intake.stop(vex::brakeType::coast);
 
   // Turn to face the ladder and touch it
-  chassis.turn_to_angle(196);
-  chassis.drive_distance(23);
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(30);
+  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
+  FishyMech.stop(vex::brakeType::hold);
 }
 
 void three()
