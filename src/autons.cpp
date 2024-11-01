@@ -48,7 +48,6 @@ void test()
   //  chassis.turn_to_angle(180);
 }
 
-// DONE
 void three_ring_ladder_blue_goal_side()
 {
   odom_constants();
@@ -56,7 +55,8 @@ void three_ring_ladder_blue_goal_side()
 
   // Move backwards and clamp onto the goal
   chassis.set_drive_exit_conditions(0.1, 2000, 1500);
-  chassis.drive_distance(-27, 0, 5, 5);
+  chassis.drive_distance(-20, 0, 10, 10);
+  chassis.drive_distance(-7, 0, 5, 5);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -83,7 +83,6 @@ void three_ring_ladder_blue_goal_side()
   FishyMech.stop(vex::brakeType::hold);
 }
 
-// DONE
 void solo_awp_empty_side()
 {
   odom_constants();
