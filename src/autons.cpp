@@ -105,15 +105,15 @@ void solo_awp_empty_side()
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(173);
-  chassis.drive_distance(16, 173, 3.5, 3.5);
+  chassis.turn_to_angle(178);
+  chassis.drive_distance(15, 178, 3.5, 3.5);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(-16);
+  chassis.drive_distance(-15);
   chassis.turn_to_angle(193);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(17, 193, 4, 4);
+  chassis.drive_distance(16, 193, 4, 4);
   wait(0.5, vex::timeUnits::sec);
-  chassis.drive_distance(-16.5);
+  chassis.drive_distance(-15.5);
 
   // Turn to face the ladder and touch it
   chassis.turn_to_angle(90);
