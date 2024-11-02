@@ -48,7 +48,7 @@ void test()
   //  chassis.turn_to_angle(180);
 }
 
-// DONE
+// DONE AND TESTED
 void three_ring_ladder_blue()
 {
   odom_constants();
@@ -56,8 +56,8 @@ void three_ring_ladder_blue()
 
   // Move backwards and clamp onto the goal
   chassis.set_drive_exit_conditions(0.1, 2000, 1500);
-  chassis.drive_distance(-23, 30);
-  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 0);
+  chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -79,9 +79,7 @@ void three_ring_ladder_blue()
 
   // Turn around and touch the ladder
   chassis.turn_to_angle(270);
-  chassis.drive_distance(31);
-  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
-  FishyMech.stop(vex::brakeType::hold);
+  chassis.drive_distance(35);
 }
 
 // DONE
@@ -113,20 +111,18 @@ void three_ring_ladder_red()
 
   // Turn around and touch the ladder
   chassis.turn_to_angle(270);
-  chassis.drive_distance(31);
-  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
-  FishyMech.stop(vex::brakeType::hold);
+  chassis.drive_distance(35);
 }
 
-// DONE
+// DONE AND TESTED
 void solo_awp_blue()
 {
   odom_constants();
-  chassis.set_coordinates(115, 86.25, 30);
+  chassis.set_coordinates(115, 86.25, 330);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 30);
-  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 330);
+  chassis.drive_distance(-5, 330, 6.5, 6.5, 0.1, 1000, 1000);
   // chassis.drive_distance(-27, 30, 6.5, 6.5);
   wait(0.1, vex::timeUnits::sec);
   Clamp.set(true);
@@ -141,32 +137,30 @@ void solo_awp_blue()
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(178);
-  chassis.drive_distance(15, 178, 3.5, 3.5);
+  chassis.turn_to_angle(175);
+  chassis.drive_distance(14.5, 175, 3.5, 3.5);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(-15);
+  chassis.drive_distance(-14.5);
   chassis.turn_to_angle(193);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(16, 193, 4, 4);
+  chassis.drive_distance(15.5, 193, 4, 4);
   wait(0.5, vex::timeUnits::sec);
-  chassis.drive_distance(-15.5);
+  chassis.drive_distance(-15);
 
   // Turn to face the ladder and touch it
   chassis.turn_to_angle(90);
-  chassis.drive_distance(30);
-  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
-  FishyMech.stop(vex::brakeType::hold);
+  chassis.drive_distance(35);
 }
 
 // DONE
 void solo_awp_red()
 {
   odom_constants();
-  chassis.set_coordinates(115, 86.25, 150);
+  chassis.set_coordinates(115, 86.25, 210);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 150);
-  chassis.drive_distance(-5, 150, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 210);
+  chassis.drive_distance(-5, 210, 6.5, 6.5, 0.1, 1000, 1000);
   // chassis.drive_distance(-27, 30, 6.5, 6.5);
   wait(0.1, vex::timeUnits::sec);
   Clamp.set(true);
@@ -175,14 +169,14 @@ void solo_awp_red()
   // Turn around and intake the ring on the bottom of the stack
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   wait(0.2, vex::timeUnits::sec);
-  chassis.turn_to_angle(90);
+  chassis.turn_to_angle(270);
   chassis.drive_distance(23);
   wait(0.4, vex::timeUnits::sec);
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(358);
-  chassis.drive_distance(15, 358, 3.5, 3.5);
+  chassis.turn_to_angle(353);
+  chassis.drive_distance(15, 353, 3.5, 3.5);
   wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-15);
   chassis.turn_to_angle(13);
@@ -193,9 +187,7 @@ void solo_awp_red()
 
   // Turn to face the ladder and touch it
   chassis.turn_to_angle(90);
-  chassis.drive_distance(30);
-  FishyMech.spinFor(vex::directionType::rev, 0.5, vex::timeUnits::sec);
-  FishyMech.stop(vex::brakeType::hold);
+  chassis.drive_distance(35);
 }
 
 void three()

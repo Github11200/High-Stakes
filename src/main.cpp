@@ -84,7 +84,7 @@ Drive chassis(
 
 );
 
-int current_auton_selection = 0;
+int current_auton_selection = 3;
 float chassisTemp = 0;
 float intakeTemp = 0;
 bool pre_match = true;
@@ -309,15 +309,15 @@ void usercontrol(void)
   pre_match = false;
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");
-  // task buttons = task(buttonsWrapper);
+  task buttons = task(buttonsWrapper);
 
-  solo_awp_empty_side();
+  // solo_awp_blue();
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    // chassis.control_arcade();
+    chassis.control_arcade();
 
     wait(20, msec);
   }
