@@ -148,6 +148,7 @@ void pre_auton(void)
 {
   vexcodeInit();
   default_constants();
+  chassis.set_coordinates(0, 0, 0);
   updateScreen();
   FishyMech.setPosition(0, degrees);
   while (pre_match)

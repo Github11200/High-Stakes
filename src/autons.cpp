@@ -18,25 +18,6 @@ void odom_constants()
   chassis.drive_settle_error = 3;
 }
 
-void redirect_pls()
-{
-  // Intake the ring until it reaches the limit switch
-  while (RedirectLimitSwitch.pressing())
-    Intake.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
-  Intake.setVelocity(100, pct);
-  Intake.spinFor(fwd, 500, msec);
-  if (RedirectLimitSwitch.pressing())
-  {
-    redirect_pls();
-    return;
-  }
-  while (!RedirectLimitSwitch.pressing())
-    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
-
-  Intake.spinFor(reverse, 1000, msec);
-  Intake.stop();
-}
-
 void test()
 {
   chassis.set_coordinates(0, 0, 0);
@@ -52,7 +33,7 @@ void test()
 void three_ring_ladder_blue()
 {
   odom_constants();
-  chassis.set_coordinates(115, 39.25, 0);
+  chassis.set_heading(0);
 
   // Move backwards and clamp onto the goal
   chassis.set_drive_exit_conditions(0.1, 2000, 1500);
@@ -86,7 +67,9 @@ void three_ring_ladder_blue()
 void three_ring_ladder_red()
 {
   odom_constants();
-  chassis.set_coordinates(115, 39.25, 180); // Move backwards and clamp onto the goal
+  chassis.set_heading(180);
+
+  // Move backwards and clamp onto the goal
   chassis.set_drive_exit_conditions(0.1, 2000, 1500);
   chassis.drive_distance(-23, 0);
   chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
@@ -118,7 +101,7 @@ void three_ring_ladder_red()
 void solo_awp_blue()
 {
   odom_constants();
-  chassis.set_coordinates(115, 86.25, 330);
+  chassis.set_heading(330);
 
   // Move backwards and clamp onto the goal
   chassis.drive_distance(-23, 330);
@@ -156,7 +139,7 @@ void solo_awp_blue()
 void solo_awp_red()
 {
   odom_constants();
-  chassis.set_coordinates(115, 86.25, 210);
+  chassis.set_heading(210);
 
   // Move backwards and clamp onto the goal
   chassis.drive_distance(-23, 210);
@@ -175,13 +158,13 @@ void solo_awp_red()
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(353);
-  chassis.drive_distance(15, 353, 3.5, 3.5);
+  chassis.turn_to_angle(350);
+  chassis.drive_distance(15, 350, 3.5, 3.5);
   wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-15);
-  chassis.turn_to_angle(13);
+  chassis.turn_to_angle(15);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(16, 13, 4, 4);
+  chassis.drive_distance(16, 15, 4, 4);
   wait(0.5, vex::timeUnits::sec);
   chassis.drive_distance(-15.5);
 
@@ -203,7 +186,7 @@ void four()
 void auton_skills()
 {
   odom_constants();
-  chassis.set_coordinates(15, 70.20, 30);
+  chassis.set_heading(30);
 
   // Get the mogo right behind the robot
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
