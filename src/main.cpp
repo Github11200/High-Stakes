@@ -121,13 +121,13 @@ void updateScreen()
   Brain.Screen.setFillColor(red);
   Brain.Screen.printAt(5, 20, "Three ring ladder blue side");
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "Solo AWP empty side");
+  Brain.Screen.printAt(165, 20, "Three ring ladder red side");
   Brain.Screen.setFillColor(black);
-  Brain.Screen.printAt(325, 20, "Auto skills");
+  Brain.Screen.printAt(325, 20, "Solo AWP blue");
   Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(5, 140, "Four");
+  Brain.Screen.printAt(5, 140, "Solo AWP red");
   Brain.Screen.setFillColor(orange);
-  Brain.Screen.printAt(165, 140, "Five");
+  Brain.Screen.printAt(165, 140, "Auton skills");
   Brain.Screen.setFillColor(purple);
   Brain.Screen.printAt(325, 140, "Six");
   Brain.Screen.setFillColor(black);
@@ -224,19 +224,19 @@ void autonomous(void)
   switch (current_auton_selection)
   {
   case 0:
-    three_ring_ladder(); // This is the default auton, if you don't select from the brain.
-    break;               // Change these to be your own auton functions in order to use the auton selector.
-  case 1:                // Tap the screen to cycle through autons.
-    solo_awp_empty_side();
+    three_ring_ladder_blue(); // This is the default auton, if you don't select from the brain.
+    break;                    // Change these to be your own auton functions in order to use the auton selector.
+  case 1:                     // Tap the screen to cycle through autons.
+    three_ring_ladder_red();
     break;
   case 2:
-    auton_skills();
+    solo_awp_blue();
     break;
   case 3:
-    three();
+    solo_awp_red();
     break;
   case 4:
-    four();
+    auton_skills();
     break;
   case 5:
     test();

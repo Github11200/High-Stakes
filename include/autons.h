@@ -8,8 +8,10 @@ extern Drive chassis;
 void default_constants();
 
 void test();
-void three_ring_ladder();
-void solo_awp_empty_side();
+void three_ring_ladder_blue();
+void three_ring_ladder_red();
+void solo_awp_blue();
+void solo_awp_red();
 void three();
 void four();
 void auton_skills();
