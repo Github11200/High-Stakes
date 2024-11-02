@@ -33,12 +33,11 @@ void test()
 void three_ring_ladder_blue()
 {
   odom_constants();
-  chassis.set_heading(0);
+  chassis.set_heading(30);
 
   // Move backwards and clamp onto the goal
-  chassis.set_drive_exit_conditions(0.1, 2000, 1500);
-  chassis.drive_distance(-23, 0);
-  chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 30);
+  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -47,8 +46,8 @@ void three_ring_ladder_blue()
   // Intake the ring on the bottom, closest to the mogo rush goal
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   chassis.turn_to_angle(95);
-  chassis.drive_distance(25);
-  wait(3, vex::timeUnits::sec);
+  chassis.drive_distance(22);
+  wait(2, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::coast);
 
   // // Turn around and intake the other ring that is on top of the stack closest to the ladder
@@ -67,12 +66,11 @@ void three_ring_ladder_blue()
 void three_ring_ladder_red()
 {
   odom_constants();
-  chassis.set_heading(180);
+  chassis.set_heading(150);
 
   // Move backwards and clamp onto the goal
-  chassis.set_drive_exit_conditions(0.1, 2000, 1500);
-  chassis.drive_distance(-23, 0);
-  chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 150);
+  chassis.drive_distance(-5, 150, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -81,8 +79,8 @@ void three_ring_ladder_red()
   // Intake the ring on the bottom, closest to the mogo rush goal
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   chassis.turn_to_angle(85);
-  chassis.drive_distance(25);
-  wait(3, vex::timeUnits::sec);
+  chassis.drive_distance(22);
+  wait(2, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::coast);
 
   // // Turn around and intake the other ring that is on top of the stack closest to the ladder
@@ -120,8 +118,8 @@ void solo_awp_blue()
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(175);
-  chassis.drive_distance(14.5, 175, 3.5, 3.5);
+  chassis.turn_to_angle(170);
+  chassis.drive_distance(14.5, 170, 3, 3);
   wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-14.5);
   chassis.turn_to_angle(193);
@@ -132,7 +130,8 @@ void solo_awp_blue()
 
   // Turn to face the ladder and touch it
   chassis.turn_to_angle(90);
-  chassis.drive_distance(35);
+  chassis.drive_distance(40);
+  Intake.stop(coast);
 }
 
 // DONE
@@ -158,19 +157,20 @@ void solo_awp_red()
 
   // Intake the two rings that are on the bottom of the stacks one by one
   // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(350);
-  chassis.drive_distance(15, 350, 3.5, 3.5);
+  chassis.turn_to_angle(343);
+  chassis.drive_distance(15, 343, 3, 3);
   wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-15);
   chassis.turn_to_angle(15);
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(16, 15, 4, 4);
+  chassis.drive_distance(16.5, 15, 4, 4);
   wait(0.5, vex::timeUnits::sec);
-  chassis.drive_distance(-15.5);
+  chassis.drive_distance(-16);
 
   // Turn to face the ladder and touch it
   chassis.turn_to_angle(90);
-  chassis.drive_distance(35);
+  chassis.drive_distance(40);
+  Intake.stop(coast);
 }
 
 void three()
