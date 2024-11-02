@@ -224,9 +224,9 @@ void autonomous(void)
   switch (current_auton_selection)
   {
   case 0:
-    three_ring_ladder_blue_goal_side(); // This is the default auton, if you don't select from the brain.
-    break;                              // Change these to be your own auton functions in order to use the auton selector.
-  case 1:                               // Tap the screen to cycle through autons.
+    three_ring_ladder(); // This is the default auton, if you don't select from the brain.
+    break;               // Change these to be your own auton functions in order to use the auton selector.
+  case 1:                // Tap the screen to cycle through autons.
     solo_awp_empty_side();
     break;
   case 2:

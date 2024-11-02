@@ -48,15 +48,26 @@ void test()
   //  chassis.turn_to_angle(180);
 }
 
-void three_ring_ladder_blue_goal_side()
+void three_ring_ladder_blue()
 {
   odom_constants();
   chassis.set_coordinates(115, 39.25, 0);
+  three_ring_ladder();
+}
 
+void three_ring_ladder_red()
+{
+  odom_constants();
+  chassis.set_coordinates(115, 39.25, 180);
+  three_ring_ladder();
+}
+
+void three_ring_ladder()
+{
   // Move backwards and clamp onto the goal
   chassis.set_drive_exit_conditions(0.1, 2000, 1500);
-  chassis.drive_distance(-20, 0, 10, 10);
-  chassis.drive_distance(-7, 0, 5, 5);
+  chassis.drive_distance(-23, 30);
+  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -136,54 +147,54 @@ void auton_skills()
 {
   odom_constants();
   chassis.set_coordinates(15, 70.20, 0);
-  chassis.turn_to_point(0, 70.20);
-  FishyMech.spinToPosition(150, deg, true);
-  chassis.drive_distance(20);
-  FishyMech.spinToPosition(0, deg, false);
-  // scored a preload on the alliance stake
-  chassis.turn_to_point(46.64, 93.77);
-  Intake.spin(fwd, 12, volt);
-  chassis.drive_distance(33);
-  Intake.stop();
-  chassis.drive_to_point(23.08, 70.20);
-  chassis.turn_to_angle(90);
-  chassis.drive_distance(-20);
-  Clamp.set(true);
-  // got bottom left mogo
-  Intake.spin(fwd, 12, volt);
-  chassis.turn_to_point(46.64, 46.64);
-  chassis.drive_to_point(46.64, 46.64);
-  chassis.turn_to_point(46.64, 23.08);
-  chassis.drive_to_point(46.64, 23.08);
-  chassis.turn_to_point(11.30, 23.08);
-  chassis.drive_to_point(11.30, 23.08);
-  chassis.turn_to_point(23.08, 11.30);
-  chassis.drive_to_point(23.08, 11.30);
-  // cleaned up all bottom left rings
-  chassis.turn_to_angle(30);
-  chassis.drive_distance(-15);
-  Intake.stop();
-  Clamp.set(false);
-  // dropped goal in bottom left corner
-  Intake.spin(fwd, 12, volt);
-  chassis.turn_to_point(70.20, 70.20);
-  chassis.drive_to_point(70.20, 70.20);
-  chassis.turn_to_angle(333);
-  Intake.stop();
-  chassis.drive_distance(50);
-  Clamp.set(true);
-  // got upper left mogo
-  Intake.spin(fwd, 12, volt);
-  chassis.turn_to_point(46.64, 117.33);
-  chassis.drive_to_point(46.64, 117.33);
-  chassis.turn_to_point(11.30, 117.33);
-  chassis.drive_to_point(11.30, 117.33);
-  chassis.turn_to_point(23.08, 129);
-  chassis.drive_to_point(23.08, 129);
-  // cleaned up all upper left rings
-  chassis.turn_to_angle(335);
-  chassis.drive_distance(-15);
-  Intake.stop();
-  Clamp.set(false);
-  // dropped goal in upper left corner
+  // chassis.turn_to_point(0, 70.20);
+  // FishyMech.spinToPosition(150, deg, true);
+  // chassis.drive_distance(20);
+  // FishyMech.spinToPosition(0, deg, false);
+  // // scored a preload on the alliance stake
+  // chassis.turn_to_point(46.64, 93.77);
+  // Intake.spin(fwd, 12, volt);
+  // chassis.drive_distance(33);
+  // Intake.stop();
+  // chassis.drive_to_point(23.08, 70.20);
+  // chassis.turn_to_angle(90);
+  // chassis.drive_distance(-20);
+  // Clamp.set(true);
+  // // got bottom left mogo
+  // Intake.spin(fwd, 12, volt);
+  // chassis.turn_to_point(46.64, 46.64);
+  // chassis.drive_to_point(46.64, 46.64);
+  // chassis.turn_to_point(46.64, 23.08);
+  // chassis.drive_to_point(46.64, 23.08);
+  // chassis.turn_to_point(11.30, 23.08);
+  // chassis.drive_to_point(11.30, 23.08);
+  // chassis.turn_to_point(23.08, 11.30);
+  // chassis.drive_to_point(23.08, 11.30);
+  // // cleaned up all bottom left rings
+  // chassis.turn_to_angle(30);
+  // chassis.drive_distance(-15);
+  // Intake.stop();
+  // Clamp.set(false);
+  // // dropped goal in bottom left corner
+  // Intake.spin(fwd, 12, volt);
+  // chassis.turn_to_point(70.20, 70.20);
+  // chassis.drive_to_point(70.20, 70.20);
+  // chassis.turn_to_angle(333);
+  // Intake.stop();
+  // chassis.drive_distance(50);
+  // Clamp.set(true);
+  // // got upper left mogo
+  // Intake.spin(fwd, 12, volt);
+  // chassis.turn_to_point(46.64, 117.33);
+  // chassis.drive_to_point(46.64, 117.33);
+  // chassis.turn_to_point(11.30, 117.33);
+  // chassis.drive_to_point(11.30, 117.33);
+  // chassis.turn_to_point(23.08, 129);
+  // chassis.drive_to_point(23.08, 129);
+  // // cleaned up all upper left rings
+  // chassis.turn_to_angle(335);
+  // chassis.drive_distance(-15);
+  // Intake.stop();
+  // Clamp.set(false);
+  // // dropped goal in upper left corner
 }
