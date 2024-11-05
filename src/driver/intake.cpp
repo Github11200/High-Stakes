@@ -6,6 +6,8 @@ IntakeControl::IntakeControl(int speed, int numberOfSecondsToRedirect)
 {
   this->speed = speed;
   this->numberOfSecondsToRedirect = numberOfSecondsToRedirect;
+
+  this->intakeTask.suspend();
 }
 
 void IntakeControl::intake()

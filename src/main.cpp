@@ -227,18 +227,23 @@ void autonomous(void)
   {
   case 0:
     three_ring_ladder_blue(); // This is the default auton, if you don't select from the brain.
-    break;                    // Change these to be your own auton functions in order to use the auton selector.
-  case 1:                     // Tap the screen to cycle through autons.
+    alliance = blue;          // Change these to be your own auton functions in order to use the auton selector.
+    break;                    // Tap the screen to cycle through autons.
+  case 1:
     three_ring_ladder_red();
+    alliance = red;
     break;
   case 2:
     solo_awp_blue();
+    alliance = blue;
     break;
   case 3:
     solo_awp_red();
+    alliance = red;
     break;
   case 4:
     auton_skills();
+    alliance = red;
     break;
   case 5:
     test();

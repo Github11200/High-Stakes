@@ -1,20 +1,34 @@
 #include "vex.h"
 
-void intake_avoid(color c, int time)
+int intakeTask()
 {
-  while (time > 0){
+  while (true)
+  {
     Intake.spin(fwd, 12, volt);
-    if(OpticalSensor.color() == c)
+    if (OpticalSensor.color() != alliance)
     {
       Intake.setVelocity(100, pct);
       Intake.spinFor(fwd, 2000, msec);
       Intake.stop(brake);
       vex::wait(400, msec);
     }
-    time -= 100;
     vex::wait(100, msec);
   }
+
   Intake.stop();
+  return 0;
+}
+
+task intake = task(intakeTask);
+
+void startIntake()
+{
+  intake.resume();
+}
+
+void stopIntake()
+{
+  intake.suspend();
 }
 
 void default_constants()
@@ -38,7 +52,7 @@ void odom_constants()
 void test()
 {
   chassis.set_coordinates(0, 0, 0);
-  intake_avoid(red, 5000);
+  startIntake();
   chassis.drive_distance(30);
   // chassis.turn_to_point(24, 24);
   // chassis.drive_to_point(5, 100);
