@@ -22,6 +22,7 @@ digital_out Clamp = digital_out(Brain.ThreeWirePort.A);
 triport ThreeWirePort = vex::triport(vex::PORT22);
 digital_out Doinker = digital_out(ThreeWirePort.D);
 limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.E);
+optical OpticalSensor = optical(PORT18);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button OuttakeButton = Controller.ButtonR1;

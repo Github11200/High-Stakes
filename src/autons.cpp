@@ -1,5 +1,22 @@
 #include "vex.h"
 
+void intake_avoid(color c, int time)
+{
+  while (time > 0){
+    Intake.spin(fwd, 12, volt);
+    if(OpticalSensor.color() == c)
+    {
+      Intake.setVelocity(100, pct);
+      Intake.spinFor(fwd, 2000, msec);
+      Intake.stop(brake);
+      vex::wait(400, msec);
+    }
+    time -= 100;
+    vex::wait(100, msec);
+  }
+  Intake.stop();
+}
+
 void default_constants()
 {
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
@@ -21,10 +38,10 @@ void odom_constants()
 void test()
 {
   chassis.set_coordinates(0, 0, 0);
-  chassis.drive_distance(-3);
-
+  intake_avoid(red, 5000);
+  chassis.drive_distance(30);
   // chassis.turn_to_point(24, 24);
-  chassis.drive_to_point(5, 100);
+  // chassis.drive_to_point(5, 100);
   //  chassis.drive_to_point(0,0);
   //  chassis.turn_to_angle(180);
 }

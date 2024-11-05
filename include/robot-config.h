@@ -16,6 +16,7 @@ extern motor FishyMech;
 extern digital_out Clamp;
 extern digital_out Doinker;
 extern limit RedirectLimitSwitch;
+extern optical OpticalSensor;
 
 extern vex::controller::button IntakeButton;
 extern vex::controller::button OuttakeButton;
