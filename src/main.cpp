@@ -270,6 +270,8 @@ int buttonsWrapper()
       intakeControl.outtake();
     else if (IntakeButton.pressing())
       intakeControl.intake();
+    else if (IntakeToFishyButton.pressing())
+      intakeControl.intakeToFishy();
 
     // Mogo
     if (ClampButton.pressing())

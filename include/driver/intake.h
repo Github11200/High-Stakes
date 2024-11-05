@@ -22,8 +22,8 @@ public:
     /// @brief Spin the intake to take in a ring
     void intake();
 
-    /// @brief This will intake the ring, and the automatically spin the intake in reverse to put it into the redirect
-    void intakeToRedirect();
+    /// @brief This will intake the ring, and stop it in time for the fishy
+    void intakeToFishy();
 
     /// @brief Spin the intake to outtake the ring or put it into the redirect
     void outtake();

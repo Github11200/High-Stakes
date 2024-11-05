@@ -21,13 +21,13 @@ motor FishyMech = motor(PORT20, ratio36_1, true);
 digital_out Clamp = digital_out(Brain.ThreeWirePort.A);
 triport ThreeWirePort = vex::triport(vex::PORT22);
 digital_out Doinker = digital_out(ThreeWirePort.D);
-limit RedirectLimitSwitch = limit(Brain.ThreeWirePort.E);
 optical OpticalSensor = optical(PORT18);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button OuttakeButton = Controller.ButtonR1;
 vex::controller::button FishyLiftButton = Controller.ButtonL2;
 vex::controller::button FishyLowerButton = Controller.ButtonY;
+vex::controller::button IntakeToFishyButton = Controller.ButtonA;
 vex::controller::button FishyResetButton = Controller.ButtonDown;
 vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;

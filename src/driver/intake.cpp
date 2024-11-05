@@ -15,19 +15,12 @@ void IntakeControl::intake()
   Intake.stop(vex::brakeType::coast);
 }
 
-void IntakeControl::intakeToRedirect()
+void IntakeControl::intakeToFishy()
 {
-  // // Wait till the ring hits the limit switch, this means it's close to being in position
-  // while (!RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-  //   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-
-  // // Move the ring slower to it's position so that it doesn't fly off
-  // while (RedirectLimitSwitch.pressing() && IntakeToRedirectButton.pressing())
-  //   Intake.spinFor(vex::directionType::fwd, 2, vex::rotationUnits::rev, 40, vex::velocityUnits::pct, true);
-
-  // Intake.stop(vex::brakeType::coast);
-
-  // vex::wait(20, vex::timeUnits::msec);
+  // Spin the intake until the optical sensor senses a ring color
+  while ((!(OpticalSensor.color() == red) || !(OpticalSensor.color() == blue)) && IntakeToFishyButton.pressing())
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  Intake.stop(vex::brakeType::brake);
 }
 
 void IntakeControl::outtake()
