@@ -50,11 +50,11 @@ void test()
 void three_ring_ladder_blue()
 {
   odom_constants();
-  chassis.set_heading(30);
+  chassis.set_heading(0);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 30);
-  chassis.drive_distance(-5, 30, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 0);
+  chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -83,11 +83,11 @@ void three_ring_ladder_blue()
 void three_ring_ladder_red()
 {
   odom_constants();
-  chassis.set_heading(150);
+  chassis.set_heading(180);
 
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 150);
-  chassis.drive_distance(-5, 150, 6.5, 6.5, 0.1, 1000, 1000);
+  chassis.drive_distance(-23, 180);
+  chassis.drive_distance(-5, 180, 6.5, 6.5, 0.1, 1000, 1000);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -178,9 +178,9 @@ void solo_awp_red()
   chassis.drive_distance(15, 343, 3, 3);
   wait(0.3, vex::timeUnits::sec);
   chassis.drive_distance(-15);
-  chassis.turn_to_angle(15);
+  chassis.turn_to_angle(10); // PREVIOUSLY 15
   wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(16.5, 15, 4, 4);
+  chassis.drive_distance(16.5, 10, 4, 4);
   wait(0.5, vex::timeUnits::sec);
   chassis.drive_distance(-16);
 
@@ -206,41 +206,79 @@ void auton_skills()
   chassis.set_heading(30);
 
   // Get the mogo right behind the robot
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+
   chassis.drive_distance(-10, 30);
   chassis.drive_distance(-5, 30, 7, 7);
   wait(0.1, vex::timeUnits::sec);
   Clamp.set(true);
-  wait(0.1, vex::timeUnits::sec);
+  wait(0.2, vex::timeUnits::sec);
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  wait(0.5, vex::timeUnits::sec);
 
   // Face the ring to the right of the robot, and intake it
   chassis.turn_to_angle(180);
   chassis.drive_distance(23, 180);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
 
   // Turn to face the next ring and intake it
   chassis.turn_to_angle(270);
   chassis.drive_distance(23, 270);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
 
   // Turn to face the next ring and intake it, and then intake the ring in front of that one
   chassis.turn_to_angle(0);
   chassis.drive_distance(21, 0);
-  wait(0.1, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
   chassis.drive_distance(14, 0);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
 
   // Turn to face the ring on a diagonal and intake it
   chassis.turn_to_angle(225);
   chassis.drive_distance(17, 225);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
 
   // Put the current mobile goal into the corner
   chassis.turn_to_angle(180);
   chassis.drive_distance(-11, 180);
   chassis.turn_to_angle(140);
-  chassis.drive_distance(-1, 140);
+  chassis.drive_distance(-5, 140);
   Clamp.set(false);
+  wait(0.5, vex::timeUnits::sec);
+
+  // Push a mogo into the corner
+  chassis.drive_distance(5, 140);
+  chassis.turn_to_angle(180);
+  chassis.drive_distance(11, 180);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(-90, 270);
+  chassis.turn_to_angle(225);
+  chassis.drive_distance(-50, 225);
+
+  // Go under the ladder to the other side
+  chassis.drive_distance(50, 225);
+  chassis.turn_to_angle(45);
+  Intake.stop(vex::brakeType::coast);
+  chassis.drive_distance(-77.5, 45);
+
+  // Push the two mogos
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(-104.5, 270);
+  Clamp.set(true);
+  chassis.turn_to_angle(315);
+  chassis.drive_distance(-100, 315);
+  Clamp.set(false);
+
+  // Go to the other mogo
+  chassis.drive_distance(25, 315);
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(-92, 90);
+  Clamp.set(true);
+
+  // Push the mogo into the corner
+  chassis.turn_to_angle(45);
+  chassis.drive_distance(-100, 45);
+  Clamp.set(false);
+  chassis.drive_distance(10, 45);
 
   // chassis.turn_to_point(0, 70.20);
   // FishyMech.spinToPosition(150, deg, true);

@@ -84,7 +84,7 @@ Drive chassis(
 
 );
 
-int current_auton_selection = 3;
+int current_auton_selection = 0;
 float chassisTemp = 0;
 float intakeTemp = 0;
 bool pre_match = true;
@@ -119,9 +119,9 @@ void updateScreen()
 
   Brain.Screen.setPenColor(white);
   Brain.Screen.setFillColor(red);
-  Brain.Screen.printAt(5, 20, "Three ring ladder blue side");
+  Brain.Screen.printAt(5, 20, "Two ring blue side");
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "Three ring ladder red side");
+  Brain.Screen.printAt(165, 20, "Two ring red side");
   Brain.Screen.setFillColor(black);
   Brain.Screen.printAt(325, 20, "Solo AWP blue");
   Brain.Screen.setFillColor(blue);
