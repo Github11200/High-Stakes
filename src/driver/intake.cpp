@@ -13,7 +13,7 @@ bool IntakeControl::shouldEjectRing()
 {
   bool isNear = OpticalSensor.isNearObject();
   color ringColor = NULL;
-  if (OpticalSensor.hue() - this->originalHueValue > 20)
+  if (hue_difference(OpticalSensor.hue(), originalHueValue) > 20)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(blue);
@@ -22,7 +22,7 @@ bool IntakeControl::shouldEjectRing()
     Brain.Screen.print("Original value: %d", this->originalHueValue);
     ringColor = blue;
   }
-  else if (OpticalSensor.hue() - this->originalHueValue < -20)
+  else if (hue_difference(OpticalSensor.hue(), originalHueValue) < -20)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(red);
@@ -66,4 +66,17 @@ void IntakeControl::outtake()
   while (OuttakeButton.pressing())
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
   Intake.stop(vex::brakeType::coast);
+}
+
+int IntakeControl::hue_difference(int hue1, int hue2)
+{
+  if((abs(hue1 - hue2) < abs((hue1-360) - hue2)) && (abs(hue1 - hue2) < abs(hue1 - (hue2-360)))) {
+    return hue1 - hue2;
+  }
+  else if(abs(hue1 - (hue2-360)) < abs((hue1-360) - hue2)) {
+    return hue1 - (hue2-360);
+  }
+  else {
+    return (hue1-360) - hue2;
+  }
 }

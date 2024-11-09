@@ -36,6 +36,8 @@ public:
 
   /// @brief Spin the intake to outtake the ring or put it into the redirect
   void outtake();
+
+  int hue_difference(int hue1, int hue2);
 };
 
 #endif
