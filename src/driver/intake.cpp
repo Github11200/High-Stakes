@@ -6,21 +6,36 @@ IntakeControl::IntakeControl(int speed, int numberOfSecondsToRedirect)
 {
   this->speed = speed;
   this->numberOfSecondsToRedirect = numberOfSecondsToRedirect;
+}
 
-  this->intakeTask.suspend();
+bool IntakeControl::shouldEjectRing()
+{
+  return OpticalSensor.color() != alliance && OpticalSensor.isNearObject();
+}
+
+void IntakeControl::ejectRing()
+{
+  Intake.spin(vex::directionType::fwd);
+  wait(180, vex::timeUnits::msec);
+  Intake.stop(vex::brakeType::brake);
+  wait(500, vex::timeUnits::msec);
 }
 
 void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
+  {
+    if (this->shouldEjectRing())
+      this->ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+  }
   Intake.stop(vex::brakeType::coast);
 }
 
 void IntakeControl::intakeToFishy()
 {
   // Spin the intake until the optical sensor senses a ring color
-  while ((!(OpticalSensor.color() == red) || !(OpticalSensor.color() == blue)) && IntakeToFishyButton.pressing())
+  while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing())
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   Intake.stop(vex::brakeType::brake);
 }

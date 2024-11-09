@@ -8,6 +8,14 @@ using namespace std;
 
 class IntakeControl
 {
+private:
+  /// @brief Checks if a ring is in the intake and if it's the wrong color
+  /// @return True or false if it's the wrong color and there's a ring
+  bool shouldEjectRing();
+
+  /// @brief Throws the ring out of the intake because it's the wrong one
+  void ejectRing();
+
 public:
   // Speed is in volts
   int speed;
