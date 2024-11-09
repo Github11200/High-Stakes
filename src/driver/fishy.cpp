@@ -25,7 +25,7 @@ void Fishy::liftFishy()
   while (FishyMech.position(degrees) > 3)
   {
     Intake.spin(vex::directionType::rev, 8, vex::voltageUnits::volt);
-    FishyMech.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    FishyMech.spin(vex::directionType::rev, (this->speed) / 3, vex::voltageUnits::volt);
   }
   Intake.stop();
   FishyMech.stop(hold);
