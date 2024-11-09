@@ -18,13 +18,13 @@ void Fishy::liftFishy()
     }
     else
     {
-      Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
+      Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
       FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
   }
   while (FishyMech.position(degrees) > 3)
   {
-    Intake.spin(vex::directionType::rev, 8, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
     FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 250) * 20 + 3, vex::voltageUnits::volt);
   }
   Intake.stop();
