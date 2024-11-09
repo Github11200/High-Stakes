@@ -1,6 +1,5 @@
 #include "vex.h"
 
-#include "../include/driver/doinker.h"
 #include "../include/driver/intake.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
@@ -253,13 +252,21 @@ void autonomous(void)
 
 int buttonsWrapper()
 {
-  // DoinkerControl doinkerControl;
   IntakeControl intakeControl(12, 3);
   MogoControl mogoControl;
   Fishy fishyControl(12);
 
   while (true)
   {
+    // double hue = OpticalSensor.hue();
+    // bool isNear = OpticalSensor.isNearObject();
+    // if (hue > 100 && isNear)
+    //   cout << "Blue: " << hue << endl;
+    // else if (hue < 30 && isNear)
+    //   cout << "Red" << endl;
+    // else
+    //   cout << "Nothing :)" << endl;
+
     // Doinker
     if (DoinkerButton.pressing())
     {
@@ -290,7 +297,7 @@ int buttonsWrapper()
     else if (FishyLowerButton.pressing())
       fishyControl.lowerFishy();
 
-    vex::wait(20, vex::timeUnits::msec);
+    vex::wait(60, vex::timeUnits::msec);
   }
 
   return 1;
