@@ -19,18 +19,6 @@ int intakeTask()
   return 0;
 }
 
-task intake = task(intakeTask);
-
-void startIntake()
-{
-  intake.resume();
-}
-
-void stopIntake()
-{
-  intake.suspend();
-}
-
 void default_constants()
 {
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
@@ -52,7 +40,6 @@ void odom_constants()
 void test()
 {
   chassis.set_coordinates(0, 0, 0);
-  startIntake();
   chassis.drive_distance(30);
   // chassis.turn_to_point(24, 24);
   // chassis.drive_to_point(5, 100);
