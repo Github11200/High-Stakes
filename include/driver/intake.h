@@ -20,12 +20,13 @@ public:
   // Speed is in volts
   int speed;
   int numberOfSecondsToRedirect;
+  double originalHueValue;
 
   /// @brief Sets the speed, button to turn the intake forward, and button to turn it in reverse
   /// @param speed The speed in VOLTS
-  /// @param forwardButton Spins the motor to intake a ring
-  /// @param reverseButton Spins the motor to outtake a ring
-  IntakeControl(int speed, int numberOfSecondsToRedirect);
+  /// @param numberOfSecondsToRedirect
+  /// @param originalHueValue Hue value before any rings are there
+  IntakeControl(int speed, int numberOfSecondsToRedirect, double originalHueValue);
 
   /// @brief Spin the intake to take in a ring
   void intake();

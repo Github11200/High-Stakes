@@ -2,28 +2,33 @@
 
 using namespace vex;
 
-IntakeControl::IntakeControl(int speed, int numberOfSecondsToRedirect)
+IntakeControl::IntakeControl(int speed, int numberOfSecondsToRedirect, double originalHueValue)
 {
   this->speed = speed;
   this->numberOfSecondsToRedirect = numberOfSecondsToRedirect;
+  this->originalHueValue = originalHueValue;
 }
 
 bool IntakeControl::shouldEjectRing()
 {
   bool isNear = OpticalSensor.isNearObject();
   color ringColor = NULL;
-  if (OpticalSensor.hue() > 100)
+  if (OpticalSensor.hue() - this->originalHueValue > 20)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(blue);
     Brain.Screen.drawRectangle(0, 0, 200, 200);
+    Brain.Screen.setCursor(0, 0);
+    Brain.Screen.print("Original value: %d", this->originalHueValue);
     ringColor = blue;
   }
-  else if (OpticalSensor.hue() < 38)
+  else if (OpticalSensor.hue() - this->originalHueValue < -20)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(red);
     Brain.Screen.drawRectangle(0, 0, 200, 200);
+    Brain.Screen.setCursor(0, 0);
+    Brain.Screen.print("Original value: %d", this->originalHueValue);
     ringColor = red;
   }
   return ringColor != NULL && ringColor != alliance && isNear;
@@ -32,9 +37,9 @@ bool IntakeControl::shouldEjectRing()
 void IntakeControl::ejectRing()
 {
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(180, vex::timeUnits::msec);
+  wait(170, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::brake);
-  wait(2000, vex::timeUnits::msec);
+  wait(1000, vex::timeUnits::msec);
 }
 
 void IntakeControl::intake()
