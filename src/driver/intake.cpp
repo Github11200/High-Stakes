@@ -13,22 +13,22 @@ bool IntakeControl::shouldEjectRing()
 {
   bool isNear = OpticalSensor.isNearObject();
   color ringColor = NULL;
-  if (hue_difference(OpticalSensor.hue(), originalHueValue) > 20)
+  if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(blue);
     Brain.Screen.drawRectangle(0, 0, 200, 200);
     Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print("Original value: %d", this->originalHueValue);
+    Brain.Screen.print("value detected %d", OpticalSensor.hue());
     ringColor = blue;
   }
-  else if (hue_difference(OpticalSensor.hue(), originalHueValue) < -20)
+  else if (OpticalSensor.hue() < 40)
   {
     Brain.Screen.clearScreen();
     Brain.Screen.setFillColor(red);
     Brain.Screen.drawRectangle(0, 0, 200, 200);
     Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print("Original value: %d", this->originalHueValue);
+    Brain.Screen.print("Original value: %d", OpticalSensor.hue());
     ringColor = red;
   }
   return ringColor != NULL && ringColor != alliance && isNear;
@@ -46,10 +46,12 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
+    OpticalSensor.setLightPower(100, pct);
     if (this->shouldEjectRing())
       this->ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
   }
+  OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::coast);
 }
 
@@ -70,13 +72,16 @@ void IntakeControl::outtake()
 
 int IntakeControl::hue_difference(int hue1, int hue2)
 {
-  if((abs(hue1 - hue2) < abs((hue1-360) - hue2)) && (abs(hue1 - hue2) < abs(hue1 - (hue2-360)))) {
+  if ((abs(hue1 - hue2) < abs((hue1 - 360) - hue2)) && (abs(hue1 - hue2) < abs(hue1 - (hue2 - 360))))
+  {
     return hue1 - hue2;
   }
-  else if(abs(hue1 - (hue2-360)) < abs((hue1-360) - hue2)) {
-    return hue1 - (hue2-360);
+  else if (abs(hue1 - (hue2 - 360)) < abs((hue1 - 360) - hue2))
+  {
+    return hue1 - (hue2 - 360);
   }
-  else {
-    return (hue1-360) - hue2;
+  else
+  {
+    return (hue1 - 360) - hue2;
   }
 }
