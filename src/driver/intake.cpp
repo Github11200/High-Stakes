@@ -13,25 +13,40 @@ bool IntakeControl::shouldEjectRing()
 {
   bool isNear = OpticalSensor.isNearObject();
   color ringColor = NULL;
-  if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
-  {
-    Brain.Screen.clearScreen();
-    Brain.Screen.setFillColor(blue);
-    Brain.Screen.drawRectangle(0, 0, 200, 200);
-    Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print("value detected %d", OpticalSensor.hue());
-    ringColor = blue;
+  if(isNear) {
+    cout << "near!" << endl;
+    if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
+    {
+      cout << "blue ring" << endl;
+      Brain.Screen.clearScreen();
+      Brain.Screen.setFillColor(blue);
+      Brain.Screen.drawRectangle(0, 0, 200, 200);
+      Brain.Screen.setCursor(0, 0);
+      ringColor = blue;
+    }
+    else if (OpticalSensor.hue() < 30)
+    {
+      cout << "red ring" << endl;
+      Brain.Screen.clearScreen();
+      Brain.Screen.setFillColor(red);
+      Brain.Screen.drawRectangle(0, 0, 200, 200);
+      Brain.Screen.setCursor(0, 0);
+      ringColor = red;
+    }
+    cout << alliance << endl;
+    if(alliance == 0){
+      cout << "red" << endl;
+      return ringColor == blue;
+    }
+    else if(alliance == 1) {
+      cout << "blue" << endl;
+      return ringColor == red;
+    }
+    else {
+      cout << "wtf" << endl;
+    }
   }
-  else if (OpticalSensor.hue() < 40)
-  {
-    Brain.Screen.clearScreen();
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(0, 0, 200, 200);
-    Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print("Original value: %d", OpticalSensor.hue());
-    ringColor = red;
-  }
-  return ringColor != NULL && ringColor != alliance && isNear;
+  return false;
 }
 
 void IntakeControl::ejectRing()
@@ -47,8 +62,8 @@ void IntakeControl::intake()
   while (IntakeButton.pressing())
   {
     OpticalSensor.setLightPower(100, pct);
-    if (this->shouldEjectRing())
-      this->ejectRing();
+    if (shouldEjectRing())
+      ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
   }
   OpticalSensor.setLightPower(0, pct);

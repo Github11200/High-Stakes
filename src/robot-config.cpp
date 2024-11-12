@@ -35,7 +35,7 @@ vex::controller::button ClampButton = Controller.ButtonR2;
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
 
-color alliance = red;
+int alliance;
 
 void vexcodeInit(void)
 {
