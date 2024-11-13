@@ -51,8 +51,10 @@ bool IntakeControl::shouldEjectRing()
 
 void IntakeControl::ejectRing()
 {
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(170, vex::timeUnits::msec);
+  while(OpticalSensor.isNearObject()) {
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    wait(20, vex::timeUnits::msec);
+  }
   Intake.stop(vex::brakeType::brake);
   wait(1000, vex::timeUnits::msec);
 }
