@@ -146,12 +146,12 @@ void senseTemp()
 void pre_auton(void)
 {
   vexcodeInit();
-  default_constants();
+  FishyMech.setPosition(0, degrees);
   OpticalSensor.gestureDisable();
   alliance = 1;
   chassis.set_coordinates(0, 0, 0);
+  default_constants();
   updateScreen();
-  FishyMech.setPosition(0, degrees);
   while (pre_match)
   { // Changing the names below will only change their names on the
     switch (current_auton_selection)

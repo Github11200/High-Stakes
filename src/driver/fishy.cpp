@@ -11,7 +11,7 @@ void Fishy::liftFishy()
 {
   while (FishyLiftButton.pressing())
   {
-    if (FishyMech.position(degrees) > 250)
+    if (FishyMech.position(degrees) > 240)
     {
       FishyMech.stop(brake);
       Intake.stop();
@@ -25,7 +25,7 @@ void Fishy::liftFishy()
   while (FishyMech.position(degrees) > 3)
   {
     Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
-    FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 250) * 20 + 3, vex::voltageUnits::volt);
+    FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
   }
   Intake.stop();
   FishyMech.stop(hold);
