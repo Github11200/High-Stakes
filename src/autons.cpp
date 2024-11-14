@@ -1,5 +1,10 @@
 #include "vex.h"
 
+using namespace vex;
+using namespace std;
+
+bool fishyTime = false;
+
 int intakeTask()
 {
   while (true)
@@ -21,19 +26,22 @@ int intakeTask()
 
 int intakeToFishyTask()
 {
-  while (true) {
-    if(fishytime) {
+  while (true)
+  {
+    if (fishyTime)
+    {
       // Spin the intake until the optical sensor senses a ring color
       while (!OpticalSensor.isNearObject())
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
       Intake.stop(vex::brakeType::brake);
-      fishytime = false;
+      fishyTime = false;
     }
   }
   return 1;
 }
 
-void scoreFishy() {
+void scoreFishy()
+{
   while (FishyMech.position(degrees) < 240)
   {
     Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
@@ -234,37 +242,40 @@ void four()
 void auton_skills()
 {
   odom_constants();
-  fishytime = false;
-  task intakeToFishy = task(intakeToFishyTask);
+  fishyTime = false;
   chassis.set_heading(0);
 
-  // Get the alliance stake and first ring
+  // Get the alliance stake
   Intake.spin(fwd, 12, volt);
-  vex::wait(500, msec);
-  chassis.drive_distance(14, 0);
-  chassis.turn_to_angle(45);
-  chassis.drive_distance(34, 45);
-  
-  // Get the first mogo
-  Intake.stop(brake);
-  chassis.turn_to_angle(0);
-  chassis.drive_distance(-20, 0);
-  chassis.drive_distance(-4, 0, 6.5, 6.5);
-  Clamp.set(true);
+  wait(500, msec);
 
-  //get 2 rings, then score a wall stake
+  // Get the first mogo
+  chassis.drive_distance(15, 0);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(-22, 270, 6, 6);
+  Clamp.set(true);
+  wait(500, vex::timeUnits::msec);
+
+  // Get the first ring
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(24, 0);
+
+  // TODO: Not done yet, getting middle ring closest to wall stake and actually scoring on wall stake
+  // get 2 rings, then score a wall stake
   Intake.spin(fwd, 12, volt);
-  chassis.turn_to_angle(45);
-  chassis.drive_distance(34, 45);
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(24, 90);
   chassis.turn_to_angle(15);
   chassis.drive_distance(27, 15);
   chassis.turn_to_angle(345);
   chassis.drive_distance(27, 345);
+  wait(800, vex::timeUnits::msec);
   Intake.stop(brake);
-  fishytime = true;
+  fishyTime = true;
   chassis.turn_to_angle(0);
-  chassis.drive_distance(24, 0);
+  chassis.drive_distance(-22, 0);
   chassis.turn_to_angle(90);
   chassis.drive_distance(14, 90);
+
   scoreFishy();
 }
