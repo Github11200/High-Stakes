@@ -65,7 +65,7 @@ Drive chassis(
     PORT6,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
-    2.71,
+    2.68,
 
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -83,7 +83,7 @@ Drive chassis(
 
 );
 
-int current_auton_selection = 0;
+int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
 bool pre_match = true;
@@ -148,6 +148,7 @@ void pre_auton(void)
   vexcodeInit();
   FishyMech.setPosition(0, degrees);
   OpticalSensor.gestureDisable();
+  OpticalSensor.setLightPower(0, pct);
   alliance = 1;
   chassis.set_coordinates(0, 0, 0);
   default_constants();
@@ -227,23 +228,23 @@ void autonomous(void)
   {
   case 0:
     three_ring_ladder_blue(); // This is the default auton, if you don't select from the brain.
-    //alliance = blue;          // Change these to be your own auton functions in order to use the auton selector.
+    alliance = 1;          // Change these to be your own auton functions in order to use the auton selector.
     break;                    // Tap the screen to cycle through autons.
   case 1:
     three_ring_ladder_red();
-    //alliance = red;
+    alliance = 0;
     break;
   case 2:
     solo_awp_blue();
-    //alliance = blue;
+    alliance = 1;
     break;
   case 3:
     solo_awp_red();
-    //alliance = red;
+    alliance = 0;
     break;
   case 4:
     auton_skills();
-    //alliance = red;
+    alliance = 0;
     break;
   case 5:
     test();
@@ -325,7 +326,7 @@ void usercontrol(void)
 {
   pre_match = false;
 
-  OpticalSensor.setLightPower(100, vex::percentUnits::pct);
+  OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(5, 100, "vroom vroom!");

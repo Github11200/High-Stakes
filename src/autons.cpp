@@ -19,6 +19,33 @@ int intakeTask()
   return 0;
 }
 
+int intakeToFishyTask()
+{
+  while (true) {
+    if(fishytime) {
+      // Spin the intake until the optical sensor senses a ring color
+      while (!OpticalSensor.isNearObject())
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      Intake.stop(vex::brakeType::brake);
+      fishytime = false;
+    }
+  }
+  return 1;
+}
+
+void scoreFishy() {
+  while (FishyMech.position(degrees) < 240)
+  {
+    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+    FishyMech.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  }
+  while (FishyMech.position(degrees) > 3)
+  {
+    Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
+    FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
+  }
+}
+
 void default_constants()
 {
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
@@ -53,31 +80,34 @@ void three_ring_ladder_blue()
   odom_constants();
   chassis.set_heading(0);
 
+  chassis.set_coordinates(0, 0, 0);
   // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 0);
-  chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
-  wait(0.2, vex::timeUnits::sec);
-  Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
-  default_constants();
+  chassis.drive_distance(48, 0);
+  chassis.turn_to_angle(180);
+  chassis.drive_distance(48, 180);
+  // chassis.drive_distance(-5, 0, 6.5, 6.5, 0.1, 1000, 1000);
+  // wait(0.2, vex::timeUnits::sec);
+  // Clamp.set(true);
+  // wait(0.5, vex::timeUnits::sec);
+  // default_constants();
 
-  // Intake the ring on the bottom, closest to the mogo rush goal
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(95);
-  chassis.drive_distance(22);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(vex::brakeType::coast);
-
-  // // Turn around and intake the other ring that is on top of the stack closest to the ladder
-  // chassis.turn_to_angle(297);
+  // // Intake the ring on the bottom, closest to the mogo rush goal
   // Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  // chassis.drive_distance(47);
-  // wait(1, vex::timeUnits::sec);
+  // chassis.turn_to_angle(95);
+  // chassis.drive_distance(22);
+  // wait(2, vex::timeUnits::sec);
   // Intake.stop(vex::brakeType::coast);
 
-  // Turn around and touch the ladder
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(35);
+  // // // Turn around and intake the other ring that is on top of the stack closest to the ladder
+  // // chassis.turn_to_angle(297);
+  // // Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  // // chassis.drive_distance(47);
+  // // wait(1, vex::timeUnits::sec);
+  // // Intake.stop(vex::brakeType::coast);
+
+  // // Turn around and touch the ladder
+  // chassis.turn_to_angle(270);
+  // chassis.drive_distance(35);
 }
 
 // DONE
@@ -204,131 +234,37 @@ void four()
 void auton_skills()
 {
   odom_constants();
-  chassis.set_heading(30);
+  fishytime = false;
+  task intakeToFishy = task(intakeToFishyTask);
+  chassis.set_heading(0);
 
-  // Get the mogo right behind the robot
-
-  chassis.drive_distance(-10, 30);
-  chassis.drive_distance(-5, 30, 7, 7);
-  wait(0.1, vex::timeUnits::sec);
-  Clamp.set(true);
-  wait(0.2, vex::timeUnits::sec);
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Face the ring to the right of the robot, and intake it
-  chassis.turn_to_angle(180);
-  chassis.drive_distance(23, 180);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Turn to face the next ring and intake it
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(23, 270);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Turn to face the next ring and intake it, and then intake the ring in front of that one
-  chassis.turn_to_angle(0);
-  chassis.drive_distance(21, 0);
-  wait(0.5, vex::timeUnits::sec);
+  // Get the alliance stake and first ring
+  Intake.spin(fwd, 12, volt);
+  vex::wait(500, msec);
   chassis.drive_distance(14, 0);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Turn to face the ring on a diagonal and intake it
-  chassis.turn_to_angle(225);
-  chassis.drive_distance(17, 225);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Put the current mobile goal into the corner
-  chassis.turn_to_angle(180);
-  chassis.drive_distance(-11, 180);
-  chassis.turn_to_angle(140);
-  chassis.drive_distance(-5, 140);
-  Clamp.set(false);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Push a mogo into the corner
-  chassis.drive_distance(5, 140);
-  chassis.turn_to_angle(180);
-  chassis.drive_distance(11, 180);
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(-90, 270);
-  chassis.turn_to_angle(225);
-  chassis.drive_distance(-50, 225);
-
-  // Go under the ladder to the other side
-  chassis.drive_distance(50, 225);
   chassis.turn_to_angle(45);
-  Intake.stop(vex::brakeType::coast);
-  chassis.drive_distance(-77.5, 45);
-
-  // Push the two mogos
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(-104.5, 270);
+  chassis.drive_distance(34, 45);
+  
+  // Get the first mogo
+  Intake.stop(brake);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(-20, 0);
+  chassis.drive_distance(-4, 0, 6.5, 6.5);
   Clamp.set(true);
-  chassis.turn_to_angle(315);
-  chassis.drive_distance(-100, 315);
-  Clamp.set(false);
 
-  // Go to the other mogo
-  chassis.drive_distance(25, 315);
+  //get 2 rings, then score a wall stake
+  Intake.spin(fwd, 12, volt);
+  chassis.turn_to_angle(45);
+  chassis.drive_distance(34, 45);
+  chassis.turn_to_angle(15);
+  chassis.drive_distance(27, 15);
+  chassis.turn_to_angle(345);
+  chassis.drive_distance(27, 345);
+  Intake.stop(brake);
+  fishytime = true;
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(24, 0);
   chassis.turn_to_angle(90);
-  chassis.drive_distance(-92, 90);
-  Clamp.set(true);
-
-  // Push the mogo into the corner
-  chassis.turn_to_angle(45);
-  chassis.drive_distance(-100, 45);
-  Clamp.set(false);
-  chassis.drive_distance(10, 45);
-
-  // chassis.turn_to_point(0, 70.20);
-  // FishyMech.spinToPosition(150, deg, true);
-  // chassis.drive_distance(20);
-  // FishyMech.spinToPosition(0, deg, false);
-  // // scored a preload on the alliance stake
-  // chassis.turn_to_point(46.64, 93.77);
-  // Intake.spin(fwd, 12, volt);
-  // chassis.drive_distance(33);
-  // Intake.stop();
-  // chassis.drive_to_point(23.08, 70.20);
-  // chassis.turn_to_angle(90);
-  // chassis.drive_distance(-20);
-  // Clamp.set(true);
-  // // got bottom left mogo
-  // Intake.spin(fwd, 12, volt);
-  // chassis.turn_to_point(46.64, 46.64);
-  // chassis.drive_to_point(46.64, 46.64);
-  // chassis.turn_to_point(46.64, 23.08);
-  // chassis.drive_to_point(46.64, 23.08);
-  // chassis.turn_to_point(11.30, 23.08);
-  // chassis.drive_to_point(11.30, 23.08);
-  // chassis.turn_to_point(23.08, 11.30);
-  // chassis.drive_to_point(23.08, 11.30);
-  // // cleaned up all bottom left rings
-  // chassis.turn_to_angle(30);
-  // chassis.drive_distance(-15);
-  // Intake.stop();
-  // Clamp.set(false);
-  // // dropped goal in bottom left corner
-  // Intake.spin(fwd, 12, volt);
-  // chassis.turn_to_point(70.20, 70.20);
-  // chassis.drive_to_point(70.20, 70.20);
-  // chassis.turn_to_angle(333);
-  // Intake.stop();
-  // chassis.drive_distance(50);
-  // Clamp.set(true);
-  // // got upper left mogo
-  // Intake.spin(fwd, 12, volt);
-  // chassis.turn_to_point(46.64, 117.33);
-  // chassis.drive_to_point(46.64, 117.33);
-  // chassis.turn_to_point(11.30, 117.33);
-  // chassis.drive_to_point(11.30, 117.33);
-  // chassis.turn_to_point(23.08, 129);
-  // chassis.drive_to_point(23.08, 129);
-  // // cleaned up all upper left rings
-  // chassis.turn_to_angle(335);
-  // chassis.drive_distance(-15);
-  // Intake.stop();
-  // Clamp.set(false);
-  // // dropped goal in upper left corner
+  chassis.drive_distance(14, 90);
+  scoreFishy();
 }
