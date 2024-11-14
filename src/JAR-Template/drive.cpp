@@ -195,8 +195,6 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
   // float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
   float start_average_position = (get_ForwardTracker_position() + get_right_position_in()) / 2.0;
 
-  // TODO: Check what the forward tracker posiition function returns, does it return the same values as get_left_position_in()?
-
   // Rather than resetting the drive position , this function just notes what the drive position started at
   // and determines error relative to that value.
   float average_position = start_average_position;
@@ -216,7 +214,7 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }
-  std::cout << get_ForwardTracker_position() << std::endl;
+  cout << get_ForwardTracker_position() << endl;
   DriveL.stop(hold);
   DriveR.stop(hold);
 }
