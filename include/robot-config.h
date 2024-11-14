@@ -29,6 +29,6 @@ extern vex::controller::button ClampButton;
 extern motor_group Left;
 extern motor_group Right;
 
-extern int alliance;
+extern std::string alliance;
 
 void vexcodeInit(void);

@@ -103,7 +103,15 @@ std::string ToString(int val)
 
 void updateScreen()
 {
-  setColor(red);
+  if(alliance == "blue") {
+    setColor(blue);
+  }
+  else if(alliance == "red") {
+    setColor(red);
+  }
+  else if(alliance == "skills") {
+    setColor(black);
+  }
   Brain.Screen.drawRectangle(0, 0, 160, 120);
   setColor(blue);
   Brain.Screen.drawRectangle(0, 120, 160, 120);
@@ -117,18 +125,28 @@ void updateScreen()
   Brain.Screen.drawRectangle(320, 120, 160, 120);
 
   Brain.Screen.setPenColor(white);
-  Brain.Screen.setFillColor(red);
-  Brain.Screen.printAt(5, 20, "Two ring blue side");
+  if(alliance == "blue") {
+    Brain.Screen.setFillColor(blue);
+    Brain.Screen.printAt(5, 20, "BLUE ALLIANCE");
+  }
+  else if(alliance == "red") {
+    Brain.Screen.setFillColor(red);
+    Brain.Screen.printAt(5, 20, "RED ALLIANCE");
+  }
+  else if(alliance == "skills") {
+    Brain.Screen.setFillColor(black);
+    Brain.Screen.printAt(5, 20, "SKILLS");
+  }
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "Two ring red side");
+  Brain.Screen.printAt(165, 20, "alliance negative");
   Brain.Screen.setFillColor(black);
-  Brain.Screen.printAt(325, 20, "Solo AWP blue");
+  Brain.Screen.printAt(325, 20, "basic negative");
   Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(5, 140, "Solo AWP red");
+  Brain.Screen.printAt(5, 140, "doinker positive");
   Brain.Screen.setFillColor(orange);
-  Brain.Screen.printAt(165, 140, "Auton skills");
+  Brain.Screen.printAt(165, 140, "alliance positive");
   Brain.Screen.setFillColor(purple);
-  Brain.Screen.printAt(325, 140, "Six");
+  Brain.Screen.printAt(325, 140, "basic positive");
   Brain.Screen.setFillColor(black);
 }
 
@@ -149,7 +167,7 @@ void pre_auton(void)
   FishyMech.setPosition(0, degrees);
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
-  alliance = 1;
+  alliance = "skills";
   chassis.set_coordinates(0, 0, 0);
   default_constants();
   updateScreen();
@@ -158,21 +176,18 @@ void pre_auton(void)
     switch (current_auton_selection)
     {
     case 0:
-      Brain.Screen.printAt(5, 100, "SELECTED");
-      break;
-    case 1:
       Brain.Screen.printAt(165, 100, "SELECTED");
       break;
-    case 2:
+    case 1:
       Brain.Screen.printAt(325, 100, "SELECTED");
       break;
-    case 3:
+    case 2:
       Brain.Screen.printAt(5, 220, "SELECTED");
       break;
-    case 4:
+    case 3:
       Brain.Screen.printAt(165, 220, "SELECTED");
       break;
-    case 5:
+    case 4:
       Brain.Screen.printAt(325, 220, "SELECTED");
       break;
     }
@@ -189,10 +204,29 @@ void pre_auton(void)
         }
         else
         {
-          current_auton_selection = 3;
+          current_auton_selection = 2;
         }
       }
       else if (Brain.Screen.xPosition() < 320)
+      {
+        if (Brain.Screen.yPosition() < 120)
+        {
+          if(alliance == "skills"){
+            alliance = "red";
+          }
+          else if(alliance == "red"){
+            alliance = "blue";
+          }
+          else if(alliance == "blue"){
+            alliance = "skills";
+          }
+        }
+        else
+        {
+          current_auton_selection = 3;
+        }
+      }
+      else
       {
         if (Brain.Screen.yPosition() < 120)
         {
@@ -201,17 +235,6 @@ void pre_auton(void)
         else
         {
           current_auton_selection = 4;
-        }
-      }
-      else
-      {
-        if (Brain.Screen.yPosition() < 120)
-        {
-          current_auton_selection = 2;
-        }
-        else
-        {
-          current_auton_selection = 5;
         }
       }
       Brain.Screen.clearScreen();
@@ -224,31 +247,46 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  switch (current_auton_selection)
-  {
-  case 0:
-    three_ring_ladder_blue(); // This is the default auton, if you don't select from the brain.
-    alliance = 1;          // Change these to be your own auton functions in order to use the auton selector.
-    break;                    // Tap the screen to cycle through autons.
-  case 1:
-    three_ring_ladder_red();
-    alliance = 0;
-    break;
-  case 2:
-    solo_awp_blue();
-    alliance = 1;
-    break;
-  case 3:
-    solo_awp_red();
-    alliance = 0;
-    break;
-  case 4:
+  if(alliance == "skills") {
     auton_skills();
-    alliance = 0;
-    break;
-  case 5:
-    test();
-    break;
+  }
+  else if(alliance == "blue") {  
+    switch (current_auton_selection) {
+      case 0:
+        alliance_negative_blue(); // This is the default auton, if you don't select from the brain.
+        break;                    // Tap the screen to cycle through autons.
+      case 1:
+        basic_negative_blue();
+        break;
+      case 2:
+        doinker_positive_blue();
+        break;
+      case 3:
+        alliance_positive_blue();
+        break;
+      case 4:
+        basic_positive_blue();
+        break;
+    }
+  }
+  else if(alliance == "red") { 
+    switch (current_auton_selection) {
+      case 0:
+        alliance_negative_red(); // This is the default auton, if you don't select from the brain.
+        break;                    // Tap the screen to cycle through autons.
+      case 1:
+        basic_negative_red();
+        break;
+      case 2:
+        doinker_positive_red();
+        break;
+      case 3:
+        alliance_positive_red();
+        break;
+      case 4:
+        basic_positive_red();
+        break;
+    }
   }
 }
 

@@ -34,16 +34,17 @@ bool IntakeControl::shouldEjectRing()
       ringColor = red;
     }
     cout << alliance << endl;
-    if(alliance == 0){
+    if(alliance == "red"){
       cout << "red" << endl;
       return ringColor == blue;
     }
-    else if(alliance == 1) {
+    else if(alliance == "blue") {
       cout << "blue" << endl;
       return ringColor == red;
     }
-    else {
-      cout << "wtf" << endl;
+    else if(alliance == "skills") {
+      cout << "no alliance selected" << endl;
+      return false;
     }
   }
   return false;
