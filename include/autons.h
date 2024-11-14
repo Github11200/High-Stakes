@@ -6,8 +6,8 @@ class Drive;
 extern Drive chassis;
 
 void default_constants();
-// int intakeToFishyTask();
-// void scoreFishy();
+int intakeToFishyTask();
+void scoreFishy();
 
 void test();
 void three_ring_ladder_blue();
