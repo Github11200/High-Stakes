@@ -200,7 +200,7 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
   float average_position = start_average_position;
   while (drivePID.is_settled() == false)
   {
-    average_position = get_ForwardTracker_position() / 2.0;
+    average_position = get_ForwardTracker_position();
     float drive_error = distance + start_average_position - average_position;
     float heading_error = reduce_negative_180_to_180(heading - get_absolute_heading());
     // Just like for turns, reducing from -180 to 180 degrees ensures that the robot takes the
