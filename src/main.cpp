@@ -104,12 +104,15 @@ std::string ToString(int val)
 void updateScreen()
 {
   if(alliance == "blue") {
+    cout << "blue" << endl;
     setColor(blue);
   }
   else if(alliance == "red") {
+    cout << "red" << endl;
     setColor(red);
   }
   else if(alliance == "skills") {
+    cout << "skills" << endl;
     setColor(black);
   }
   Brain.Screen.drawRectangle(0, 0, 160, 120);
@@ -119,7 +122,7 @@ void updateScreen()
   Brain.Screen.drawRectangle(160, 0, 160, 120);
   setColor(orange);
   Brain.Screen.drawRectangle(160, 120, 160, 120);
-  setColor(black);
+  setColor(red);
   Brain.Screen.drawRectangle(320, 0, 160, 120);
   setColor(purple);
   Brain.Screen.drawRectangle(320, 120, 160, 120);
@@ -139,7 +142,7 @@ void updateScreen()
   }
   Brain.Screen.setFillColor(green);
   Brain.Screen.printAt(165, 20, "alliance negative");
-  Brain.Screen.setFillColor(black);
+  Brain.Screen.setFillColor(red);
   Brain.Screen.printAt(325, 20, "basic negative");
   Brain.Screen.setFillColor(blue);
   Brain.Screen.printAt(5, 140, "doinker positive");
@@ -200,7 +203,16 @@ void pre_auton(void)
       {
         if (Brain.Screen.yPosition() < 120)
         {
-          current_auton_selection = 0;
+          if(alliance == "skills"){
+            cout << "switched to red" << endl;
+            alliance = "red";
+          }
+          else if(alliance == "red"){
+            alliance = "blue";
+          }
+          else if(alliance == "blue"){
+            alliance = "skills";
+          }
         }
         else
         {
@@ -211,15 +223,7 @@ void pre_auton(void)
       {
         if (Brain.Screen.yPosition() < 120)
         {
-          if(alliance == "skills"){
-            alliance = "red";
-          }
-          else if(alliance == "red"){
-            alliance = "blue";
-          }
-          else if(alliance == "blue"){
-            alliance = "skills";
-          }
+          current_auton_selection = 0;
         }
         else
         {
@@ -248,9 +252,11 @@ void autonomous(void)
 {
   pre_match = false;
   if(alliance == "skills") {
+    cout << "a" << endl;
     auton_skills();
   }
   else if(alliance == "blue") {  
+    cout << "b" << endl;
     switch (current_auton_selection) {
       case 0:
         alliance_negative_blue(); // This is the default auton, if you don't select from the brain.
@@ -270,20 +276,26 @@ void autonomous(void)
     }
   }
   else if(alliance == "red") { 
+    cout << "i" << endl;
     switch (current_auton_selection) {
       case 0:
+        cout << "c" << endl;
         alliance_negative_red(); // This is the default auton, if you don't select from the brain.
         break;                    // Tap the screen to cycle through autons.
       case 1:
+        cout << "d" << endl;
         basic_negative_red();
         break;
       case 2:
+        cout << "e" << endl;
         doinker_positive_red();
         break;
       case 3:
+        cout << "f" << endl;
         alliance_positive_red();
         break;
       case 4:
+        cout << "g" << endl;
         basic_positive_red();
         break;
     }
