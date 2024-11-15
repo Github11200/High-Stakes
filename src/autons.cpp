@@ -158,7 +158,7 @@ void alliance_positive(std::string c) {
   chassis.set_heading(num + (reversed * 270));
 
   // Get the Alliance Stake, pushing rings out of the way
-  chassis.drive_distance(-10.5, num + (reversed * 270));
+  chassis.drive_distance(-9.5, num + (reversed * 270));
   chassis.turn_to_angle(180);  
   chassis.drive_distance(-4, 180);
   Intake.spin(fwd, 12, volt);
