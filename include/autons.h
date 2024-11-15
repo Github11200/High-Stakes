@@ -9,6 +9,12 @@ void default_constants();
 int intakeToFishyTask();
 void scoreFishy();
 
+void alliance_negative(std::string c);
+void basic_negative(std::string c);
+void doinker_positive(std::string c);
+void alliance_positive(std::string c);
+void basic_positive(std::string c);
+
 void alliance_negative_blue();
 void basic_negative_blue();
 void doinker_positive_blue();

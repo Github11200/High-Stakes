@@ -72,15 +72,23 @@ void odom_constants()
   chassis.drive_settle_error = 3;
 }
 
-// DONE
-void alliance_negative_blue()
-{
-
+//TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
+void alliance_negative(std::string c) {
+  int reversed;
+  int num;
+  if(c == "red") {
+    reversed = -1;
+    num = 360;
+  }
+  else if(c == "blue") {
+    reversed = 1;
+    num = 0;
+  }
   odom_constants();
-  chassis.set_heading(90);
+  chassis.set_heading(num + (reversed * 90));
 
   // Get the Alliance Stake, pushing rings out of the way
-  chassis.drive_distance(-9.5, 90);
+  chassis.drive_distance(-9.5, num + (reversed * 90));
   chassis.turn_to_angle(180);  
   chassis.drive_distance(-4, 180);
   Intake.spin(fwd, 12, volt);
@@ -91,20 +99,20 @@ void alliance_negative_blue()
   chassis.drive_distance(15.5, 180);
 
   // Move backwards and clamp onto the goal 
-  chassis.turn_to_angle(315);
-  chassis.drive_distance(-25, 315);
-  chassis.drive_distance(-5, 315, 3, 3);
+  chassis.turn_to_angle(num + (reversed * 315));
+  chassis.drive_distance(-25, num + (reversed * 315));
+  chassis.drive_distance(-5, num + (reversed * 315), 3, 3);
   Clamp.set(true);
 
   // Sweep the two rings on the edge of the line
-  chassis.turn_to_angle(145);
-  chassis.drive_distance(19, 135);
+  chassis.turn_to_angle(num + (reversed * 145));
+  chassis.drive_distance(19, num + (reversed * 135));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.right_swing_to_angle(90);
-  chassis.drive_distance(4, 90, 6, 6); 
+  chassis.right_swing_to_angle(num + (reversed * 90));
+  chassis.drive_distance(4, num + (reversed * 90), 6, 6); 
   wait(2, vex::timeUnits::sec);
   Intake.stop(coast);
-  chassis.drive_distance(-7, 95); 
+  chassis.drive_distance(-7, num + (reversed * 95)); 
 
   // Get the last ring 
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
@@ -114,32 +122,41 @@ void alliance_negative_blue()
   chassis.drive_distance(10, 0);
 
   // Touch the ladder
-  chassis.turn_to_angle(270);
+  chassis.turn_to_angle(num + (reversed * 270));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.drive_distance(55, 275); 
+  chassis.drive_distance(55, num + (reversed * 275)); 
 }
 
-// DONE
-void basic_negative_blue()
-{
+//TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
+void basic_negative(std::string c) {
+  int reversed;
+  int num;
+  if(c == "red") {
+    reversed = -1;
+    num = 360;
+  }
+  else if(c == "blue") {
+    reversed = 1;
+    num = 0;
+  }
   odom_constants();
-  chassis.set_heading(30);
+  chassis.set_heading(num + (reversed * 30));
 
   // Move backwards and clamp onto the goal  
-  chassis.drive_distance(-19, 30);
-  chassis.drive_distance(-5, 30, 3, 3);
+  chassis.drive_distance(-19, num + (reversed * 30));
+  chassis.drive_distance(-5, num + (reversed * 30), 3, 3);
   Clamp.set(true);
 
   // Sweep the two rings on the edge of the line
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   wait(500, vex::timeUnits::msec);
-  chassis.turn_to_angle(145);
-  chassis.drive_distance(19, 135);
-  chassis.right_swing_to_angle(90);
-  chassis.drive_distance(4, 90, 6, 6); 
+  chassis.turn_to_angle(num + (reversed * 145));
+  chassis.drive_distance(19, num + (reversed * 135));
+  chassis.right_swing_to_angle(num + (reversed * 90));
+  chassis.drive_distance(4, num + (reversed * 90), 6, 6); 
   wait(2, vex::timeUnits::sec);
   Intake.stop(coast);
-  chassis.drive_distance(-7, 95); 
+  chassis.drive_distance(-7, num + (reversed * 95)); 
 
   // Get the last ring 
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
@@ -149,27 +166,44 @@ void basic_negative_blue()
   chassis.drive_distance(10, 0);
 
   // Touch the ladder
-  chassis.turn_to_angle(270);
+  chassis.turn_to_angle(num + (reversed * 270));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.drive_distance(55, 275); 
+  chassis.drive_distance(55, num + (reversed * 275)); 
 }
 
-// NOT DONE
-void doinker_positive_blue()
-{
+//NOT DONE
+void doinker_positive(std::string c) {
+  int reversed;
+  int num;
+  if(c == "red") {
+    reversed = -1;
+    num = 360;
+  }
+  else if(c == "blue") {
+    reversed = 1;
+    num = 0;
+  }
   odom_constants();
 }
 
-// DONE AND TESTED
-void alliance_positive_blue()
-{
-  // This autonomous gets 2 Rings, 1 on the Alliance Stake and 1 on a Mogo
+//TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
+void alliance_positive(std::string c) {
+  int reversed;
+  int num;
+  if(c == "red") {
+    reversed = -1;
+    num = 360;
+  }
+  else if(c == "blue") {
+    reversed = 1;
+    num = 0;
+  }
 
   odom_constants();
-  chassis.set_heading(270);
+  chassis.set_heading(num + (reversed * 270));
 
   // Get the Alliance Stake, pushing rings out of the way
-  chassis.drive_distance(-10.5, 270);
+  chassis.drive_distance(-10.5, num + (reversed * 270));
   chassis.turn_to_angle(180);  
   chassis.drive_distance(-4, 180);
   Intake.spin(fwd, 12, volt);
@@ -180,27 +214,36 @@ void alliance_positive_blue()
   chassis.drive_distance(13, 180);
 
   // Clamp onto the goal
-  chassis.turn_to_angle(45);
-  chassis.drive_distance(-30, 45, 5, 2); 
+  chassis.turn_to_angle(num + (reversed * 45));
+  chassis.drive_distance(-30, num + (reversed * 45), 5, 2); 
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true); 
   wait(0.5, vex::timeUnits::sec); 
 
   // Intake the ring on the bottom, closest to the mogo rush goal
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(270);
+  chassis.turn_to_angle(num + (reversed * 270));
   chassis.drive_distance(22);
   wait(2, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::coast);
 
   //touch the ladder
-  chassis.turn_to_angle(90);
-  chassis.drive_distance(40, 90, 8, 8);
+  chassis.turn_to_angle(num + (reversed * 90));
+  chassis.drive_distance(40, num + (reversed * 90), 8, 8);
 }
 
-// DONE AND TESTED
-void basic_positive_blue()
-{
+//TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
+void basic_positive(std::string c) {
+  int reversed;
+  int num;
+  if(c == "red") {
+    reversed = -1;
+    num = 360;
+  }
+  else if(c == "blue") {
+    reversed = 1;
+    num = 0;
+  }
   // This autonomous gets 2 Rings, both on a Mogo
   odom_constants();
   chassis.set_heading(0);
@@ -209,107 +252,64 @@ void basic_positive_blue()
   // chassis.drive_distance(-15, 0);
   // chassis.turn_to_angle(330);
   // chassis.drive_distance(-5, 330, 6.5, 6.5, 0.1, 1000, 1000);
-  chassis.drive_distance(-30, 330, 5, 2); 
+  chassis.drive_distance(-30, num + (reversed * 330), 5, 2); 
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true); 
   wait(0.5, vex::timeUnits::sec); 
 
   // Intake the ring on the bottom, closest to the mogo rush goal
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(270);
+  chassis.turn_to_angle(num + (reversed * 270));
   chassis.drive_distance(22);
   wait(2, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::coast);
 
   //touch the ladder
-  chassis.turn_to_angle(90);
-  chassis.drive_distance(40, 90, 8, 8);
+  chassis.turn_to_angle(num + (reversed * 90));
+  chassis.drive_distance(40, num + (reversed * 90), 8, 8);
 }
 
-// WILL MIRROR FROM BLUE ONCE BLUE IS TESTED
-void alliance_negative_red()
-{
-  odom_constants();
+void alliance_negative_blue() {
+  alliance_negative("blue");
 }
 
-// WILL MIRROR FROM BLUE ONCE BLUE IS TESTED
-void basic_negative_red()
-{
-  odom_constants();
-  chassis.set_heading(210);
-
-  // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 210);
-  chassis.drive_distance(-5, 210, 6.5, 6.5, 0.1, 1000, 1000);
-  // chassis.drive_distance(-27, 30, 6.5, 6.5);
-  wait(0.1, vex::timeUnits::sec);
-  Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Turn around and intake the ring on the bottom of the stack
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(0.2, vex::timeUnits::sec);
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(23);
-  wait(0.4, vex::timeUnits::sec);
-
-  // Intake the two rings that are on the bottom of the stacks one by one
-  // We move forward, intake, move back again, turn a bit to face the second ring, and repeat the same thing
-  chassis.turn_to_angle(343);
-  chassis.drive_distance(15, 343, 3, 3);
-  wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(-15);
-  chassis.turn_to_angle(10); // PREVIOUSLY 15
-  wait(0.3, vex::timeUnits::sec);
-  chassis.drive_distance(16.5, 10, 4, 4);
-  wait(0.5, vex::timeUnits::sec);
-  chassis.drive_distance(-16);
-
-  // Turn to face the ladder and touch it
-  chassis.turn_to_angle(90);
-  chassis.drive_distance(40);
-  Intake.stop(coast);
+void basic_negative_blue() {
+  basic_negative("blue");
 }
 
-// WILL MIRROR FROM BLUE ONCE BLUE IS TESTED
-void doinker_positive_red()
-{
-  odom_constants();
+void doinker_positive_blue() {
+  doinker_positive("blue");
 }
 
-// WILL MIRROR FROM BLUE ONCE BLUE IS TESTED
-void alliance_positive_red()
-{
-  odom_constants();
+void alliance_positive_blue() {
+  alliance_positive("blue");
 }
 
-// WILL MIRROR FROM BLUE ONCE BLUE IS TESTED
-void basic_positive_red()
-{
-  odom_constants();
-  chassis.set_heading(180);
-
-  // Move backwards and clamp onto the goal
-  chassis.drive_distance(-23, 180);
-  chassis.drive_distance(-5, 180, 6.5, 6.5, 0.1, 1000, 1000);
-  wait(0.2, vex::timeUnits::sec);
-  Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Intake the ring on the bottom, closest to the mogo rush goal
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(85);
-  chassis.drive_distance(22);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(vex::brakeType::coast);
-
-  //touch the ladder
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(35);
+void basic_positive_blue() {
+  basic_positive("blue");
 }
 
-void auton_skills()
-{
+void alliance_negative_red() {
+  alliance_negative("red");
+}
+
+void basic_negative_red() {
+  basic_negative("red");
+}
+
+void doinker_positive_red() {
+  doinker_positive("red");
+}
+
+void alliance_positive_red() {
+  alliance_positive("red");
+}
+
+void basic_positive_red() {
+  basic_positive("red");
+}
+
+void auton_skills() {
   odom_constants();
   fishyTime = false;
   chassis.set_heading(0);
