@@ -43,30 +43,39 @@ void alliance_negative(std::string c) {
   chassis.set_heading(num + (reversed * 90));
 
   // Get the Alliance Stake, pushing rings out of the way
+  chassis.set_drive_exit_conditions(1.5, 300, 700);
   chassis.drive_distance(-9.5, num + (reversed * 90));
+  chassis.set_turn_exit_conditions(1, 300, 300);
   chassis.turn_to_angle(180);  
+  chassis.set_drive_exit_conditions(1.5, 300, 300);
   chassis.drive_distance(-4, 180);
   Intake.spin(fwd, 12, volt);
-  wait(800, msec);
+  wait(600, msec);
   Intake.stop();
 
   // Move forwards
+  chassis.set_drive_exit_conditions(1.5, 300, 700);
   chassis.drive_distance(15.5, 180);
 
   // Move backwards and clamp onto the goal 
+  chassis.set_turn_exit_conditions(1, 300, 500);
   chassis.turn_to_angle(num + (reversed * 315));
+  chassis.set_drive_exit_conditions(1.5, 300, 800);
   chassis.drive_distance(-25, num + (reversed * 315));
   chassis.drive_distance(-5, num + (reversed * 315), 3, 3);
   Clamp.set(true);
 
   // Sweep the two rings on the edge of the line
   chassis.turn_to_angle(num + (reversed * 145));
+  chassis.set_drive_exit_conditions(1.5, 300, 600);
   chassis.drive_distance(19, num + (reversed * 135));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   chassis.right_swing_to_angle(num + (reversed * 90));
+  chassis.set_drive_exit_conditions(1.5, 300, 500);
   chassis.drive_distance(4, num + (reversed * 90), 6, 6); 
-  wait(2, vex::timeUnits::sec);
+  wait(1.5, vex::timeUnits::sec);
   Intake.stop(coast);
+  chassis.set_drive_exit_conditions(1.5, 300, 400);
   chassis.drive_distance(-7, num + (reversed * 95)); 
 
   // Get the last ring 
@@ -74,11 +83,13 @@ void alliance_negative(std::string c) {
   chassis.right_swing_to_angle(0);
   wait(2, vex::timeUnits::sec);
   Intake.stop(coast);
+  chassis.set_drive_exit_conditions(1.5, 300, 500);
   chassis.drive_distance(10, 0);
 
   // Touch the ladder
   chassis.turn_to_angle(num + (reversed * 270));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  chassis.set_drive_exit_conditions(1.5, 300, 2000);
   chassis.drive_distance(55, num + (reversed * 275)); 
 }
 
