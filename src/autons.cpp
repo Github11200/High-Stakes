@@ -72,7 +72,7 @@ void odom_constants()
   chassis.drive_settle_error = 3;
 }
 
-// NOT TESTED
+// DONE
 void alliance_negative_blue()
 {
 
