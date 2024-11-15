@@ -127,7 +127,7 @@ void IntakeControl::intakeToFishyAutonTask()
 
 void IntakeControl::colorSortingAutonTask()
 {
-  while (intakeSort)
+  while (Intake.voltage() > 1)
   {
     OpticalSensor.setLightPower(100, pct);
     if (shouldEjectRing())
