@@ -6,8 +6,6 @@ class Drive;
 extern Drive chassis;
 
 void default_constants();
-int intakeToFishyTask();
-void scoreFishy();
 
 void alliance_negative(std::string c);
 void basic_negative(std::string c);

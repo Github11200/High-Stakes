@@ -24,6 +24,8 @@ public:
 
   /// @brief When the down button is pressed it will say the current position is now 0
   void resetPosition();
+
+  void fishyAutonTask();
 };
 
 #endif

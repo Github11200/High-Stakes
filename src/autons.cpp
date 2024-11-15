@@ -1,58 +1,13 @@
 #include "vex.h"
+#include "../include/driver/intake.h"
+#include "../include/driver/fishy.h"
 
 using namespace vex;
 using namespace std;
 
-bool fishyTime = false;
-
-int intakeTask()
-{
-  while (true)
-  {
-    // Intake.spin(fwd, 12, volt);
-    // if (OpticalSensor.color() != alliance)
-    // {
-    //   Intake.setVelocity(100, pct);
-    //   Intake.spinFor(fwd, 2000, msec);
-    //   Intake.stop(brake);
-    //   vex::wait(400, msec);
-    // }
-    vex::wait(100, msec);
-  }
-
-  Intake.stop();
-  return 0;
-}
-
-int intakeToFishyTask()
-{
-  while (true)
-  {
-    if (fishyTime)
-    {
-      // Spin the intake until the optical sensor senses a ring color
-      while (!OpticalSensor.isNearObject())
-        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-      Intake.stop(vex::brakeType::brake);
-      fishyTime = false;
-    }
-  }
-  return 1;
-}
-
-void scoreFishy()
-{
-  while (FishyMech.position(degrees) < 240)
-  {
-    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
-    FishyMech.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  }
-  while (FishyMech.position(degrees) > 3)
-  {
-    Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
-    FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
-  }
-}
+bool intakeToFishyAuton = false;
+bool intakeSort = false;
+bool raiseFishy = false;
 
 void default_constants()
 {
@@ -311,7 +266,17 @@ void basic_positive_red() {
 
 void auton_skills() {
   odom_constants();
-  fishyTime = false;
+  IntakeControl intakeControl(12, 3, OpticalSensor.hue());
+  Fishy fishyControl(12);
+
+  intakeControl.intakeToFishyAutonTask();
+  intakeControl.colorSortingAutonTask();
+  fishyControl.fishyAutonTask();
+
+  intakeToFishyAuton = false;
+  intakeSort = false;
+  raiseFishy = false;
+
   chassis.set_heading(0);
 
   // Get the alliance stake
@@ -340,11 +305,11 @@ void auton_skills() {
   chassis.drive_distance(27, 345);
   wait(800, vex::timeUnits::msec);
   Intake.stop(brake);
-  fishyTime = true;
+  intakeToFishyAuton = true;
   chassis.turn_to_angle(0);
   chassis.drive_distance(-22, 0);
   chassis.turn_to_angle(90);
   chassis.drive_distance(14, 90);
 
-  scoreFishy();
+  raiseFishy = true;
 }

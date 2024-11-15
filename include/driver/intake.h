@@ -38,6 +38,10 @@ public:
   void outtake();
 
   int hue_difference(int hue1, int hue2);
+
+  void intakeToFishyAutonTask();
+
+  void colorSortingAutonTask();
 };
 
 #endif

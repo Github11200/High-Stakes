@@ -53,7 +53,7 @@ bool IntakeControl::shouldEjectRing()
 void IntakeControl::ejectRing()
 {
   while(OpticalSensor.isNearObject()) {
-    Intake.spin(vex::directionType::fwd, 10, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
@@ -68,6 +68,7 @@ void IntakeControl::intake()
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
   }
   OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::coast);
@@ -78,6 +79,7 @@ void IntakeControl::intakeToFishy()
   // Spin the intake until the optical sensor senses a ring color
   while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing())
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::brake);
 }
 
@@ -85,6 +87,7 @@ void IntakeControl::outtake()
 {
   while (OuttakeButton.pressing())
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::coast);
 }
 
@@ -101,5 +104,38 @@ int IntakeControl::hue_difference(int hue1, int hue2)
   else
   {
     return (hue1 - 360) - hue2;
+  }
+}
+
+void IntakeControl::intakeToFishyAutonTask()
+{
+  while (true)
+  {
+    if (intakeToFishyAuton)
+    {
+      // Spin the intake until the optical sensor senses a ring color
+      while (!OpticalSensor.isNearObject())
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      Intake.stop(vex::brakeType::brake);
+      intakeToFishyAuton = false;
+    }
+  }
+}
+
+void IntakeControl::colorSortingAutonTask()
+{
+  while (true)
+  {
+    while (intakeSort)
+    {
+      OpticalSensor.setLightPower(100, pct);
+      if (shouldEjectRing())
+        ejectRing();
+      Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+      wait(10, vex::timeUnits::msec);
+    }
+    OpticalSensor.setLightPower(0, pct);
+    Intake.stop(vex::brakeType::coast);
+    vex::wait(100, msec);
   }
 }
