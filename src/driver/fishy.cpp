@@ -62,29 +62,31 @@ void Fishy::resetPosition()
 
 void Fishy::fishyAutonTask()
 {
-  while (true) {
-    if (raiseFishy) {
-      if (FishyMech.position(degrees) > 240)
-      {
-        FishyMech.stop(brake);
-        Intake.stop();
-      }
-      else
-      {
-        Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
-        FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-      }
+  if (raiseFishy)
+  {
+    if (FishyMech.position(degrees) > 240)
+    {
+      FishyMech.stop(brake);
+      Intake.stop();
     }
-    else {
-      if(FishyMech.position(degrees) > 3) {
-        Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
-        FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
-        wait(10, vex::timeUnits::msec);
-      }
-      else {
-        FishyMech.stop(hold);
-        Intake.stop();
-      }
+    else
+    {
+      Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+      FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    }
+  }
+  else
+  {
+    if (FishyMech.position(degrees) > 3)
+    {
+      Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
+      FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
+      wait(10, vex::timeUnits::msec);
+    }
+    else
+    {
+      FishyMech.stop(hold);
+      Intake.stop();
     }
   }
 }

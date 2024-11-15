@@ -103,15 +103,18 @@ std::string ToString(int val)
 
 void updateScreen()
 {
-  if(alliance == "blue") {
+  if (alliance == "blue")
+  {
     cout << "blue" << endl;
     setColor(blue);
   }
-  else if(alliance == "red") {
+  else if (alliance == "red")
+  {
     cout << "red" << endl;
     setColor(red);
   }
-  else if(alliance == "skills") {
+  else if (alliance == "skills")
+  {
     cout << "skills" << endl;
     setColor(black);
   }
@@ -128,15 +131,18 @@ void updateScreen()
   Brain.Screen.drawRectangle(320, 120, 160, 120);
 
   Brain.Screen.setPenColor(white);
-  if(alliance == "blue") {
+  if (alliance == "blue")
+  {
     Brain.Screen.setFillColor(blue);
     Brain.Screen.printAt(5, 20, "BLUE ALLIANCE");
   }
-  else if(alliance == "red") {
+  else if (alliance == "red")
+  {
     Brain.Screen.setFillColor(red);
     Brain.Screen.printAt(5, 20, "RED ALLIANCE");
   }
-  else if(alliance == "skills") {
+  else if (alliance == "skills")
+  {
     Brain.Screen.setFillColor(black);
     Brain.Screen.printAt(5, 20, "SKILLS");
   }
@@ -203,14 +209,17 @@ void pre_auton(void)
       {
         if (Brain.Screen.yPosition() < 120)
         {
-          if(alliance == "skills"){
+          if (alliance == "skills")
+          {
             cout << "switched to red" << endl;
             alliance = "red";
           }
-          else if(alliance == "red"){
+          else if (alliance == "red")
+          {
             alliance = "blue";
           }
-          else if(alliance == "blue"){
+          else if (alliance == "blue")
+          {
             alliance = "skills";
           }
         }
@@ -251,53 +260,58 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  if(alliance == "skills") {
+  if (alliance == "skills")
+  {
     cout << "a" << endl;
     auton_skills();
   }
-  else if(alliance == "blue") {  
+  else if (alliance == "blue")
+  {
     cout << "b" << endl;
-    switch (current_auton_selection) {
-      case 0:
-        alliance_negative_blue(); // This is the default auton, if you don't select from the brain.
-        break;                    // Tap the screen to cycle through autons.
-      case 1:
-        basic_negative_blue();
-        break;
-      case 2:
-        doinker_positive_blue();
-        break;
-      case 3:
-        alliance_positive_blue();
-        break;
-      case 4:
-        basic_positive_blue();
-        break;
+    switch (current_auton_selection)
+    {
+    case 0:
+      alliance_negative_blue(); // This is the default auton, if you don't select from the brain.
+      break;                    // Tap the screen to cycle through autons.
+    case 1:
+      basic_negative_blue();
+      break;
+    case 2:
+      doinker_positive_blue();
+      break;
+    case 3:
+      alliance_positive_blue();
+      break;
+    case 4:
+      basic_positive_blue();
+      break;
     }
   }
-  else if(alliance == "red") { 
+  else if (alliance == "red")
+  {
     cout << "i" << endl;
-    switch (current_auton_selection) {
-      case 0:
-        cout << "c" << endl;
-        alliance_negative_red(); // This is the default auton, if you don't select from the brain.
-        break;                    // Tap the screen to cycle through autons.
-      case 1:
-        cout << "d" << endl;
-        basic_negative_red();
-        break;
-      case 2:
-        cout << "e" << endl;
-        doinker_positive_red();
-        break;
-      case 3:
-        cout << "f" << endl;
-        alliance_positive_red();
-        break;
-      case 4:
-        cout << "g" << endl;
-        basic_positive_red();
-        break;
+    switch (current_auton_selection)
+    {
+    case 0:
+      cout << "c" << endl;
+      alliance_negative_red(); // This is the default auton, if you don't select from the brain.
+      break;                   // Tap the screen to cycle through autons.
+    case 1:
+      cout << "d" << endl;
+      basic_negative_red();
+      break;
+    case 2:
+      cout << "e" << endl;
+      doinker_positive_red();
+      break;
+    case 3:
+      cout << "f" << endl;
+      alliance_positive_red();
+      break;
+    case 4:
+      cout << "g" << endl;
+      basic_positive_red();
+      break;
     }
   }
 }
@@ -310,15 +324,6 @@ int buttonsWrapper()
 
   while (true)
   {
-    // double hue = OpticalSensor.hue();
-    // bool isNear = OpticalSensor.isNearObject();
-    // if (hue > 100 && isNear)
-    //   cout << "Blue: " << hue << endl;
-    // else if (hue < 30 && isNear)
-    //   cout << "Red" << endl;
-    // else
-    //   cout << "Nothing :)" << endl;
-
     // Doinker
     if (DoinkerButton.pressing())
     {
@@ -352,23 +357,6 @@ int buttonsWrapper()
     vex::wait(60, vex::timeUnits::msec);
   }
 
-  return 1;
-}
-
-int joystickWrapper()
-{
-  // I don't know what these values do
-  Joystick joystickControl(5, 0.02, 0.01, 0.01);
-
-  while (true)
-  {
-    // pair<double, double> values = joystickControl.cheesy();
-
-    // Left.spin(vex::directionType::fwd, values.first, vex::voltageUnits::volt);
-    // Right.spin(vex::directionType::fwd, values.second, vex::voltageUnits::volt);
-
-    // vex::wait(20, vex::timeUnits::msec);
-  }
   return 1;
 }
 

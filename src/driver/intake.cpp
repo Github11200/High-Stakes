@@ -13,7 +13,8 @@ bool IntakeControl::shouldEjectRing()
 {
   bool isNear = OpticalSensor.isNearObject();
   color ringColor = NULL;
-  if(isNear) {
+  if (isNear)
+  {
     cout << "near!" << endl;
     if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
     {
@@ -34,15 +35,18 @@ bool IntakeControl::shouldEjectRing()
       ringColor = red;
     }
     cout << alliance << endl;
-    if(alliance == "red"){
+    if (alliance == "red")
+    {
       cout << "red" << endl;
       return ringColor == blue;
     }
-    else if(alliance == "blue") {
+    else if (alliance == "blue")
+    {
       cout << "blue" << endl;
       return ringColor == red;
     }
-    else if(alliance == "skills") {
+    else if (alliance == "skills")
+    {
       cout << "no alliance selected" << endl;
       return false;
     }
@@ -52,7 +56,8 @@ bool IntakeControl::shouldEjectRing()
 
 void IntakeControl::ejectRing()
 {
-  while(OpticalSensor.isNearObject()) {
+  while (OpticalSensor.isNearObject())
+  {
     Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
@@ -79,7 +84,7 @@ void IntakeControl::intakeToFishy()
   // Spin the intake until the optical sensor senses a ring color
   while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing())
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
+  wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::brake);
 }
 
@@ -87,7 +92,7 @@ void IntakeControl::outtake()
 {
   while (OuttakeButton.pressing())
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
+  wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::coast);
 }
 
@@ -109,35 +114,27 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeToFishyAutonTask()
 {
-  while (true)
+  if (intakeToFishyAuton)
   {
-    if (intakeToFishyAuton)
-    {
-      // Spin the intake until the optical sensor senses a ring color
-      while (!OpticalSensor.isNearObject())
-        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-        wait(20, vex::timeUnits::msec);
-      Intake.stop(vex::brakeType::brake);
-      intakeToFishyAuton = false;
-    }        
+    // Spin the intake until the optical sensor senses a ring color
+    while (!OpticalSensor.isNearObject())
+      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(20, vex::timeUnits::msec);
+    Intake.stop(vex::brakeType::brake);
+    intakeToFishyAuton = false;
   }
 }
 
 void IntakeControl::colorSortingAutonTask()
 {
-  while (true)
+  while (intakeSort)
   {
-    while (intakeSort)
-    {
-      OpticalSensor.setLightPower(100, pct);
-      if (shouldEjectRing())
-        ejectRing();
-      Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-      wait(10, vex::timeUnits::msec);
-    }
-    OpticalSensor.setLightPower(0, pct);
-    Intake.stop(vex::brakeType::coast);
-    vex::wait(100, msec);
+    OpticalSensor.setLightPower(100, pct);
+    if (shouldEjectRing())
+      ejectRing();
+    Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
   }
+  OpticalSensor.setLightPower(0, pct);
+  Intake.stop(vex::brakeType::coast);
 }
