@@ -75,7 +75,7 @@ void Fishy::fishyAutonTask()
       FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
   }
-  else
+  else if (!intakeSort)
   {
     if (FishyMech.position(degrees) > 3)
     {

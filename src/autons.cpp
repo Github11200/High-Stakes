@@ -19,7 +19,7 @@ void default_constants()
   chassis.set_swing_constants(12, .3, .001, 2, 15);
   chassis.set_drive_exit_conditions(1.5, 300, 5000);
   chassis.set_turn_exit_conditions(1, 300, 800);
-  chassis.set_swing_exit_conditions(1, 300, 800);
+  chassis.set_swing_exit_conditions(1, 300, 1000);
 }
 
 void odom_constants()
@@ -48,52 +48,55 @@ void alliance_negative(std::string c)
   chassis.set_heading(num + (reversed * 90));
 
   // Get the Alliance Stake, pushing rings out of the way
-  chassis.set_drive_exit_conditions(1.5, 300, 700);
+  chassis.set_drive_exit_conditions(1.5, 300, 900);
   chassis.drive_distance(-9.5, num + (reversed * 90));
-  chassis.set_turn_exit_conditions(1, 300, 300);
+  chassis.set_turn_exit_conditions(1, 300, 400);
   chassis.turn_to_angle(180);
-  chassis.set_drive_exit_conditions(1.5, 300, 300);
-  chassis.drive_distance(-4, 180);
+  chassis.set_drive_exit_conditions(1.5, 300, 600); 
+  chassis.drive_distance(-7, 180, 4, 8);
+  chassis.drive_distance(0.7, 180);
   Intake.spin(fwd, 12, volt);
   wait(600, msec);
   Intake.stop();
 
   // Move forwards
-  chassis.set_drive_exit_conditions(1.5, 300, 700);
-  chassis.drive_distance(15.5, 180);
+  chassis.set_drive_exit_conditions(1.5, 300, 900);
+  chassis.drive_distance(5, 180, 6, 6);
 
-  // Move backwards and clamp onto the goal
-  chassis.set_turn_exit_conditions(1, 300, 500);
-  chassis.turn_to_angle(num + (reversed * 315));
-  chassis.set_drive_exit_conditions(1.5, 300, 800);
-  chassis.drive_distance(-25, num + (reversed * 315));
-  chassis.drive_distance(-5, num + (reversed * 315), 3, 3);
+  // Move backwards and clamp onto the goal 
+  chassis.set_turn_exit_conditions(1, 300, 700);  
+  chassis.turn_to_angle(num + (reversed * 320));
+  chassis.set_drive_exit_conditions(1.5, 300, 1000);
+  chassis.drive_distance(-32, num + (reversed * 320), 7, 12);
+  chassis.drive_distance(-5, num + (reversed * 320), 3, 3);
   Clamp.set(true);
+  wait(200, msec);
 
   // Sweep the two rings on the edge of the line
   chassis.turn_to_angle(num + (reversed * 145));
-  chassis.set_drive_exit_conditions(1.5, 300, 600);
-  chassis.drive_distance(19, num + (reversed * 135));
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.right_swing_to_angle(num + (reversed * 90));
-  chassis.set_drive_exit_conditions(1.5, 300, 500);
-  chassis.drive_distance(4, num + (reversed * 90), 6, 6);
+  chassis.set_drive_exit_conditions(1.5, 300, 800);
+  chassis.drive_distance(20.5, num + (reversed * 145)); 
+  if (c == "blue") chassis.right_swing_to_angle(num + (reversed * 90));
+  else chassis.left_swing_to_angle(num + (reversed * 90));
+  chassis.set_drive_exit_conditions(1.5, 300, 700);
+  chassis.drive_distance(3, num + (reversed * 90), 6, 6);
   wait(1.5, vex::timeUnits::sec);
   Intake.stop(coast);
-  chassis.set_drive_exit_conditions(1.5, 300, 400);
-  chassis.drive_distance(-7, num + (reversed * 95));
+  chassis.set_drive_exit_conditions(1.5, 300, 600);
+  chassis.drive_distance(-6, num + (reversed * 95));
 
   // Get the last ring
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.right_swing_to_angle(0);
+  if (c == "blue") chassis.right_swing_to_angle(0);
+  else chassis.left_swing_to_angle(0);
   wait(2, vex::timeUnits::sec);
   Intake.stop(coast);
-  chassis.set_drive_exit_conditions(1.5, 300, 500);
-  chassis.drive_distance(10, 0);
+  chassis.set_drive_exit_conditions(1.5, 300, 700);
+  chassis.drive_distance(8, 0);
 
   // Touch the ladder
   chassis.turn_to_angle(num + (reversed * 270));
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   chassis.set_drive_exit_conditions(1.5, 300, 2000);
   chassis.drive_distance(55, num + (reversed * 275));
 }
@@ -185,13 +188,13 @@ void alliance_positive(std::string c)
   // Get the Alliance Stake, pushing rings out of the way
   chassis.drive_distance(-9.5, num + (reversed * 270));
   chassis.turn_to_angle(180);
-  chassis.drive_distance(-4, 180);
+  chassis.drive_distance(-5, 180);
   Intake.spin(fwd, 12, volt);
   wait(800, msec);
   Intake.stop();
 
   // Move forwards
-  chassis.drive_distance(13, 180);
+  chassis.drive_distance(14, 180, 5, 5);
 
   // Clamp onto the goal
   chassis.turn_to_angle(num + (reversed * 45));
@@ -235,7 +238,7 @@ void basic_positive(std::string c)
   // chassis.drive_distance(-15, 0);
   // chassis.turn_to_angle(330);
   // chassis.drive_distance(-5, 330, 6.5, 6.5, 0.1, 1000, 1000);
-  chassis.drive_distance(-30, num + (reversed * 330), 5, 2);
+  chassis.drive_distance(-30, num + (reversed * 30), 5, 2);
   wait(0.2, vex::timeUnits::sec);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
@@ -322,6 +325,16 @@ int colorSortingAutonTaskWrapper()
   return 1;
 }
 
+int intakeToFishyAutonTaskWrapper()
+{
+  while (true)
+  {
+    intakeControl.intakeToFishyAutonTask();
+    wait(100, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
 // TODO: Not tested, done up until 2nd Wall Stake
 void auton_skills()
 {
@@ -333,6 +346,7 @@ void auton_skills()
 
   task fishyAutonTask = task(fishyAutonTaskWrapper);
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
 
   intakeToFishyAuton = false;
   intakeSort = false;
@@ -341,11 +355,12 @@ void auton_skills()
   chassis.set_heading(0);
 
   // Get the alliance stake
-  Intake.spin(fwd, 12, volt);
+  intakeSort = true;
   wait(500, msec);
+  intakeSort = false;
 
   // Get the first mogo
-  chassis.drive_distance(15, 0);
+  chassis.drive_distance(13, 0, 6, 6);
   chassis.turn_to_angle(270);
   chassis.drive_distance(-17, 270);
   chassis.drive_distance(-5, 270, 6, 6);
@@ -358,7 +373,7 @@ void auton_skills()
 
   // TODO: Not done yet, getting middle ring closest to wall stake and actually scoring on wall stake
   // get 2 rings, then score a wall stake
-  Intake.spin(fwd, 12, volt);
+  intakeSort = true;
   chassis.turn_to_angle(90);
   chassis.drive_distance(24, 90);
   chassis.turn_to_angle(15);
@@ -366,7 +381,7 @@ void auton_skills()
   chassis.turn_to_angle(345);
   chassis.drive_distance(27, 345);
   wait(800, vex::timeUnits::msec);
-  Intake.stop(brake);
+  intakeSort = false;
   intakeToFishyAuton = true;
   chassis.turn_to_angle(0);
   chassis.drive_distance(-22, 0);

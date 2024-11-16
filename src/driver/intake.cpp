@@ -119,6 +119,7 @@ void IntakeControl::intakeToFishyAutonTask()
     // Spin the intake until the optical sensor senses a ring color
     while (!OpticalSensor.isNearObject())
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      wait(10, vex::timeUnits::msec);
     wait(20, vex::timeUnits::msec);
     Intake.stop(vex::brakeType::brake);
     intakeToFishyAuton = false;
@@ -127,14 +128,15 @@ void IntakeControl::intakeToFishyAutonTask()
 
 void IntakeControl::colorSortingAutonTask()
 {
-  while (Intake.voltage() > 1)
+  if (intakeSort)
   {
     OpticalSensor.setLightPower(100, pct);
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
   }
-  OpticalSensor.setLightPower(0, pct);
-  Intake.stop(vex::brakeType::coast);
+  else if (!intakeToFishyAuton){
+    OpticalSensor.setLightPower(0, pct);
+    Intake.stop();
+  }
 }
