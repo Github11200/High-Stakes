@@ -15,7 +15,7 @@ void default_constants()
 {
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
   chassis.set_heading_constants(6, .4, 0, 1, 0);
-  chassis.set_turn_constants(12, .4, .03, 3, 15);
+  chassis.set_turn_constants(12, .3, .03, 3, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
   chassis.set_drive_exit_conditions(1.5, 300, 5000);
   chassis.set_turn_exit_conditions(1, 300, 800);
@@ -29,35 +29,68 @@ void odom_constants()
   chassis.drive_settle_error = 3;
 }
 
+int fishyAutonTaskWrapper()
+{
+  while (true)
+  {
+    fishyControl.fishyAutonTask();
+    wait(20, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
+int colorSortingAutonTaskWrapper()
+{
+  while (true)
+  {
+    intakeControl.colorSortingAutonTask();
+    wait(50, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
+int intakeToFishyAutonTaskWrapper()
+{
+  while (true)
+  {
+    intakeControl.intakeToFishyAutonTask();
+    wait(50, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
 // TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
 void alliance_negative(std::string c)
 {
+  task fishyAutonTask = task(fishyAutonTaskWrapper);
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
   int reversed;
   int num;
-  if (c == "red")
+  if (c == "blue")
   {
     reversed = -1;
     num = 360;
   }
-  else if (c == "blue")
+  else if (c == "red")
   {
     reversed = 1;
     num = 0;
   }
   odom_constants();
-  chassis.set_heading(num + (reversed * 90));
+  chassis.set_heading(num + (reversed * 90));  
 
   // Get the Alliance Stake, pushing rings out of the way
   chassis.set_drive_exit_conditions(1.5, 300, 900);
-  chassis.drive_distance(-9.5, num + (reversed * 90));
+  chassis.drive_distance(-12.5, num + (reversed * 90));
   chassis.set_turn_exit_conditions(1, 300, 400);
   chassis.turn_to_angle(180);
-  chassis.set_drive_exit_conditions(1.5, 300, 600); 
+  chassis.set_drive_exit_conditions(1.5, 300, 600);  
   chassis.drive_distance(-7, 180, 4, 8);
   chassis.drive_distance(0.7, 180);
-  Intake.spin(fwd, 12, volt);
-  wait(600, msec);
-  Intake.stop();
+  intakeSort = true;
+  wait(600, msec);   
+  intakeSort = false;   
 
   // Move forwards
   chassis.set_drive_exit_conditions(1.5, 300, 900);
@@ -74,24 +107,24 @@ void alliance_negative(std::string c)
 
   // Sweep the two rings on the edge of the line
   chassis.turn_to_angle(num + (reversed * 145));
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  intakeSort = true;
   chassis.set_drive_exit_conditions(1.5, 300, 800);
   chassis.drive_distance(20.5, num + (reversed * 145)); 
-  if (c == "blue") chassis.right_swing_to_angle(num + (reversed * 90));
+  if (c == "red") chassis.right_swing_to_angle(num + (reversed * 90));
   else chassis.left_swing_to_angle(num + (reversed * 90));
   chassis.set_drive_exit_conditions(1.5, 300, 700);
   chassis.drive_distance(3, num + (reversed * 90), 6, 6);
   wait(1.5, vex::timeUnits::sec);
-  Intake.stop(coast);
+  intakeSort = false;
   chassis.set_drive_exit_conditions(1.5, 300, 600);
   chassis.drive_distance(-6, num + (reversed * 95));
 
   // Get the last ring
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  if (c == "blue") chassis.right_swing_to_angle(0);
+  intakeSort = true;
+  if (c == "red") chassis.right_swing_to_angle(0);
   else chassis.left_swing_to_angle(0);
   wait(2, vex::timeUnits::sec);
-  Intake.stop(coast);
+  intakeSort = false;
   chassis.set_drive_exit_conditions(1.5, 300, 700);
   chassis.drive_distance(8, 0);
 
@@ -162,8 +195,20 @@ void doinker_positive(std::string c)
   {
     reversed = 1;
     num = 0;
-  }
+  } 
   odom_constants();
+
+  chassis.set_heading(270);
+
+  // chassis.set_drive_exit_conditions(1.5, 300, 1000);
+  // chassis.set_drive_constants(8, 1.2, 0, 10, 0);
+  // chassis.set_turn_exit_conditions(1, 300, 500);
+  // chassis.set_swing_exit_conditions(1, 300, 500);
+
+  // chassis.drive_distance(-19, 270);
+  // chassis.drive_distance(-5, 270, 6, 6);
+
+  chassis.drive_distance(24, 270);
 }
 
 // TESTED, BUT MOVED
@@ -305,42 +350,13 @@ void basic_positive_red()
   basic_positive("red");
 }
 
-int fishyAutonTaskWrapper()
-{
-  while (true)
-  {
-    fishyControl.fishyAutonTask();
-    wait(20, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
-int colorSortingAutonTaskWrapper()
-{
-  while (true)
-  {
-    intakeControl.colorSortingAutonTask();
-    wait(100, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
-int intakeToFishyAutonTaskWrapper()
-{
-  while (true)
-  {
-    intakeControl.intakeToFishyAutonTask();
-    wait(100, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
 // TODO: Not tested, done up until 2nd Wall Stake
 void auton_skills()
 {
   odom_constants();
 
-  chassis.set_drive_exit_conditions(1.5, 300, 800);
+  chassis.set_drive_exit_conditions(1.5, 300, 1000);
+  chassis.set_drive_constants(8, 1.2, 0, 10, 0);
   chassis.set_turn_exit_conditions(1, 300, 500);
   chassis.set_swing_exit_conditions(1, 300, 500);
 
@@ -360,27 +376,26 @@ void auton_skills()
   intakeSort = false;
 
   // Get the first mogo
-  chassis.drive_distance(13, 0, 6, 6);
+  chassis.drive_distance(12, 0, 6, 6);
   chassis.turn_to_angle(270);
-  chassis.drive_distance(-17, 270);
+  chassis.drive_distance(-16, 270);
   chassis.drive_distance(-5, 270, 6, 6);
   Clamp.set(true);
   wait(500, vex::timeUnits::msec);
 
   // Get the first ring
+  intakeSort = true;
   chassis.turn_to_angle(0);
   chassis.drive_distance(24, 0);
 
   // TODO: Not done yet, getting middle ring closest to wall stake and actually scoring on wall stake
   // get 2 rings, then score a wall stake
-  intakeSort = true;
   chassis.turn_to_angle(90);
   chassis.drive_distance(24, 90);
   chassis.turn_to_angle(15);
   chassis.drive_distance(27, 15);
   chassis.turn_to_angle(345);
   chassis.drive_distance(27, 345);
-  wait(800, vex::timeUnits::msec);
   intakeSort = false;
   intakeToFishyAuton = true;
   chassis.turn_to_angle(0);
@@ -389,13 +404,14 @@ void auton_skills()
   chassis.drive_distance(14, 90);
   raiseFishy = true;
   wait(1000, msec);
-  raiseFishy = false;
 
   // Collect the rest of the rings for 1st mogo
-  chassis.drive_distance(-14, 90);
+  chassis.drive_distance(-11, 90);
+  raiseFishy = false;
   chassis.turn_to_angle(180);
+  intakeSort = true;
   chassis.set_drive_exit_conditions(1.5, 300, 3000);
-  chassis.drive_distance(60, 180, 8, 8);
+  chassis.drive_distance(55, 180, 8, 8);
   wait(500, msec);
   chassis.turn_to_angle(45);
   chassis.set_drive_exit_conditions(1.5, 300, 800);
@@ -405,14 +421,15 @@ void auton_skills()
   chassis.drive_distance(-8.5, 45);
   chassis.turn_to_angle(315);
   chassis.drive_distance(-10, 315);
+  intakeSort = false;
   Clamp.set(false);
 
   // Intake a ring, then bump the next one into the path
   chassis.set_drive_exit_conditions(1.5, 300, 3000);
-  Intake.spin(fwd, 12, volt);
-  chassis.drive_distance(73, 315);
+  intakeSort = true;
+  chassis.drive_distance(79, 315);
   chassis.turn_to_angle(225);
-  Intake.stop();
+  intakeSort = false;
   chassis.set_drive_exit_conditions(1.5, 300, 800);
   chassis.drive_distance(34, 225, 12, 12);
 
@@ -423,7 +440,7 @@ void auton_skills()
   Clamp.set(true);
 
   // Get 6 rings for the 2nd mogo
-  Intake.spin(fwd, 12, volt);
+  intakeSort = true;
   chassis.turn_to_angle(315);
   chassis.drive_distance(34, 315);
   chassis.turn_to_angle(180);
@@ -438,15 +455,14 @@ void auton_skills()
   chassis.drive_distance(-8.5, 315);
   chassis.turn_to_angle(45);
   chassis.drive_distance(-10, 45);
-  Intake.stop();
+  intakeSort = false;
   Clamp.set(false);
 
   // Pickup a ring and score it on the Wall Stake
   chassis.drive_distance(5, 45);
   chassis.turn_to_angle(0);
-  Intake.spin(fwd, 12, volt);
-  chassis.drive_distance(50, 0);
   intakeToFishyAuton = true;
+  chassis.drive_distance(50, 0);
   chassis.turn_to_angle(270);
   chassis.drive_distance(5, 270);
   raiseFishy = true;
@@ -456,11 +472,14 @@ void auton_skills()
   // Get a ring, then grab the 3rd Mogo
   chassis.drive_distance(-14, 270);
   chassis.turn_to_angle(45);
-  Intake.spin(fwd, 12, volt);
+  intakeSort = true;
   chassis.drive_distance(34, 45);
-  Intake.stop();
+  intakeSort = false;
   chassis.turn_to_angle(225);
   chassis.drive_distance(-29, 225);
   chassis.drive_distance(-5, 225);
   Clamp.set(true);
+
+  // Get some more rings
+  intakeSort = true;
 }

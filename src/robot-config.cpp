@@ -24,10 +24,10 @@ digital_out Doinker = digital_out(ThreeWirePort.D);
 optical OpticalSensor = optical(PORT5);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
-vex::controller::button OuttakeButton = Controller.ButtonR1;
+vex::controller::button OuttakeButton = Controller.ButtonA;
 vex::controller::button FishyLiftButton = Controller.ButtonL2;
 vex::controller::button FishyLowerButton = Controller.ButtonY;
-vex::controller::button IntakeToFishyButton = Controller.ButtonA;
+vex::controller::button IntakeToFishyButton = Controller.ButtonR1;
 vex::controller::button FishyResetButton = Controller.ButtonDown;
 vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;

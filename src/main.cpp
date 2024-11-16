@@ -87,6 +87,7 @@ int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
 bool pre_match = true;
+bool pre_driver = true;
 
 void setColor(vex::color colour)
 {
@@ -363,7 +364,7 @@ int buttonsWrapper()
 void usercontrol(void)
 {
   pre_match = false;
-
+  pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   Brain.Screen.clearScreen();

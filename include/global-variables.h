@@ -8,3 +8,5 @@ extern bool doinked;
 extern bool intakeToFishyAuton;
 extern bool intakeSort;
 extern bool raiseFishy;
+extern bool pre_match;
+extern bool pre_driver;

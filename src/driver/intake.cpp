@@ -114,29 +114,33 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeToFishyAutonTask()
 {
-  if (intakeToFishyAuton)
-  {
-    // Spin the intake until the optical sensor senses a ring color
-    while (!OpticalSensor.isNearObject())
-      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-      wait(10, vex::timeUnits::msec);
-    wait(20, vex::timeUnits::msec);
-    Intake.stop(vex::brakeType::brake);
-    intakeToFishyAuton = false;
+  if(pre_driver) {
+    if (intakeToFishyAuton)
+    {
+      // Spin the intake until the optical sensor senses a ring color
+      while (!OpticalSensor.isNearObject())
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        wait(10, vex::timeUnits::msec);
+      wait(20, vex::timeUnits::msec);
+      Intake.stop(vex::brakeType::brake);
+      intakeToFishyAuton = false;
+    }
   }
 }
 
 void IntakeControl::colorSortingAutonTask()
 {
-  if (intakeSort)
-  {
-    OpticalSensor.setLightPower(100, pct);
-    if (shouldEjectRing())
-      ejectRing();
-    Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-  }
-  else if (!intakeToFishyAuton){
-    OpticalSensor.setLightPower(0, pct);
-    Intake.stop();
+  if(pre_driver) {
+    if (intakeSort)
+    {
+      OpticalSensor.setLightPower(100, pct);
+      if (shouldEjectRing())
+        ejectRing();
+      Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    }
+    else if (!intakeToFishyAuton){
+      OpticalSensor.setLightPower(0, pct);
+      Intake.stop();
+    }
   }
 }
