@@ -181,6 +181,7 @@ void pre_auton(void)
   chassis.set_coordinates(0, 0, 0);
   default_constants();
   updateScreen();
+  cout << pre_match << endl;
   while (pre_match)
   { // Changing the names below will only change their names on the
     switch (current_auton_selection)

@@ -62,13 +62,14 @@ void Fishy::resetPosition()
 
 void Fishy::fishyAutonTask()
 {
-  if(pre_driver) {
+  if (pre_driver)
+  {
     if (raiseFishy)
     {
       if (FishyMech.position(degrees) > 240)
       {
         FishyMech.stop(brake);
-        Intake.stop();
+        // Intake.stop();
       }
       else
       {
