@@ -58,7 +58,7 @@ void IntakeControl::ejectRing()
 {
   while (OpticalSensor.isNearObject())
   {
-    Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
