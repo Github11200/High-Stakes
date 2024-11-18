@@ -302,9 +302,23 @@ float Drive::get_SidewaysTracker_position()
 
 void Drive::position_track()
 {
+  Brain.Screen.setPenWidth(5);
   while (1)
   {
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
+
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(0, 0);
+    Brain.Screen.print("X: %f\n", odom.X_position);
+    Brain.Screen.print("Y: %f\n", odom.Y_position);
+    Brain.Screen.print("Theta: %f", odom.orientation_deg);
+
+    Controller.Screen.clearScreen();
+    Controller.Screen.setCursor(0, 0);
+    Controller.Screen.print("X: %f\n", odom.X_position);
+    Controller.Screen.print("Y: %f\n", odom.Y_position);
+    Controller.Screen.print("Theta: %f", odom.orientation_deg);
+
     task::sleep(5);
   }
 }

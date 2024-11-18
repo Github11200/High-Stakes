@@ -15,41 +15,20 @@ bool IntakeControl::shouldEjectRing()
   color ringColor = NULL;
   if (isNear)
   {
-    cout << "near!" << endl;
     if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
-    {
-      cout << "blue ring" << endl;
-      Brain.Screen.clearScreen();
-      Brain.Screen.setFillColor(blue);
-      Brain.Screen.drawRectangle(0, 0, 200, 200);
-      Brain.Screen.setCursor(0, 0);
       ringColor = blue;
-    }
+
     else if (OpticalSensor.hue() < 30)
-    {
-      cout << "red ring" << endl;
-      Brain.Screen.clearScreen();
-      Brain.Screen.setFillColor(red);
-      Brain.Screen.drawRectangle(0, 0, 200, 200);
-      Brain.Screen.setCursor(0, 0);
       ringColor = red;
-    }
-    cout << alliance << endl;
+
     if (alliance == "red")
-    {
-      cout << "red" << endl;
       return ringColor == blue;
-    }
+
     else if (alliance == "blue")
-    {
-      cout << "blue" << endl;
       return ringColor == red;
-    }
+
     else if (alliance == "skills")
-    {
-      cout << "no alliance selected" << endl;
       return false;
-    }
   }
   return false;
 }
@@ -114,13 +93,14 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeToFishyAutonTask()
 {
-  if(pre_driver) {
+  if (pre_driver)
+  {
     if (intakeToFishyAuton)
     {
       // Spin the intake until the optical sensor senses a ring color
       while (!OpticalSensor.isNearObject())
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-        wait(10, vex::timeUnits::msec);
+      wait(10, vex::timeUnits::msec);
       wait(20, vex::timeUnits::msec);
       Intake.stop(vex::brakeType::brake);
       intakeToFishyAuton = false;
@@ -130,7 +110,8 @@ void IntakeControl::intakeToFishyAutonTask()
 
 void IntakeControl::colorSortingAutonTask()
 {
-  if(pre_driver) {
+  if (pre_driver)
+  {
     if (intakeSort)
     {
       OpticalSensor.setLightPower(100, pct);
@@ -138,7 +119,8 @@ void IntakeControl::colorSortingAutonTask()
         ejectRing();
       Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
-    else if (!intakeToFishyAuton){
+    else if (!intakeToFishyAuton)
+    {
       OpticalSensor.setLightPower(0, pct);
       Intake.stop();
     }

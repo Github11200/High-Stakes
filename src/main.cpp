@@ -372,12 +372,6 @@ void usercontrol(void)
   Brain.Screen.printAt(5, 100, "vroom vroom!");
   task buttons = task(buttonsWrapper);
 
-  // lv_init();
-  /* Set basic Widget attributes */
-  // lv_obj_set_size(btn1, 100, 50); /* Set a button's size */
-  // lv_obj_set_pos(btn1, 20, 30);   /* Set a button's position */
-  // solo_awp_blue();
-
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
