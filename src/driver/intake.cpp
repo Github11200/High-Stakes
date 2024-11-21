@@ -61,16 +61,21 @@ void IntakeControl::intake()
 void IntakeControl::intakeToFishy()
 {
   // Spin the intake until the optical sensor senses a ring color
-  while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing())
+  while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing()) {
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(10, vex::timeUnits::msec);
+    wait(10, vex::timeUnits::msec);
+  }
+  Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+  wait(300, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::brake);
 }
 
 void IntakeControl::outtake()
 {
-  while (OuttakeButton.pressing())
+  while (OuttakeButton.pressing()) {
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
+  }
   wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::coast);
 }
@@ -98,10 +103,12 @@ void IntakeControl::intakeToFishyAutonTask()
     if (intakeToFishyAuton)
     {
       // Spin the intake until the optical sensor senses a ring color
-      while (!OpticalSensor.isNearObject())
+      while (!OpticalSensor.isNearObject()) {
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-      wait(10, vex::timeUnits::msec);
-      wait(20, vex::timeUnits::msec);
+        wait(10, vex::timeUnits::msec);
+      }
+      Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+      wait(300, vex::timeUnits::msec);
       Intake.stop(vex::brakeType::brake);
       intakeToFishyAuton = false;
     }
