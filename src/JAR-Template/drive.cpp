@@ -302,22 +302,15 @@ float Drive::get_SidewaysTracker_position()
 
 void Drive::position_track()
 {
-  Brain.Screen.setPenWidth(5);
+  Brain.Screen.setPenWidth(50);
+  Brain.Screen.setPenColor(white);
   while (1)
   {
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
 
-    Brain.Screen.clearScreen();
-    Brain.Screen.setCursor(0, 0);
-    Brain.Screen.print("X: %f\n", odom.X_position);
-    Brain.Screen.print("Y: %f\n", odom.Y_position);
-    Brain.Screen.print("Theta: %f", odom.orientation_deg);
-
-    Controller.Screen.clearScreen();
-    Controller.Screen.setCursor(0, 0);
-    Controller.Screen.print("X: %f\n", odom.X_position);
-    Controller.Screen.print("Y: %f\n", odom.Y_position);
-    Controller.Screen.print("Theta: %f", odom.orientation_deg);
+    cout << "X: " << odom.X_position << endl;
+    cout << "Y: " << odom.Y_position << endl;
+    cout << "Orientation: " << odom.orientation_deg << endl;
 
     task::sleep(5);
   }
@@ -335,9 +328,10 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   Gyro.calibrate();
   while (Gyro.isCalibrating())
   {
-    wait(100, msec);
+    wait(50, msec);
   }
   cout << "Calibrated!" << endl;
+  Controller.rumble(rumbleShort);
 
   set_heading(orientation_deg);
   odom_task = task(position_track_task);

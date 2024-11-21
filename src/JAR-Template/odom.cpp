@@ -61,6 +61,6 @@ void Odom::update_position(float ForwardTracker_position, float SidewaysTracker_
   float X_position_delta = local_polar_length * cos(global_polar_angle);
   float Y_position_delta = local_polar_length * sin(global_polar_angle);
 
-  X_position += X_position_delta;
-  Y_position += Y_position_delta;
+  X_position += -X_position_delta;
+  Y_position += -Y_position_delta;
 }

@@ -326,6 +326,8 @@ int buttonsWrapper()
 
   while (true)
   {
+    chassis.control_arcade();
+
     // Doinker
     if (DoinkerButton.pressing())
     {
@@ -362,15 +364,35 @@ int buttonsWrapper()
   return 1;
 }
 
+int joystickWrapper()
+{
+  while (true)
+  {
+    chassis.control_arcade();
+    wait(20, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
 void usercontrol(void)
 {
   pre_match = false;
+  // TODO: Change back to false
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  Brain.Screen.clearScreen();
-  Brain.Screen.printAt(5, 100, "vroom vroom!");
+  // Brain.Screen.clearScreen();
+  // Brain.Screen.printAt(5, 100, "vroom vroom!");
+
+  // chassis.set_coordinates(0, 0, 0);
+  // auton_skills();
+  // intakeSort = false;
+  // intakeToFishyAuton = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
+
   task buttons = task(buttonsWrapper);
+  // task joysticks = task(joystickWrapper);
 
   while (1)
   {
