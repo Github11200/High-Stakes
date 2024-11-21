@@ -17,7 +17,7 @@ public:
   Fishy(int speed);
 
   /// @brief This lifts the redirect
-  void liftFishy();
+  void liftFishy(bool autonomous = false);
 
   /// @brief This moves the redirect down
   void lowerFishy();

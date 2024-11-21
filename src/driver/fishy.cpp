@@ -7,14 +7,19 @@ Fishy::Fishy(int speed)
   this->speed = speed;
 }
 
-void Fishy::liftFishy()
+void Fishy::liftFishy(bool autonomous = false)
 {
-  while (FishyLiftButton.pressing())
+  while (FishyLiftButton.pressing() || autonomous)
   {
     if (FishyMech.position(degrees) > 240)
     {
       FishyMech.stop(brake);
       Intake.stop();
+      if (autonomous)
+      {
+        wait(100, vex::timeUnits::msec);
+        break;
+      }
     }
     else
     {
@@ -69,7 +74,6 @@ void Fishy::fishyAutonTask()
       if (FishyMech.position(degrees) > 240)
       {
         FishyMech.stop(brake);
-        // Intake.stop();
       }
       else
       {

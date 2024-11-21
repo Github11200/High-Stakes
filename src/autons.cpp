@@ -393,18 +393,21 @@ void auton_skills()
   // Get fourth ring for fishy
   intakeSort = false;
   chassis.turn_to_angle(341.638);
-  chassis.drive_to_point(48.0972, 78.4638);
   intakeToFishyAuton = true;
+  chassis.drive_to_point(48.0972, 78.4638);
 
   // Go to wall stake and score
   chassis.turn_to_angle(0);
   chassis.drive_to_point(47.7277, 59.9461);
   chassis.turn_to_angle(85.9013);
   chassis.drive_to_point(55.3324, 60.395);
-  raiseFishy = true;
+  intakeToFishyAuton = false;
+  intakeSort = false;
+  fishyControl.liftFishy(true); // Score the ring on the wall stake
 
   // Get another ring in the corner
   intakeSort = true;
+  wait(0.5, vex::timeUnits::sec); // Wait for the fishy to be lowered
   chassis.drive_to_point(40.3485, 59.7954);
   chassis.turn_to_angle(175.451);
   chassis.drive_to_point(45.3911, 5.70993);

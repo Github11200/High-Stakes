@@ -358,6 +358,13 @@ int buttonsWrapper()
     else if (FishyLowerButton.pressing())
       fishyControl.lowerFishy();
 
+    if (Controller.ButtonUp.pressing())
+      cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+    else if (Controller.ButtonRight.pressing())
+      cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
+    else if (Controller.ButtonLeft.pressing())
+      cout << "fishyControl.liftFishy(true);" << endl;
+
     vex::wait(60, vex::timeUnits::msec);
   }
 
@@ -377,7 +384,6 @@ int joystickWrapper()
 void usercontrol(void)
 {
   pre_match = false;
-  // TODO: Change back to false
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
@@ -392,7 +398,6 @@ void usercontrol(void)
   // Intake.stop(vex::brakeType::coast);
 
   task buttons = task(buttonsWrapper);
-  // task joysticks = task(joystickWrapper);
 
   while (1)
   {
