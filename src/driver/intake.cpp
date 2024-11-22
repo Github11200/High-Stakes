@@ -66,8 +66,6 @@ void IntakeControl::intakeToFishy()
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
-  Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-  wait(300, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::brake);
 }
 
@@ -110,8 +108,6 @@ void IntakeControl::intakeToFishyAutonTask()
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
         wait(10, vex::timeUnits::msec);
       }
-      Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-      wait(300, vex::timeUnits::msec);
       Intake.stop(vex::brakeType::brake);
       intakeToFishyAuton = false;
     }

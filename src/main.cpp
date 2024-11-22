@@ -358,12 +358,18 @@ int buttonsWrapper()
     else if (FishyLowerButton.pressing())
       fishyControl.lowerFishy();
 
-    if (Controller.ButtonUp.pressing())
-      cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-    else if (Controller.ButtonRight.pressing())
-      cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
-    else if (Controller.ButtonLeft.pressing())
-      cout << "fishyControl.liftFishy(true);" << endl;
+    if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing())
+    {
+      if (Controller.ButtonUp.pressing())
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+      else if (Controller.ButtonRight.pressing())
+        cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
+      else if (Controller.ButtonLeft.pressing())
+        cout << "fishyControl.liftFishy(true);" << endl;
+      else if (Controller.ButtonB.pressing())
+        cout << "\r";
+      wait(100, vex::timeUnits::msec);
+    }
 
     vex::wait(60, vex::timeUnits::msec);
   }
@@ -390,12 +396,13 @@ void usercontrol(void)
   // Brain.Screen.clearScreen();
   // Brain.Screen.printAt(5, 100, "vroom vroom!");
 
-  // chassis.set_coordinates(0, 0, 0);
-  // auton_skills();
-  // intakeSort = false;
-  // intakeToFishyAuton = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
+  chassis.set_coordinates(0, 0, 0);
+
+  auton_skills();
+  intakeSort = false;
+  intakeToFishyAuton = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
 
   task buttons = task(buttonsWrapper);
 

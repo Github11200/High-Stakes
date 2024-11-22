@@ -214,7 +214,6 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }
-  cout << get_ForwardTracker_position() << endl;
   DriveL.stop(hold);
   DriveR.stop(hold);
 }
@@ -308,9 +307,9 @@ void Drive::position_track()
   {
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
 
-    cout << "X: " << odom.X_position << endl;
-    cout << "Y: " << odom.Y_position << endl;
-    cout << "Orientation: " << odom.orientation_deg << endl;
+    // cout << "X: " << odom.X_position << endl;
+    // cout << "Y: " << odom.Y_position << endl;
+    // cout << "Orientation: " << odom.orientation_deg << endl;
 
     task::sleep(5);
   }

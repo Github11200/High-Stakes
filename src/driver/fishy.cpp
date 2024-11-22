@@ -7,7 +7,7 @@ Fishy::Fishy(int speed)
   this->speed = speed;
 }
 
-void Fishy::liftFishy(bool autonomous = false)
+void Fishy::liftFishy(bool autonomous)
 {
   while (FishyLiftButton.pressing() || autonomous)
   {
@@ -23,7 +23,7 @@ void Fishy::liftFishy(bool autonomous = false)
     }
     else
     {
-      Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+      // Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
       FishyMech.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     }
     wait(10, vex::timeUnits::msec);
