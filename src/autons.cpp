@@ -402,15 +402,62 @@ void auton_skills()
   wait(0.5, vex::timeUnits::sec);
 
   // Score on the wall stake
-  chassis.turn_to_angle(358.325);
-  chassis.drive_to_point(47.4031, 59.9742);
-  chassis.turn_to_angle(82.7176);
-  chassis.drive_to_point(53.7993, 60.8967);
-  chassis.turn_to_angle(82.7176);
+  chassis.turn_to_angle(1.13644);
+  chassis.drive_to_point(46.3347, 65);
+  chassis.turn_to_angle(83);
+  chassis.drive_to_point(57, 65);
+  chassis.turn_to_angle(83);
   fishyControl.liftFishy(true);
 
-  // Move the robot back and turn it to get the next two rings
+  // Drive backwards, and then get two rings
+  intakeToFishyAuton = false;
   intakeSort = true;
-  chassis.drive_to_point(38.2386, 59.0024);
-  chassis.turn_to_angle(172.865);
+  chassis.drive_to_point(43.116, 60.0583);
+  chassis.turn_to_angle(170);
+  chassis.drive_to_point(45, 19.532);
+  chassis.turn_to_angle(170);
+  chassis.drive_to_point(45, 6.81166);
+
+  chassis.drive_to_point(41.7727, 33.0401);
+  chassis.turn_to_angle(141.822);
+  chassis.drive_to_point(55.3877, 15.8935);
+  chassis.turn_to_angle(340.655);
+  chassis.drive_to_point(58.993, 5.81743);
+  Clamp.set(false);
+  wait(0.2, vex::timeUnits::sec);
+
+  chassis.drive_to_point(57.6847, 9.7084);
+  chassis.drive_to_point(55.2625, 16.819);
+  chassis.turn_to_angle(308.506);
+
+  intakeSort = false;
+  intakeToFishyAuton = true;
+  chassis.drive_to_point(-3.82859, 60.8298);
+  chassis.turn_to_angle(47.7477);
+
+  intakeToFishyAuton = false;
+  intakeSort = true;
+  chassis.drive_to_point(-31.3932, 36.6471);
+  chassis.drive_to_point(-27.1846, 40.1795);
+
+  // Get the mogo
+  chassis.turn_to_angle(358.237);
+  chassis.drive_to_point(-26.2572, 11.1215, 5, 5);
+  Clamp.set(true);
+
+  chassis.turn_to_angle(326.634);
+  chassis.drive_to_point(-35.9648, 26.0121);
+  chassis.drive_to_point(-45.2021, 39.9434);
+  chassis.turn_to_angle(185.824);
+  chassis.drive_to_point(-47.2771, 20.7892);
+  chassis.drive_to_point(-48.3828, 10.8891);
+  chassis.drive_to_point(-45.8931, 31.2277);
+  chassis.turn_to_angle(222.901);
+  chassis.drive_to_point(-57.3782, 18.8355);
+
+  // Put the mogo into the corner
+  chassis.turn_to_angle(27.0028);
+  chassis.drive_to_point(-63.4052, 7.18981);
+  Clamp.set(false);
+  wait(0.5, vex::timeUnits::sec);
 }
