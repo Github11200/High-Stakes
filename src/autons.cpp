@@ -393,47 +393,44 @@ void auton_skills()
   chassis.turn_to_angle(33.4638);
   chassis.drive_to_point(54.4096, 56.6027);
 
-  // Intake the ring after the wall string
+  // Intake the ring after the wall stake
   chassis.turn_to_angle(343.97);
-  wait(1, vex::timeUnits::sec); // Wait for the previous ring to come up to fishy position
+  wait(0.5, vex::timeUnits::sec);
   intakeSort = false;
   intakeToFishyAuton = true;
   chassis.drive_to_point(46.9024, 82.0763);
   wait(0.5, vex::timeUnits::sec);
 
   // Score on the wall stake
-  chassis.turn_to_angle(1.13644);
-  chassis.drive_to_point(46.3347, 65);
-  chassis.turn_to_angle(83);
-  chassis.drive_to_point(57, 65);
-  chassis.turn_to_angle(83);
+  chassis.turn_to_angle(0.568702);
+  chassis.drive_to_point(46.5324, 61.3799);
+  chassis.turn_to_angle(88);
+  chassis.turn_max_voltage = 0;
+  chassis.drive_to_point(55, 64);
   fishyControl.liftFishy(true);
+  chassis.turn_max_voltage = 10;
 
-  // Drive backwards, and then get two rings
+  // // Drive backwards, and then get two rings 
   intakeToFishyAuton = false;
   intakeSort = true;
-  chassis.drive_to_point(43.116, 60.0583);
-  chassis.turn_to_angle(170);
-  chassis.drive_to_point(45, 19.532);
-  chassis.turn_to_angle(170);
-  chassis.drive_to_point(45, 6.81166);
+  chassis.drive_to_point(41.6902, 61.4521);
+  chassis.turn_to_angle(180.282); 
+  chassis.drive_to_point(41.9364, 19.2499);
+  chassis.drive_to_point(41.9765, 6.52784);
+  chassis.turn_to_angle(60.199);
 
-  chassis.drive_to_point(41.7727, 33.0401);
-  chassis.turn_to_angle(141.822);
-  chassis.drive_to_point(55.3877, 15.8935);
-  chassis.turn_to_angle(340.655);
-  chassis.drive_to_point(58.993, 5.81743);
+  chassis.drive_to_point(51.3819, 11.3219);
+  chassis.turn_to_angle(328.392);
+  chassis.drive_to_point(55.5463, 4.48858);
   Clamp.set(false);
   wait(0.2, vex::timeUnits::sec);
-
-  chassis.drive_to_point(57.6847, 9.7084);
-  chassis.drive_to_point(55.2625, 16.819);
-  chassis.turn_to_angle(308.506);
+  chassis.drive_to_point(52.7827, 8.95865);
+  chassis.turn_to_angle(313.013);
 
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.drive_to_point(-3.82859, 60.8298);
-  chassis.turn_to_angle(47.7477);
+  chassis.drive_to_point(-3.3988, 57.4869);
+  chassis.turn_to_angle(47.7477); 
 
   intakeToFishyAuton = false;
   intakeSort = true;
