@@ -405,18 +405,18 @@ void auton_skills()
   chassis.turn_to_angle(0.568702);
   chassis.drive_to_point(46.5324, 61.3799);
   chassis.turn_to_angle(88);
-  chassis.turn_max_voltage = 0;
   chassis.drive_to_point(55, 64);
+  chassis.turn_to_angle(88);
   fishyControl.liftFishy(true);
   chassis.turn_max_voltage = 10;
 
-  // // Drive backwards, and then get two rings 
+  // Drive backwards, and then get two rings
   intakeToFishyAuton = false;
   intakeSort = true;
   chassis.drive_to_point(41.6902, 61.4521);
-  chassis.turn_to_angle(180.282); 
-  chassis.drive_to_point(41.9364, 19.2499);
-  chassis.drive_to_point(41.9765, 6.52784);
+  chassis.turn_to_angle(175);
+  chassis.drive_to_point(43, 19.2499);
+  chassis.drive_to_point(43, 6.52784);
   chassis.turn_to_angle(60.199);
 
   chassis.drive_to_point(51.3819, 11.3219);
@@ -430,15 +430,15 @@ void auton_skills()
   intakeSort = false;
   intakeToFishyAuton = true;
   chassis.drive_to_point(-3.3988, 57.4869);
-  chassis.turn_to_angle(47.7477); 
+  chassis.turn_to_angle(47.7477);
 
-  intakeToFishyAuton = false;
-  intakeSort = true;
   chassis.drive_to_point(-31.3932, 36.6471);
   chassis.drive_to_point(-27.1846, 40.1795);
 
   // Get the mogo
   chassis.turn_to_angle(358.237);
+  intakeToFishyAuton = false;
+  intakeSort = true;
   chassis.drive_to_point(-26.2572, 11.1215, 5, 5);
   Clamp.set(true);
 
