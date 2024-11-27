@@ -9,8 +9,11 @@ Fishy::Fishy(int speed)
 
 void Fishy::liftFishy(bool autonomous)
 {
+  timer time = timer();
   while (FishyLiftButton.pressing() || autonomous)
   {
+    if (autonomous && time.value() > 2)
+      break;
     if (FishyMech.position(degrees) > 240)
     {
       FishyMech.stop(brake);

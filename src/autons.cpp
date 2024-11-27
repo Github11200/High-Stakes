@@ -373,17 +373,22 @@ void auton_skills()
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
+  intakeSort = false;
 
   // Move forward, turn, move back, and then clamp
+  chassis.drive_timeout = 800;
   chassis.drive_to_point(-0.0310672, 12.4142);
+  chassis.turn_timeout = 600;
   chassis.turn_to_angle(269.231);
   chassis.drive_to_point(20.8049, 12.6687, 5, 5);
   Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
+  wait(0.3, vex::timeUnits::sec);
+  intakeSort = true;
 
   // Intake the first ring
   chassis.turn_to_angle(3.36246);
   chassis.drive_to_point(21.9351, 33.6442);
+  chassis.drive_timeout = 900;
 
   // Intake the second ring to the right
   chassis.turn_to_angle(80.6756);
@@ -403,23 +408,32 @@ void auton_skills()
 
   // Score on the wall stake
   chassis.turn_to_angle(0.568702);
-  chassis.drive_to_point(46.5324, 61.3799);
-  chassis.turn_to_angle(88);
-  chassis.drive_to_point(55, 64);
-  chassis.turn_to_angle(88);
+  chassis.drive_to_point(46.5324, 63.5);
+  chassis.turn_to_angle(90);
+  chassis.turn_max_voltage = 0;
+  chassis.drive_to_point(55.5, 63.5);
+  chassis.turn_max_voltage = 12;
+  chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
-  chassis.turn_max_voltage = 10;
 
   // Drive backwards, and then get two rings
   intakeToFishyAuton = false;
   intakeSort = true;
   chassis.drive_to_point(41.6902, 61.4521);
   chassis.turn_to_angle(175);
+  chassis.drive_timeout = 1200;
   chassis.drive_to_point(43, 19.2499);
+  wait(0.3, vex::timeUnits::sec);
+  chassis.drive_timeout = 900;
+  chassis.turn_max_voltage = 0;
   chassis.drive_to_point(43, 6.52784);
+  wait(0.3, vex::timeUnits::sec);
+  chassis.turn_max_voltage = 12;
   chassis.turn_to_angle(60.199);
 
+  // Get the last ring and then put the mogo in the corner
   chassis.drive_to_point(51.3819, 11.3219);
+  wait(0.3, vex::timeUnits::sec);
   chassis.turn_to_angle(328.392);
   chassis.drive_to_point(55.5463, 4.48858);
   Clamp.set(false);
@@ -427,27 +441,39 @@ void auton_skills()
   chassis.drive_to_point(52.7827, 8.95865);
   chassis.turn_to_angle(313.013);
 
+  // Get the ring in the middle of the ladder up to fishy height
   intakeSort = false;
   intakeToFishyAuton = true;
+  chassis.drive_timeout = 2000;
   chassis.drive_to_point(-3.3988, 57.4869);
   chassis.turn_to_angle(47.7477);
 
+  // Move the first ring a bit
+  chassis.drive_timeout = 900;
   chassis.drive_to_point(-31.3932, 36.6471);
   chassis.drive_to_point(-27.1846, 40.1795);
 
   // Get the mogo
   chassis.turn_to_angle(358.237);
-  intakeToFishyAuton = false;
-  intakeSort = true;
   chassis.drive_to_point(-26.2572, 11.1215, 5, 5);
   Clamp.set(true);
+  wait(0.2, vex::timeUnits::sec);
+  intakeToFishyAuton = false;
+  intakeSort = true;
 
+  // Get the ring we pushed and the one in front of it
   chassis.turn_to_angle(326.634);
   chassis.drive_to_point(-35.9648, 26.0121);
+  wait(0.2, vex::timeUnits::sec);
   chassis.drive_to_point(-45.2021, 39.9434);
+
+  // Turn around and get the next two rings
   chassis.turn_to_angle(185.824);
   chassis.drive_to_point(-47.2771, 20.7892);
+  wait(0.2, vex::timeUnits::sec);
   chassis.drive_to_point(-48.3828, 10.8891);
+
+  // Get the last ring in the corner
   chassis.drive_to_point(-45.8931, 31.2277);
   chassis.turn_to_angle(222.901);
   chassis.drive_to_point(-57.3782, 18.8355);
@@ -457,4 +483,48 @@ void auton_skills()
   chassis.drive_to_point(-63.4052, 7.18981);
   Clamp.set(false);
   wait(0.5, vex::timeUnits::sec);
+
+  // Move the bot to the position for scoring on the wall stake
+  chassis.drive_to_point(-43.2465, 58.5338);
+  chassis.turn_to_angle(271.254);
+  intakeSort = false;
+  intakeToFishyAuton = true;
+  chassis.drive_to_point(-62, 59.0372);
+  chassis.turn_to_angle(270);
+  fishyControl.liftFishy(true);
+
+  intakeSort = true;
+  intakeToFishyAuton = false;
+
+  // chassis.drive_to_point(-57.5014, 59.3201);
+  // chassis.turn_to_angle(54.5915);
+  // chassis.drive_to_point(-26.9954, 83.3325);
+  // chassis.turn_to_angle(230.27);
+  // chassis.drive_to_point(-4.18818, 101.507);
+  // chassis.turn_to_angle(135.086);
+  // chassis.drive_to_point(17.7783, 79.4236);
+  // chassis.turn_to_angle(54.0095);
+  // chassis.drive_to_point(39.3642, 95.1756);
+  // chassis.turn_to_angle(22.0353);
+  // chassis.turn_to_angle(19.8004);
+  // chassis.drive_to_point(42.3674, 102.287);
+  // chassis.drive_to_point(38.7883, 92.4839);
+  // chassis.drive_to_point(38.7899, 92.4882);
+  // chassis.turn_to_angle(70.126);
+  // chassis.drive_to_point(48.7116, 96.4242);
+  // chassis.turn_to_angle(270.212);
+  // chassis.drive_to_point(-40.4402, 94.5496);
+  // chassis.turn_to_angle(222.471);
+  // chassis.drive_to_point(-50.4491, 83.3744);
+  // chassis.turn_to_angle(221.511);
+  // chassis.turn_to_angle(308.182);
+  // chassis.drive_to_point(-61.0608, 91.635);
+  // chassis.turn_to_angle(3.11556);
+  // chassis.drive_to_point(-60.9121, 97.7107);
+  // chassis.turn_to_angle(173.032);
+  // chassis.drive_to_point(-62.992, 115.034);
+  // chassis.drive_to_point(-62.9916, 115.022);
+  // chassis.drive_to_point(-61.4036, 88.183);
+  // chassis.turn_to_angle(70.3755);
+  // chassis.drive_to_point(0.1321, 113.81);
 }

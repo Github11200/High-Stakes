@@ -396,13 +396,13 @@ void usercontrol(void)
   // Brain.Screen.clearScreen();
   // Brain.Screen.printAt(5, 100, "vroom vroom!");
 
-  chassis.set_coordinates(0, 0, 0);
+  // chassis.set_coordinates(0, 0, 0);
 
-  auton_skills();
-  intakeSort = false;
-  intakeToFishyAuton = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
+  // auton_skills();
+  // intakeSort = false;
+  // intakeToFishyAuton = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
 
   task buttons = task(buttonsWrapper);
 
