@@ -8,12 +8,13 @@ using namespace std;
 bool intakeToFishyAuton = false;
 bool intakeSort = false;
 bool raiseFishy = false;
+bool fishing = false;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 Fishy fishyControl(12);
 
 void default_constants()
 {
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.set_drive_constants(10, 0.9, 0.05, 2, 0);
   chassis.set_heading_constants(6, .4, 0, 1, 0);
   chassis.set_turn_constants(12, .3, .03, 3, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
@@ -363,7 +364,7 @@ void auton_skills()
   pre_driver = true;
 
   odom_constants();
-  chassis.drive_kd = 0.01;
+  // chassis.drive_kd = 0.01;
   chassis.turn_kd = 0.01;
   chassis.drive_max_voltage = 7;
   chassis.turn_max_voltage = 10;
@@ -380,6 +381,7 @@ void auton_skills()
   chassis.drive_to_point(-0.0310672, 12.4142);
   chassis.turn_timeout = 600;
   chassis.turn_to_angle(269.231);
+  chassis.drive_timeout = 1200;
   chassis.drive_to_point(20.8049, 12.6687, 5, 5);
   Clamp.set(true);
   wait(0.3, vex::timeUnits::sec);
@@ -387,8 +389,8 @@ void auton_skills()
 
   // Intake the first ring
   chassis.turn_to_angle(3.36246);
-  chassis.drive_to_point(21.9351, 33.6442);
   chassis.drive_timeout = 900;
+  chassis.drive_to_point(21.9351, 33.6442);
 
   // Intake the second ring to the right
   chassis.turn_to_angle(80.6756);
@@ -408,13 +410,15 @@ void auton_skills()
 
   // Score on the wall stake
   chassis.turn_to_angle(0.568702);
-  chassis.drive_to_point(46.5324, 63.5);
+  chassis.drive_timeout = 1200;
+  chassis.drive_to_point(46.5324, 63.6);
   chassis.turn_to_angle(90);
   chassis.turn_max_voltage = 0;
-  chassis.drive_to_point(55.5, 63.5);
+  chassis.drive_to_point(55.5, 63.6);
   chassis.turn_max_voltage = 12;
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
+  chassis.drive_timeout = 1000;
 
   // Drive backwards, and then get two rings
   intakeToFishyAuton = false;
@@ -435,9 +439,11 @@ void auton_skills()
   chassis.drive_to_point(51.3819, 11.3219);
   wait(0.3, vex::timeUnits::sec);
   chassis.turn_to_angle(328.392);
-  chassis.drive_to_point(55.5463, 4.48858);
+  chassis.drive_timeout = 1200;
+  chassis.drive_to_point(55.5463, 2);
   Clamp.set(false);
   wait(0.2, vex::timeUnits::sec);
+  chassis.drive_timeout = 900;
   chassis.drive_to_point(52.7827, 8.95865);
   chassis.turn_to_angle(313.013);
 
@@ -455,6 +461,7 @@ void auton_skills()
 
   // Get the mogo
   chassis.turn_to_angle(358.237);
+  chassis.drive_timeout = 1200;
   chassis.drive_to_point(-26.2572, 11.1215, 5, 5);
   Clamp.set(true);
   wait(0.2, vex::timeUnits::sec);
@@ -485,12 +492,13 @@ void auton_skills()
   wait(0.5, vex::timeUnits::sec);
 
   // Move the bot to the position for scoring on the wall stake
-  chassis.drive_to_point(-43.2465, 58.5338);
+  chassis.drive_to_point(-43.2465, 57);
   chassis.turn_to_angle(271.254);
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.drive_to_point(-62, 59.0372);
+  chassis.drive_to_point(-62, 57);
   chassis.turn_to_angle(270);
+  wait(0.6, vex::timeUnits::sec);
   fishyControl.liftFishy(true);
 
   intakeSort = true;

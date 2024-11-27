@@ -10,3 +10,4 @@ extern bool intakeSort;
 extern bool raiseFishy;
 extern bool pre_match;
 extern bool pre_driver;
+extern bool fishing;
