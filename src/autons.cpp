@@ -15,7 +15,7 @@ Fishy fishyControl(12);
 void default_constants()
 {
   chassis.set_drive_constants(10, 0.9, 0.05, 2, 0);
-  chassis.set_heading_constants(6, .4, 0, 1, 0);
+  chassis.set_heading_constants(6, .4, 0, 0.1, 0);
   chassis.set_turn_constants(12, .3, .03, 3, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
   chassis.set_drive_exit_conditions(1.5, 300, 5000);
@@ -365,7 +365,7 @@ void auton_skills()
 
   odom_constants();
   // chassis.drive_kd = 0.01;
-  chassis.turn_kd = 0.01;
+  // chassis.turn_kd = 0.01;
   chassis.drive_max_voltage = 7;
   chassis.turn_max_voltage = 10;
 
@@ -411,10 +411,10 @@ void auton_skills()
   // Score on the wall stake
   chassis.turn_to_angle(0.568702);
   chassis.drive_timeout = 1200;
-  chassis.drive_to_point(46.5324, 63.6);
+  chassis.drive_to_point(46.5324, 63.8);
   chassis.turn_to_angle(90);
   chassis.turn_max_voltage = 0;
-  chassis.drive_to_point(55.5, 63.6);
+  chassis.drive_to_point(55.5, 63.8);
   chassis.turn_max_voltage = 12;
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
@@ -427,7 +427,7 @@ void auton_skills()
   chassis.turn_to_angle(175);
   chassis.drive_timeout = 1200;
   chassis.drive_to_point(43, 19.2499);
-  wait(0.3, vex::timeUnits::sec);
+  wait(0.6, vex::timeUnits::sec);
   chassis.drive_timeout = 900;
   chassis.turn_max_voltage = 0;
   chassis.drive_to_point(43, 6.52784);
@@ -460,9 +460,9 @@ void auton_skills()
   chassis.drive_to_point(-27.1846, 40.1795);
 
   // Get the mogo
-  chassis.turn_to_angle(358.237);
+  chassis.turn_to_angle(330);
   chassis.drive_timeout = 1200;
-  chassis.drive_to_point(-26.2572, 11.1215, 5, 5);
+  chassis.drive_to_point(-30, 11.1215, 5, 1.72);
   Clamp.set(true);
   wait(0.2, vex::timeUnits::sec);
   intakeToFishyAuton = false;
@@ -471,17 +471,18 @@ void auton_skills()
   // Get the ring we pushed and the one in front of it
   chassis.turn_to_angle(326.634);
   chassis.drive_to_point(-35.9648, 26.0121);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
   chassis.drive_to_point(-45.2021, 39.9434);
 
   // Turn around and get the next two rings
   chassis.turn_to_angle(185.824);
   chassis.drive_to_point(-47.2771, 20.7892);
-  wait(0.2, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
   chassis.drive_to_point(-48.3828, 10.8891);
 
   // Get the last ring in the corner
   chassis.drive_to_point(-45.8931, 31.2277);
+  wait(0.5, vex::timeUnits::sec);
   chassis.turn_to_angle(222.901);
   chassis.drive_to_point(-57.3782, 18.8355);
 
