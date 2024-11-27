@@ -357,7 +357,7 @@ void basic_positive_red()
   basic_positive("red");
 }
 
-// TODO: Not tested, done up until 2nd Wall Stake
+// TODO: Done / Tested up until 2nd Wall Stake
 void auton_skills()
 {
   pre_driver = true;

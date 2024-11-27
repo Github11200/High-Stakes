@@ -12,8 +12,15 @@ void Fishy::liftFishy(bool autonomous)
   timer time = timer();
   while (FishyLiftButton.pressing() || autonomous)
   {
-    if (autonomous && time.value() > 2)
-      break;
+    if (autonomous && time.value() > 2) {
+      if(FishyMech.position(degrees) > 180) { // it's probably stuck on the Wall Stake, so just give up
+        break;
+      }
+      else { // it's probably stuck lower down, on the intake, so you can spin the intake a bit
+        Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+        time = 0; // give it some time to score the ring
+      }
+    }
     if (FishyMech.position(degrees) > 240)
     {
       FishyMech.stop(brake);
@@ -33,7 +40,7 @@ void Fishy::liftFishy(bool autonomous)
   }
   while (FishyMech.position(degrees) > 3)
   {
-    Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
+    // Intake.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
     FishyMech.spin(vex::directionType::rev, (FishyMech.position(degrees) / 240) * 12 + 3, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
