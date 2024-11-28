@@ -441,6 +441,7 @@ void auton_skills()
   chassis.drive_to_point(55.5463, 2);
   Clamp.set(false);
   wait(0.2, vex::timeUnits::sec);
+  intakeSort = false;
   chassis.drive_timeout = 900;
   chassis.drive_to_point(52.7827, 8.95865);
   chassis.turn_to_angle(313.013);
@@ -448,7 +449,6 @@ void auton_skills()
   // Get the ring in the middle of the ladder up to fishy height
   chassis.drive_timeout = 2000;
   chassis.drive_to_point(-3.3988, 60);
-  intakeSort = false;
   intakeToFishyAuton = true;
   wait(0.5, vex::timeUnits::sec);
   chassis.turn_to_angle(47.7477);
