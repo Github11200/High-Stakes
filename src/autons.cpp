@@ -205,10 +205,10 @@ void doinker_positive(std::string c)
   // chassis.set_drive_constants(8, 1.2, 0, 10, 0);
   // chassis.set_turn_exit_conditions(1, 300, 500);
   // chassis.set_swing_exit_conditions(1, 300, 500);
-  chassis.drive_to_point(24, 0);
-  chassis.turn_max_voltage = 0;
   chassis.drive_to_point(0, 24);
-  chassis.turn_max_voltage = 12;
+  chassis.heading_max_voltage = 0;
+  chassis.drive_to_point(24, 0);
+  chassis.heading_max_voltage = 12;
 }
 
 // TESTED, BUT MOVED
@@ -409,28 +409,30 @@ void auton_skills()
   // Score on the wall stake
   chassis.turn_to_angle(0.568702);
   chassis.drive_timeout = 1200;
-  chassis.drive_to_point(46.5324, 63.4);
-  chassis.turn_to_angle(90);
-  chassis.turn_max_voltage = 0;
-  chassis.drive_to_point(56.5, 63.4);
-  chassis.turn_max_voltage = 12;
+  chassis.drive_to_point(46.5324, 62.5);
+  chassis.turn_timeout = 1000;
+  chassis.turn_to_angle(90, 6);
+  chassis.turn_timeout = 600;
+  chassis.heading_max_voltage = 0;
+  chassis.drive_to_point(56.5, 62.5);
+  chassis.heading_max_voltage = 12;
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
-  chassis.drive_timeout = 1000;
+  chassis.drive_timeout = 800;
 
   // Drive backwards, and then get two rings
   intakeToFishyAuton = false;
   intakeSort = true;
   chassis.drive_to_point(41.6902, 61.4521);
-  chassis.turn_to_angle(175);
+  chassis.turn_to_angle(180);
   chassis.drive_timeout = 1200;
-  chassis.drive_to_point(43, 19.2499);
-  wait(0.6, vex::timeUnits::sec);
+  chassis.drive_to_point(41.6902, 19.2499);
+  wait(0.8, vex::timeUnits::sec);
   chassis.drive_timeout = 900;
-  chassis.turn_max_voltage = 0;
-  chassis.drive_to_point(43, 6.52784);
-  wait(0.3, vex::timeUnits::sec);
-  chassis.turn_max_voltage = 12;
+  chassis.heading_max_voltage = 0;
+  chassis.drive_to_point(41.6902, 4);
+  wait(0.5, vex::timeUnits::sec);
+  chassis.heading_max_voltage = 12;
   chassis.turn_to_angle(60.199);
 
   // Get the last ring and then put the mogo in the corner
@@ -472,21 +474,21 @@ void auton_skills()
 
   // // Get the ring we pushed and the one in front of it
   chassis.turn_to_angle(320.777);
-  chassis.turn_max_voltage = 0;
+  chassis.heading_max_voltage = 0;
   chassis.drive_timeout = 800;
   chassis.drive_to_point(-37.9108, 24.3597);
   wait(0.5, vex::timeUnits::sec);
-  chassis.drive_to_point(-47.9936, 36.4124);
-  chassis.turn_max_voltage = 12;
+  chassis.drive_to_point(-49, 36.4124);
+  chassis.heading_max_voltage = 12;
 
   // // Turn around and get the next two rings
-  chassis.turn_to_angle(182.476);
-  chassis.drive_to_point(-48.7511, 20.1324);
+  chassis.turn_to_angle(180);
+  chassis.drive_to_point(-49, 20.1324);
   wait(0.5, vex::timeUnits::sec);
-  chassis.drive_to_point(-49.2071, 9.07277);
+  chassis.drive_to_point(-49, 6, 12, 12);
 
   // // Get the last ring in the corner
-  wait(0.5, vex::timeUnits::sec);
+  wait(0.8, vex::timeUnits::sec);
   chassis.turn_to_angle(300.262);
   chassis.drive_to_point(-57.8051, 13.9887);
   wait(0.5, vex::timeUnits::sec);
@@ -506,12 +508,13 @@ void auton_skills()
   chassis.turn_to_angle(270);
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.turn_max_voltage = 0;
+  chassis.heading_max_voltage = 0;
   chassis.drive_timeout = 1000;
   chassis.drive_to_point(-58, 61.6);
   wait(0.4, vex::timeUnits::sec);
-  chassis.drive_to_point(-63, 61.6);
-  chassis.turn_max_voltage = 12;
+  chassis.turn_to_angle(270);
+  chassis.drive_to_point(-66, 61.6);
+  chassis.heading_max_voltage = 12;
   chassis.turn_to_angle(270);
   fishyControl.liftFishy(true);
 

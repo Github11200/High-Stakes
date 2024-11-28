@@ -399,6 +399,7 @@ void usercontrol(void)
   chassis.set_coordinates(0, 0, 0);
 
   auton_skills();
+  // doinker_positive_red();
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
