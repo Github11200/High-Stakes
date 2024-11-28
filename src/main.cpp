@@ -395,7 +395,7 @@ void usercontrol(void)
 
   // Brain.Screen.clearScreen();
   // Brain.Screen.printAt(5, 100, "vroom vroom!");
-
+  // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
 
   auton_skills();
@@ -403,6 +403,7 @@ void usercontrol(void)
   intakeToFishyAuton = false;
   pre_driver = false;
   Intake.stop(vex::brakeType::coast);
+  // Skills testing code end
 
   task buttons = task(buttonsWrapper);
 

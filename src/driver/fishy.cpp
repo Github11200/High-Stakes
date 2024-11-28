@@ -59,6 +59,7 @@ void Fishy::liftFishy(bool autonomous)
   Intake.stop();
   FishyMech.stop(hold);
   fishing = false;
+  
 }
 
 void Fishy::lowerFishy()
