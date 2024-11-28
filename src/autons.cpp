@@ -205,10 +205,10 @@ void doinker_positive(std::string c)
   // chassis.set_drive_constants(8, 1.2, 0, 10, 0);
   // chassis.set_turn_exit_conditions(1, 300, 500);
   // chassis.set_swing_exit_conditions(1, 300, 500);
-
-  chassis.drive_distance(-24, 0);
-
-  FishyMech.spinFor(30, vex::rotationUnits::deg, false);
+  chassis.drive_to_point(24, 0);
+  chassis.turn_max_voltage = 0;
+  chassis.drive_to_point(0, 24);
+  chassis.turn_max_voltage = 12;
 }
 
 // TESTED, BUT MOVED
