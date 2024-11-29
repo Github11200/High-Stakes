@@ -363,11 +363,14 @@ int buttonsWrapper()
       if (Controller.ButtonUp.pressing())
         cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
       else if (Controller.ButtonRight.pressing())
-        cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
       else if (Controller.ButtonLeft.pressing())
-        cout << "fishyControl.liftFishy(true);" << endl;
+      {
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+      }
       else if (Controller.ButtonB.pressing())
-        cout << "\r";
+        cout << "\r\r";
       wait(100, vex::timeUnits::msec);
     }
 
