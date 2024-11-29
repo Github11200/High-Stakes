@@ -377,13 +377,13 @@ void auton_skills()
 
   // Get the mogo
   chassis.drive_to_point(-0.0288024, 13.5957);
-  intakeSort = true;
   chassis.turn_to_point(21.5267, 13.4296, 180);
   chassis.drive_to_point(21.5267, 13.4296, 5, 5);
   Clamp.set(true);
   wait(0.5, vex::timeUnits::sec);
 
   // Get the first ring
+  intakeSort = true;
   chassis.turn_to_point(21.9998, 34.5713);
   chassis.drive_to_point(21.9998, 34.5713);
 
@@ -408,7 +408,6 @@ void auton_skills()
   // Turn towards the wall stake and score on it
   chassis.turn_to_point(57.4387, 60.614);
   chassis.drive_to_point(57.4387, 60.614);
-  chassis.turn_to_angle(89);
   fishyControl.liftFishy(true);
 
   intakeSort = true;
@@ -440,64 +439,6 @@ void auton_skills()
   intakeToFishyAuton = true;
   chassis.turn_to_point(-2.03885, 62.0337);
   chassis.drive_to_point(-2.03885, 62.0337);
-
-  // Push the ring into alignment
-  chassis.turn_to_point(-31.4976, 34.4265, 180);
-  chassis.drive_to_point(-31.4976, 34.4265, 7, 7);
-
-  // Move forward
-  chassis.drive_to_point(-20.0331, 44.9562);
-
-  // Move backwards a bit
-  chassis.turn_to_point(-13.7708, 30.5816, 180);
-  chassis.drive_to_point(-13.7708, 30.5816);
-
-  // Move backwards to clamp onto the mogo
-  chassis.turn_to_point(-25.1667, 14.2865, 180);
-  chassis.drive_to_point(-25.1667, 14.2865, 5, 5);
-  Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
-
-  intakeSort = true;
-  intakeToFishyAuton = false;
-
-  // Get the first ring we pushed into alignment
-  chassis.turn_to_point(-35.3955, 24.7023);
-  chassis.drive_to_point(-35.3955, 24.7023);
-  chassis.turn_to_point(-46.37, 38.8311);
-
-  // Get the second ring
-  chassis.drive_to_point(-46.37, 38.8311);
-  chassis.turn_to_point(-48.0636, 19.1817);
-
-  // Turn around for the first ring the line of 2
-  chassis.turn_to_point(-48.9689, 6.622);
-  chassis.drive_to_point(-48.9689, 6.622);
-
-  // Get the second one in the line
-  chassis.turn_to_point(-58.0796, 14.7376);
-  chassis.drive_to_point(-58.0796, 14.7376);
-
-  // Put the mogo in the corner
-  chassis.turn_to_point(-62.3841, 5.64864);
-  chassis.drive_to_point(-62.3841, 5.64864);
-  Clamp.set(false);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Go to the ladder for second wall stake
-  chassis.turn_to_point(-38.8515, 60.4602);
-  chassis.drive_to_point(-38.8515, 60.4602);
-
-  // Get the first ring to fishy height
-  intakeSort = false;
-  intakeToFishyAuton = true;
-  chassis.turn_to_point(-55.2288, 61.7321);
-  chassis.drive_to_point(-55.2288, 61.7321);
-
-  // Score it on the wall stake
-  chassis.turn_to_point(-60.64, 62.0037);
-  chassis.drive_to_point(-60.64, 62.0037);
-  fishyControl.liftFishy();
 
   //////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////

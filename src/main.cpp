@@ -348,13 +348,19 @@ int buttonsWrapper()
 
     // Mogo
     if (ClampButton.pressing())
+    {
       mogoControl.toggle();
+      cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
+    }
 
     // Redirect
     if (FishyResetButton.pressing())
       fishyControl.resetPosition();
     else if (FishyLiftButton.pressing())
+    {
       fishyControl.liftFishy();
+      cout << "fishyControl.liftFishy(true);" << endl;
+    }
     else if (FishyLowerButton.pressing())
       fishyControl.lowerFishy();
 
@@ -370,7 +376,10 @@ int buttonsWrapper()
         cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
       }
       else if (Controller.ButtonB.pressing())
-        cout << "\r\r";
+      {
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+      }
       wait(100, vex::timeUnits::msec);
     }
 
