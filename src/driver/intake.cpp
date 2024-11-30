@@ -105,7 +105,7 @@ void IntakeControl::intakeToFishyAutonTask()
       // Spin the intake until the optical sensor senses a ring color
       while (!OpticalSensor.isNearObject())
       {
-        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
         wait(10, vex::timeUnits::msec);
       }
       Intake.stop(vex::brakeType::brake);

@@ -189,7 +189,7 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
 
 void Drive::drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
 {
-  desired_heading = heading;
+  // desired_heading = heading;
   PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
   // float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
