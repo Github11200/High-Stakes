@@ -367,8 +367,8 @@ void auton_skills()
   // chassis.turn_kd = 0.01;
   chassis.drive_max_voltage = 12;
   chassis.turn_max_voltage = 10;
-  chassis.turn_timeout = 400;
-  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 350;
+  chassis.drive_timeout = 700;
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
 
@@ -418,13 +418,13 @@ void auton_skills()
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
 
-  intakeSort = true;
-  intakeToFishyAuton = false;
-
   // Move backwards to align with the next two rings
   chassis.drive_timeout = 800;
   chassis.turn_to_point(41.4149, 59.4474, 180);
   chassis.drive_to_point(41.4149, 59.4474);
+
+  intakeSort = true;
+  intakeToFishyAuton = false;
 
   // Get the first ring
   chassis.turn_to_point(43.1499, 16.7767);
@@ -461,18 +461,14 @@ void auton_skills()
   chassis.drive_to_point(-24.7068, 39.0372);
   wait(0.3, vex::timeUnits::sec);
 
-  // Move forward again
-  chassis.drive_timeout = 500;
-  chassis.drive_to_point(-20.7873, 42.9426);
-
   // Get aligned for the mogo
-  chassis.turn_to_point(-11.8323, 32.0713, 180);
-  chassis.drive_to_point(-11.8323, 32.0713);
+  chassis.turn_to_point(-12.8323, 31.0713, 180);
+  chassis.drive_to_point(-13.8323, 31.0713);
 
   // Turn and drive into the mogo to clamp onto it
   chassis.drive_timeout = 1200;
-  chassis.turn_to_point(-21.6857, 15.8559, 180);
-  chassis.drive_to_point(-21.6857, 15.8559, 5, 5);
+  chassis.turn_to_point(-22.6857, 15.8559, 180);
+  chassis.drive_to_point(-22.6857, 15.8559, 5, 5);
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
 
@@ -564,8 +560,8 @@ void auton_skills()
   chassis.drive_to_point(24.1104, 80.4551);
 
   // Align to the corner
-  chassis.turn_to_point(56.5896, 80.2526);
-  chassis.drive_to_point(56.5896, 80.2526);
+  chassis.turn_to_point(57.5896, 80.2526);
+  chassis.drive_to_point(57.5896, 80.2526);
 
   // Push into the corner
   chassis.drive_timeout = 900;
