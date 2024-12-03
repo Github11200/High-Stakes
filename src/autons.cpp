@@ -21,6 +21,8 @@ void default_constants()
   chassis.set_drive_exit_conditions(1.5, 300, 5000);
   chassis.set_turn_exit_conditions(1, 300, 1500);
   chassis.set_swing_exit_conditions(1, 300, 1000);
+  chassis.drive_max_voltage = 12;
+  chassis.turn_max_voltage = 10;
 }
 
 void odom_constants()
@@ -61,79 +63,92 @@ int intakeToFishyAutonTaskWrapper()
 // TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
 void alliance_negative(std::string c)
 {
-  task fishyAutonTask = task(fishyAutonTaskWrapper);
+  pre_driver = true;
+
+  // task fishyAutonTask = task(fishyAutonTaskWrapper);
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-  task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
-  int reversed;
+  // task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
   int num;
   if (c == "blue")
   {
-    reversed = -1;
     num = 360;
+    alliance = "blue";
   }
   else if (c == "red")
   {
-    reversed = 1;
     num = 0;
+    alliance = "red";
   }
   odom_constants();
-  chassis.set_heading(num + (reversed * 90));
 
-  wait(1, vex::timeUnits::sec);
-
-  // Get the Alliance Stake, pushing rings out of the way
-  chassis.set_drive_exit_conditions(1.5, 300, 900);
-  chassis.drive_distance(-12.5, num + (reversed * 90));
-  chassis.set_turn_exit_conditions(1, 300, 400);
-  chassis.turn_to_angle(180);
-  chassis.set_drive_exit_conditions(1.5, 300, 600);
-  chassis.drive_distance(-7, 180, 4, 8);
-  intakeSort = true;
-  wait(600, msec);
-  intakeSort = false;
-
-  // Move forwards
-  chassis.set_drive_exit_conditions(1.5, 300, 900);
-  chassis.drive_distance(4.3, 180, 6, 6);
-
-  // Move backwards and clamp onto the goal
-  chassis.set_turn_exit_conditions(1, 300, 700);
-  chassis.turn_to_angle(num + (reversed * 322));
-  chassis.set_drive_exit_conditions(1.5, 300, 1000);
-  chassis.drive_distance(-31, num + (reversed * 322), 7, 12);
-  chassis.drive_distance(-5, num + (reversed * 322), 3, 3);
   Clamp.set(true);
-  wait(200, msec);
 
-  // Sweep the two rings on the edge of the line
-  chassis.turn_to_angle(num + (reversed * 145));
+  while (true)
+  {
+    intakeSort = true;
+    wait(50, vex::timeUnits::sec);
+  }
+  return;
+
+  // Move backwards to align with the alliance stake horizontally
+  chassis.turn_to_point(-0.108711, -11.6306, 180);
+  chassis.drive_to_point(-0.108711, -11.6306);
+
+  // Move backwards to the alliance stake
+  chassis.turn_to_point(5.693, -11.6306, 180);
+  chassis.drive_to_point(5.693, -11.6306);
+
   intakeSort = true;
-  chassis.set_drive_exit_conditions(1.5, 300, 800);
-  chassis.drive_distance(19.5, num + (reversed * 145));
-  if (c == "red")
-    chassis.right_swing_to_angle(num + (reversed * 90));
-  else
-    chassis.left_swing_to_angle(num + (reversed * 90));
-  chassis.set_drive_exit_conditions(1.5, 300, 700);
-  chassis.drive_distance(8, num + (reversed * 90), 6, 6);
-  wait(1.8, vex::timeUnits::sec);
-  intakeSort = false;
-  chassis.set_drive_exit_conditions(1.5, 300, 600);
-  chassis.drive_distance(-11, num + (reversed * 95));
+  wait(0.5, vex::timeUnits::sec);
 
-  // Get the last ring
-  intakeSort = true;
-  if (c == "red")
-    chassis.right_swing_to_angle(0);
-  else
-    chassis.left_swing_to_angle(0);
-  if (c == "red")
-    chassis.right_swing_to_angle(num + (reversed * 270));
-  else
-    chassis.left_swing_to_angle(num + (reversed * 270));
+  // Move forward a bit
+  chassis.turn_to_point(0.188861, -11.2922);
+  chassis.drive_to_point(0.188861, -11.2922);
 
-  // chassis.set_drive_exit_conditions(1.5, 300, 2000);
-  // chassis.drive_distance(55, num + (reversed * 275));
+  // Move to the mogo and clamp ipt
+  chassis.turn_to_point(-31.441, 15.7054, 180);
+  chassis.drive_to_point(-31.441, 15.7054, 6, 6);
+  Clamp.set(1);
+  wait(0.5, vex::timeUnits::sec);
+
+  // Turn to face the next two rings
+  chassis.turn_to_point(-33.8154, 18.5278);
+
+  chassis.turn_max_voltage = 6;
+  chassis.heading_max_voltage = 6;
+  chassis.drive_max_voltage = 11;
+  chassis.drive_kp = 1;
+  chassis.drive_timeout = 150;
+
+  // Get the three rings
+  chassis.drive_to_point(-33.8154, 18.5278);
+  chassis.drive_to_point(-35.894, 20.6283);
+  chassis.drive_to_point(-38.4576, 23.0366);
+  chassis.drive_to_point(-41.0772, 25.5508);
+  chassis.drive_to_point(-42.4961, 27.1201);
+  chassis.drive_to_point(-43.684, 28.8796);
+  chassis.drive_to_point(-44.568, 30.8078);
+  chassis.drive_to_point(-45.0121, 32.641);
+  chassis.drive_to_point(-45.0121, 32.641);
+  chassis.drive_to_point(-45.1045, 35.0206);
+  chassis.drive_to_point(-44.7671, 37.8005);
+  chassis.drive_to_point(-43.922, 41.432);
+  chassis.drive_to_point(-43.0253, 43.4736);
+  chassis.drive_to_point(-41.5588, 45.2697);
+  chassis.drive_to_point(-40.2749, 46.1149);
+  chassis.drive_to_point(-38.1787, 46.6981);
+  chassis.drive_to_point(-39.9698, 46.7357);
+  chassis.drive_to_point(-37.1882, 45.4123);
+  chassis.drive_to_point(-35.28, 42.9733);
+  chassis.drive_to_point(-33.4362, 39.3711);
+  chassis.drive_to_point(-31.8904, 34.5925);
+  chassis.drive_to_point(-31.6879, 29.962);
+  chassis.drive_to_point(-31.8878, 25.899);
+
+  // Go touch the ladder
+  default_constants();
+  chassis.turn_to_point(-32.2806, -2.07428);
+  chassis.drive_to_point(-32.2806, -2.07428);
 }
 
 // TESTED, BUT MOVED
@@ -356,7 +371,6 @@ void basic_positive_red()
   basic_positive("red");
 }
 
-// TODO: Done / Tested up until 2nd Wall Stake
 void auton_skills()
 {
   pre_driver = true;
@@ -565,15 +579,15 @@ void auton_skills()
 
   // Push into the corner
   chassis.drive_timeout = 900;
-  chassis.turn_to_point(64.122, 112.997, 180);
-  chassis.drive_to_point(64.122, 112.997);
+  chassis.turn_to_point(65, 112.997, 180);
   Clamp.set(0);
+  chassis.drive_to_point(65, 112.997);
 
   chassis.turn_to_point(43.6138, 97.5774);
   chassis.drive_to_point(43.6138, 97.5774);
 
   chassis.drive_timeout = 3000;
-  chassis.turn_to_point(-48.3737, 122.738);
+  chassis.turn_to_point(-48.3737, 122.738, 180);
   chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
   chassis.drive_to_point(43.6138, 97.5774);

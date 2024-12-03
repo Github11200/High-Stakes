@@ -410,8 +410,7 @@ void usercontrol(void)
   // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
 
-  auton_skills();
-  // doinker_positive_red();
+  alliance_negative("blue");
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
