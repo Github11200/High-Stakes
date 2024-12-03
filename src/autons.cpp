@@ -381,8 +381,8 @@ void auton_skills()
   // chassis.turn_kd = 0.01;
   chassis.drive_max_voltage = 12;
   chassis.turn_max_voltage = 10;
-  chassis.turn_timeout = 350;
-  chassis.drive_timeout = 700;
+  chassis.turn_timeout = 300;
+  chassis.drive_timeout = 600;
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
 
@@ -579,16 +579,18 @@ void auton_skills()
 
   // Push into the corner
   chassis.drive_timeout = 900;
-  chassis.turn_to_point(65, 112.997, 180);
+  chassis.turn_to_point(70, 112.997, 180);
   Clamp.set(0);
   chassis.drive_to_point(65, 112.997);
 
-  chassis.turn_to_point(43.6138, 97.5774);
-  chassis.drive_to_point(43.6138, 97.5774);
+  // Back up
+  chassis.drive_to_point(57.5896, 96);
 
+  // Ram the last goal into the corner
   chassis.drive_timeout = 3000;
   chassis.turn_to_point(-48.3737, 122.738, 180);
   chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
+  // Back up
   chassis.drive_to_point(43.6138, 97.5774);
 }
