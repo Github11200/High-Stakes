@@ -36,10 +36,13 @@ bool IntakeControl::shouldEjectRing()
 void IntakeControl::ejectRing()
 {
   while (OpticalSensor.isNearObject())
-  {
+  { // spin it until the ring is not near
+  // once it's not near, it's probably in the perfect place for ejection
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
+  // by spinning it in reverse, we either toss the ring straight out
+  // or have the previous hook come from behind and knock it off
   Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
   wait(500, vex::timeUnits::msec);
 }
@@ -116,18 +119,18 @@ void IntakeControl::intakeToFishyAutonTask()
 
 void IntakeControl::colorSortingAutonTask()
 {
-  if (pre_driver)
+  if (pre_driver) // make sure to not stop the intake during driver control
   {
-    if (intakeSort)
+    if (intakeSort) // the variable that the autonomous sets to true to spin the intake
     {
-      OpticalSensor.setLightPower(100, pct);
+      OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
       if (shouldEjectRing())
         ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     }
-    else if (!intakeToFishyAuton && !fishing)
+    else if (!intakeToFishyAuton && !fishing) // don't stop the intake if other systems are running
     {
-      OpticalSensor.setLightPower(0, pct);
+      OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
       Intake.stop();
     }
   }
