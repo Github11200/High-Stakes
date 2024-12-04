@@ -367,7 +367,7 @@ int buttonsWrapper()
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing())
     {
       if (Controller.ButtonUp.pressing())
-        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
       else if (Controller.ButtonRight.pressing())
         cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
       else if (Controller.ButtonLeft.pressing())
