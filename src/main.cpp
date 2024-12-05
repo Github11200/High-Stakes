@@ -183,7 +183,7 @@ void pre_auton(void)
   updateScreen();
   cout << pre_match << endl;
   while (pre_match)
-  { // Changing the names below will only change their names on the
+  {
     switch (current_auton_selection)
     {
     case 0:
@@ -213,7 +213,6 @@ void pre_auton(void)
         {
           if (alliance == "skills")
           {
-            cout << "switched to red" << endl;
             alliance = "red";
           }
           else if (alliance == "red")
