@@ -60,8 +60,8 @@ int intakeToFishyAutonTaskWrapper()
   return 1;
 }
 
-// TESTED, BUT MOVED FROM ALLIANCE_NEGATIVE_BLUE TO ALLIANCE_NEGATIVE
-void alliance_negative(std::string c)
+// IN PROGRESS
+void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
@@ -82,12 +82,12 @@ void alliance_negative(std::string c)
   chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
   // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0*reversed, -10.8, 180);
-  chassis.drive_to_point(0*reversed, -10.8);
+  chassis.turn_to_point(0 * reversed, -10.8, 180);
+  chassis.drive_to_point(0 * reversed, -10.8);
 
   // Move backwards to the alliance stake
-  chassis.turn_to_point(5.78*reversed, -10.8, 180);
-  chassis.drive_to_point(5.7*reversed, -10.8);
+  chassis.turn_to_point(5.78 * reversed, -10.8, 180);
+  chassis.drive_to_point(5.7 * reversed, -10.8);
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
@@ -97,13 +97,13 @@ void alliance_negative(std::string c)
   chassis.drive_to_point(0, -10.8);
 
   // Move to the mogo and clamp it
-  chassis.turn_to_point(-31.441*reversed, 15.7054, 180);
-  chassis.drive_to_point(-31.441*reversed, 15.7054, 6, 6);
+  chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
+  chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
 
   // Turn to face the next two rings
-  chassis.turn_to_point(-33.8154*reversed, 18.5278);
+  chassis.turn_to_point(-33.8154 * reversed, 18.5278);
 
   chassis.turn_max_voltage = 8;
   chassis.heading_max_voltage = 8;
@@ -112,30 +112,34 @@ void alliance_negative(std::string c)
   chassis.drive_timeout = 250;
 
   // Get the three rings
-  chassis.drive_to_point(-33.0974*reversed, 17.7224);
-  chassis.drive_to_point(-36.0713*reversed, 20.866);
-  chassis.drive_to_point(-38.001*reversed, 22.9339);
-  chassis.drive_to_point(-41.3964*reversed, 26.8995);
-  chassis.drive_to_point(-43.4976*reversed, 30.3175);
-  chassis.drive_to_point(-44.757*reversed, 35.9642);
-  chassis.drive_to_point(-44.3216*reversed, 38.9427);
-  chassis.drive_to_point(-41.9509*reversed, 42.4219);
-  chassis.drive_to_point(-41.842*reversed, 42.5538);
-  chassis.drive_to_point(-42.4535*reversed, 42.5698);
-  chassis.drive_to_point(-38.9504*reversed, 41.1745);
-  chassis.drive_to_point(-34.742*reversed, 38.2227);
-  chassis.drive_to_point(-30.9728*reversed, 32.5925);
-  chassis.drive_to_point(-29.2418*reversed, 24.1724);
-  chassis.drive_to_point(-29.449*reversed, 18.959);
+  chassis.drive_to_point(-33.0974 * reversed, 17.7224);
+  chassis.drive_to_point(-36.0713 * reversed, 20.866);
+  chassis.drive_to_point(-38.001 * reversed, 22.9339);
+  chassis.drive_to_point(-41.3964 * reversed, 26.8995);
+  chassis.drive_to_point(-43.4976 * reversed, 30.3175);
+  chassis.drive_to_point(-44.757 * reversed, 35.9642);
+  chassis.drive_to_point(-44.3216 * reversed, 38.9427);
+  chassis.drive_to_point(-41.9509 * reversed, 42.4219);
+  chassis.drive_to_point(-41.842 * reversed, 42.5538);
+  chassis.drive_to_point(-42.4535 * reversed, 42.5698);
+  chassis.drive_to_point(-38.9504 * reversed, 41.1745);
+  chassis.drive_to_point(-34.742 * reversed, 38.2227);
+  chassis.drive_to_point(-30.9728 * reversed, 32.5925);
+  chassis.drive_to_point(-29.2418 * reversed, 24.1724);
+  chassis.drive_to_point(-29.449 * reversed, 18.959);
 
   // Move to ladder
-  chassis.turn_to_point(-30.5342*reversed, -0.526094);
-  chassis.drive_to_point(-30.5342*reversed, -0.526094);
+  chassis.turn_to_point(-30.5342 * reversed, -0.526094);
+  chassis.drive_to_point(-30.5342 * reversed, -0.526094);
 }
 
-// TESTED, BUT MOVED
-void basic_negative(std::string c)
+// DONE
+void positive_alliance_stake_rush(string c)
 {
+  pre_driver = true;
+
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+
   int reversed;
   int num;
   if (c == "blue")
@@ -149,68 +153,50 @@ void basic_negative(std::string c)
     num = 0;
   }
   odom_constants();
-  chassis.set_heading(num + (reversed * 30));
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
-  // Move backwards and clamp onto the goal
-  chassis.drive_distance(-19, num + (reversed * 30));
-  chassis.drive_distance(-5, num + (reversed * 30), 3, 3);
-  Clamp.set(true);
+  // Move backwards to align with the alliance stake horizontally
+  chassis.turn_to_point(0 * reversed, -10.9, 180);
+  chassis.drive_to_point(0 * reversed, -10.9);
 
-  // Sweep the two rings on the edge of the line
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  wait(500, vex::timeUnits::msec);
-  chassis.turn_to_angle(num + (reversed * 145));
-  chassis.drive_distance(19, num + (reversed * 135));
-  chassis.right_swing_to_angle(num + (reversed * 90));
-  chassis.drive_distance(4, num + (reversed * 90), 6, 6);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(coast);
-  chassis.drive_distance(-7, num + (reversed * 95));
+  // Move backwards to the alliance stake
+  chassis.turn_to_point(5.78 * reversed, -10.8, 180);
+  chassis.drive_to_point(5.7 * reversed, -10.8);
 
-  // Get the last ring
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.right_swing_to_angle(0);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(coast);
-  chassis.drive_distance(10, 0);
+  intakeSort = true;
+  wait(0.5, vex::timeUnits::sec);
 
-  // Touch the ladder
-  chassis.turn_to_angle(num + (reversed * 270));
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.drive_distance(55, num + (reversed * 275));
+  // Move forward a bit
+  chassis.turn_to_point(0, -10.8);
+  chassis.drive_to_point(0, -10.8);
+
+  // Move to the mogo and clamp it
+  chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
+  chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
+  Clamp.set(1);
+  wait(0.5, vex::timeUnits::sec);
+
+  // Get the ring
+  chassis.turn_to_point(30.2483, 31.1189);
+  chassis.drive_to_point(30.2483, 31.1189);
+  wait(0.5, vex::timeUnits::sec);
+
+  // Drive to the ladder
+  chassis.turn_to_point(30.2422, -2);
+  chassis.drive_to_point(30.2422, -2, 7, 7);
 }
 
 // NOT DONE
-void doinker_positive(std::string c)
-{
-  int reversed;
-  int num;
-  if (c == "red")
-  {
-    reversed = -1;
-    num = 360;
-  }
-  else if (c == "blue")
-  {
-    reversed = 1;
-    num = 0;
-  }
-  odom_constants();
-  chassis.set_heading(0);
+void negative_ring_rush(string c) {}
 
-  // chassis.set_drive_exit_conditions(1.5, 300, 1000);
-  // chassis.set_drive_constants(8, 1.2, 0, 10, 0);
-  // chassis.set_turn_exit_conditions(1, 300, 500);
-  // chassis.set_swing_exit_conditions(1, 300, 500);
-  chassis.drive_to_point(0, 24);
-  chassis.heading_max_voltage = 0;
-  chassis.drive_to_point(24, 0);
-  chassis.heading_max_voltage = 12;
-}
-
-// TESTED, BUT MOVED
-void alliance_positive(std::string c)
+// NOT DONE
+void positive_mogo_rush(string c)
 {
+  pre_driver = true;
+
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+
   int reversed;
   int num;
   if (c == "blue")
@@ -224,133 +210,8 @@ void alliance_positive(std::string c)
     num = 0;
   }
   odom_constants();
-  chassis.set_heading(num + (reversed * 270));
-
-  // Get the Alliance Stake, pushing rings out of the way
-  chassis.set_drive_exit_conditions(1.5, 300, 900);
-  chassis.drive_distance(-12.5, num + (reversed * 270));
-  chassis.set_turn_exit_conditions(1, 300, 400);
-  chassis.turn_to_angle(180);
-  chassis.set_drive_exit_conditions(1.5, 300, 600);
-  chassis.drive_distance(-7, 180, 4, 8);
-  Intake.spin(fwd, 12, volt);
-  wait(800, msec);
-  Intake.stop();
-
-  chassis.set_drive_exit_conditions(1.5, 300, 900);
-  chassis.drive_distance(4.3, 180, 6, 6);
-
-  // Move backwards and clamp onto the goal
-  chassis.set_turn_exit_conditions(1, 300, 700);
-  chassis.turn_to_angle(num + (reversed * 40));
-  chassis.set_drive_exit_conditions(1.5, 300, 1000);
-  chassis.drive_distance(-32, num + (reversed * 40), 7, 12);
-  chassis.drive_distance(-5, num + (reversed * 40), 3, 3);
-  Clamp.set(true);
-  wait(200, msec);
-
-  // Intake the ring on the bottom, closest to the mogo rush goal
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(num + (reversed * 270));
-  chassis.drive_distance(22);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(vex::brakeType::coast);
-
-  // touch the ladder
-  chassis.turn_to_angle(num + (reversed * 90));
-  FishyMech.spinFor(30, vex::rotationUnits::deg, false);
-  chassis.drive_distance(40, num + (reversed * 90), 8, 8);
-}
-
-// TESTED, BUT MOVED
-void basic_positive(std::string c)
-{
-  int reversed;
-  int num;
-  if (c == "blue")
-  {
-    reversed = -1;
-    num = 360;
-  }
-  else if (c == "red")
-  {
-    reversed = 1;
-    num = 0;
-  }
-  // This autonomous gets 2 Rings, both on a Mogo
-  odom_constants();
-  chassis.set_heading(0);
-
-  // Move backwards and clamp onto the goal
-  // chassis.drive_distance(-15, 0);
-  // chassis.turn_to_angle(330);
-  // chassis.drive_distance(-5, 330, 6.5, 6.5, 0.1, 1000, 1000);
-  chassis.drive_distance(-30, num + (reversed * 30), 5, 2);
-  wait(0.2, vex::timeUnits::sec);
-  Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
-
-  // Intake the ring on the bottom, closest to the mogo rush goal
-  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  chassis.turn_to_angle(num + (reversed * 270));
-  chassis.drive_distance(22);
-  wait(2, vex::timeUnits::sec);
-  Intake.stop(vex::brakeType::coast);
-
-  // touch the ladder
-  chassis.turn_to_angle(num + (reversed * 90));
-  FishyMech.spinFor(30, vex::rotationUnits::deg, false);
-  chassis.drive_distance(40, num + (reversed * 90), 8, 8);
-}
-
-void alliance_negative_blue()
-{
-  alliance_negative("blue");
-}
-
-void basic_negative_blue()
-{
-  basic_negative("blue");
-}
-
-void doinker_positive_blue()
-{
-  doinker_positive("blue");
-}
-
-void alliance_positive_blue()
-{
-  alliance_positive("blue");
-}
-
-void basic_positive_blue()
-{
-  basic_positive("blue");
-}
-
-void alliance_negative_red()
-{
-  alliance_negative("red");
-}
-
-void basic_negative_red()
-{
-  basic_negative("red");
-}
-
-void doinker_positive_red()
-{
-  doinker_positive("red");
-}
-
-void alliance_positive_red()
-{
-  alliance_positive("red");
-}
-
-void basic_positive_red()
-{
-  basic_positive("red");
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 }
 
 void auton_skills()

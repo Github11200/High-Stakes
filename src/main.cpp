@@ -148,15 +148,15 @@ void updateScreen()
     Brain.Screen.printAt(5, 20, "SKILLS");
   }
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "alliance negative");
+  Brain.Screen.printAt(165, 20, "negative alliance stake rush");
   Brain.Screen.setFillColor(red);
-  Brain.Screen.printAt(325, 20, "basic negative");
+  Brain.Screen.printAt(325, 20, "positive alliance stake rush");
   Brain.Screen.setFillColor(blue);
-  Brain.Screen.printAt(5, 140, "doinker positive");
+  Brain.Screen.printAt(5, 140, "negative ring rush");
   Brain.Screen.setFillColor(orange);
-  Brain.Screen.printAt(165, 140, "alliance positive");
+  Brain.Screen.printAt(165, 140, "positive mogo rush");
   Brain.Screen.setFillColor(purple);
-  Brain.Screen.printAt(325, 140, "basic positive");
+  Brain.Screen.printAt(325, 140, "NONE");
   Brain.Screen.setFillColor(black);
 }
 
@@ -264,55 +264,25 @@ void autonomous(void)
   pre_match = false;
   if (alliance == "skills")
   {
-    cout << "a" << endl;
     auton_skills();
   }
-  else if (alliance == "blue")
+  else if (true)
   {
-    cout << "b" << endl;
     switch (current_auton_selection)
     {
     case 0:
-      alliance_negative_blue(); // This is the default auton, if you don't select from the brain.
-      break;                    // Tap the screen to cycle through autons.
+      negative_alliance_stake_rush(alliance);
+      break;
     case 1:
-      basic_negative_blue();
+      positive_alliance_stake_rush(alliance);
       break;
     case 2:
-      doinker_positive_blue();
+      negative_ring_rush(alliance);
       break;
     case 3:
-      alliance_positive_blue();
+      positive_mogo_rush(alliance);
       break;
-    case 4:
-      basic_positive_blue();
-      break;
-    }
-  }
-  else if (alliance == "red")
-  {
-    cout << "i" << endl;
-    switch (current_auton_selection)
-    {
-    case 0:
-      cout << "c" << endl;
-      alliance_negative_red(); // This is the default auton, if you don't select from the brain.
-      break;                   // Tap the screen to cycle through autons.
-    case 1:
-      cout << "d" << endl;
-      basic_negative_red();
-      break;
-    case 2:
-      cout << "e" << endl;
-      doinker_positive_red();
-      break;
-    case 3:
-      cout << "f" << endl;
-      alliance_positive_red();
-      break;
-    case 4:
-      cout << "g" << endl;
-      basic_positive_red();
+    default:
       break;
     }
   }
@@ -410,7 +380,7 @@ void usercontrol(void)
   // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
 
-  alliance_negative("blue");
+  positive_mogo_rush("blue");
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;

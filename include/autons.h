@@ -7,20 +7,9 @@ extern Drive chassis;
 
 void default_constants();
 
-void alliance_negative(std::string c);
-void basic_negative(std::string c);
-void doinker_positive(std::string c);
-void alliance_positive(std::string c);
-void basic_positive(std::string c);
+void negative_alliance_stake_rush(std::string c);
+void positive_alliance_stake_rush(std::string c);
+void negative_ring_rush(std::string c);
+void positive_mogo_rush(std::string c);
 
-void alliance_negative_blue();
-void basic_negative_blue();
-void doinker_positive_blue();
-void alliance_positive_blue();
-void basic_positive_blue();
-void alliance_negative_red();
-void basic_negative_red();
-void doinker_positive_red();
-void alliance_positive_red();
-void basic_positive_red();
 void auton_skills();
