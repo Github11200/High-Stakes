@@ -348,7 +348,9 @@ int buttonsWrapper()
       {
         cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
         cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-      } else if (Controller.ButtonDown.pressing()) {
+      }
+      else if (Controller.ButtonDown.pressing())
+      {
         cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
       }
       wait(100, vex::timeUnits::msec);
@@ -381,15 +383,15 @@ void usercontrol(void)
   // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
 
-  negative_ring_rush("red");
+  negative_ring_rush("blue");
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
-  Intake.stop(vex::brakeType::coast); 
+  Intake.stop(vex::brakeType::coast);
   // Skills testing code end
 
   task buttons = task(buttonsWrapper);
- 
+
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
