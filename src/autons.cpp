@@ -60,14 +60,14 @@ int intakeToFishyAutonTaskWrapper()
   return 1;
 }
 
-// IN PROGRESS
+// DONE
 void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
-  if (c == "blue")
+  if (c == "blue") 
   {
     reversed = 1;
     alliance = "blue";
@@ -85,9 +85,9 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_point(0 * reversed, -10.8, 180);
   chassis.drive_to_point(0 * reversed, -10.8);
 
-  // Move backwards to the alliance stake
-  chassis.turn_to_point(5.78 * reversed, -10.8, 180);
-  chassis.drive_to_point(5.7 * reversed, -10.8);
+  // Move backwards to the alliance stake 
+  chassis.turn_to_point(5.78 * reversed, -10.8, 180);  
+  chassis.drive_to_point(5.7 * reversed, -10.8);    
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
@@ -97,7 +97,7 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(0, -10.8);
 
   // Move to the mogo and clamp it
-  chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
+  chassis.turn_to_point(-31.441 * reversed, 15.7054, 180); 
   chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
@@ -111,26 +111,30 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_kp = 1;
   chassis.drive_timeout = 250;
 
-  // Get the three rings
-  chassis.drive_to_point(-33.0974 * reversed, 17.7224);
-  chassis.drive_to_point(-36.0713 * reversed, 20.866);
-  chassis.drive_to_point(-38.001 * reversed, 22.9339);
-  chassis.drive_to_point(-41.3964 * reversed, 26.8995);
-  chassis.drive_to_point(-43.4976 * reversed, 30.3175);
-  chassis.drive_to_point(-44.757 * reversed, 35.9642);
-  chassis.drive_to_point(-44.3216 * reversed, 38.9427);
-  chassis.drive_to_point(-41.9509 * reversed, 42.4219);
-  chassis.drive_to_point(-41.842 * reversed, 42.5538);
-  chassis.drive_to_point(-42.4535 * reversed, 42.5698);
-  chassis.drive_to_point(-38.9504 * reversed, 41.1745);
-  chassis.drive_to_point(-34.742 * reversed, 38.2227);
-  chassis.drive_to_point(-30.9728 * reversed, 32.5925);
-  chassis.drive_to_point(-29.2418 * reversed, 24.1724);
-  chassis.drive_to_point(-29.449 * reversed, 18.959);
+  chassis.drive_to_point(-34.9914*reversed, 19.5408);
+  chassis.drive_to_point(-40.1114*reversed, 24.4523);
+  chassis.drive_to_point(-43.1773*reversed, 27.7561);
+  chassis.drive_to_point(-45.1493*reversed, 31.7904);
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-46.0278*reversed, 36.1759);
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-46.3615*reversed, 41);
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-46.4902*reversed, 33.9749);
+  chassis.drive_to_point(-46.7279*reversed, 27.7285); 
+  chassis.drive_to_point(-44.455*reversed, 32.4204); 
+  chassis.drive_to_point(-38.374*reversed, 35.2606); 
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-33.7581*reversed, 33.5115);
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-31.519*reversed, 25.9074);
+  wait(0.1, vex::timeUnits::sec);
+  chassis.drive_to_point(-32*reversed, 16.0187);
 
-  // Move to ladder
-  chassis.turn_to_point(-30.5342 * reversed, -0.526094);
-  chassis.drive_to_point(-30.5342 * reversed, -0.526094);
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+  chassis.drive_timeout = 2000;
+  chassis.drive_to_point(-32*reversed, 0);
 }
 
 // DONE
@@ -141,16 +145,13 @@ void positive_alliance_stake_rush(string c)
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
 
   int reversed;
-  int num;
   if (c == "blue")
   {
     reversed = -1;
-    num = 360;
   }
   else if (c == "red")
   {
     reversed = 1;
-    num = 0;
   }
   odom_constants();
   chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
@@ -188,7 +189,92 @@ void positive_alliance_stake_rush(string c)
 }
 
 // NOT DONE
-void negative_ring_rush(string c) {}
+void negative_ring_rush(string c) {
+  pre_driver = true;
+
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  int reversed;
+  if (c == "red") 
+  {
+    reversed = 1;
+    alliance = "red";
+  }
+  else if (c == "blue")
+  {
+    reversed = -1;
+    alliance = "blue";
+  }
+  odom_constants();
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+
+  // Get the mogo
+  chassis.drive_timeout = 550;
+  chassis.drive_to_point(-8*reversed, -26, 8, 1.8);
+  Clamp.set(true);
+  intakeSort = true;
+  chassis.drive_to_point(-8*reversed, -26, 8, 1.8);
+
+  // Turn to face the two rings
+  chassis.turn_timeout = 300;
+  chassis.turn_to_point(-11.3642*reversed, -28.155);
+
+  chassis.turn_max_voltage = 8;
+  chassis.heading_max_voltage = 8;
+  chassis.drive_max_voltage = 11;
+  chassis.drive_kp = 1;
+  chassis.drive_timeout = 250; 
+
+  // Get the two rings
+  chassis.drive_to_point(-15.8632*reversed, -33.7677);
+  chassis.drive_to_point(-18.3749*reversed, -36.4343);
+  chassis.drive_to_point(-21.6912*reversed, -39.0674);
+  chassis.drive_to_point(-26.4379*reversed, -40.8727);
+  vex::wait(800, msec);
+  chassis.drive_to_point(-32.6256*reversed, -41.6523);
+  chassis.drive_to_point(-37.9279*reversed, -41.683);
+  chassis.drive_timeout = 250;
+  vex::wait(800, msec);
+  chassis.drive_to_point(-30.269*reversed, -41.6913);
+  chassis.drive_to_point(-23.1899*reversed, -41.904);
+  chassis.drive_to_point(-28.3616*reversed, -38.4433);
+  chassis.drive_to_point(-30.6178*reversed, -30.4833);
+
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0); 
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+
+  // Go around the blue ring
+  chassis.drive_to_point(-28.977*reversed, -29.1248);
+  chassis.drive_to_point(-26.3682*reversed, -24.0184);  
+  chassis.drive_to_point(-24.3925*reversed, -17.3277);
+  chassis.drive_to_point(-26.9941*reversed, -11.6915);
+
+  chassis.drive_timeout = 1000;
+
+  // Go to the corner
+  Doinker.set(true);
+  chassis.turn_to_point(-42.6541, 7.69055);
+  chassis.drive_to_point(-42.6541, 7.69055);
+
+  // Topple the 4 rings
+  chassis.turn_to_angle(91.8262);
+  Doinker.set(false);
+
+  // Go back and intake the ring
+  chassis.turn_to_point(-46.4767, 8.74408);
+  chassis.drive_to_point(-46.4767, 8.74408);
+
+  // Move forward a bit
+  chassis.turn_timeout = 300;
+  chassis.drive_timeout = 600;
+  chassis.turn_to_point(-40.724, -1.8658);
+  chassis.drive_to_point(-40.724, -1.8658, 12, 12);
+
+  // Touch the ladder
+  chassis.drive_timeout = 2000;
+  chassis.turn_to_point(1.04205, -21.5052);
+  chassis.drive_to_point(1.04205, -21.5052, 12, 12);
+}
 
 // NOT DONE
 void positive_mogo_rush(string c)
@@ -198,20 +284,26 @@ void positive_mogo_rush(string c)
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
 
   int reversed;
-  int num;
   if (c == "blue")
   {
-    reversed = -1;
-    num = 360;
+    reversed = 1;
   }
   else if (c == "red")
   {
-    reversed = 1;
-    num = 0;
+    reversed = -1;
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+  chassis.drive_to_point(0.137081*reversed, 25);
+  chassis.turn_to_point(7, 35);
+  chassis.drive_to_point(7*reversed, 35);
+  Doinker.set(true);
+  vex::wait(0.4, sec);
+  chassis.drive_to_point(0.323844*reversed, 6.28442, 4, 4);
+  Doinker.set(false);
+  vex::wait(0.1, sec);
+  chassis.turn_to_point(-2.67975, 37.6131, 180);
+  chassis.drive_to_point(-2.67975, 37.6131);
+  Clamp.set(1);
 }
 
 void auton_skills()

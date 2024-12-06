@@ -51,13 +51,13 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
-    OpticalSensor.setLightPower(100, pct);
-    if (shouldEjectRing())
-      ejectRing();
+    // OpticalSensor.setLightPower(100, pct);
+    // if (shouldEjectRing())
+    //   ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
+    // wait(10, vex::timeUnits::msec);
   }
-  OpticalSensor.setLightPower(0, pct);
+  // OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::coast);
 }
 
