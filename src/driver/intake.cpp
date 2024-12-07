@@ -128,6 +128,9 @@ void IntakeControl::colorSortingAutonTask()
         ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     }
+    else if (intakeRev) {
+      Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+    }
     else if (!intakeToFishyAuton && !fishing) // don't stop the intake if other systems are running
     {
       OpticalSensor.setLightPower(0, pct); // turn off the light to save durability

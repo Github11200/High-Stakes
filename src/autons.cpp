@@ -7,6 +7,7 @@ using namespace std;
 
 bool intakeToFishyAuton = false;
 bool intakeSort = false;
+bool intakeRev = false;
 bool raiseFishy = false;
 bool fishing = false;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
@@ -197,12 +198,12 @@ void negative_ring_rush(string c)
   int reversed;
   if (c == "red")
   {
-    reversed = 1;
+    reversed = -1;
     alliance = "red";
   }
   else if (c == "blue")
   {
-    reversed = -1;
+    reversed = 1;
     alliance = "blue";
   }
   odom_constants();
@@ -258,7 +259,7 @@ void negative_ring_rush(string c)
   chassis.drive_to_point(-42.6541 * reversed, 7.69055);
 
   // Topple the 4 rings
-  chassis.turn_to_angle(alliance == "red" ? 91.8262 : 135);
+  chassis.turn_to_angle(alliance == "blue" ? 91.8262 : 135);
   Doinker.set(false);
 
   // Go back and intake the ring
@@ -283,28 +284,79 @@ void positive_mogo_rush(string c)
   pre_driver = true;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-
   int reversed;
-  if (c == "blue")
-  {
-    reversed = 1;
-  }
-  else if (c == "red")
+  if (c == "red")
   {
     reversed = -1;
+    alliance = "red";
+  }
+  else if (c == "blue")
+  {
+    reversed = 1;
+    alliance = "blue";
   }
   odom_constants();
-  chassis.drive_to_point(0.137081 * reversed, 25);
-  chassis.turn_to_point(7, 35);
-  chassis.drive_to_point(7 * reversed, 35);
+  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
+  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+
+  // Get the mogo
+  chassis.drive_timeout = 580;
+  chassis.turn_timeout = 250;
+  chassis.drive_to_point(-8 * reversed, -26 - 1.5, 8, 1.8);
+  Clamp.set(true);
+  intakeSort = true;
+  chassis.drive_to_point(-8 * reversed, -26 - 1.5, 8, 1.8);
+
+  // Turn and get a ring
+  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 400;
+  chassis.turn_to_point(8.68866 * reversed, -25.3646 - 1.5);
+  chassis.drive_to_point(8.68866 * reversed, -25.3646 - 1.5);
+  vex::wait(600, msec);
+  intakeSort = false;
+  intakeRev = true;
+
+  chassis.drive_timeout = 400;
+  chassis.turn_timeout = 400;
+  // Push the blue ring forwards, reposition
+  chassis.turn_to_point(15.1719 * reversed, -25.0983 - 1.5);
+  chassis.drive_to_point(15.1719 * reversed, -25.0983 - 1.5);
+
+  // Push the other blue ring away, then come back
+  chassis.drive_timeout = 900;
+  chassis.turn_to_point(15 * reversed, 4.25326 - 1.5);
+  chassis.drive_to_point(15 * reversed, 4.25326 - 1.5);
+  intakeRev = false;
+  chassis.drive_timeout = 400;
+  chassis.turn_to_point(16.2469 * reversed, -4.37605 - 1.5, 180);
+  chassis.drive_to_point(16.2469 * reversed, -4.37605 - 1.5);
+
+  // Drive to the corner
   Doinker.set(true);
-  vex::wait(0.4, sec);
-  chassis.drive_to_point(0.323844 * reversed, 6.28442, 4, 4);
+  chassis.drive_timeout = 800;
+  chassis.turn_to_point(23.9775 * reversed, 5.11801 - 1.5);
+  chassis.drive_to_point(23.9775 * reversed, 5.11801 - 1.5);
+
+  // Clear the corner
+  chassis.turn_timeout = 2000;
+  chassis.turn_to_angle(alliance == "red" ? 150 : 53, 3.5);
   Doinker.set(false);
-  vex::wait(0.1, sec);
-  chassis.turn_to_point(-2.67975, 37.6131, 180);
-  chassis.drive_to_point(-2.67975, 37.6131);
-  Clamp.set(1);
+  chassis.turn_to_angle(alliance == "red" ? 46.8294 : 313.17, 12);
+  chassis.turn_timeout = 400;
+
+  // Eat the ring in the corner
+  intakeSort = true;
+  chassis.drive_to_point(28.1559 * reversed, 10.3779 - 1.5);
+  vex::wait(400, msec);
+
+  // Drive to the ladder
+  chassis.turn_to_point(12.4361 * reversed, -6.50658, 180 - 1.5);
+  chassis.drive_to_point(12.4361 * reversed, -6.50658 - 1.5);
+  chassis.turn_timeout = 600;
+  chassis.drive_timeout = 2000;
+  chassis.turn_to_point(-22 * reversed, -21.7566 - 1.5);
+  chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5);
+  intakeSort = false;
 }
 
 // BASICALLY DONE?
