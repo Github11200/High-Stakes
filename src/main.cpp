@@ -279,7 +279,7 @@ void autonomous(void)
       negative_ring_rush(alliance);
       break;
     case 3:
-      positive_mogo_rush(alliance);
+      positive_corner_rush(alliance);
       break;
     default:
       break;
@@ -383,7 +383,7 @@ void usercontrol(void)
   // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
  
-  negative_ring_rush("blue");
+  positive_corner_rush("blue");
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
