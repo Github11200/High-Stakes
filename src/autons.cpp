@@ -211,45 +211,45 @@ void negative_ring_rush(string c)
   chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
   // Get the mogo
-  chassis.drive_timeout = 550;  
+  chassis.drive_timeout = 550;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
   Clamp.set(true);
   intakeSort = true;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
- 
+
   // Turn to face the two rings
-  chassis.turn_to_point(-11.3642 * reversed, -28.155); 
+  chassis.turn_to_point(-11.3642 * reversed, -28.155);
 
   chassis.turn_max_voltage = 8;
   chassis.heading_max_voltage = 8;
-  chassis.drive_max_voltage = 11; 
+  chassis.drive_max_voltage = 11;
   chassis.drive_kp = 1;
   chassis.drive_timeout = 250;
 
   // Get the two rings in the 8 ring stack and then the 1 ring under, it should end facing the corner
-  chassis.drive_to_point(-16.1906*reversed, -33.0502 + 1);
-  chassis.drive_to_point(-20.4246*reversed, -37.6321 + 1);
-  chassis.drive_to_point(-23.8813*reversed, -40.3071 + 1); 
-  chassis.drive_to_point(-12.3734*reversed, -29.1557 + 1);
-  chassis.drive_to_point(-27.9062*reversed, -41.9403 + 1);
-  chassis.drive_to_point(-32.3782*reversed, -42.0858 + 1);
-  chassis.drive_to_point(-26.4813*reversed, -42.2028 + 1);
-  chassis.drive_to_point(-21.3751*reversed, -42.2713 + 1);
-  chassis.drive_to_point(-26.4054*reversed, -39.7361 + 1);
-  chassis.drive_to_point(-28.918*reversed, -34.6516 + 1);
+  chassis.drive_to_point(-16.1906 * reversed, -33.0502 + 1);
+  chassis.drive_to_point(-20.4246 * reversed, -37.6321 + 1);
+  chassis.drive_to_point(-23.8813 * reversed, -40.3071 + 1);
+  chassis.drive_to_point(-12.3734 * reversed, -29.1557 + 1);
+  chassis.drive_to_point(-27.9062 * reversed, -41.9403 + 1);
+  chassis.drive_to_point(-32.3782 * reversed, -42.0858 + 1);
+  chassis.drive_to_point(-26.4813 * reversed, -42.2028 + 1);
+  chassis.drive_to_point(-21.3751 * reversed, -42.2713 + 1);
+  chassis.drive_to_point(-26.4054 * reversed, -39.7361 + 1);
+  chassis.drive_to_point(-28.918 * reversed, -34.6516 + 1);
 
   chassis.drive_timeout = 1000;
 
   // Go around the ring
-  chassis.drive_to_point(-27.3593*reversed, -31.4806 + 1);
-  chassis.drive_to_point(-23.3215*reversed, -22.7789 + 1);
-  chassis.drive_to_point(-25.2396*reversed, -14.2957 + 1);
-  chassis.drive_to_point(-30.9209*reversed, -8.08665 + 1);
+  chassis.drive_to_point(-27.3593 * reversed, -31.4806 + 1);
+  chassis.drive_to_point(-23.3215 * reversed, -22.7789 + 1);
+  chassis.drive_to_point(-25.2396 * reversed, -14.2957 + 1);
+  chassis.drive_to_point(-30.9209 * reversed, -8.08665 + 1);
 
   chassis.drive_timeout = 700;
 
   // Turn on the doinker and go to the corner
-  Doinker.set(true); 
+  Doinker.set(true);
   chassis.turn_to_point(-42.2461, 2.94447);
   chassis.drive_to_point(-42.2461, 2.94447);
 
@@ -328,7 +328,7 @@ void positive_corner_rush(string c)
   chassis.turn_to_point(15 * reversed, 4.25326 - 1.5);
   chassis.drive_to_point(15 * reversed, 4.25326 - 1.5);
   chassis.drive_timeout = 400;
-  chassis.turn_to_point(16.2469 * reversed, -4.37605 - 1.5, 180); 
+  chassis.turn_to_point(16.2469 * reversed, -4.37605 - 1.5, 180);
   intakeRev = false;
   chassis.drive_to_point(16.2469 * reversed, -4.37605 - 1.5);
 
@@ -466,13 +466,13 @@ void auton_skills()
   wait(0.3, vex::timeUnits::sec);
 
   // Get aligned for the mogo
-  chassis.turn_to_point(-12.8323, 31.0713, 180);
-  chassis.drive_to_point(-13.8323, 31.0713);
+  chassis.turn_to_point(-10.2475, 28.0261, 180);
+  chassis.drive_to_point(-10.2475, 28.0261);
 
   // Turn and drive into the mogo to clamp onto it
   chassis.drive_timeout = 1200;
-  chassis.turn_to_point(-22.6857, 15.8559, 180);
-  chassis.drive_to_point(-22.6857, 15.8559, 5, 5);
+  chassis.turn_to_point(-20.4184, 14.7244, 180);
+  chassis.drive_to_point(-20.4184, 14.7244, 5, 5);
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
 

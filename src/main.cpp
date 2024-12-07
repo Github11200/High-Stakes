@@ -382,8 +382,8 @@ void usercontrol(void)
   // Brain.Screen.printAt(5, 100, "vroom vroom!");
   // Skills testing code start
   chassis.set_coordinates(0, 0, 0);
- 
-  positive_corner_rush("blue");
+
+  auton_skills();
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
