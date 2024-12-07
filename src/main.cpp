@@ -178,10 +178,9 @@ void pre_auton(void)
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
   alliance = "skills";
-  chassis.set_coordinates(0, 0, 0);
+  chassis.set_coordinates(0, 3, 0);
   default_constants();
   updateScreen();
-  cout << pre_match << endl;
   while (pre_match)
   {
     switch (current_auton_selection)
@@ -380,16 +379,14 @@ void usercontrol(void)
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  // Brain.Screen.clearScreen();
-  // Brain.Screen.printAt(5, 100, "vroom vroom!");
   // Auton testing code start
-  chassis.set_coordinates(0, 0, 0);
+  // chassis.set_coordinates(0, 0, 0);
 
-  auton_skills();
-  intakeSort = false;
-  intakeToFishyAuton = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
+  // negative_alliance_stake_rush("blue");
+  // intakeSort = false;
+  // intakeToFishyAuton = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
   task buttons = task(buttonsWrapper);

@@ -33,7 +33,7 @@ void Fishy::liftFishy(bool autonomous)
         time = 0; // give it some time to score the ring
       }
     }
-    if (FishyMech.position(degrees) > 250)
+    if (FishyMech.position(degrees) > 230)
     {
       FishyMech.stop(brake);
       Intake.stop();
@@ -59,7 +59,6 @@ void Fishy::liftFishy(bool autonomous)
   Intake.stop();
   FishyMech.stop(hold);
   fishing = false;
-  
 }
 
 void Fishy::lowerFishy()

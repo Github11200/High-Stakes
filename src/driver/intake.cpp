@@ -37,7 +37,7 @@ void IntakeControl::ejectRing()
 {
   while (OpticalSensor.isNearObject())
   { // spin it until the ring is not near
-  // once it's not near, it's probably in the perfect place for ejection
+    // once it's not near, it's probably in the perfect place for ejection
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
@@ -63,12 +63,15 @@ void IntakeControl::intake()
 
 void IntakeControl::intakeToFishy()
 {
+  OpticalSensor.setLightPower(100, pct);
+
   // Spin the intake until the optical sensor senses a ring color
   while (!OpticalSensor.isNearObject() && IntakeToFishyButton.pressing())
   {
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
+  OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::brake);
 }
 
@@ -128,7 +131,8 @@ void IntakeControl::colorSortingAutonTask()
         ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     }
-    else if (intakeRev) {
+    else if (intakeRev)
+    {
       Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
     }
     else if (!intakeToFishyAuton && !fishing) // don't stop the intake if other systems are running

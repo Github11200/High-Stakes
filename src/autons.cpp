@@ -371,8 +371,8 @@ void auton_skills()
   // chassis.turn_kd = 0.01;
   chassis.drive_max_voltage = 12;
   chassis.turn_max_voltage = 10;
-  chassis.turn_timeout = 300;
-  chassis.drive_timeout = 600;
+  chassis.turn_timeout = 350;
+  chassis.drive_timeout = 700;
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
 
