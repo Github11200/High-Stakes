@@ -281,6 +281,8 @@ void autonomous(void)
     case 3:
       positive_corner_rush(alliance);
       break;
+    case 4:
+      break;
     default:
       break;
     }
@@ -380,7 +382,7 @@ void usercontrol(void)
 
   // Brain.Screen.clearScreen();
   // Brain.Screen.printAt(5, 100, "vroom vroom!");
-  // Skills testing code start
+  // Auton testing code start
   chassis.set_coordinates(0, 0, 0);
 
   auton_skills();
@@ -388,7 +390,7 @@ void usercontrol(void)
   intakeToFishyAuton = false;
   pre_driver = false;
   Intake.stop(vex::brakeType::coast);
-  // Skills testing code end
+  // Auton testing code end
 
   task buttons = task(buttonsWrapper);
 
