@@ -149,14 +149,14 @@ void updateScreen()
   }
   Brain.Screen.setFillColor(green);
   Brain.Screen.printAt(165, 20, "negative alliance stake rush");
-  Brain.Screen.setFillColor(red);
+  Brain.Screen.setFillColor(cyan);
   Brain.Screen.printAt(325, 20, "positive alliance stake rush");
-  Brain.Screen.setFillColor(blue);
+  Brain.Screen.setFillColor(red);
   Brain.Screen.printAt(5, 140, "negative ring rush");
   Brain.Screen.setFillColor(orange);
   Brain.Screen.printAt(165, 140, "positive mogo rush");
   Brain.Screen.setFillColor(purple); 
-  Brain.Screen.printAt(325, 140, "NONE");
+  Brain.Screen.printAt(325, 140, "testing");
   Brain.Screen.setFillColor(black);
 }
 
@@ -281,6 +281,7 @@ void autonomous(void)
       positive_corner_rush(alliance);
       break;
     case 4:
+      testing(alliance);
       break;
     default:
       break;

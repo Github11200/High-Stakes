@@ -15,13 +15,16 @@ Fishy fishyControl(12);
 
 void default_constants()
 {
-  chassis.set_drive_constants(12, 10, 0, 3, 0, 20);
-  chassis.set_heading_constants(12, 2, 0, 10, 0, 0);
-  chassis.set_turn_constants(12, 2, 0, 10, 15);
-  chassis.set_swing_constants(12, 2, 0, 10, 15);
-  chassis.set_drive_exit_conditions(1.5, 50, 5000);
-  chassis.set_turn_exit_conditions(1, 50, 1500);
-  chassis.set_swing_exit_conditions(1, 50, 1000);
+  // Constants for tuning on Monday
+  chassis.set_drive_constants(12, 10, 0, 0, 3, 20);
+  chassis.set_heading_constants(12, 2, 0, 0, 3, 0);
+  chassis.set_turn_constants(12, 2, 0, 0, 3);
+  chassis.set_swing_constants(12, 2, 0, 0, 3);
+
+  // Stupidly high values so it has time to oscillate
+  chassis.set_drive_exit_conditions(1.5, 5000, 5000);
+  chassis.set_turn_exit_conditions(1, 5000, 5000);
+  chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
 
 void odom_constants()
@@ -343,6 +346,29 @@ void positive_corner_rush(string c)
   // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 12, 12); 
   // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 7, 7); 
   intakeSort = false;
+}
+
+void testing(string c)
+{
+  pre_driver = true;
+
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  int reversed;
+  if (c == "red")
+  {
+    reversed = -1;
+    alliance = "red";
+  }
+  else if (c == "blue")
+  {
+    reversed = 1;
+    alliance = "blue";
+  }
+  odom_constants();
+
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  chassis.drive_to_point(0, 24);
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }
 
 // BASICALLY DONE? 
