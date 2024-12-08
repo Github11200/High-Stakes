@@ -77,8 +77,6 @@ pair<double, double> Joystick::cheesy()
         left += throttle + turn;
         right += throttle - turn;
 
-        cout << left << endl;
-
         updateAccumulators();
     }
 

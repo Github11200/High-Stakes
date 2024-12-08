@@ -306,11 +306,6 @@ void Drive::position_track()
   while (1)
   {
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
-
-    // cout << "X: " << odom.X_position << endl;
-    // cout << "Y: " << odom.Y_position << endl;
-    // cout << "Orientation: " << odom.orientation_deg << endl;
-
     task::sleep(5);
   }
 }

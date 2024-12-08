@@ -70,72 +70,59 @@ void negative_alliance_stake_rush(string c)
   int reversed;
   if (c == "blue")
   {
-    reversed = 1;
-    alliance = "blue";
+    reversed = -1;
+    alliance = "blue"; 
   }
   else if (c == "red")
   {
-    reversed = -1;
+    reversed = 1;
     alliance = "red";
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
+  chassis.set_drive_constants(11, 0.6, 0, 3, 0); 
+  chassis.set_heading_constants(9, 0.8, 0, 0.1, 0);
 
-  // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0 * reversed, -10.8, 180);
-  chassis.drive_to_point(0 * reversed, -10.8);
+  // Move in front of the wall stake
+  chassis.turn_to_point(-0.1998 * reversed, -11.3, 180);
+  chassis.drive_to_point(-0.1998 * reversed, -11.3); 
 
-  // Move backwards to the alliance stake
-  chassis.turn_to_point(5.78 * reversed, -10.8, 180);
-  chassis.drive_to_point(5.7 * reversed, -10.8);
-
+  // Move back and score
+  chassis.turn_to_point(-6.0 * reversed, -11.8, 180);
+  chassis.drive_to_point(-6.0 * reversed, -11.3);
+ 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0, -10.8);
-  chassis.drive_to_point(0, -10.8);
+  chassis.turn_to_point(0.693042 * reversed, -11.3);
+  chassis.drive_to_point(0.693042 * reversed, -11.3);
+ 
+  intakeSort = false;
 
-  // Move to the mogo and clamp it
-  chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
-  chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
+  // Go to the mogo and clamp
+  chassis.turn_to_point(37.0626 * reversed, 18.1247, 180);
+  chassis.drive_to_point(37.0626 * reversed, 18.1247, 6, 6); 
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
+ 
+  intakeSort = true;
 
-  // Turn to face the next two rings
-  chassis.turn_to_point(-33.8154 * reversed, 18.5278);
+  chassis.turn_to_point(-39.7294, 21.122);
+chassis.drive_to_point(-39.7294, 21.122);
 
-  chassis.turn_max_voltage = 8;
-  chassis.heading_max_voltage = 8;
-  chassis.drive_max_voltage = 11;
-  chassis.drive_kp = 1;
-  chassis.drive_timeout = 250;
+  chassis.drive_timeout = 350;
+  chassis.drive_kp = 1.1;
+  chassis.drive_kd = 2.7;
 
-  chassis.drive_to_point(-34.9914 * reversed, 19.5408);
-  chassis.drive_to_point(-40.1114 * reversed, 24.4523);
-  chassis.drive_to_point(-43.1773 * reversed, 27.7561);
-  chassis.drive_to_point(-45.1493 * reversed, 31.7904);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-46.0278 * reversed, 36.1759);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-46.3615 * reversed, 41);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-46.4902 * reversed, 33.9749);
-  chassis.drive_to_point(-46.7279 * reversed, 27.7285);
-  chassis.drive_to_point(-44.455 * reversed, 32.4204);
-  chassis.drive_to_point(-38.374 * reversed, 35.2606);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-33.7581 * reversed, 33.5115);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-31.519 * reversed, 25.9074);
-  wait(0.1, vex::timeUnits::sec);
-  chassis.drive_to_point(-32 * reversed, 16.0187);
+chassis.drive_to_point(-41.9998*reversed, 25.8261);
+chassis.drive_to_point(-42.7085*reversed, 32.1277);
+chassis.drive_to_point(-42.5917*reversed, 24.83);
+chassis.drive_to_point(-39.8135*reversed, 30.8944);
 
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
-  chassis.drive_timeout = 2000;
-  chassis.drive_to_point(-32 * reversed, 0);
+
+chassis.turn_to_point(-35.3707, 0.239032);
+chassis.drive_to_point(-35.3707, 0.239032, 7, 7);
+
 }
 
 // DONE
@@ -173,20 +160,24 @@ void positive_alliance_stake_rush(string c)
   chassis.turn_to_point(0, -10.8);
   chassis.drive_to_point(0, -10.8);
 
+  intakeSort = false;
+ 
   // Move to the mogo and clamp it
   chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
   chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
   Clamp.set(1);
   wait(0.5, vex::timeUnits::sec);
+ 
+  intakeSort = true;
 
   // Get the ring
-  chassis.turn_to_point(30.2483, 31.1189);
-  chassis.drive_to_point(30.2483, 31.1189);
+  chassis.turn_to_point(-30.2483 * reversed, 31.1189);
+  chassis.drive_to_point(-30.2483 * reversed, 31.1189);
   wait(0.5, vex::timeUnits::sec);
 
   // Drive to the ladder
-  chassis.turn_to_point(30.2422, -2);
-  chassis.drive_to_point(30.2422, -2, 7, 7);
+  chassis.turn_to_point(-30.2422 * reversed, -2);
+  chassis.drive_to_point(-30.2422 * reversed, -2, 7, 7);
 }
 
 // DONE
@@ -250,33 +241,35 @@ void negative_ring_rush(string c)
 
   // Turn on the doinker and go to the corner
   Doinker.set(true);
-  chassis.turn_to_point(-42.2461, 2.94447);
-  chassis.drive_to_point(-42.2461, 2.94447);
+  chassis.turn_to_point(-42.2461 * reversed, 2.94447);
+  chassis.drive_to_point(-42.2461 * reversed, 2.94447);
 
   chassis.turn_timeout = 900;
 
-  // Push the stack of rings
-  chassis.turn_to_angle(41.1452, 8);
-
+  // Clear the corner
+  chassis.turn_timeout = 2000;
+  chassis.turn_to_angle(alliance == "blue" ? 150 : 53, 4);
   Doinker.set(false);
+  chassis.turn_to_angle(alliance == "blue" ? 46.8294 : 313.17, 12);
+  chassis.turn_timeout = 400;
 
   chassis.drive_timeout = 500;
 
   // Turn back to the corner and intake
-  chassis.turn_to_point(-44.7168, 5.41391);
-  chassis.drive_to_point(-44.7168, 5.41391);
+  chassis.turn_to_point(-44.7168 * reversed, 5.41391);
+  chassis.drive_to_point(-44.7168 * reversed, 5.41391);
 
   chassis.drive_timeout = 1000;
 
   // Move back from the corner
-  chassis.turn_to_point(-30.9613, -18.9326);
-  chassis.drive_to_point(-30.9613, -18.9326);
+  chassis.turn_to_point(-30.9613 * reversed, -18.9326);
+  chassis.drive_to_point(-30.9613 * reversed, -18.9326);
 
   chassis.drive_timeout = 3000;
 
   // Touch the ladder
-  chassis.turn_to_point(2.01298, -28.6099);
-  chassis.drive_to_point(2.01298, -28.6099);
+  chassis.turn_to_point(2.01298 * reversed, -28.6099);
+  chassis.drive_to_point(2.01298 * reversed, -28.6099);
 }
 
 // NOT DONE
@@ -313,7 +306,7 @@ void positive_corner_rush(string c)
   chassis.turn_timeout = 400;
   chassis.turn_to_point(8.68866 * reversed, -25.3646 - 1.5);
   chassis.drive_to_point(8.68866 * reversed, -25.3646 - 1.5);
-  vex::wait(650, msec);
+  vex::wait(700, msec);
 
   chassis.drive_timeout = 400;
   chassis.turn_timeout = 400;
@@ -335,8 +328,8 @@ void positive_corner_rush(string c)
   // Drive to the corner
   Doinker.set(true);
   chassis.drive_timeout = 800;
-  chassis.turn_to_point(25 * reversed, 6.5);
-  chassis.drive_to_point(25 * reversed, 6.5);
+  chassis.turn_to_point(26 * reversed, 6.5);
+  chassis.drive_to_point(26 * reversed, 6.5);
 
   // Clear the corner
   chassis.turn_timeout = 2000;
@@ -348,19 +341,22 @@ void positive_corner_rush(string c)
   // Eat the ring in the corner
   intakeSort = true;
   chassis.drive_to_point(29 * reversed, 12);
-  vex::wait(400, msec);
+  vex::wait(200, msec);
+  chassis.drive_to_point(28.5 * reversed, 11.5);
+  vex::wait(4000, msec);
 
-  // Drive to the ladder
-  chassis.turn_to_point(12.4361 * reversed, -6.50658, 180);
-  chassis.drive_to_point(12.4361 * reversed, -6.50658);
-  chassis.turn_timeout = 600;
-  chassis.drive_timeout = 2000;
-  chassis.turn_to_point(-22 * reversed, -21.7566 - 1.5);
-  chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5);
+  // // Drive to the ladder
+  // chassis.turn_to_point(12.4361 * reversed, -6.50658, 180);
+  // chassis.drive_to_point(12.4361 * reversed, -6.50658);
+  // chassis.turn_timeout = 600;
+  // chassis.drive_timeout = 2000; 
+  // chassis.turn_to_point(-22 * reversed, -21.7566 - 1.5);
+  // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 12, 12); 
+  // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 7, 7); 
   intakeSort = false;
 }
 
-// BASICALLY DONE?
+// BASICALLY DONE? 
 void auton_skills()
 {
   pre_driver = true;
