@@ -63,22 +63,24 @@ void Drive::set_turn_constants(float turn_max_voltage, float turn_kp, float turn
   this->turn_starti = turn_starti;
 }
 
-void Drive::set_drive_constants(float drive_max_voltage, float drive_kp, float drive_ki, float drive_kd, float drive_starti)
+void Drive::set_drive_constants(float drive_max_voltage, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float slew_lat)
 {
   this->drive_max_voltage = drive_max_voltage;
   this->drive_kp = drive_kp;
   this->drive_ki = drive_ki;
   this->drive_kd = drive_kd;
   this->drive_starti = drive_starti;
+  this->slew_lat = slew_lat;
 }
 
-void Drive::set_heading_constants(float heading_max_voltage, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
+void Drive::set_heading_constants(float heading_max_voltage, float heading_kp, float heading_ki, float heading_kd, float heading_starti, float slew_ang)
 {
   this->heading_max_voltage = heading_max_voltage;
   this->heading_kp = heading_kp;
   this->heading_ki = heading_ki;
   this->heading_kd = heading_kd;
   this->heading_starti = heading_starti;
+  this->slew_ang = slew_ang;
 }
 
 void Drive::set_swing_constants(float swing_max_voltage, float swing_kp, float swing_ki, float swing_kd, float swing_starti)
@@ -343,25 +345,28 @@ float Drive::get_Y_position()
 
 void Drive::drive_to_point(float X_position, float Y_position)
 {
-  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
+  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti, slew_ang, slew_lat);
 }
 
 void Drive::drive_to_point(float X_position, float Y_position, float drive_max_voltage, float heading_max_voltage)
 {
-  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
+  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti, slew_ang, slew_lat);
 }
 
 void Drive::drive_to_point(float X_position, float Y_position, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout)
 {
-  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
+  drive_to_point(X_position, Y_position, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti, slew_ang, slew_lat);
 }
 
-void Drive::drive_to_point(float X_position, float Y_position, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
+void Drive::drive_to_point(float X_position, float Y_position, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti, float slew_ang, float slew_lat)
 {
   PID drivePID(hypot(X_position - get_X_position(), Y_position - get_Y_position()), drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
+  float prev_drive_output = 0;
+  float prev_heading_output = 0;
   while (drivePID.is_settled() == false)
   {
+    // new alex guessing stuff
     float drive_error = hypot(X_position - get_X_position(), Y_position - get_Y_position());
     // The drive error is just equal to the distance between the current and desired points.
     float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading());
@@ -377,16 +382,23 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
     // to do so.
     float heading_output = headingPID.compute(heading_error);
 
-    if (drive_error < drive_settle_error)
-    {
-      heading_output = 0;
-    }
     // This if statement prevents the heading correction from acting up after the robot gets close
     // to being settled.
 
     drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
+    if (drive_error < drive_settle_error)
+    {
+      heading_output = 0;
+    }
+    else 
+    {
+      drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
+    }
 
+    float prev_drive_output = drive_output;
+    float prev_heading_output = heading_output;
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }

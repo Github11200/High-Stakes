@@ -1,5 +1,13 @@
 #include "vex.h"
 
+float slew_func(float target, float current, float maxChange) {
+    float change = target - current;
+    if (maxChange == 0) return target;
+    if (change > maxChange) change = maxChange;
+    else if (change < -maxChange) change = -maxChange;
+    return current + change;
+}
+
 float reduce_0_to_360(float angle) {
   while(!(angle >= 0 && angle < 360)) {
     if( angle < 0 ) { angle += 360; }

@@ -15,15 +15,13 @@ Fishy fishyControl(12);
 
 void default_constants()
 {
-  chassis.set_drive_constants(10, 0.7, 0, 2.5, 0);
-  chassis.set_heading_constants(6, .4, 0, 0.1, 0);
-  chassis.set_turn_constants(8, .3, 0.01, 3.5, 15);
-  chassis.set_swing_constants(12, .3, .001, 2, 15);
-  chassis.set_drive_exit_conditions(1.5, 300, 5000);
-  chassis.set_turn_exit_conditions(1, 300, 1500);
-  chassis.set_swing_exit_conditions(1, 300, 1000);
-  chassis.drive_max_voltage = 12;
-  chassis.turn_max_voltage = 10;
+  chassis.set_drive_constants(12, 10, 0, 3, 0, 20);
+  chassis.set_heading_constants(12, 2, 0, 10, 0, 0);
+  chassis.set_turn_constants(12, 2, 0, 10, 15);
+  chassis.set_swing_constants(12, 2, 0, 10, 15);
+  chassis.set_drive_exit_conditions(1.5, 50, 5000);
+  chassis.set_turn_exit_conditions(1, 50, 1500);
+  chassis.set_swing_exit_conditions(1, 50, 1000);
 }
 
 void odom_constants()
@@ -79,8 +77,6 @@ void negative_alliance_stake_rush(string c)
     alliance = "red";
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.6, 0, 3, 0); 
-  chassis.set_heading_constants(9, 0.8, 0, 0.1, 0);
 
   // Move in front of the wall stake
   chassis.turn_to_point(-0.1998 * reversed, -11.3, 180);
@@ -108,20 +104,19 @@ void negative_alliance_stake_rush(string c)
   intakeSort = true;
 
   chassis.turn_to_point(-39.7294, 21.122);
-chassis.drive_to_point(-39.7294, 21.122);
+  chassis.drive_to_point(-39.7294, 21.122);
 
   chassis.drive_timeout = 350;
   chassis.drive_kp = 1.1;
   chassis.drive_kd = 2.7;
 
-chassis.drive_to_point(-41.9998*reversed, 25.8261);
-chassis.drive_to_point(-42.7085*reversed, 32.1277);
-chassis.drive_to_point(-42.5917*reversed, 24.83);
-chassis.drive_to_point(-39.8135*reversed, 30.8944);
+  chassis.drive_to_point(-41.9998*reversed, 25.8261);
+  chassis.drive_to_point(-42.7085*reversed, 32.1277);
+  chassis.drive_to_point(-42.5917*reversed, 24.83);
+  chassis.drive_to_point(-39.8135*reversed, 30.8944);
 
-
-chassis.turn_to_point(-35.3707, 0.239032);
-chassis.drive_to_point(-35.3707, 0.239032, 7, 7);
+  chassis.turn_to_point(-35.3707, 0.239032);
+  chassis.drive_to_point(-35.3707, 0.239032, 7, 7);
 
 }
 
@@ -142,8 +137,6 @@ void positive_alliance_stake_rush(string c)
     reversed = 1;
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
   // Move backwards to align with the alliance stake horizontally
   chassis.turn_to_point(0 * reversed, -10.9, 180);
@@ -198,8 +191,6 @@ void negative_ring_rush(string c)
     alliance = "blue";
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
   // Get the mogo
   chassis.drive_timeout = 550;
@@ -290,8 +281,6 @@ void positive_corner_rush(string c)
     alliance = "blue";
   }
   odom_constants();
-  chassis.set_drive_constants(11, 0.9, 0, 2.6, 0);
-  chassis.set_heading_constants(9, .5, 0, 0.2, 0);
 
   // Get the mogo
   chassis.drive_timeout = 550;
