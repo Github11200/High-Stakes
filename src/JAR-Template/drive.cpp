@@ -364,9 +364,9 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
   PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
   float prev_drive_output = 0;
   float prev_heading_output = 0;
+  bool close = false;
   while (drivePID.is_settled() == false)
   {
-    // new alex guessing stuff
     float drive_error = hypot(X_position - get_X_position(), Y_position - get_Y_position());
     // The drive error is just equal to the distance between the current and desired points.
     float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading());
@@ -392,7 +392,7 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
     {
       heading_output = 0;
     }
-    else
+    else if (drive_error > 5)
     {
       drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
     }
