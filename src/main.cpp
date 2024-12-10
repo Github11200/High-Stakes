@@ -155,7 +155,7 @@ void updateScreen()
   Brain.Screen.printAt(5, 140, "negative ring rush");
   Brain.Screen.setFillColor(orange);
   Brain.Screen.printAt(165, 140, "positive mogo rush");
-  Brain.Screen.setFillColor(purple); 
+  Brain.Screen.setFillColor(purple);
   Brain.Screen.printAt(325, 140, "testing");
   Brain.Screen.setFillColor(black);
 }
@@ -176,8 +176,8 @@ void pre_auton(void)
   vexcodeInit();
   cout << "Vexcode initalized" << endl;
 
-  FishyMech.setPosition(0, degrees); 
-  OpticalSensor.gestureDisable(); 
+  FishyMech.setPosition(0, degrees);
+  OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
   cout << "fishy and optical sensor setup" << endl;
 
@@ -191,15 +191,15 @@ void pre_auton(void)
   updateScreen();
   cout << "auton selector open" << endl;
 
-  while (pre_match)  
+  while (pre_match)
   {
     switch (current_auton_selection)
-    {  
-    case 0:    
+    {
+    case 0:
       Brain.Screen.printAt(165, 100, "SELECTED");
       break;
     case 1:
-      Brain.Screen.printAt(325, 100, "SELECTED"); 
+      Brain.Screen.printAt(325, 100, "SELECTED");
       break;
     case 2:
       Brain.Screen.printAt(5, 220, "SELECTED");
@@ -274,7 +274,7 @@ void autonomous(void)
   {
     cout << "running skills" << endl;
     auton_skills();
-  }  
+  }
   else if (true)
   {
     cout << "running match auto" << endl;
@@ -352,7 +352,7 @@ int buttonsWrapper()
     {
       if (Controller.ButtonUp.pressing())
         cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
-      else if (Controller.ButtonRight.pressing()) 
+      else if (Controller.ButtonRight.pressing())
         cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
       else if (Controller.ButtonLeft.pressing())
       {
@@ -362,7 +362,7 @@ int buttonsWrapper()
       else if (Controller.ButtonB.pressing())
       {
         cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
-        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl; 
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
       }
       else if (Controller.ButtonDown.pressing())
       {
@@ -394,13 +394,13 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  // chassis.set_coordinates(0, 0, 0); 
+  chassis.set_coordinates(0, 0, 0);
 
-  // negative_alliance_stake_rush("blue"); 
-  // intakeSort = false; 
-  // intakeToFishyAuton = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
+  testing("red");
+  intakeSort = false;
+  intakeToFishyAuton = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
   task buttons = task(buttonsWrapper);

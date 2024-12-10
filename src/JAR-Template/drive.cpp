@@ -449,15 +449,20 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
 
 void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead)
 {
-  boomerang_curve(X_position, Y_position, final_heading, d_lead, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
 }
 
-void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout)
+void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage)
 {
-  boomerang_curve(X_position, Y_position, final_heading, d_lead, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
 }
 
-void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float d_lead, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti)
+void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout)
+{
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
+}
+
+void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
 {
   float hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
   float X_carrot = X_end - hypoteneuse * cos(final_heading) * d_lead;
@@ -472,8 +477,8 @@ void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float
   {
     // Recalculate the carrot point
     hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
-    X_carrot = X_end - hypoteneuse * cos(final_heading) * d_lead;
-    Y_carrot = Y_end - hypoteneuse * sin(final_heading) * d_lead;
+    X_carrot = X_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
+    Y_carrot = Y_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
 
     // Error to the carrot point
     float drive_error = hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position());
@@ -496,17 +501,17 @@ void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float
 
     // This if statement prevents the heading correction from acting up after the robot gets close
     // to being settled.
-    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
-    heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
+    // drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
+    // heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    // heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
     if (drive_error < drive_settle_error)
     {
       heading_output = 0;
     }
-    else
-    {
-      drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
-    }
+    // else
+    // {
+    //   drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
+    // }
 
     float prev_drive_output = drive_output;
     float prev_heading_output = heading_output;

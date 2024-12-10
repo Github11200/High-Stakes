@@ -371,10 +371,17 @@ void testing(string c)
 
   cout << "start position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  
-  chassis.drive_to_point(0, 24);
+
   cout << "end position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  chassis.drive_max_voltage = 12;
+  chassis.heading_max_voltage = 12;
+
+  chassis.drive_kp = 0.8;
+  chassis.heading_kp = 0.8;
+
+  chassis.boomerang_curve(10, 10, 0, 0.5);
 }
 
 // BASICALLY DONE?

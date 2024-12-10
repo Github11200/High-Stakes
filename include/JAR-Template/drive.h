@@ -140,8 +140,9 @@ public:
   void turn_to_point(float X_position, float Y_position, float extra_angle_deg, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
 
   void boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead);
-  void boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
-  void boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
+  void boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage);
+  void boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
+  void boomerang_curve(float X_end, float Y_end, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float heading_kp, float heading_ki, float heading_kd, float heading_starti);
 
   void control_arcade();
   void control_tank();
