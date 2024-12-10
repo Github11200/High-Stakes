@@ -369,8 +369,11 @@ void testing(string c)
   odom_constants();
   cout << "constants defined" << endl;
 
+  cout << "start position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  
   chassis.drive_to_point(0, 24);
+  cout << "end position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }
 
