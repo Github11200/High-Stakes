@@ -320,8 +320,12 @@ void Drive::set_heading(float orientation_deg)
 void Drive::set_coordinates(float X_position, float Y_position, float orientation_deg)
 {
   odom.set_position(X_position, Y_position, orientation_deg, get_ForwardTracker_position(), get_SidewaysTracker_position());
+  cout << "Position set!" << endl;
+  cout << "Position: X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << endl;
 
   Gyro.calibrate();
+  cout << "Inertial calibrating begun" << endl;
+
   while (Gyro.isCalibrating())
   {
     wait(50, msec);
@@ -330,7 +334,11 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   Controller.rumble(rumbleShort);
 
   set_heading(orientation_deg);
+  cout << "Heading Set!" << endl;
+  cout << "Heading: " << chassis.get_absolute_heading() << endl;
+
   odom_task = task(position_track_task);
+  cout << "Odom begun" << endl;
 }
 
 float Drive::get_X_position()

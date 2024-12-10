@@ -15,6 +15,7 @@ Fishy fishyControl(12);
 
 void default_constants()
 {
+  cout << "calling constants..." << endl;
   // Constants for tuning on Monday
   chassis.set_drive_constants(12, 10, 0, 0, 3, 20);
   chassis.set_heading_constants(12, 2, 0, 0, 3, 0);
@@ -349,6 +350,8 @@ void positive_corner_rush(string c)
 
 void testing(string c)
 {
+  cout << "testing auto started" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
@@ -364,6 +367,7 @@ void testing(string c)
     alliance = "blue";
   }
   odom_constants();
+  cout << "constants defined" << endl;
 
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   chassis.drive_to_point(0, 24);

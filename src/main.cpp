@@ -174,13 +174,23 @@ void senseTemp()
 void pre_auton(void)
 {
   vexcodeInit();
+  cout << "Vexcode initalized" << endl;
+
   FishyMech.setPosition(0, degrees); 
   OpticalSensor.gestureDisable(); 
   OpticalSensor.setLightPower(0, pct);
+  cout << "fishy and optical sensor setup" << endl;
+
   alliance = "skills";
+  cout << "alliance set to skills" << endl;
+
   chassis.set_coordinates(0, 0, 0);
-  default_constants();
+  cout << "set_coordinates function completed" << endl;
+  cout << "Position: X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << endl;
+
   updateScreen();
+  cout << "auton selector open" << endl;
+
   while (pre_match)  
   {
     switch (current_auton_selection)
@@ -262,10 +272,12 @@ void autonomous(void)
   pre_match = false;
   if (alliance == "skills")
   {
+    cout << "running skills" << endl;
     auton_skills();
   }  
   else if (true)
   {
+    cout << "running match auto" << endl;
     switch (current_auton_selection)
     {
     case 0:
@@ -287,6 +299,7 @@ void autonomous(void)
       break;
     }
   }
+  cout << "auto ran" << endl;
 }
 
 int buttonsWrapper()
