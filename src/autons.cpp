@@ -17,13 +17,13 @@ void default_constants()
 {
   cout << "calling constants..." << endl;
   // Constants for tuning on Monday
-  chassis.set_drive_constants(12, 10, 0, 0, 3, 20);
-  chassis.set_heading_constants(12, 2, 0, 0, 3, 0);
+  chassis.set_drive_constants(12, 0.9, 0, 0, 3, 5);
+  chassis.set_heading_constants(12, 0.1, 0, 0, 3, 0);
   chassis.set_turn_constants(12, 2, 0, 0, 3);
   chassis.set_swing_constants(12, 2, 0, 0, 3);
 
   // Stupidly high values so it has time to oscillate
-  chassis.set_drive_exit_conditions(1.5, 5000, 5000);
+  chassis.set_drive_exit_conditions(0, 5000, 5000);
   chassis.set_turn_exit_conditions(1, 5000, 5000);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
@@ -372,16 +372,10 @@ void testing(string c)
   cout << "start position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
+  chassis.drive_to_point(0, 24);
+
   cout << "end position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
-  chassis.drive_max_voltage = 12;
-  chassis.heading_max_voltage = 12;
-
-  chassis.drive_kp = 0.8;
-  chassis.heading_kp = 0.8;
-
-  chassis.boomerang_curve(10, 10, 0, 0.5);
 }
 
 // BASICALLY DONE?

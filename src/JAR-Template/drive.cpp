@@ -396,14 +396,14 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
     drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
     heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
-    if (drive_error < drive_settle_error)
+    if (drive_error < 3)
     {
       heading_output = 0;
     }
-    else if (drive_error > 5)
-    {
-      drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
-    }
+    // else if (drive_error >= 3)
+    // {
+    // }
+    drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
 
     float prev_drive_output = drive_output;
     float prev_heading_output = heading_output;
@@ -465,8 +465,8 @@ void Drive::boomerang_curve(float X_position, float Y_position, float final_head
 void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
 {
   float hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
-  float X_carrot = X_end - hypoteneuse * cos(final_heading) * d_lead;
-  float Y_carrot = Y_end - hypoteneuse * sin(final_heading) * d_lead;
+  float X_carrot = X_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
+  float Y_carrot = Y_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
 
   PID drivePID(hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position()), drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_carrot - get_X_position(), Y_carrot - get_Y_position())) - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
@@ -477,8 +477,8 @@ void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float
   {
     // Recalculate the carrot point
     hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
-    X_carrot = X_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
-    Y_carrot = Y_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
+    X_carrot = X_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
+    Y_carrot = Y_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
 
     // Error to the carrot point
     float drive_error = hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position());
