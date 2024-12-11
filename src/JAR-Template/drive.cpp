@@ -319,9 +319,8 @@ void Drive::set_heading(float orientation_deg)
 
 void Drive::set_coordinates(float X_position, float Y_position, float orientation_deg)
 {
+  R_ForwardTracker.resetPosition();
   odom.set_position(X_position, Y_position, orientation_deg, get_ForwardTracker_position(), get_SidewaysTracker_position());
-  cout << "Position set!" << endl;
-  cout << "Position: X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << endl;
 
   Gyro.calibrate();
   cout << "Inertial calibrating begun" << endl;
@@ -334,11 +333,8 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   Controller.rumble(rumbleShort);
 
   set_heading(orientation_deg);
-  cout << "Heading Set!" << endl;
-  cout << "Heading: " << chassis.get_absolute_heading() << endl;
 
   odom_task = task(position_track_task);
-  cout << "Odom begun" << endl;
 }
 
 float Drive::get_X_position()
@@ -396,13 +392,10 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
     drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
     heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
-    if (drive_error < 3)
+    if (drive_error < 7)
     {
       heading_output = 0;
     }
-    // else if (drive_error >= 3)
-    // {
-    // }
     drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
 
     float prev_drive_output = drive_output;

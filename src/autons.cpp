@@ -15,16 +15,15 @@ Fishy fishyControl(12);
 
 void default_constants()
 {
-  cout << "calling constants..." << endl;
   // Constants for tuning on Monday
-  chassis.set_drive_constants(12, 0.9, 0, 0, 3, 5);
+  chassis.set_drive_constants(12, 0.7, 0.01, 1.4, 3, 13);
   chassis.set_heading_constants(12, 0.1, 0, 0, 3, 0);
-  chassis.set_turn_constants(12, 2, 0, 0, 3);
+  chassis.set_turn_constants(12, 0.2, 0, 0, 3);
   chassis.set_swing_constants(12, 2, 0, 0, 3);
 
   // Stupidly high values so it has time to oscillate
-  chassis.set_drive_exit_conditions(0, 5000, 5000);
-  chassis.set_turn_exit_conditions(1, 5000, 5000);
+  chassis.set_drive_exit_conditions(0.1, 5000, 5000);
+  chassis.set_turn_exit_conditions(0.1, 5000, 5000);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
 
@@ -369,13 +368,16 @@ void testing(string c)
   odom_constants();
   cout << "constants defined" << endl;
 
-  cout << "start position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  // cout << "start position:" << endl;
+  // cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  chassis.drive_to_point(0, 24);
+  // chassis.drive_to_point(0, 50);
 
-  cout << "end position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  // cout << "end position:" << endl;
+  // cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  chassis.turn_to_point(24, 0);
+  cout << chassis.get_absolute_heading() << endl;
 }
 
 // BASICALLY DONE?

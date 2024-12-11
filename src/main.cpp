@@ -106,17 +106,14 @@ void updateScreen()
 {
   if (alliance == "blue")
   {
-    cout << "blue" << endl;
     setColor(blue);
   }
   else if (alliance == "red")
   {
-    cout << "red" << endl;
     setColor(red);
   }
   else if (alliance == "skills")
   {
-    cout << "skills" << endl;
     setColor(black);
   }
   Brain.Screen.drawRectangle(0, 0, 160, 120);
@@ -174,22 +171,16 @@ void senseTemp()
 void pre_auton(void)
 {
   vexcodeInit();
-  cout << "Vexcode initalized" << endl;
 
   FishyMech.setPosition(0, degrees);
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
-  cout << "fishy and optical sensor setup" << endl;
 
   alliance = "skills";
-  cout << "alliance set to skills" << endl;
 
   chassis.set_coordinates(0, 0, 0);
-  cout << "set_coordinates function completed" << endl;
-  cout << "Position: X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << endl;
 
   updateScreen();
-  cout << "auton selector open" << endl;
 
   while (pre_match)
   {
@@ -215,6 +206,7 @@ void pre_auton(void)
     {
       while (Brain.Screen.pressing())
       {
+        vex::wait(10, msec);
       }
       if (Brain.Screen.xPosition() < 160)
       {
@@ -272,12 +264,10 @@ void autonomous(void)
   pre_match = false;
   if (alliance == "skills")
   {
-    cout << "running skills" << endl;
     auton_skills();
   }
   else if (true)
   {
-    cout << "running match auto" << endl;
     switch (current_auton_selection)
     {
     case 0:
@@ -299,7 +289,6 @@ void autonomous(void)
       break;
     }
   }
-  cout << "auto ran" << endl;
 }
 
 int buttonsWrapper()
@@ -389,13 +378,13 @@ int joystickWrapper()
 
 void usercontrol(void)
 {
+  wait(2500, msec);
+
   pre_match = false;
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  chassis.set_coordinates(0, 0, 0);
-
   testing("red");
   intakeSort = false;
   intakeToFishyAuton = false;
