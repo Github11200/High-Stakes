@@ -17,8 +17,8 @@ void default_constants()
 {
   // Constants for tuning on Monday
   chassis.set_drive_constants(12, 0.7, 0.01, 1.4, 3, 13);
-  chassis.set_heading_constants(12, 0.1, 0, 0, 3, 0);
-  chassis.set_turn_constants(12, 0.4, 0.01, 1.4, 3);
+  chassis.set_heading_constants(12, 0.1, 0.01, 0, 3, 0);
+  chassis.set_turn_constants(12, 0.2, 0.06, 0.9, 3);
   chassis.set_swing_constants(12, 2, 0, 0, 3);
 
   // Stupidly high values so it has time to oscillate
@@ -376,7 +376,7 @@ void testing(string c)
   // cout << "end position:" << endl;
   // cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  chassis.turn_to_point(24, 0);
+  chassis.turn_to_point(0, -24);
   cout << chassis.get_absolute_heading() << endl;
 }
 
