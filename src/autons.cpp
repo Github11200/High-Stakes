@@ -82,19 +82,19 @@ void negative_alliance_stake_rush(string c)
   odom_constants();
 
   // Move in front of the wall stake
-  chassis.turn_to_point(-0.1998 * reversed, -11.3, 180);
-  chassis.drive_to_point(-0.1998 * reversed, -11.3);
+  chassis.turn_to_point(-0 * reversed, -11.6, 180);
+  chassis.drive_to_point(-0 * reversed, -11.6);
 
   // Move back and score
-  chassis.turn_to_point(-6.0 * reversed, -11.8, 180);
-  chassis.drive_to_point(-6.0 * reversed, -11.3);
+  chassis.turn_to_point(-6 * reversed, -11.6, 180);
+  chassis.drive_to_point(-6 * reversed, -11.6);
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0.693042 * reversed, -11.3);
-  chassis.drive_to_point(0.693042 * reversed, -11.3);
+  chassis.turn_to_point(0.693042 * reversed, -11.6);
+  chassis.drive_to_point(0.693042 * reversed, -11.6);
 
   intakeSort = false;
 
@@ -141,12 +141,12 @@ void positive_alliance_stake_rush(string c)
   odom_constants();
 
   // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0 * reversed, -11.7, 180);
-  chassis.drive_to_point(0 * reversed, -11.7);
+  chassis.turn_to_point(0 * reversed, -11.6, 180);
+  chassis.drive_to_point(0 * reversed, -11.6);
 
   // Move backwards to the alliance stake
-  chassis.turn_to_point(6 * reversed, -11.7, 180);
-  chassis.drive_to_point(6 * reversed, -11.7);
+  chassis.turn_to_point(6 * reversed, -11.6, 180);
+  chassis.drive_to_point(6 * reversed, -11.6);
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
