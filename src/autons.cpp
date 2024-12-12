@@ -37,7 +37,7 @@ int fishyAutonTaskWrapper()
   while (true)
   {
     fishyControl.fishyAutonTask();
-    wait(20, vex::timeUnits::msec);
+    vex::wait(20, vex::timeUnits::msec);
   }
   return 1;
 }
@@ -47,7 +47,7 @@ int colorSortingAutonTaskWrapper()
   while (true)
   {
     intakeControl.colorSortingAutonTask();
-    wait(50, vex::timeUnits::msec);
+    vex::wait(50, vex::timeUnits::msec);
   }
   return 1;
 }
@@ -57,7 +57,7 @@ int intakeToFishyAutonTaskWrapper()
   while (true)
   {
     intakeControl.intakeToFishyAutonTask();
-    wait(50, vex::timeUnits::msec);
+    vex::wait(50, vex::timeUnits::msec);
   }
   return 1;
 }
@@ -90,7 +90,7 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-6 * reversed, -11.6);
 
   intakeSort = true;
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
   chassis.turn_to_point(0.693042 * reversed, -11.6);
@@ -102,24 +102,23 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_point(37.0626 * reversed, 18.1247, 180);
   chassis.drive_to_point(37.0626 * reversed, 18.1247, 6, 6);
   Clamp.set(1);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   intakeSort = true;
 
-  chassis.turn_to_point(-39.7294, 21.122);
-  chassis.drive_to_point(-39.7294, 21.122);
+  chassis.turn_to_point(39.7294 * reversed, 21.122);
 
-  chassis.drive_timeout = 350;
-  chassis.drive_kp = 1.1;
-  chassis.drive_kd = 2.7;
+  chassis.boomerang_curve(42.5 * reversed, 26.5, 0, 0.6);
 
-  chassis.drive_to_point(-41.9998 * reversed, 25.8261);
-  chassis.drive_to_point(-42.7085 * reversed, 32.1277);
-  chassis.drive_to_point(-42.5917 * reversed, 24.83);
-  chassis.drive_to_point(-39.8135 * reversed, 30.8944);
+  chassis.drive_to_point(42.5 * reversed, 32);
+  chassis.drive_to_point(42.5 * reversed, 24.83);
 
-  chassis.turn_to_point(-35.3707, 0.239032);
-  chassis.drive_to_point(-35.3707, 0.239032, 7, 7);
+  if(alliance == "red") {chassis.boomerang_curve(39, 31, 315, 0.55);}
+  else {chassis.boomerang_curve(-39, 31, 45, 0.55);}
+
+  chassis.drive_timeout = 10000;
+  chassis.turn_to_point(35.3707 * reversed, 0.239032);
+  chassis.drive_to_point(35.3707 * reversed, -5, 7, 7);
 }
 
 // DONE AND TESTED WITH CURRENT PID
@@ -149,7 +148,7 @@ void positive_alliance_stake_rush(string c)
   chassis.drive_to_point(6 * reversed, -11.6);
 
   intakeSort = true;
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
   chassis.turn_to_point(0, -11.7);
@@ -161,14 +160,14 @@ void positive_alliance_stake_rush(string c)
   chassis.turn_to_point(-31.441 * reversed, 15.7054, 180);
   chassis.drive_to_point(-31.441 * reversed, 15.7054, 6, 6);
   Clamp.set(1);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   intakeSort = true;
 
   // Get the ring
   chassis.turn_to_point(-32 * reversed, 31.1189);
   chassis.drive_to_point(-32 * reversed, 31.1189);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   // Drive to the ladder
   chassis.drive_timeout = 10000;
@@ -196,7 +195,6 @@ void negative_ring_rush(string c)
   odom_constants();
 
   // Get the mogo
-  chassis.drive_timeout = 550;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
   Clamp.set(true);
   intakeSort = true;
@@ -286,22 +284,16 @@ void positive_corner_rush(string c)
   odom_constants();
 
   // Get the mogo
-  chassis.drive_timeout = 550;
-  chassis.turn_timeout = 250;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
   Clamp.set(true);
   intakeSort = true;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
 
   // Turn and get a ring
-  chassis.drive_timeout = 800;
-  chassis.turn_timeout = 400;
   chassis.turn_to_point(8.68866 * reversed, -25.3646 - 1.5);
   chassis.drive_to_point(8.68866 * reversed, -25.3646 - 1.5);
   vex::wait(700, msec);
 
-  chassis.drive_timeout = 400;
-  chassis.turn_timeout = 400;
   // Push the blue ring forwards, reposition
   chassis.turn_to_point(15.1719 * reversed, -25.0983 - 1.5);
   intakeSort = false;
@@ -309,26 +301,21 @@ void positive_corner_rush(string c)
   chassis.drive_to_point(15.1719 * reversed, -25.0983 - 1.5);
 
   // Push the other blue ring away, then come back
-  chassis.drive_timeout = 900;
   chassis.turn_to_point(15 * reversed, 4.25326 - 1.5);
   chassis.drive_to_point(15 * reversed, 4.25326 - 1.5);
-  chassis.drive_timeout = 400;
   chassis.turn_to_point(16.2469 * reversed, -4.37605 - 1.5, 180);
   intakeRev = false;
   chassis.drive_to_point(16.2469 * reversed, -4.37605 - 1.5);
 
   // Drive to the corner
   Doinker.set(true);
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(26 * reversed, 6.5);
   chassis.drive_to_point(26 * reversed, 6.5);
 
   // Clear the corner
-  chassis.turn_timeout = 2000;
   chassis.turn_to_angle(alliance == "blue" ? 150 : 53, 4);
   Doinker.set(false);
   chassis.turn_to_angle(alliance == "blue" ? 46.8294 : 313.17, 12);
-  chassis.turn_timeout = 400;
 
   // Eat the ring in the corner
   intakeSort = true;
@@ -380,30 +367,22 @@ void auton_skills()
 
   odom_constants();
 
-  // chassis.drive_kd = 0.01;
-  // chassis.turn_kd = 0.01;
-  chassis.drive_max_voltage = 12;
-  chassis.turn_max_voltage = 10;
-  chassis.turn_timeout = 350;
-  chassis.drive_timeout = 700;
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
 
   intakeSort = true;
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
   intakeSort = false;
 
   // Get the mogo
   chassis.drive_to_point(-0.0288024, 13.5957);
   chassis.turn_to_point(21.5267, 13.4296, 180);
-  chassis.drive_timeout = 1200;
   chassis.drive_to_point(21.5267, 13.4296, 5, 5);
   Clamp.set(true);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   // Get the first ring
   intakeSort = true;
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(21.9998, 34.5713);
   chassis.drive_to_point(21.9998, 34.5713);
 
@@ -412,7 +391,6 @@ void auton_skills()
   chassis.drive_to_point(46.8731, 36.399);
 
   // Get the third ring
-  chassis.turn_timeout = 400;
   chassis.turn_to_point(55.6561, 57.862);
   chassis.drive_to_point(55.6561, 57.862);
 
@@ -423,20 +401,16 @@ void auton_skills()
   // Move backwards to the wall stake
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.drive_timeout = 1000;
   chassis.turn_to_point(44.229, 61.5, 180);
   chassis.drive_to_point(44.229, 61.5);
 
   // Turn towards the wall stake and score on it
-  chassis.turn_timeout = 800;
   chassis.turn_to_point(58.8379, 61.5);
   chassis.drive_to_point(58.8379, 61.5);
-  chassis.turn_timeout = 400;
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
 
   // Move backwards to align with the next two rings
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(41.4149, 59.4474, 180);
   chassis.drive_to_point(41.4149, 59.4474);
 
@@ -448,14 +422,11 @@ void auton_skills()
   chassis.drive_to_point(43.1499, 16.7767);
 
   // Get both rings in the line
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(44.1072, 4.99533);
   chassis.drive_to_point(44.1072, 4.99533);
-  wait(0.4, vex::timeUnits::sec);
+  vex::wait(0.4, vex::timeUnits::sec);
 
   // Get the third ring in the triangle
-  chassis.drive_timeout = 800;
-  chassis.turn_timeout = 600;
   chassis.turn_to_point(54.1766, 10.8026);
   chassis.drive_to_point(54.1766, 10.8026);
 
@@ -467,32 +438,27 @@ void auton_skills()
   // Go to the middle
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.drive_timeout = 2500;
   chassis.turn_to_point(-2.03885, 62.0337);
   chassis.drive_to_point(-2.03885, 62.0337);
 
   // Push the first ring into the position
-  chassis.drive_timeout = 800;
-  chassis.turn_timeout = 400;
   chassis.turn_to_point(-24.7068, 39.0372, 180);
   chassis.drive_to_point(-24.7068, 39.0372);
-  wait(0.3, vex::timeUnits::sec);
+  vex::wait(0.3, vex::timeUnits::sec);
 
   // Get aligned for the mogo
   chassis.turn_to_point(-10.2475, 28.0261, 180);
   chassis.drive_to_point(-10.2475, 28.0261);
 
   // Turn and drive into the mogo to clamp onto it
-  chassis.drive_timeout = 1200;
   chassis.turn_to_point(-20.4184, 14.7244, 180);
   chassis.drive_to_point(-20.4184, 14.7244, 5, 5);
   Clamp.set(1);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   intakeSort = true;
 
   // Get the first ring
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(-33.9027, 29.3666);
   chassis.drive_to_point(-33.9027, 29.3666);
 
@@ -501,14 +467,10 @@ void auton_skills()
   chassis.drive_to_point(-45.7288, 42.0187);
 
   // Turn around and get the next two rings
-  chassis.turn_timeout = 600;
-  chassis.drive_timeout = 1500;
   chassis.turn_to_point(-46.1346, 20.2125);
   chassis.drive_to_point(-46.1346, 20.2125);
 
   // Get the second ring in the line
-  chassis.drive_timeout = 800;
-  chassis.turn_timeout = 500;
   chassis.turn_to_point(-46.2265, 8);
   chassis.drive_to_point(-46.2265, 8);
 
@@ -522,7 +484,6 @@ void auton_skills()
   Clamp.set(0);
 
   // Go to the wall stake, in front of it
-  chassis.drive_timeout = 2000;
   chassis.turn_to_point(-43.4516, 61);
   chassis.drive_to_point(-43.4516, 61);
 
@@ -530,14 +491,10 @@ void auton_skills()
   intakeToFishyAuton = true;
 
   // Get the wall stake ring
-  chassis.drive_timeout = 1500;
-  chassis.turn_timeout = 800;
   chassis.turn_to_point(-54.2656, 60.5);
   chassis.drive_to_point(-54.2656, 60.5);
-  chassis.turn_timeout = 600;
 
   // Score it onto the wall stake
-  chassis.drive_timeout = 1000;
   chassis.drive_to_point(-59.8379, 60.5);
   chassis.turn_to_angle(270);
   fishyControl.liftFishy(true);
@@ -546,8 +503,6 @@ void auton_skills()
   intakeToFishyAuton = true;
 
   // Go backwards
-  chassis.drive_timeout = 700;
-  chassis.turn_timeout = 500;
   chassis.drive_to_point(-44.8193, 60.3206);
 
   // Get the first ring to fishy height
@@ -555,24 +510,19 @@ void auton_skills()
   chassis.drive_to_point(-44.6187, 86.7453);
 
   // Go to the mogo
-  chassis.drive_timeout = 800;
   chassis.turn_to_point(-26.2973, 106.497);
   chassis.drive_to_point(-26.2973, 106.497);
 
   // Get the mogo
-  chassis.drive_timeout = 2000;
-  chassis.turn_timeout = 800;
   chassis.turn_to_point(10.2748, 105.777, 180);
   chassis.drive_to_point(10.2748, 105.777, 5, 5);
   Clamp.set(1);
-  wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.5, vex::timeUnits::sec);
 
   intakeSort = true;
   intakeToFishyAuton = false;
 
   // Get the second ring
-  chassis.drive_timeout = 800;
-  chassis.turn_timeout = 600;
   chassis.turn_to_point(24.1104, 80.4551);
   chassis.drive_to_point(24.1104, 80.4551);
 
@@ -581,7 +531,6 @@ void auton_skills()
   chassis.drive_to_point(57.5896, 80.2526);
 
   // Push into the corner
-  chassis.drive_timeout = 900;
   chassis.turn_to_point(70, 112.997, 180);
   Clamp.set(0);
   chassis.drive_to_point(65, 112.997);
@@ -590,7 +539,6 @@ void auton_skills()
   chassis.drive_to_point(57.5896, 96);
 
   // Ram the last goal into the corner
-  chassis.drive_timeout = 3000;
   chassis.turn_to_point(-48.3737, 122.738, 180);
   chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
