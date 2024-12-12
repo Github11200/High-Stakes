@@ -16,14 +16,14 @@ Fishy fishyControl(12);
 void default_constants()
 {
   // Constants for tuning on Monday
-  chassis.set_drive_constants(12, 0.7, 0.01, 1.4, 3, 13);
-  chassis.set_heading_constants(12, 0.1, 0.01, 0, 3, 0);
-  chassis.set_turn_constants(12, 0.2, 0.06, 0.9, 3);
-  chassis.set_swing_constants(12, 2, 0, 0, 3);
+  chassis.set_drive_constants(12, 0.7, 0.01, 1.7, 3, 13);
+  chassis.set_heading_constants(12, 0.28, 0.01, 1.9, 3, 0);
+  chassis.set_turn_constants(12, 0.28, 0.1, 1.9, 1);
+  chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
 
   // Stupidly high values so it has time to oscillate
-  chassis.set_drive_exit_conditions(0.1, 5000, 5000);
-  chassis.set_turn_exit_conditions(0.1, 5000, 5000);
+  chassis.set_drive_exit_conditions(1.5, 100, 4000);
+  chassis.set_turn_exit_conditions(1.5, 100, 800);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
 
@@ -62,7 +62,7 @@ int intakeToFishyAutonTaskWrapper()
   return 1;
 }
 
-// DONE
+// NOT TESTED WITH CURRENT PID
 void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
@@ -122,7 +122,7 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-35.3707, 0.239032, 7, 7);
 }
 
-// DONE
+// DONE AND TESTED WITH CURRENT PID
 void positive_alliance_stake_rush(string c)
 {
   pre_driver = true;
@@ -141,19 +141,19 @@ void positive_alliance_stake_rush(string c)
   odom_constants();
 
   // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0 * reversed, -10.9, 180);
-  chassis.drive_to_point(0 * reversed, -10.9);
+  chassis.turn_to_point(0 * reversed, -11.7, 180);
+  chassis.drive_to_point(0 * reversed, -11.7);
 
   // Move backwards to the alliance stake
-  chassis.turn_to_point(5.78 * reversed, -10.8, 180);
-  chassis.drive_to_point(5.7 * reversed, -10.8);
+  chassis.turn_to_point(6 * reversed, -11.7, 180);
+  chassis.drive_to_point(6 * reversed, -11.7);
 
   intakeSort = true;
   wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0, -10.8);
-  chassis.drive_to_point(0, -10.8);
+  chassis.turn_to_point(0, -11.7);
+  chassis.drive_to_point(0, -11.7);
 
   intakeSort = false;
 
@@ -166,16 +166,17 @@ void positive_alliance_stake_rush(string c)
   intakeSort = true;
 
   // Get the ring
-  chassis.turn_to_point(-30.2483 * reversed, 31.1189);
-  chassis.drive_to_point(-30.2483 * reversed, 31.1189);
+  chassis.turn_to_point(-32 * reversed, 31.1189);
+  chassis.drive_to_point(-32 * reversed, 31.1189);
   wait(0.5, vex::timeUnits::sec);
 
   // Drive to the ladder
-  chassis.turn_to_point(-30.2422 * reversed, -2);
-  chassis.drive_to_point(-30.2422 * reversed, -2, 7, 7);
+  chassis.drive_timeout = 10000;
+  chassis.turn_to_point(-32 * reversed, -7);
+  chassis.drive_to_point(-32 * reversed, -7, 7, 7);
 }
 
-// DONE
+// NOT TESTED WITH CURRENT PID
 void negative_ring_rush(string c)
 {
   pre_driver = true;
@@ -265,7 +266,7 @@ void negative_ring_rush(string c)
   chassis.drive_to_point(2.01298 * reversed, -28.6099);
 }
 
-// NOT DONE
+// NOT TESTED WITH CURRENT PID
 void positive_corner_rush(string c)
 {
   pre_driver = true;
@@ -368,19 +369,11 @@ void testing(string c)
   odom_constants();
   cout << "constants defined" << endl;
 
-  // cout << "start position:" << endl;
-  // cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
-  // chassis.drive_to_point(0, 50);
-
-  // cout << "end position:" << endl;
-  // cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
-  chassis.turn_to_point(0, -24);
-  cout << chassis.get_absolute_heading() << endl;
+  chassis.boomerang_curve(24, 24, 135, 0);
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }
 
-// BASICALLY DONE?
+// NOT TESTED WITH CURRENT PID
 void auton_skills()
 {
   pre_driver = true;
