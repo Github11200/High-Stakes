@@ -131,19 +131,20 @@ void IntakeControl::colorSortingAutonTask()
       if (shouldEjectRing())
         ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-      cout << abs(Intake.velocity(rpm)) << endl;
-      cout << stuck_time << endl;
-      if(abs(Intake.velocity(rpm)) < 20){
+      if (abs(Intake.velocity(rpm)) < 20)
+      {
         stuck_time += 1;
         cout << "e" << endl;
-        if(stuck_time >= 30) {
+        if (stuck_time >= 30)
+        {
           cout << "f" << endl;
           Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
           vex::wait(400, msec);
           Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
         }
       }
-      else {
+      else
+      {
         stuck_time = 0;
       }
     }

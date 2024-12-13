@@ -109,21 +109,26 @@ void negative_alliance_stake_rush(string c)
 
   intakeSort = true;
 
+  // Turn towards the next two rings
   chassis.turn_to_point(39.7294 * reversed, 21.122);
 
-  chassis.boomerang_curve(44 * reversed, 28, 0, 0.6);
+  // Curve and get the first ring
+  chassis.boomerang_curve(44.1283 * reversed, 39, 0, 0.72, 12, 12, 1.5, 100, 800, 0.4, 0.1, 1.5, 0);
 
-  chassis.drive_to_point(44 * reversed, 40, 4, 4);
-  chassis.drive_to_point(44 * reversed, 22);
+  // Move forward a bit more to get the second ring
+  chassis.turn_to_point(44.108 * reversed, 43.0448);
+  chassis.drive_to_point(44.108 * reversed, 43.0448);
 
-  if(alliance == "red") {chassis.boomerang_curve(34, 33, 315, 0.55);}
-  else {chassis.boomerang_curve(-34, 33, 45, 0.55);}
+  // Curve backwards
+  chassis.drive_to_point(35.4772 * reversed, 15.6052);
 
-  chassis.drive_timeout = 10000;
-  chassis.turn_to_point(35.3707 * reversed, 0.239032);
+  // Get the third ring
+  chassis.turn_to_point(29.0146 * reversed, 36.9518);
+  chassis.drive_to_point(29.0146 * reversed, 36.9518, 6, 6);
 
-  vex::wait(500, msec);
-  chassis.drive_to_point(35.3707 * reversed, -5, 7, 7);
+  // Touch the ladder
+  chassis.turn_to_point(29 * reversed, -2);
+  chassis.drive_to_point(29 * reversed, -2);
 }
 
 // DONE AND TESTED WITH CURRENT PID
@@ -145,12 +150,15 @@ void positive_alliance_stake_rush(string c)
   odom_constants();
 
   // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0 * reversed, -11.6, 180);
-  chassis.drive_to_point(0 * reversed, -11.6);
+  chassis.turn_to_point(0 * reversed, -11.5, 180);
+  chassis.drive_to_point(0 * reversed, -11.5);
+
+  // Just make sure we're actually there
+  chassis.drive_to_point(0 * reversed, -11.5);
 
   // Move backwards to the alliance stake
-  chassis.turn_to_point(6 * reversed, -11.6, 180);
-  chassis.drive_to_point(6 * reversed, -11.6);
+  chassis.turn_to_point(6 * reversed, -11.5, 180);
+  chassis.drive_to_point(6 * reversed, -11.5);
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
@@ -289,24 +297,24 @@ void positive_corner_rush(string c)
   odom_constants();
 
   // Get the mogo
+  chassis.drive_timeout = 600;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
   Clamp.set(true);
   intakeSort = true;
+  chassis.drive_timeout = 4000;
   chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
 
   // Turn and get a ring
-  chassis.turn_to_point(8.68866 * reversed, -25.3646 - 1.5);
-  chassis.drive_to_point(8.68866 * reversed, -25.3646 - 1.5);
+  chassis.turn_to_point(16.68866 * reversed, -25.3646 - 1.5);
+  chassis.drive_to_point(16.68866 * reversed, -25.3646 - 1.5);
   vex::wait(700, msec);
 
   // Push the blue ring forwards, reposition
-  chassis.turn_to_point(15.1719 * reversed, -25.0983 - 1.5);
-  intakeSort = false;
-  intakeRev = true;
-  chassis.drive_to_point(15.1719 * reversed, -25.0983 - 1.5);
 
   // Push the other blue ring away, then come back
   chassis.turn_to_point(15 * reversed, 4.25326 - 1.5);
+  intakeSort = false;
+  intakeRev = true;
   chassis.drive_to_point(15 * reversed, 4.25326 - 1.5);
   chassis.turn_to_point(16.2469 * reversed, -4.37605 - 1.5, 180);
   intakeRev = false;
@@ -314,29 +322,25 @@ void positive_corner_rush(string c)
 
   // Drive to the corner
   Doinker.set(true);
-  chassis.turn_to_point(26 * reversed, 6.5);
-  chassis.drive_to_point(26 * reversed, 6.5);
+  chassis.turn_to_point(25 * reversed, 5.5);
+  chassis.drive_to_point(25 * reversed, 5.5);
 
   // Clear the corner
-  chassis.turn_to_angle(alliance == "blue" ? 150 : 53, 4);
+  chassis.turn_timeout = 3000;
+  chassis.turn_to_angle(alliance == "blue" ? 167 : 70, 4);
   Doinker.set(false);
-  chassis.turn_to_angle(alliance == "blue" ? 46.8294 : 313.17, 12);
+  chassis.turn_to_angle(alliance == "blue" ? 46.8294 : 313.17, 4);
 
   // Eat the ring in the corner
+  chassis.turn_timeout = 800;
   intakeSort = true;
-  chassis.drive_to_point(29 * reversed, 12);
   vex::wait(200, msec);
-  chassis.drive_to_point(28.5 * reversed, 11.5);
-  vex::wait(4000, msec);
+  chassis.drive_to_point(28 * reversed, 8);
+  vex::wait(400, msec);
 
-  // // Drive to the ladder
-  // chassis.turn_to_point(12.4361 * reversed, -6.50658, 180);
-  // chassis.drive_to_point(12.4361 * reversed, -6.50658);
-  // chassis.turn_timeout = 600;
-  // chassis.drive_timeout = 2000;
-  // chassis.turn_to_point(-22 * reversed, -21.7566 - 1.5);
-  // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 12, 12);
-  // chassis.drive_to_point(-22 * reversed, -21.7566 - 1.5, 7, 7);
+  // Drive to the ladder
+  chassis.turn_to_point(-24 * reversed, -21);
+  chassis.drive_to_point(-24 * reversed, -21);
   intakeSort = false;
 }
 

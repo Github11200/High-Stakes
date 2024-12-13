@@ -385,8 +385,8 @@ void usercontrol(void)
 
   // Auton testing code start
   wait(2500, msec);
-  auton_skills();
-  
+  positive_corner_rush("red");
+
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
