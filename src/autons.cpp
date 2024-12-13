@@ -17,7 +17,7 @@ void default_constants()
 {
   // Constants for tuning on Monday
   chassis.set_drive_constants(12, 0.7, 0.01, 1.7, 3, 13);
-  chassis.set_heading_constants(12, 0.28, 0.01, 1.9, 3, 0);
+  chassis.set_heading_constants(12, 0.28, 0.1, 1.9, 1, 0);
   chassis.set_turn_constants(12, 0.28, 0.1, 1.9, 1);
   chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
 
@@ -82,19 +82,22 @@ void negative_alliance_stake_rush(string c)
   odom_constants();
 
   // Move in front of the wall stake
-  chassis.turn_to_point(-0 * reversed, -11.6, 180);
-  chassis.drive_to_point(-0 * reversed, -11.6);
+  chassis.turn_to_point(-0 * reversed, -11.5, 180);
+  chassis.drive_to_point(-0 * reversed, -11.5);
+
+  // Just make sure we're actually there
+  chassis.drive_to_point(-0 * reversed, -11.5);
 
   // Move back and score
-  chassis.turn_to_point(-6 * reversed, -11.6, 180);
-  chassis.drive_to_point(-6 * reversed, -11.6);
+  chassis.turn_to_point(-6 * reversed, -11.5, 180);
+  chassis.drive_to_point(-6 * reversed, -11.5);
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0.693042 * reversed, -11.6);
-  chassis.drive_to_point(0.693042 * reversed, -11.6);
+  chassis.turn_to_point(0.693042 * reversed, -11.5);
+  chassis.drive_to_point(0.693042 * reversed, -11.5);
 
   intakeSort = false;
 
@@ -108,16 +111,18 @@ void negative_alliance_stake_rush(string c)
 
   chassis.turn_to_point(39.7294 * reversed, 21.122);
 
-  chassis.boomerang_curve(42.5 * reversed, 26.5, 0, 0.6);
+  chassis.boomerang_curve(44 * reversed, 28, 0, 0.6);
 
-  chassis.drive_to_point(42.5 * reversed, 32);
-  chassis.drive_to_point(42.5 * reversed, 24.83);
+  chassis.drive_to_point(44 * reversed, 40, 4, 4);
+  chassis.drive_to_point(44 * reversed, 22);
 
-  if(alliance == "red") {chassis.boomerang_curve(39, 31, 315, 0.55);}
-  else {chassis.boomerang_curve(-39, 31, 45, 0.55);}
+  if(alliance == "red") {chassis.boomerang_curve(34, 33, 315, 0.55);}
+  else {chassis.boomerang_curve(-34, 33, 45, 0.55);}
 
   chassis.drive_timeout = 10000;
   chassis.turn_to_point(35.3707 * reversed, 0.239032);
+
+  vex::wait(500, msec);
   chassis.drive_to_point(35.3707 * reversed, -5, 7, 7);
 }
 
@@ -355,8 +360,8 @@ void testing(string c)
   }
   odom_constants();
   cout << "constants defined" << endl;
-
-  chassis.boomerang_curve(24, 24, 135, 0);
+  intakeSort = true;
+  vex::wait(100000, msec);
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }
 
@@ -375,9 +380,9 @@ void auton_skills()
   intakeSort = false;
 
   // Get the mogo
-  chassis.drive_to_point(-0.0288024, 13.5957);
-  chassis.turn_to_point(21.5267, 13.4296, 180);
-  chassis.drive_to_point(21.5267, 13.4296, 5, 5);
+  chassis.drive_to_point(-0.0288024, 13.2);
+  chassis.turn_to_point(21.5267, 13.2, 180);
+  chassis.drive_to_point(21.5267, 13.2, 5, 5);
   Clamp.set(true);
   vex::wait(0.5, vex::timeUnits::sec);
 
@@ -401,12 +406,12 @@ void auton_skills()
   // Move backwards to the wall stake
   intakeSort = false;
   intakeToFishyAuton = true;
-  chassis.turn_to_point(44.229, 61.5, 180);
-  chassis.drive_to_point(44.229, 61.5);
+  chassis.turn_to_point(44.229, 61, 180);
+  chassis.drive_to_point(44.229, 61);
 
   // Turn towards the wall stake and score on it
-  chassis.turn_to_point(58.8379, 61.5);
-  chassis.drive_to_point(58.8379, 61.5);
+  chassis.turn_to_point(58.8379, 61);
+  chassis.drive_to_point(58.8379, 61);
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
 
@@ -447,12 +452,12 @@ void auton_skills()
   vex::wait(0.3, vex::timeUnits::sec);
 
   // Get aligned for the mogo
-  chassis.turn_to_point(-10.2475, 28.0261, 180);
-  chassis.drive_to_point(-10.2475, 28.0261);
+  chassis.turn_to_point(-11.2475, 28.0261, 180);
+  chassis.drive_to_point(-11.2475, 28.0261);
 
   // Turn and drive into the mogo to clamp onto it
-  chassis.turn_to_point(-20.4184, 14.7244, 180);
-  chassis.drive_to_point(-20.4184, 14.7244, 5, 5);
+  chassis.turn_to_point(-21.4184, 14.7244, 180);
+  chassis.drive_to_point(-21.4184, 14.7244, 5, 5);
   Clamp.set(1);
   vex::wait(0.5, vex::timeUnits::sec);
 
@@ -491,11 +496,11 @@ void auton_skills()
   intakeToFishyAuton = true;
 
   // Get the wall stake ring
-  chassis.turn_to_point(-54.2656, 60.5);
-  chassis.drive_to_point(-54.2656, 60.5);
+  chassis.turn_to_point(-54.2656, 61);
+  chassis.drive_to_point(-54.2656, 61);
 
   // Score it onto the wall stake
-  chassis.drive_to_point(-59.8379, 60.5);
+  chassis.drive_to_point(-59.8379, 61);
   chassis.turn_to_angle(270);
   fishyControl.liftFishy(true);
 
@@ -505,43 +510,43 @@ void auton_skills()
   // Go backwards
   chassis.drive_to_point(-44.8193, 60.3206);
 
-  // Get the first ring to fishy height
-  chassis.turn_to_point(-44.6187, 86.7453);
-  chassis.drive_to_point(-44.6187, 86.7453);
+  // // Get the first ring to fishy height
+  // chassis.turn_to_point(-44.6187, 86.7453);
+  // chassis.drive_to_point(-44.6187, 86.7453);
 
-  // Go to the mogo
-  chassis.turn_to_point(-26.2973, 106.497);
-  chassis.drive_to_point(-26.2973, 106.497);
+  // // Go to the mogo
+  // chassis.turn_to_point(-26.2973, 106.497);
+  // chassis.drive_to_point(-26.2973, 106.497);
 
-  // Get the mogo
-  chassis.turn_to_point(10.2748, 105.777, 180);
-  chassis.drive_to_point(10.2748, 105.777, 5, 5);
-  Clamp.set(1);
-  vex::wait(0.5, vex::timeUnits::sec);
+  // // Get the mogo
+  // chassis.turn_to_point(10.2748, 105.777, 180);
+  // chassis.drive_to_point(10.2748, 105.777, 5, 5);
+  // Clamp.set(1);
+  // vex::wait(0.5, vex::timeUnits::sec);
 
-  intakeSort = true;
-  intakeToFishyAuton = false;
+  // intakeSort = true;
+  // intakeToFishyAuton = false;
 
-  // Get the second ring
-  chassis.turn_to_point(24.1104, 80.4551);
-  chassis.drive_to_point(24.1104, 80.4551);
+  // // Get the second ring
+  // chassis.turn_to_point(24.1104, 80.4551);
+  // chassis.drive_to_point(24.1104, 80.4551);
 
-  // Align to the corner
-  chassis.turn_to_point(57.5896, 80.2526);
-  chassis.drive_to_point(57.5896, 80.2526);
+  // // Align to the corner
+  // chassis.turn_to_point(57.5896, 80.2526);
+  // chassis.drive_to_point(57.5896, 80.2526);
 
-  // Push into the corner
-  chassis.turn_to_point(70, 112.997, 180);
-  Clamp.set(0);
-  chassis.drive_to_point(65, 112.997);
+  // // Push into the corner
+  // chassis.turn_to_point(70, 112.997, 180);
+  // Clamp.set(0);
+  // chassis.drive_to_point(65, 112.997);
 
-  // Back up
-  chassis.drive_to_point(57.5896, 96);
+  // // Back up
+  // chassis.drive_to_point(57.5896, 96);
 
-  // Ram the last goal into the corner
-  chassis.turn_to_point(-48.3737, 122.738, 180);
-  chassis.drive_to_point(-48.3737, 122.738, 12, 12);
+  // // Ram the last goal into the corner
+  // chassis.turn_to_point(-48.3737, 122.738, 180);
+  // chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
-  // Back up
-  chassis.drive_to_point(43.6138, 97.5774);
+  // // Back up
+  // chassis.drive_to_point(43.6138, 97.5774);
 }
