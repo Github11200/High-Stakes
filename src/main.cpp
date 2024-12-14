@@ -385,7 +385,7 @@ void usercontrol(void)
 
   // Auton testing code start
   wait(2500, msec);
-  positive_corner_rush("blue");
+  negative_alliance_stake_rush("red");
 
   intakeSort = false;
   intakeToFishyAuton = false;
