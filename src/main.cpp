@@ -386,19 +386,19 @@ void usercontrol(void)
   // Auton testing code start
   wait(2500, msec);
   negative_alliance_stake_rush("red");
-
+ 
   intakeSort = false;
   intakeToFishyAuton = false;
   pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
-  // Auton testing code end
+  Intake.stop(vex::brakeType::coast); 
+  // Auton testing code end 
 
   task buttons = task(buttonsWrapper);
 
   while (1)
   {
-    // Replace this line with chassis.control_tank(); for tank drive
-    // or chassis.control_holonomic(); for holo drive.
+    // Replace this line with chassis.control_tank(); for tank drive 
+    // or chassis.control_holonomic(); for holo drive. 
     chassis.control_arcade();
 
     wait(20, msec);

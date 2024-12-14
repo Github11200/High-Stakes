@@ -131,7 +131,7 @@ void IntakeControl::colorSortingAutonTask()
       if (shouldEjectRing())
         ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-      if (abs(Intake.velocity(rpm)) < 20)
+      if (abs(Intake.velocity(rpm)) < 5)
       {
         stuck_time += 1;
         cout << "e" << endl;

@@ -82,22 +82,22 @@ void negative_alliance_stake_rush(string c)
   odom_constants();
 
   // Move in front of the wall stake
-  chassis.turn_to_point(-0 * reversed, -11.5, 180);
-  chassis.drive_to_point(-0 * reversed, -11.5);
+  chassis.turn_to_point(-0 * reversed, -11.4, 180);
+  chassis.drive_to_point(-0 * reversed, -11.4);
 
   // Just make sure we're actually there
-  chassis.drive_to_point(-0 * reversed, -11.5);
+  chassis.drive_to_point(-0 * reversed, -11.4);
 
   // Move back and score
-  chassis.turn_to_point(-6 * reversed, -11.5, 180);
-  chassis.drive_to_point(-6 * reversed, -11.5);
+  chassis.turn_to_point(-6 * reversed, -11.4, 180); 
+  chassis.drive_to_point(-6 * reversed, -11.4);
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0.693042 * reversed, -11.5);
-  chassis.drive_to_point(0.693042 * reversed, -11.5);
+  chassis.turn_to_point(0.693042 * reversed, -11.4);
+  chassis.drive_to_point(0.693042 * reversed, -11.4);
 
   intakeSort = false;
 
@@ -113,18 +113,20 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_point(39.7294 * reversed, 21.122);
 
   // Curve and get the first ring
-  chassis.boomerang_curve(44.1283 * reversed, 39, 0, 0.72, 12, 12, 1.5, 100, 800, 0.4, 0.1, 1.5, 0);
+  chassis.boomerang_curve(45.5 * reversed, 39, 0, 0.72, 12, 12, 1.5, 100, 800, 0.4, 0.1, 1.5, 0);
 
   // Move forward a bit more to get the second ring
-  chassis.turn_to_point(44.108 * reversed, 43.0448);
-  chassis.drive_to_point(44.108 * reversed, 43.0448);
+  chassis.turn_to_point(45.5 * reversed, 43.0448);
+  chassis.drive_kp = 2;
+  chassis.drive_to_point(45.5 * reversed, 43.0448, 12, 12);
+  chassis.drive_kp = 0.7;
 
   // Curve backwards
   chassis.drive_to_point(35.4772 * reversed, 15.6052);
 
   // Get the third ring
   chassis.turn_to_point(29.0146 * reversed, 36.9518);
-  chassis.drive_to_point(29.0146 * reversed, 36.9518, 6, 6);
+  chassis.drive_to_point(29.0146 * reversed, 36.9518);
 
   // Touch the ladder
   chassis.turn_to_point(29 * reversed, -2);
@@ -150,22 +152,22 @@ void positive_alliance_stake_rush(string c)
   odom_constants();
 
   // Move backwards to align with the alliance stake horizontally
-  chassis.turn_to_point(0 * reversed, -11.5, 180);
-  chassis.drive_to_point(0 * reversed, -11.5);
+  chassis.turn_to_point(0 * reversed, -11.4, 180);
+  chassis.drive_to_point(0 * reversed, -11.4);
 
   // Just make sure we're actually there
-  chassis.drive_to_point(0 * reversed, -11.5);
+  chassis.drive_to_point(0 * reversed, -11.4);
 
   // Move backwards to the alliance stake
-  chassis.turn_to_point(6 * reversed, -11.5, 180);
-  chassis.drive_to_point(6 * reversed, -11.5);
+  chassis.turn_to_point(6 * reversed, -11.4, 180);
+  chassis.drive_to_point(6 * reversed, -11.4);
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
 
   // Move forward a bit
-  chassis.turn_to_point(0, -11.7);
-  chassis.drive_to_point(0, -11.7);
+  chassis.turn_to_point(0, -11.4);
+  chassis.drive_to_point(0, -11.4);
 
   intakeSort = false;
 
@@ -503,18 +505,18 @@ void auton_skills()
   Clamp.set(0);
 
   // Go to the wall stake, in front of it
-  chassis.turn_to_point(-43.4516, 61);
-  chassis.drive_to_point(-43.4516, 61);
+  chassis.turn_to_point(-43.4516, 60);
+  chassis.drive_to_point(-43.4516, 60);
 
   intakeSort = false;
   intakeToFishyAuton = true;
 
   // Get the wall stake ring
-  chassis.turn_to_point(-54.2656, 61);
-  chassis.drive_to_point(-54.2656, 61);
+  chassis.turn_to_point(-54.2656, 60);
+  chassis.drive_to_point(-54.2656, 60);
 
   // Score it onto the wall stake
-  chassis.drive_to_point(-59.8379, 61);
+  chassis.drive_to_point(-59.8379, 60);
   chassis.turn_to_angle(270);
   fishyControl.liftFishy(true);
 
@@ -524,43 +526,43 @@ void auton_skills()
   // Go backwards
   chassis.drive_to_point(-44.8193, 60.3206);
 
-  // // Get the first ring to fishy height
-  // chassis.turn_to_point(-44.6187, 86.7453);
-  // chassis.drive_to_point(-44.6187, 86.7453);
+  // Get the first ring to fishy height
+  chassis.turn_to_point(-44.6187, 86.7453);
+  chassis.drive_to_point(-44.6187, 86.7453);
 
-  // // Go to the mogo
-  // chassis.turn_to_point(-26.2973, 106.497);
-  // chassis.drive_to_point(-26.2973, 106.497);
+  // Go to the mogo
+  chassis.turn_to_point(-26.2973, 106.497);
+  chassis.drive_to_point(-26.2973, 106.497);
 
-  // // Get the mogo
-  // chassis.turn_to_point(10.2748, 105.777, 180);
-  // chassis.drive_to_point(10.2748, 105.777, 5, 5);
-  // Clamp.set(1);
-  // vex::wait(0.5, vex::timeUnits::sec);
+  // Get the mogo
+  chassis.turn_to_point(10.2748, 105.777, 180);
+  chassis.drive_to_point(10.2748, 105.777, 5, 5);
+  Clamp.set(1);
+  vex::wait(0.5, vex::timeUnits::sec);
 
-  // intakeSort = true;
-  // intakeToFishyAuton = false;
+  intakeSort = true;
+  intakeToFishyAuton = false;
 
-  // // Get the second ring
-  // chassis.turn_to_point(24.1104, 80.4551);
-  // chassis.drive_to_point(24.1104, 80.4551);
+  // Get the second ring
+  chassis.turn_to_point(24.1104, 80.4551);
+  chassis.drive_to_point(24.1104, 80.4551);
 
-  // // Align to the corner
-  // chassis.turn_to_point(57.5896, 80.2526);
-  // chassis.drive_to_point(57.5896, 80.2526);
+  // Align to the corner
+  chassis.turn_to_point(57.5896, 80.2526);
+  chassis.drive_to_point(57.5896, 80.2526);
 
-  // // Push into the corner
-  // chassis.turn_to_point(70, 112.997, 180);
-  // Clamp.set(0);
-  // chassis.drive_to_point(65, 112.997);
+  // Push into the corner
+  chassis.turn_to_point(70, 112.997, 180);
+  Clamp.set(0);
+  chassis.drive_to_point(65, 112.997);
 
-  // // Back up
-  // chassis.drive_to_point(57.5896, 96);
+  // Back up
+  chassis.drive_to_point(57.5896, 96);
 
-  // // Ram the last goal into the corner
-  // chassis.turn_to_point(-48.3737, 122.738, 180);
-  // chassis.drive_to_point(-48.3737, 122.738, 12, 12);
+  // Ram the last goal into the corner
+  chassis.turn_to_point(-48.3737, 122.738, 180);
+  chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
-  // // Back up
-  // chassis.drive_to_point(43.6138, 97.5774);
+  // Back up
+  chassis.drive_to_point(43.6138, 97.5774);
 }
