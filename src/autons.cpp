@@ -298,32 +298,23 @@ void positive_corner_rush(string c)
 
   chassis.set_heading(180);
 
-  // // Get the mogo
-  // chassis.drive_timeout = 600;
-  // chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
-  // Clamp.set(true);
-  // intakeSort = true;
-  // chassis.drive_timeout = 4000;
-  // chassis.drive_to_point(-8 * reversed, -26, 8, 1.8);
-  
-  chassis.drive_timeout = 900;
-  chassis.drive_to_point(0 * reversed, -25.05);
-
+  // Get the mogo in the middle and move it to the side
   FishyMech.spinTo(-80, degrees, false);
   chassis.turn_timeout = 1500;
-  chassis.boomerang_curve(8 * reversed, -43.409, alliance == "blue" ? 160 : 200, 0.6, 12, 12);
+  chassis.boomerang_curve(8 * reversed, -43.409, alliance == "blue" ? 160 : 200, 0.5, 12, 12);
   chassis.turn_timeout = 800;
   chassis.turn_to_angle(alliance == "blue" ? 90 : 270);
 
+  // Get the goal
   FishyMech.spinTo(0, degrees, false);
-  chassis.turn_to_point(-16.5158 * reversed, -24.3932, 180);
-  chassis.drive_to_point(-16.5158 * reversed, -24.3932, 6, 6);
+  chassis.turn_to_point(-16.5158 * reversed, -22.3932, 180);
+  chassis.drive_to_point(-16.5158 * reversed, -22.3932, 6, 6);
   Clamp.set(1);
 
   // Turn and get a ring
-  chassis.turn_to_point((16.68866 - 4.5) * reversed, -25.3646 - 1.5);
+  chassis.turn_to_point((16.68866 - 4.5) * reversed, -30.3646 - 1.5);
   intakeSort = true;
-  chassis.drive_to_point((16.68866 - 4.5) * reversed, -25.3646 - 1.5);
+  chassis.drive_to_point((16.68866 - 4.5) * reversed, -30.3646 - 1.5);
   vex::wait(700, msec);
 
   // Push the blue ring forwards, reposition
@@ -337,12 +328,14 @@ void positive_corner_rush(string c)
 
   // Drive to the corner
   Doinker.set(true);
+  chassis.drive_timeout = 800;
   chassis.turn_to_point((25 - 3) * reversed, 5.5);
-  chassis.drive_to_point((25 - 3) * reversed, 5.5);
+  chassis.drive_to_point((25 - 3) * reversed, 5.5, 12, 0);
 
   // Clear the corner
-  chassis.turn_timeout = 1500;
-  chassis.turn_to_angle(alliance == "blue" ? 167 : 70, 4);
+  chassis.turn_timeout = 1400;
+  chassis.turn_to_angle(alliance == "blue" ? 167 : 70, 2);
+  chassis.turn_to_angle(alliance == "blue" ? 167 : 70, 12);
   Doinker.set(false);
   chassis.turn_timeout = 800;
   chassis.turn_to_angle(alliance == "blue" ? 46.8294 : 313.17);
@@ -351,10 +344,14 @@ void positive_corner_rush(string c)
   intakeRev = false;
   intakeSort = true;
   chassis.drive_timeout = 600;
-  chassis.drive_to_point((28 - 3) * reversed, 7);
+  chassis.drive_to_point((28 - 3) * reversed, 9.5);
   vex::wait(200, msec);
-  chassis.drive_to_point(21 * reversed, 3);
-  vex::wait(40000, msec);
+  chassis.drive_to_point(21 * reversed, 5.5);
+  vex::wait(400, msec);
+  chassis.drive_to_point((28 - 3) * reversed, 9.5);
+  vex::wait(200, msec);
+  chassis.drive_to_point(21 * reversed, 5.5);
+  vex::wait(4000, msec);
 }
 
 void testing(string c)

@@ -380,12 +380,12 @@ void usercontrol(void)
 {
 
   pre_match = false;
-  pre_driver = false; 
+  pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
   wait(2500, msec);
-  positive_corner_rush("red");
+  positive_corner_rush("blue");
 
   intakeSort = false;
   intakeToFishyAuton = false;
