@@ -381,7 +381,7 @@ void testing(string c)
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }
 
-// NOT TESTED WITH CURRENT PID
+// Part after 2nd wall stake not tested with current PID
 void auton_skills()
 {
   pre_driver = true;
@@ -404,6 +404,7 @@ void auton_skills()
 
   // Get the first ring
   intakeSort = true;
+  chassis.drive_timeout = 800;
   chassis.turn_to_point(21.9998, 34.5713);
   chassis.drive_to_point(21.9998, 34.5713);
 
@@ -412,6 +413,7 @@ void auton_skills()
   chassis.drive_to_point(46.8731, 36.399);
 
   // Get the third ring
+  chassis.turn_timeout = 400;
   chassis.turn_to_point(55.6561, 57.862);
   chassis.drive_to_point(55.6561, 57.862);
 
@@ -422,16 +424,21 @@ void auton_skills()
   // Move backwards to the wall stake
   intakeSort = false;
   intakeToFishyAuton = true;
+  chassis.drive_timeout = 4000;
   chassis.turn_to_point(44.229, 61, 180);
   chassis.drive_to_point(44.229, 61);
 
   // Turn towards the wall stake and score on it
+  chassis.turn_timeout = 800;
   chassis.turn_to_point(58.8379, 61);
   chassis.drive_to_point(58.8379, 61);
+  chassis.turn_timeout = 400;
   chassis.turn_to_angle(90);
   fishyControl.liftFishy(true);
 
   // Move backwards to align with the next two rings
+  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 800;
   chassis.turn_to_point(41.4149, 59.4474, 180);
   chassis.drive_to_point(41.4149, 59.4474);
 
@@ -459,6 +466,7 @@ void auton_skills()
   // Go to the middle
   intakeSort = false;
   intakeToFishyAuton = true;
+  chassis.drive_timeout = 4000;
   chassis.turn_to_point(-2.03885, 62.0337);
   chassis.drive_to_point(-2.03885, 62.0337);
 
@@ -475,11 +483,12 @@ void auton_skills()
   chassis.turn_to_point(-21.4184, 14.7244, 180);
   chassis.drive_to_point(-21.4184, 14.7244, 5, 5);
   Clamp.set(1);
-  vex::wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.4, vex::timeUnits::sec);
 
   intakeSort = true;
 
   // Get the first ring
+  chassis.drive_timeout = 800;
   chassis.turn_to_point(-33.9027, 29.3666);
   chassis.drive_to_point(-33.9027, 29.3666);
 
@@ -488,10 +497,12 @@ void auton_skills()
   chassis.drive_to_point(-45.7288, 42.0187);
 
   // Turn around and get the next two rings
+  chassis.drive_timeout = 1500;
   chassis.turn_to_point(-46.1346, 20.2125);
   chassis.drive_to_point(-46.1346, 20.2125);
 
   // Get the second ring in the line
+  chassis.drive_timeout = 800;
   chassis.turn_to_point(-46.2265, 8);
   chassis.drive_to_point(-46.2265, 8);
 
@@ -505,6 +516,7 @@ void auton_skills()
   Clamp.set(0);
 
   // Go to the wall stake, in front of it
+  chassis.drive_timeout = 4000;
   chassis.turn_to_point(-43.4516, 60);
   chassis.drive_to_point(-43.4516, 60);
 
@@ -517,13 +529,17 @@ void auton_skills()
 
   // Score it onto the wall stake
   chassis.drive_to_point(-59.8379, 60);
+  chassis.turn_timeout = 400;
   chassis.turn_to_angle(270);
   fishyControl.liftFishy(true);
+  chassis.turn_timeout = 800;
 
   intakeSort = false;
   intakeToFishyAuton = true;
 
   // Go backwards
+  chassis.drive_timeout = 700;
+  chassis.turn_timeout = 500;
   chassis.drive_to_point(-44.8193, 60.3206);
 
   // Get the first ring to fishy height
@@ -531,6 +547,8 @@ void auton_skills()
   chassis.drive_to_point(-44.6187, 86.7453);
 
   // Go to the mogo
+  chassis.drive_timeout = 4000;
+  chassis.turn_timeout = 800;
   chassis.turn_to_point(-26.2973, 106.497);
   chassis.drive_to_point(-26.2973, 106.497);
 
@@ -544,6 +562,8 @@ void auton_skills()
   intakeToFishyAuton = false;
 
   // Get the second ring
+  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 600;
   chassis.turn_to_point(24.1104, 80.4551);
   chassis.drive_to_point(24.1104, 80.4551);
 
@@ -552,6 +572,7 @@ void auton_skills()
   chassis.drive_to_point(57.5896, 80.2526);
 
   // Push into the corner
+  chassis.drive_timeout = 900;
   chassis.turn_to_point(70, 112.997, 180);
   Clamp.set(0);
   chassis.drive_to_point(65, 112.997);
@@ -560,6 +581,7 @@ void auton_skills()
   chassis.drive_to_point(57.5896, 96);
 
   // Ram the last goal into the corner
+  chassis.drive_timeout = 3000;
   chassis.turn_to_point(-48.3737, 122.738, 180);
   chassis.drive_to_point(-48.3737, 122.738, 12, 12);
 
