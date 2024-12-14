@@ -380,7 +380,7 @@ void usercontrol(void)
 {
 
   pre_match = false;
-  pre_driver = false;
+  pre_driver = false; 
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start

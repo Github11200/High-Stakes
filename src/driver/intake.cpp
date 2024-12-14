@@ -135,7 +135,7 @@ void IntakeControl::colorSortingAutonTask()
       {
         stuck_time += 1;
         cout << "e" << endl;
-        if (stuck_time >= 30)
+        if (stuck_time >= 15)
         {
           cout << "f" << endl;
           Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
