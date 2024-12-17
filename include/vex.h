@@ -4,7 +4,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "v5.h"
 #include "v5_vcs.h"
 #include "robot-config.h"
@@ -14,6 +13,9 @@
 #include "JAR-Template/PID.h"
 #include "global-variables.h"
 #include "autons.h"
+#include <vector>
+#include <fstream>
+#include <string>
 
 #define waitUntil(condition) \
   do                         \
