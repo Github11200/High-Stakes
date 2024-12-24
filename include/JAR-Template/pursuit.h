@@ -13,29 +13,33 @@ struct Point
   double x;
   double y;
   double speed;
+
+  Point()
+  {
+    this->x = INT_MAX;
+    this->y = INT_MAX;
+    this->speed = INT_MAX;
+  }
+
+  Point(int x, int y, int speed)
+  {
+    this->x = x;
+    this->y = y;
+    this->speed = speed;
+  }
 };
 
 class Pursuit
 {
+private:
+  double distance(Point a, Point b);
+  double Dot(Point a, Point b);
+
+public:
   Path loadPathFromFile(string fileName);
 
-  Point findClosestPoint(Path path, int currentX, int currentY)
-  {
-    static int previousStartIndex = 1;
-
-    double minDistance = INT_MAX;
-    Point minDistancePoint;
-
-    for (int i = previousStartIndex; i < path.size(); ++i)
-    {
-      double distance = sqrtl(pow(path[i].x - currentX, 2) + pow(path[i].y - currentY, 2));
-      if (distance < minDistance)
-        minDistancePoint = path[i];
-      minDistance = min(minDistance, distance);
-    }
-
-    return minDistancePoint;
-  }
+  Point findClosestPoint(Path path, double currentX, double currentY);
+  Point findLookAheadPoint(Path path, double lookAheadDistance, double currentX, double currentY);
 };
 
 #endif
