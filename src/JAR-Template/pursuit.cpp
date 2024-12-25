@@ -13,6 +13,16 @@ double Pursuit::Dot(Point a, Point b)
   return a.x * b.x + a.y * b.y;
 }
 
+int Pursuit::signum(double x)
+{
+  if (x == 0)
+    return x;
+  if (x < 0)
+    return -1;
+  if (x > 0)
+    return 1;
+}
+
 /// @brief Reads a text file with the path
 /// @param fileName The name of the file
 /// @return An array of points with each point having x and y coordinates and a speed
@@ -98,15 +108,20 @@ Point Pursuit::findLookAheadPoint(Path path, double lookAheadDistance, double cu
   double c = 0;
 
   double discriminant = 0;
+  double fractionalIndex = 0;
+  Point lookAheadPoint;
 
   double t1 = 0;
   double t2 = 0;
 
+  static double previousFractionalIndex = -1;
+  static Point previousLookAheadPoint(0, 0, 0);
+
   for (int i = 1; i < path.size(); ++i)
   {
-    Point rayStart(path[i - 1].x, path[i - 1].y, path[i - 1].speed);
-    Point rayEnd(path[i].x, path[i].y, path[i].speed);
-    Point sphere(currentX, currentY, 0);
+    Point rayStart(path[i - 1].x, path[i - 1].y, path[i - 1].speed); // E
+    Point rayEnd(path[i].x, path[i].y, path[i].speed);               // L
+    Point sphere(currentX, currentY, 0);                             // C
 
     Point d(rayEnd.x - rayStart.x, rayEnd.y - rayStart.y, 0);
     Point f(rayStart.x - sphere.x, rayStart.y - sphere.y, 0);
@@ -126,14 +141,48 @@ Point Pursuit::findLookAheadPoint(Path path, double lookAheadDistance, double cu
     t1 = (-b - discriminant) / (2 * a);
     t2 = (-b + discriminant) / (2 * a);
 
-    if (t1 >= 0 && t1 <= 1)
+    fractionalIndex = i + t1;
+    if (t1 >= 0 && t1 <= 1 && fractionalIndex >= previousFractionalIndex)
     {
       // t1 is the intersection and it's closer than t2
+      lookAheadPoint = Point(rayStart.x + t1 * d.x, rayStart.y + t1 * d.y, 0);
+      break;
     }
 
-    if (t2 >= 0 && t2 <= 1)
+    fractionalIndex = i + t2;
+    if (t2 >= 0 && t2 <= 1 && fractionalIndex >= previousFractionalIndex)
     {
       // t1 doesn't intersect so we either start inside the sphere or completely past it
+      lookAheadPoint = Point(rayStart.x + t2 * d.x, rayStart.y + t2 * d.y, 0);
+      break;
     }
   }
+
+  previousFractionalIndex = max(previousFractionalIndex, fractionalIndex);
+  if (!lookAheadPoint.hasValues())
+    return previousLookAheadPoint;
+
+  previousLookAheadPoint = lookAheadPoint;
+  return lookAheadPoint;
+}
+
+double Pursuit::curvature(double lookAheadDistance, double theta, double currentX, double currentY, double lookAheadX, double lookAheadY)
+{
+  double a = -tan(theta);
+  double b = 1;
+  double c = tan(theta) * currentX - currentY;
+
+  // horizontal distance to the look ahead point
+  double x = abs(a * lookAheadX + b * lookAheadY + c) / sqrt(pow(a, 2) + pow(b, 2));
+
+  double curvature = (2 * x) / pow(lookAheadDistance, 2);
+
+  // what side of the path the robot is on
+  int side = this->signum(sin(theta) * (lookAheadX - currentX) - cos(theta) * (lookAheadY - currentY));
+
+  return curvature * (double)side;
+}
+
+void Pursuit::followPath(string fileName)
+{
 }

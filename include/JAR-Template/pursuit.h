@@ -27,6 +27,11 @@ struct Point
     this->y = y;
     this->speed = speed;
   }
+
+  bool hasValues()
+  {
+    return this->speed == INT_MAX && this->x == INT_MAX && this->y == INT_MAX;
+  }
 };
 
 class Pursuit
@@ -34,12 +39,16 @@ class Pursuit
 private:
   double distance(Point a, Point b);
   double Dot(Point a, Point b);
+  int signum(double x);
 
 public:
   Path loadPathFromFile(string fileName);
 
   Point findClosestPoint(Path path, double currentX, double currentY);
   Point findLookAheadPoint(Path path, double lookAheadDistance, double currentX, double currentY);
+  double curvature(double lookAheadDistance, double theta, double currentX, double currentY, double lookAheadX, double lookAheadY);
+
+  void followPath(string fileName);
 };
 
 #endif
