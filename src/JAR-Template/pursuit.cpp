@@ -3,6 +3,11 @@
 using namespace vex;
 using namespace std;
 
+Pursuit::Pursuit(double trackWidth)
+{
+  this->trackWidth = trackWidth;
+}
+
 double Pursuit::distance(Point a, Point b)
 {
   return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
@@ -166,7 +171,7 @@ Point Pursuit::findLookAheadPoint(Path path, double lookAheadDistance, double cu
   return lookAheadPoint;
 }
 
-double Pursuit::curvature(double lookAheadDistance, double theta, double currentX, double currentY, double lookAheadX, double lookAheadY)
+double Pursuit::getCurvature(double lookAheadDistance, double theta, double currentX, double currentY, double lookAheadX, double lookAheadY)
 {
   double a = -tan(theta);
   double b = 1;
@@ -183,6 +188,60 @@ double Pursuit::curvature(double lookAheadDistance, double theta, double current
   return curvature * (double)side;
 }
 
-void Pursuit::followPath(string fileName)
+void Pursuit::followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kV, double kA, double kP)
 {
+  Path path = this->loadPathFromFile(fileName);
+
+  Point lastPointOnPath = path[path.size() - 1];
+  Point closestPoint;
+  Point lookAheadPoint;
+
+  double curvature;
+  double leftTargetVelocity;
+  double rightTargetVelocity;
+
+  // double FFLeft;
+  // double FFRight;
+  // double FBLeft;
+  // double FBRight;
+
+  // double previousLeftTargetVelocity = 0;
+  // double previousRightTargetVelocity = 0;
+
+  // Used in the wait() function at the end of each loop iteration
+  double waitTime = 10;
+
+  for (int i = 0; i < timeout / waitTime; ++i)
+  {
+    // Get the closest point on the path
+    closestPoint = this->findClosestPoint(path, chassis.get_X_position(), chassis.get_Y_position());
+
+    // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
+    lookAheadPoint = this->findLookAheadPoint(path, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
+
+    // If we're at the end of the path then just set the look ahead point to be the last one
+    if (sqrt(pow(lastPointOnPath.x - lookAheadPoint.x, 2) + pow(lastPointOnPath.y - lookAheadPoint.y, 2)) <= lookAheadDistance)
+      lookAheadPoint = lastPointOnPath;
+
+    // Get the curvature of the path
+    curvature = this->getCurvature(lookAheadDistance, chassis.get_absolute_heading(), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
+
+    // Calculate the target speeds for the motors
+    leftTargetVelocity = closestPoint.speed * (2 + curvature * this->trackWidth) / 2;
+    rightTargetVelocity = closestPoint.speed * (2 - curvature * this->trackWidth) / 2;
+
+    // Spin them in whatever direction based on whether you want to move forward or backward
+    if (forwards)
+    {
+      Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
+      Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+    }
+    else
+    {
+      Left.spin(vex::directionType::rev, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
+      Right.spin(vex::directionType::rev, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+    }
+
+    wait(waitTime, vex::timeUnits::msec);
+  }
 }
