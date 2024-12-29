@@ -1,7 +1,26 @@
-#include "pursuit.h"
+#include "vex.h"
 
 using namespace vex;
 using namespace std;
+
+Point::Point()
+{
+  this->x = INT_MAX;
+  this->y = INT_MAX;
+  this->speed = INT_MAX;
+}
+
+Point::Point(int x, int y, int speed)
+{
+  this->x = x;
+  this->y = y;
+  this->speed = speed;
+}
+
+bool Point::hasValues()
+{
+  return this->speed == INT_MAX && this->x == INT_MAX && this->y == INT_MAX;
+}
 
 Pursuit::Pursuit(double trackWidth)
 {
@@ -20,12 +39,11 @@ double Pursuit::Dot(Point a, Point b)
 
 int Pursuit::signum(double x)
 {
-  if (x == 0)
-    return x;
   if (x < 0)
     return -1;
   if (x > 0)
     return 1;
+  return x;
 }
 
 /// @brief Reads a text file with the path
@@ -178,7 +196,7 @@ double Pursuit::getCurvature(double lookAheadDistance, double theta, double curr
   double c = tan(theta) * currentX - currentY;
 
   // horizontal distance to the look ahead point
-  double x = abs(a * lookAheadX + b * lookAheadY + c) / sqrt(pow(a, 2) + pow(b, 2));
+  double x = fabs(a * lookAheadX + b * lookAheadY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
   double curvature = (2 * x) / pow(lookAheadDistance, 2);
 
