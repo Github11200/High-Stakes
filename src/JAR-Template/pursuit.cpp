@@ -218,14 +218,6 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
   double leftTargetVelocity;
   double rightTargetVelocity;
 
-  // double FFLeft;
-  // double FFRight;
-  // double FBLeft;
-  // double FBRight;
-
-  // double previousLeftTargetVelocity = 0;
-  // double previousRightTargetVelocity = 0;
-
   // Used in the wait() function at the end of each loop iteration
   double waitTime = 10;
 

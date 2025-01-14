@@ -89,7 +89,7 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-0 * reversed, -12);
 
   // Move back and score
-  chassis.turn_to_point(-6 * reversed, -12, 180); 
+  chassis.turn_to_point(-6 * reversed, -12, 180);
   chassis.drive_to_point(-6 * reversed, -12);
 
   intakeSort = true;
@@ -164,7 +164,7 @@ void positive_alliance_stake_rush(string c)
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
- 
+
   // Move forward a bit
   chassis.turn_to_point(0, -11.4);
   chassis.drive_to_point(0, -11.4);
@@ -322,7 +322,7 @@ void positive_corner_rush(string c)
   // Push the blue ring forwards, reposition
 
   // Push the other blue ring away, then come back
-  chassis.turn_to_point((15 - 4.5) * reversed, 4.25326 - 1.5); 
+  chassis.turn_to_point((15 - 4.5) * reversed, 4.25326 - 1.5);
   intakeSort = false;
   intakeRev = true;
   chassis.drive_to_point((15 - 4.5) * reversed, 4.25326 - 1.5);
@@ -332,7 +332,7 @@ void positive_corner_rush(string c)
   Doinker.set(true);
   chassis.drive_timeout = 800;
   chassis.turn_to_point(22.5 * reversed, 6);
-  chassis.drive_to_point(22.5* reversed, 6, 12, 0);
+  chassis.drive_to_point(22.5 * reversed, 6, 12, 0);
 
   // Clear the corner
   chassis.turn_timeout = 1400;
@@ -386,6 +386,9 @@ void testing(string c)
   intakeSort = true;
   vex::wait(100000, msec);
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  Pursuit *purePursuit = new Pursuit(3);
+  purePursuit->followPath("path.txt", 30, 10000, true, 0.1, 0.2, 0.3);
 }
 
 // Part after 2nd wall stake not tested with current PID
