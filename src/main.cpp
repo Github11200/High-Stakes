@@ -2,7 +2,6 @@
 #include "../include/driver/intake.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
-#include "../include/driver/fishy.h"
 #include <robot-config.h>
 #include <string>
 #include <sstream>
@@ -171,7 +170,7 @@ void pre_auton(void)
 {
   vexcodeInit();
 
-  FishyMech.setPosition(0, degrees);
+  FrogMech.set(false);
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
 
@@ -294,7 +293,6 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   MogoControl mogoControl;
-  Fishy fishyControl(12);
 
   while (true)
   {
@@ -315,8 +313,8 @@ int buttonsWrapper()
       intakeControl.outtake();
     else if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (IntakeToFishyButton.pressing())
-      intakeControl.intakeToFishy();
+    else if (IntakeToFrogButton.pressing())
+      intakeControl.intakeToFrog();
 
     // Mogo
     if (ClampButton.pressing())
@@ -325,16 +323,15 @@ int buttonsWrapper()
       cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
     }
 
-    // Redirect
-    if (FishyResetButton.pressing())
-      fishyControl.resetPosition();
-    else if (FishyLiftButton.pressing())
+    // Frog
+    if (FrogLiftButton.pressing())
     {
-      fishyControl.liftFishy();
-      cout << "fishyControl.liftFishy(true);" << endl;
+      FrogMech.set(!FrogMech.value());
+      while (FrogLiftButton.pressing())
+      {
+        vex::wait(20, vex::timeUnits::msec);
+      }
     }
-    else if (FishyLowerButton.pressing())
-      fishyControl.lowerFishy();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {

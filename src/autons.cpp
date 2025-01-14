@@ -1,17 +1,14 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
-#include "../include/driver/fishy.h"
 
 using namespace vex;
 using namespace std;
 
-bool intakeToFishyAuton = false;
+bool intakeToFrogAuton = false;
 bool intakeSort = false;
 bool intakeRev = false;
-bool raiseFishy = false;
-bool fishing = false;
+bool raiseFrog = false;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-Fishy fishyControl(12);
 
 void default_constants()
 {
@@ -32,16 +29,6 @@ void odom_constants()
   default_constants();
 }
 
-int fishyAutonTaskWrapper()
-{
-  while (true)
-  {
-    fishyControl.fishyAutonTask();
-    vex::wait(20, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
 int colorSortingAutonTaskWrapper()
 {
   while (true)
@@ -52,11 +39,11 @@ int colorSortingAutonTaskWrapper()
   return 1;
 }
 
-int intakeToFishyAutonTaskWrapper()
+int intakeToFrogAutonTaskWrapper()
 {
   while (true)
   {
-    intakeControl.intakeToFishyAutonTask();
+    intakeControl.intakeToFrogAutonTask();
     vex::wait(50, vex::timeUnits::msec);
   }
   return 1;
@@ -301,14 +288,14 @@ void positive_corner_rush(string c)
   chassis.set_heading(180);
 
   // Get the mogo in the middle and move it to the side
-  FishyMech.spinTo(-80, degrees, false);
+  // FrogMech.spinTo(-80, degrees, false);
   chassis.turn_timeout = 1500;
   chassis.boomerang_curve(8 * reversed, -43.409, alliance == "blue" ? 160 : 200, 0.5, 12, 12);
   chassis.turn_timeout = 800;
   chassis.turn_to_angle(alliance == "blue" ? 90 : 270);
 
   // Get the goal
-  FishyMech.spinTo(0, degrees, false);
+  // FrogMech.spinTo(0, degrees, false);
   chassis.turn_to_point(-16.5158 * reversed, -22.3932, 180);
   chassis.drive_to_point(-16.5158 * reversed, -22.3932, 6, 6);
   Clamp.set(1);
@@ -399,7 +386,7 @@ void auton_skills()
   odom_constants();
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-  task intakeToFishyAutonTask = task(intakeToFishyAutonTaskWrapper);
+  task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
 
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
@@ -427,13 +414,13 @@ void auton_skills()
   chassis.turn_to_point(55.6561, 57.862);
   chassis.drive_to_point(55.6561, 57.862);
 
-  // Get the fourth ring to fishy height
+  // Get the fourth ring to frog height
   chassis.turn_to_point(46.1794, 84.1463);
   chassis.drive_to_point(46.1794, 84.1463);
 
   // Move backwards to the wall stake
   intakeSort = false;
-  intakeToFishyAuton = true;
+  intakeToFrogAuton = true;
   chassis.drive_timeout = 4000;
   chassis.turn_to_point(44.229, 61, 180);
   chassis.drive_to_point(44.229, 61);
@@ -445,7 +432,7 @@ void auton_skills()
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(90);
   vex::wait(200, msec);
-  fishyControl.liftFishy(true);
+  FrogMech.set(true);
 
   // Move backwards to align with the next two rings
   chassis.drive_timeout = 800;
@@ -454,7 +441,7 @@ void auton_skills()
   chassis.drive_to_point(41.4149, 59.4474);
 
   intakeSort = true;
-  intakeToFishyAuton = false;
+  intakeToFrogAuton = false;
 
   // Get the first ring
   chassis.turn_to_point(43.1499, 16.7767);
@@ -476,7 +463,7 @@ void auton_skills()
 
   // Go to the middle
   intakeSort = false;
-  intakeToFishyAuton = true;
+  intakeToFrogAuton = true;
   chassis.drive_timeout = 4000;
   chassis.turn_to_point(-2.03885, 62.0337);
   chassis.drive_to_point(-2.03885, 62.0337);
@@ -533,7 +520,7 @@ void auton_skills()
   chassis.drive_to_point(-43.4516, 59);
 
   intakeSort = false;
-  intakeToFishyAuton = true;
+  intakeToFrogAuton = true;
 
   // Get the wall stake ring
   chassis.turn_to_point(-54.2656, 59);
@@ -544,18 +531,18 @@ void auton_skills()
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(270);
   wait(200, msec);
-  fishyControl.liftFishy(true);
+  FrogMech.set(true);
   chassis.turn_timeout = 800;
 
   intakeSort = false;
-  intakeToFishyAuton = true;
+  intakeToFrogAuton = true;
 
   // Go backwards
   chassis.drive_timeout = 800;
   chassis.turn_timeout = 500;
   chassis.drive_to_point(-44.8193, 60.3206);
 
-  // Get the first ring to fishy height
+  // Get the first ring to frog height
   chassis.turn_to_point(-44.6187, 86.7453);
   chassis.drive_to_point(-44.6187, 86.7453);
 
@@ -572,7 +559,7 @@ void auton_skills()
   vex::wait(0.5, vex::timeUnits::sec);
 
   intakeSort = true;
-  intakeToFishyAuton = false;
+  intakeToFrogAuton = false;
 
   // Get the second ring
   chassis.drive_timeout = 700;

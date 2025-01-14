@@ -31,15 +31,15 @@ public:
   /// @brief Spin the intake to take in a ring
   void intake();
 
-  /// @brief This will intake the ring, and stop it in time for the fishy
-  void intakeToFishy();
+  /// @brief This will intake the ring, and stop it in time for the frog
+  void intakeToFrog();
 
   /// @brief Spin the intake to outtake the ring or put it into the redirect
   void outtake();
 
   int hue_difference(int hue1, int hue2);
 
-  void intakeToFishyAutonTask();
+  void intakeToFrogAutonTask();
 
   void colorSortingAutonTask();
 };
