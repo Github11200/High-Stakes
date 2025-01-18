@@ -22,7 +22,7 @@ digital_out Clamp = digital_out(Brain.ThreeWirePort.A);
 digital_out Doinker = digital_out(Brain.ThreeWirePort.B);
 digital_out FrogMech = digital_out(Brain.ThreeWirePort.C);
 triport ThreeWirePort = vex::triport(vex::PORT22);
-optical OpticalSensor = optical(PORT13); 
+optical OpticalSensor = optical(PORT13);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button OuttakeButton = Controller.ButtonA;
@@ -32,6 +32,7 @@ vex::controller::button IntakeToFrogButton = Controller.ButtonR1;
 vex::controller::button FrogResetButton = Controller.ButtonDown;
 vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;
+vex::controller::button DescoreButton = Controller.ButtonA;
 
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);

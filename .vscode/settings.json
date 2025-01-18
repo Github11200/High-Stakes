@@ -2,7 +2,7 @@
 	"C_Cpp.default.systemIncludePath": [
 		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20240802_15_00_00\\vexv5\\gcc\\include\\sys"
 	],
-	"prettier.tabWidth": 4,
+	"prettier.tabWidth": 2,
 	"C_Cpp.errorSquiggles": "enabled",
 	"files.associations": {
 		"ostream": "cpp",
@@ -52,5 +52,7 @@
 		"thread": "cpp",
 		"cinttypes": "cpp",
 		"regex": "cpp"
-	}
+	},
+	"editor.tabSize": 2,
+	"editor.formatOnSave": true
 }
