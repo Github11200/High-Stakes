@@ -31,6 +31,7 @@ vex::controller::button IntakeToFrogButton = Controller.ButtonR1;
 vex::controller::button FrogResetButton = Controller.ButtonDown;
 vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;
+vex::controller::button DescoreButton = Controller.ButtonA;
 
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);

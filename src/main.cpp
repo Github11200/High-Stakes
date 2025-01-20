@@ -2,6 +2,7 @@
 #include "../include/driver/intake.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
+#include "../include/driver/descore.h"
 #include <robot-config.h>
 #include <string>
 #include <sstream>
@@ -293,6 +294,7 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   MogoControl mogoControl;
+  DescoreControl descoreControl;
 
   while (true)
   {
@@ -323,15 +325,19 @@ int buttonsWrapper()
     //   cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
     // }
 
-    // // Frog
-    // if (FrogButton.pressing())
-    // {
-    //   FrogMech.set(!FrogMech.value());
-    //   while (FrogButton.pressing())
-    //   {
-    //     vex::wait(20, vex::timeUnits::msec);
-    //   }
-    // }
+    // Frog
+    if (FrogLiftButton.pressing())
+    {
+      FrogMech.set(!FrogMech.value());
+      while (FrogLiftButton.pressing())
+      {
+        vex::wait(20, vex::timeUnits::msec);
+      }
+    }
+
+    // Descore
+    if (DescoreButton.pressing())
+      descoreControl.descoreRing();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {
@@ -384,7 +390,6 @@ void usercontrol(void)
   testing("red");
 
   intakeSort = false;
-  intakeToFrogAuton = false;
   pre_driver = false;
   Intake.stop(vex::brakeType::coast);
   // Auton testing code end

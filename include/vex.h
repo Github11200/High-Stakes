@@ -18,6 +18,7 @@
 #include "JAR-Template/PID.h"
 #include "global-variables.h"
 #include "autons.h"
+#include "functional"
 
 #define waitUntil(condition) \
   do                         \
