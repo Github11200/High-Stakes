@@ -21,7 +21,7 @@ extern optical OpticalSensor;
 extern vex::controller::button IntakeButton;
 extern vex::controller::button OuttakeButton;
 extern vex::controller::button IntakeToFrogButton;
-extern vex::controller::button FrogLiftButton;
+extern vex::controller::button FrogButton;
 extern vex::controller::button DoinkerButton;
 extern vex::controller::button ClampButton;
 

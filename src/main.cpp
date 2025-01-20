@@ -298,15 +298,15 @@ int buttonsWrapper()
   {
     chassis.control_arcade();
 
-    // Doinker
-    if (DoinkerButton.pressing())
-    {
-      Doinker.set(!Doinker.value());
-      while (DoinkerButton.pressing())
-      {
-        vex::wait(20, vex::timeUnits::msec);
-      }
-    }
+    // // Doinker
+    // if (DoinkerButton.pressing())
+    // {
+    //   Doinker.set(!Doinker.value());
+    //   while (DoinkerButton.pressing())
+    //   {
+    //     vex::wait(20, vex::timeUnits::msec);
+    //   }
+    // }
 
     // Intake
     if (OuttakeButton.pressing())
@@ -316,22 +316,22 @@ int buttonsWrapper()
     else if (IntakeToFrogButton.pressing())
       intakeControl.intakeToFrog();
 
-    // Mogo
-    if (ClampButton.pressing())
-    {
-      mogoControl.toggle();
-      cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
-    }
+    // // Mogo
+    // if (ClampButton.pressing())
+    // {
+    //   mogoControl.toggle();
+    //   cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
+    // }
 
-    // Frog
-    if (FrogLiftButton.pressing())
-    {
-      FrogMech.set(!FrogMech.value());
-      while (FrogLiftButton.pressing())
-      {
-        vex::wait(20, vex::timeUnits::msec);
-      }
-    }
+    // // Frog
+    // if (FrogButton.pressing())
+    // {
+    //   FrogMech.set(!FrogMech.value());
+    //   while (FrogButton.pressing())
+    //   {
+    //     vex::wait(20, vex::timeUnits::msec);
+    //   }
+    // }
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {
@@ -379,22 +379,23 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  wait(2500, msec);
+  // wait(2500, msec);
+  // cout << "hi" << endl;
   testing("red");
 
   intakeSort = false;
-  intakeToFishyAuton = false;
+  intakeToFrogAuton = false;
   pre_driver = false;
   Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
-  task buttons = task(buttonsWrapper);
+  // task buttons = task(buttonsWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    chassis.control_arcade();
+    // chassis.control_arcade();
 
     wait(20, msec);
   }

@@ -208,7 +208,11 @@ double Pursuit::getCurvature(double lookAheadDistance, double theta, double curr
 
 void Pursuit::followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kV, double kA, double kP)
 {
+  cout << "Starting to follow path..." << endl;
   Path path = this->loadPathFromFile(fileName);
+
+  cout << "First X: " << path[0].x << endl;
+  cout << "First Y: " << path[0].y << endl;
 
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
@@ -241,16 +245,16 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     rightTargetVelocity = closestPoint.speed * (2 - curvature * this->trackWidth) / 2;
 
     // Spin them in whatever direction based on whether you want to move forward or backward
-    if (forwards)
-    {
-      Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
-      Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
-    }
-    else
-    {
-      Left.spin(vex::directionType::rev, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
-      Right.spin(vex::directionType::rev, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
-    }
+    // if (forwards)
+    // {
+    //   Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
+    //   Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+    // }
+    // else
+    // {
+    //   Left.spin(vex::directionType::rev, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
+    //   Right.spin(vex::directionType::rev, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+    // }
 
     wait(waitTime, vex::timeUnits::msec);
   }

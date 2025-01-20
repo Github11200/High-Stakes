@@ -322,13 +322,13 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
   R_ForwardTracker.resetPosition();
   odom.set_position(X_position, Y_position, orientation_deg, get_ForwardTracker_position(), get_SidewaysTracker_position());
 
-  Gyro.calibrate();
+  // Gyro.calibrate();
   cout << "Inertial calibrating begun" << endl;
 
-  while (Gyro.isCalibrating())
-  {
-    wait(50, msec);
-  }
+  // while (Gyro.isCalibrating())
+  // {
+  //   wait(50, msec);
+  // }
   cout << "Calibrated!" << endl;
   Controller.rumble(rumbleShort);
 
