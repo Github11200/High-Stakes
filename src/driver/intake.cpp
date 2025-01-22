@@ -90,12 +90,13 @@ void IntakeControl::outtake()
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
     Hooks.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
-    if (Hooks.velocity(rpm) < 2)
+    if (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
     {
       vex::wait(1, sec);
-      if (Hooks.velocity(rpm) < 2)
+      while (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
       {
         Doinker.set(true);
+        vex::wait(1, sec);
       }
     }
   }

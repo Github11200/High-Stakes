@@ -25,7 +25,7 @@ triport ThreeWirePort = vex::triport(vex::PORT22);
 optical OpticalSensor = optical(PORT1);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
-vex::controller::button OuttakeButton = Controller.ButtonA;
+vex::controller::button OuttakeButton = Controller.ButtonY;
 vex::controller::button FrogButton = Controller.ButtonL2;
 vex::controller::button IntakeToFrogButton = Controller.ButtonR1;
 vex::controller::button DoinkerButton = Controller.ButtonUp;
