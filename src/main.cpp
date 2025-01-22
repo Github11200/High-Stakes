@@ -61,7 +61,7 @@ Drive chassis(
     // If you are using position tracking, this is the Forward Tracker port (the tracker which runs parallel to the direction of the chassis).
     // If this is a rotation sensor, enter it in "PORT1" format, inputting the port below.
     // If this is an encoder, enter the port as an integer. Triport A will be a "1", Triport B will be a "2", etc.
-    PORT6,
+    PORT2,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
     2,
@@ -72,7 +72,7 @@ Drive chassis(
     0.1,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
-    1,
+    PORT9,
 
     // Sideways tracker diameter (reverse to make the direction switch):
     2.75,
@@ -87,6 +87,7 @@ float chassisTemp = 0;
 float intakeTemp = 0;
 bool pre_match = true;
 bool pre_driver = true;
+bool ringStopped = false;
 
 void setColor(vex::color colour)
 {
@@ -165,6 +166,11 @@ void senseTemp()
   Brain.Screen.printAt(5, 40, ToString(chassisTemp).c_str());
   Brain.Screen.printAt(165, 20, "Intake Temp");
   Brain.Screen.printAt(165, 40, ToString(intakeTemp).c_str());
+}
+
+void firstPress()
+{
+  ringStopped = false;
 }
 
 void pre_auton(void)
@@ -299,16 +305,17 @@ int buttonsWrapper()
   while (true)
   {
     chassis.control_arcade();
-
-    // // Doinker
-    // if (DoinkerButton.pressing())
-    // {
-    //   Doinker.set(!Doinker.value());
-    //   while (DoinkerButton.pressing())
-    //   {
-    //     vex::wait(20, vex::timeUnits::msec);
-    //   }
-    // }
+    IntakeToFrogButton.pressed(firstPress);
+    cout << ringStopped << endl;
+    // Doinker
+    if (DoinkerButton.pressing())
+    {
+      Doinker.set(!Doinker.value());
+      while (DoinkerButton.pressing())
+      {
+        vex::wait(20, vex::timeUnits::msec);
+      }
+    }
 
     // Intake
     if (OuttakeButton.pressing())
@@ -318,18 +325,15 @@ int buttonsWrapper()
     else if (IntakeToFrogButton.pressing())
       intakeControl.intakeToFrog();
 
-    // // Mogo
-    // if (ClampButton.pressing())
-    // {
-    //   mogoControl.toggle();
-    //   cout << "Clamp.set(" << (mogoControl.mogoState == CLAMPED ? true : false) << ");" << endl;
-    // }
+    // Mogo
+    if (ClampButton.pressing())
+      mogoControl.toggle();
 
     // Frog
-    if (FrogLiftButton.pressing())
+    if (FrogButton.pressing())
     {
       FrogMech.set(!FrogMech.value());
-      while (FrogLiftButton.pressing())
+      while (FrogButton.pressing())
       {
         vex::wait(20, vex::timeUnits::msec);
       }
@@ -387,20 +391,20 @@ void usercontrol(void)
   // Auton testing code start
   // wait(2500, msec);
   // cout << "hi" << endl;
-  testing("red");
+  // testing("red");
 
-  intakeSort = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
+  // intakeSort = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
-  // task buttons = task(buttonsWrapper);
+  task buttons = task(buttonsWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    // chassis.control_arcade();
+    chassis.control_arcade();
 
     wait(20, msec);
   }

@@ -53,14 +53,10 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
-    // OpticalSensor.setLightPower(100, pct);
-    // if (shouldEjectRing())
-    //   ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     Hooks.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
-    // wait(10, vex::timeUnits::msec);
+    wait(10, vex::timeUnits::msec);
   }
-  // OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::coast);
   Hooks.stop(vex::brakeType::coast);
 }
@@ -68,16 +64,21 @@ void IntakeControl::intake()
 void IntakeControl::intakeToFrog()
 {
   OpticalSensor.setLightPower(100, pct);
-
   // Spin the intake until the optical sensor senses a ring color
-  while (!OpticalSensor.isNearObject() && IntakeToFrogButton.pressing())
+  while (!OpticalSensor.isNearObject() && IntakeToFrogButton.pressing() && !ringStopped)
   {
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    Hooks.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
+    Hooks.spin(vex::directionType::fwd, 7, vex::voltageUnits::volt);
+    wait(60, vex::timeUnits::msec);
   }
+  ringStopped = true;
   OpticalSensor.setLightPower(0, pct);
-  vex::wait(200, msec);
+  wait(0.1, vex::timeUnits::sec);
+  // if (!IntakeToFrogButton.pressing())
+  // {
+  //   Hooks.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
+  //   wait(0.3, vex::timeUnits::sec);
+  // }
   Intake.stop(vex::brakeType::brake);
   Hooks.stop(vex::brakeType::brake);
 }
@@ -87,10 +88,20 @@ void IntakeControl::outtake()
   while (OuttakeButton.pressing())
   {
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    Hooks.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
+    if (Hooks.velocity(rpm) < 2)
+    {
+      vex::wait(1, sec);
+      if (Hooks.velocity(rpm) < 2)
+      {
+        Doinker.set(true);
+      }
+    }
   }
   wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::coast);
+  Hooks.stop(vex::brakeType::coast);
 }
 
 int IntakeControl::hue_difference(int hue1, int hue2)
