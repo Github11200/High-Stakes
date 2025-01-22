@@ -356,7 +356,7 @@ void testing(string c)
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
 
-  // task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
@@ -372,7 +372,8 @@ void testing(string c)
   cout << "constants defined" << endl;
 
   Pursuit *purePursuit = new Pursuit(3);
-  purePursuit->followPath("path.txt", 30, 10000, true, 0.1, 0.2, 0.3);
+  cout << "pure pursuit class created..." << endl;
+  // purePursuit->followPath("path.txt", 30, 10000, true, 0.1, 0.2, 0.3);
 }
 
 // Part after 2nd wall stake not tested with current PID

@@ -27,7 +27,7 @@ Drive chassis(
     motor_group(FrontRight, MiddleRight, BackRight),
 
     // Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-    PORT8,
+    PORT10,
 
     // Input your wheel diameter. (4" omnis are actually closer to 4.125"):
     2.75,
@@ -306,7 +306,7 @@ int buttonsWrapper()
   {
     chassis.control_arcade();
     IntakeToFrogButton.pressed(firstPress);
-    cout << ringStopped << endl;
+
     // Doinker
     if (DoinkerButton.pressing())
     {
@@ -389,22 +389,21 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  // wait(2500, msec);
-  // cout << "hi" << endl;
-  // testing("red");
+  wait(2500, msec);
+  testing("red");
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
-  task buttons = task(buttonsWrapper);
+  // task buttons = task(buttonsWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    chassis.control_arcade();
+    // chassis.control_arcade();
 
     wait(20, msec);
   }

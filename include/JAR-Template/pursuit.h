@@ -13,7 +13,7 @@ struct Point
   double speed;
 
   Point();
-  Point(int x, int y, int speed);
+  Point(double x, double y, double speed);
 
   bool hasValues();
 };
