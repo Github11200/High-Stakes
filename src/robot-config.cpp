@@ -15,7 +15,7 @@ motor FrontLeft = motor(PORT17, ratio6_1, false);
 motor MiddleRight = motor(PORT19, ratio6_1, false);
 motor MiddleLeft = motor(PORT14, ratio6_1, true);
 motor BackRight = motor(PORT8, ratio6_1, false);
-motor BackLeft = motor(PORT15, ratio6_1, true);
+motor BackLeft = motor(PORT16, ratio6_1, true);
 motor Intake = motor(PORT12, ratio6_1, true);
 motor Hooks = motor(PORT3, ratio6_1, false);
 digital_out Clamp = digital_out(Brain.ThreeWirePort.B);
@@ -30,7 +30,7 @@ vex::controller::button FrogButton = Controller.ButtonL2;
 vex::controller::button IntakeToFrogButton = Controller.ButtonR1;
 vex::controller::button DoinkerButton = Controller.ButtonUp;
 vex::controller::button ClampButton = Controller.ButtonR2;
-vex::controller::button DescoreButton = Controller.ButtonA;
+// vex::controller::button DescoreButton = Controller.ButtonA;
 
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);

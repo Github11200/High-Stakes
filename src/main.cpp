@@ -15,7 +15,7 @@ Drive chassis(
     // Specify your drive setup below. There are eight options:
     // ZERO_TRACKER_NO_ODOM, ZERO_TRACKER_ODOM, TANK_ONE_ENCODER, TANK_ONE_ROTATION, TANK_TWO_ENCODER, TANK_TWO_ROTATION, HOLONOMIC_TWO_ENCODER, and HOLONOMIC_TWO_ROTATION
     // For example, if you are not using odometry, put ZERO_TRACKER_NO_ODOM below:
-    TANK_ONE_ROTATION,
+    TANK_TWO_ROTATION,
 
     // Add the names of your Drive motors into the motor groups below, separated by commas, i.e. motor_group(Motor1,Motor2,Motor3).
     // You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
@@ -64,21 +64,21 @@ Drive chassis(
     PORT2,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
-    2,
+    -2,
 
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
     // This distance is in inches:
-    0.1,
+    0,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
     PORT9,
 
     // Sideways tracker diameter (reverse to make the direction switch):
-    2.75,
+    -2,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    0
+    -0.6
 
 );
 
@@ -300,7 +300,7 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   MogoControl mogoControl;
-  DescoreControl descoreControl;
+  // DescoreControl descoreControl;
 
   while (true)
   {
@@ -340,8 +340,8 @@ int buttonsWrapper()
     }
 
     // Descore
-    if (DescoreButton.pressing())
-      descoreControl.descoreRing();
+    // if (DescoreButton.pressing())
+    //   descoreControl.descoreRing();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {
@@ -389,21 +389,21 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  wait(2500, msec);
-  testing("red");
+  // wait(2500, msec);
+  // testing("red");
 
-  intakeSort = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
+  // intakeSort = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
-  // task buttons = task(buttonsWrapper);
+  task buttons = task(buttonsWrapper);
 
   while (1)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-    // chassis.control_arcade();
+    chassis.control_arcade();
 
     wait(20, msec);
   }

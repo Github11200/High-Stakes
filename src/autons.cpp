@@ -12,13 +12,11 @@ IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 
 void default_constants()
 {
-  // Constants for tuning on Monday
   chassis.set_drive_constants(12, 0.7, 0.01, 1.7, 3, 13);
   chassis.set_heading_constants(12, 0.28, 0.1, 1.9, 1, 0);
   chassis.set_turn_constants(12, 0.28, 0.1, 1.9, 1);
   chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
 
-  // Stupidly high values so it has time to oscillate
   chassis.set_drive_exit_conditions(1.5, 100, 4000);
   chassis.set_turn_exit_conditions(1.5, 100, 800);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
@@ -371,8 +369,21 @@ void testing(string c)
   odom_constants();
   cout << "constants defined" << endl;
 
-  Pursuit *purePursuit = new Pursuit(3);
-  cout << "pure pursuit class created..." << endl;
+  // while (true)
+  // {
+  //   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  //   vex::wait(100, msec);
+  // }
+
+  chassis.drive_to_point(0, 20);
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  chassis.turn_to_point(-80, 20);
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  chassis.drive_to_point(-80, 20);
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  // Pursuit *purePursuit = new Pursuit(3);
+  // cout << "pure pursuit class created..." << endl;
   // purePursuit->followPath("path.txt", 30, 10000, true, 0.1, 0.2, 0.3);
 }
 

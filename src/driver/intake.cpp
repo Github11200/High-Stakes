@@ -93,16 +93,26 @@ void IntakeControl::outtake()
     if (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
     {
       vex::wait(1, sec);
-      while (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
+      if (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
       {
+        Intake.stop(coast);
+        Hooks.stop(hold);
         Doinker.set(true);
-        vex::wait(1, sec);
+        vex::wait(2, sec);
+        while (OuttakeButton.pressing())
+        {
+          Doinker.set(false);
+          vex::wait(0.3, sec);
+          Doinker.set(true);
+          vex::wait(0.3, sec);
+        }
       }
     }
   }
   wait(10, vex::timeUnits::msec);
   Intake.stop(vex::brakeType::coast);
   Hooks.stop(vex::brakeType::coast);
+  Doinker.set(false);
 }
 
 int IntakeControl::hue_difference(int hue1, int hue2)
