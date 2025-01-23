@@ -27,7 +27,7 @@ private:
 
   double distance(Point a, Point b);
   double Dot(Point a, Point b);
-  int signum(double x);
+  double signum(double x);
 
 public:
   Pursuit(double trackWidth);
@@ -36,7 +36,7 @@ public:
 
   Point findClosestPoint(Path path, double currentX, double currentY);
   Point findLookAheadPoint(Path path, double lookAheadDistance, double currentX, double currentY);
-  double getCurvature(double lookAheadDistance, double theta, double currentX, double currentY, double lookAheadX, double lookAheadY);
+  double getCurvature(double theta, double currentX, double currentY, double lookAheadX, double lookAheadY);
 
   void followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kV, double kA, double kP);
 };

@@ -375,16 +375,9 @@ void testing(string c)
   //   vex::wait(100, msec);
   // }
 
-  chassis.drive_to_point(0, 20);
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  chassis.turn_to_point(-80, 20);
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  chassis.drive_to_point(-80, 20);
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
-  // Pursuit *purePursuit = new Pursuit(3);
-  // cout << "pure pursuit class created..." << endl;
-  // purePursuit->followPath("path.txt", 30, 10000, true, 0.1, 0.2, 0.3);
+  Pursuit *purePursuit = new Pursuit(12.75);
+  cout << "pure pursuit class created..." << endl;
+  purePursuit->followPath("path.txt", 5, 10000, true, 0.1, 0.2, 0.3);
 }
 
 // Part after 2nd wall stake not tested with current PID

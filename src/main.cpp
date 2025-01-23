@@ -389,12 +389,12 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // Auton testing code start
-  // wait(2500, msec);
-  // testing("red");
+  wait(2500, msec);
+  testing("red");
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
   // Auton testing code end
 
   task buttons = task(buttonsWrapper);
