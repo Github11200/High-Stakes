@@ -37,6 +37,11 @@ double Pursuit::Dot(Point a, Point b)
   return a.x * b.x + a.y * b.y;
 }
 
+Point Pursuit::lerp(Point startPoint, Point endPoint, double t)
+{
+  return startPoint + (this->distance(startPoint, endPoint) * t);
+}
+
 double Pursuit::signum(double x)
 {
   return x < 0 ? -1 : 1;
@@ -94,7 +99,7 @@ Path Pursuit::loadPathFromFile(string fileName)
   return path;
 }
 
-Point Pursuit::findClosestPoint(Path path, double currentX, double currentY)
+int Pursuit::findClosestPoint(Path path, double currentX, double currentY)
 {
   double minDistanceIndex = 0;
   double minDistance = INT_MAX;
@@ -110,77 +115,57 @@ Point Pursuit::findClosestPoint(Path path, double currentX, double currentY)
     }
   }
 
-  return path[minDistanceIndex];
+  return minDistanceIndex;
 }
 
-Point Pursuit::findLookAheadPoint(Path path, double lookAheadDistance, double currentX, double currentY)
+double Pursuit::circleIntersect(Point p1, Point p2, double currentX, double currentY, double lookAheadDistance)
 {
-  double r = lookAheadDistance;
-  double a = 0;
-  double b = 0;
-  double c = 0;
+  Point d = Point(p2.x - p1.x, p2.y - p1.y, 0);
+  Point f = Point(p1.x - currentX, p2.y - currentY, 0);
 
-  double discriminant = 0;
-  double fractionalIndex = 0;
-  Point lookAheadPoint;
+  double a = this->Dot(d, d);
+  double b = 2 * this->Dot(f, d);
+  double c = this->Dot(f, f) - lookAheadDistance * lookAheadDistance;
+  double discriminant = b * b - 4 * a * c;
 
-  double t1 = 0;
-  double t2 = 0;
-
-  static double previousFractionalIndex = -1;
-  static Point previousLookAheadPoint(0, 0, 0);
-  static int previousStartIndex = 1;
-
-  for (int i = previousStartIndex; i < path.size(); ++i)
+  // possible solution
+  if (discriminant >= 0)
   {
-    Point rayStart(path[i - 1].x, path[i - 1].y, path[i - 1].speed); // E
-    Point rayEnd(path[i].x, path[i].y, path[i].speed);               // L
-    Point sphere(currentX, currentY, 0);                             // C
-
-    Point d(rayEnd.x - rayStart.x, rayEnd.y - rayStart.y, 0);
-    Point f(rayStart.x - sphere.x, rayStart.y - sphere.y, 0);
-
-    a = this->Dot(d, d);
-    b = 2 * this->Dot(f, d);
-    c = this->Dot(f, f) - r * r;
-
-    discriminant = b * b - 4 * a * c;
-
-    // No intersection
-    if (discriminant < 0)
-      continue;
-
     discriminant = sqrt(discriminant);
 
-    t1 = (-b - discriminant) / (2 * a);
-    t2 = (-b + discriminant) / (2 * a);
-
-    fractionalIndex = i + t1;
-    fractionalIndex = i + t2;
+    double t1 = (-b - discriminant) / (2 * a);
+    double t2 = (-b + discriminant) / (2 * a);
 
     if (t2 >= 0 && t2 <= 1)
-    {
-      // t1 doesn't intersect so we either start inside the sphere or completely past it
-      lookAheadPoint = Point(rayStart.x + t2 * d.x, rayStart.y + t2 * d.y, 0);
-      previousLookAheadPoint = lookAheadPoint;
-      previousStartIndex = i;
-      return lookAheadPoint;
-    }
+      return t2;
     else if (t1 >= 0 && t1 <= 1)
+      return t1;
+  }
+
+  return -1;
+}
+
+Point Pursuit::findLookAheadPoint(Path path, Point lastLookAhead, int lastLookAheadIndex, int closestPointIndex, double lookAheadDistance, double currentX, double currentY)
+{
+  // Start as far down the path as possible
+  int startIndex = max(closestPointIndex, lastLookAheadIndex);
+
+  for (int i = startIndex; i < path.size() - 1; ++i)
+  {
+    Point lastPoint = path[i];
+    Point currentPoint = path[i + 1];
+
+    double t = this->circleIntersect(lastPoint, currentPoint, currentX, currentY, lookAheadDistance);
+
+    if (t != -1)
     {
-      // t1 is the intersection and it's closer than t2
-      lookAheadPoint = Point(rayStart.x + t1 * d.x, rayStart.y + t1 * d.y, 0);
-      previousLookAheadPoint = lookAheadPoint;
-      previousStartIndex = i;
+      Point lookAheadPoint = this->lerp(lastPoint, currentPoint, t);
       return lookAheadPoint;
     }
   }
 
-  // previousFractionalIndex = max(previousFractionalIndex, fractionalIndex);
-  // // if (!lookAheadPoint.hasValues())
-  // //   return previousLookAheadPoint;
-
-  return path[previousStartIndex];
+  // No point found return last look ahead
+  return lastLookAhead;
 }
 
 double Pursuit::getCurvature(double theta, double currentX, double currentY, double lookAheadX, double lookAheadY)
@@ -198,30 +183,84 @@ double Pursuit::getCurvature(double theta, double currentX, double currentY, dou
   return side * ((2 * x) / (d * d));
 }
 
-void Pursuit::followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kV, double kA, double kP)
+void test(double X_position, double Y_position, double drive_kp, double drive_ki, double drive_kd)
+{
+  PID drivePID(hypot(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position()), drive_kp, drive_ki, drive_kd, 0);
+  PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading()), 0.3, 0, 0, 0);
+  float prev_drive_output = 0;
+  float prev_heading_output = 0;
+  bool close = false;
+  float drive_error = hypot(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position());
+  // The drive error is just equal to the distance between the current and desired points.
+  float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading());
+  // This uses atan2(x,y) rather than atan2(y,x) because doing so places 0 degrees on the positive Y axis.
+  float drive_output = drivePID.compute(drive_error);
+
+  float heading_scale_factor = cos(to_rad(heading_error));
+  drive_output *= heading_scale_factor;
+  // The scale factor slows the drive down the more it's facing away from the desired point,
+  // and that way the heading correction has time to catch up.
+  heading_error = reduce_negative_90_to_90(heading_error);
+  // Here we reduce -90 to 90 because this allows the robot to travel backwards if it's easier
+  // to do so.
+  float heading_output = headingPID.compute(heading_error);
+
+  // This if statement prevents the heading correction from acting up after the robot gets close
+  // to being settled.
+
+  drive_output = clamp(drive_output, -fabs(heading_scale_factor) * 12, fabs(heading_scale_factor) * 12);
+  heading_output = clamp(heading_output, -12, 12);
+  if (drive_error < 3)
+  {
+    heading_output = 0;
+  }
+
+  prev_drive_output = drive_output;
+  prev_heading_output = heading_output;
+  chassis.drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
+}
+
+void Pursuit::followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD)
 {
   cout << "Starting to follow path..." << endl;
   // Path path = this->loadPathFromFile(fileName);
-  Path path = vector<Point>({Point(0, -0.04, 83.459),
-                             Point(0.155, 1.953, 83.373),
-                             Point(0.513, 3.92, 80.587),
-                             Point(1.075, 5.838, 77.372),
-                             Point(1.829, 7.689, 74.018),
-                             Point(2.756, 9.46, 70.505),
-                             Point(3.839, 11.141, 66.806),
-                             Point(5.063, 12.722, 62.891),
-                             Point(6.407, 14.203, 58.714),
-                             Point(7.855, 15.581, 54.217),
-                             Point(9.4, 16.851, 49.311),
-                             Point(11.025, 18.015, 43.86),
-                             Point(12.722, 19.073, 37.627),
-                             Point(14.484, 20.018, 30.131),
-                             Point(16.304, 20.847, 20),
-                             Point(17.363, 21.266, 0)});
+  Path path = vector<Point>({Point(0, 0, 30.128),
+                             Point(-0.077, -1.997, 20),
+                             Point(-0.586, -0.788, 39.445),
+                             Point(-0.774, 1.202, 32.375),
+                             Point(-0.252, 0.972, 30.054),
+                             Point(0.391, -0.902, 20),
+                             Point(1.687, 0.316, 87.19),
+                             Point(2.583, 2.104, 99.795),
+                             Point(3.45, 3.906, 97.234),
+                             Point(4.339, 5.698, 95.804),
+                             Point(5.269, 7.469, 95.256),
+                             Point(6.252, 9.21, 93.108),
+                             Point(7.291, 10.919, 90.339),
+                             Point(8.4, 12.583, 87.482),
+                             Point(9.577, 14.199, 84.529),
+                             Point(10.829, 15.759, 81.469),
+                             Point(12.165, 17.247, 78.29),
+                             Point(13.579, 18.661, 74.977),
+                             Point(15.072, 19.991, 71.509),
+                             Point(16.657, 21.209, 67.865),
+                             Point(18.319, 22.32, 64.015),
+                             Point(20.054, 23.313, 59.918),
+                             Point(21.856, 24.18, 55.518),
+                             Point(23.719, 24.905, 50.739),
+                             Point(25.633, 25.483, 45.46),
+                             Point(27.584, 25.921, 39.482),
+                             Point(29.56, 26.222, 32.42),
+                             Point(31.552, 26.389, 23.308),
+                             Point(33.691, 26.443, 0),
+                             Point(33.691, 26.443, 0),
+                             Point(53.684, 26.941, 0)});
 
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
   Point lookAheadPoint;
+  Point lastLookAheadPoint = Point(path[0].x, path[0].y, path[0].speed);
+  int lastLookAheadPointIndex = 0;
 
   double curvature;
   double targetVelocity;
@@ -229,13 +268,33 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
   double leftTargetVelocity;
   double rightTargetVelocity;
 
+  PID velocityPID(0, kP, kI, kD, 0);
+
   // Used in the wait() function at the end of each loop iteration
   double waitTime = 20;
 
   for (int i = 0; true; ++i)
   {
     // Get the closest point on the path
-    closestPoint = this->findClosestPoint(path, chassis.get_X_position(), chassis.get_Y_position());
+    int closestPointIndex = this->findClosestPoint(path, chassis.get_X_position(), chassis.get_Y_position());
+    closestPoint = path[closestPointIndex];
+
+    if (closestPoint.speed == 0)
+    {
+      cout << "Dipping..." << endl;
+      cout << "Robot X: " << chassis.get_X_position() << endl;
+      cout << "Robot Y: " << chassis.get_Y_position() << endl;
+      break;
+    }
+
+    // We've reached the end of the path
+    // if (closestPoint.speed == 0)
+    // {
+    //   cout << "Dipping..." << endl;
+    //   cout << "Robot X: " << chassis.get_X_position() << endl;
+    //   cout << "Robot Y: " << chassis.get_Y_position() << endl;
+    //   break;
+    // }
 
     // cout << "Robot X: " << chassis.get_X_position() << endl;
     // cout << "Robot Y: " << chassis.get_Y_position() << endl;
@@ -245,49 +304,55 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     // cout << "======================================" << endl;
 
     // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
-    lookAheadPoint = this->findLookAheadPoint(path, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
+    lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
 
-    // cout << "Robot X: " << chassis.get_X_position() << endl;
-    // cout << "Robot Y: " << chassis.get_Y_position() << endl;
-    // cout << "======================================" << endl;
-    // cout << "Lookahead Point X: " << lookAheadPoint.x << endl;
-    // cout << "Lookahead Point Y: " << lookAheadPoint.y << endl;
-    // cout << "======================================" << endl;
-
-    // If we're at the end of the path then just set the look ahead point to be the last one
-    if (hypot(lookAheadPoint.x - lastPointOnPath.x, lookAheadPoint.y - lastPointOnPath.y) <= lookAheadDistance)
-    {
-      cout << "Dipping..." << endl;
-      lookAheadPoint = lastPointOnPath;
-      return;
-    }
+    cout << "Robot X: " << chassis.get_X_position() << endl;
+    cout << "Robot Y: " << chassis.get_Y_position() << endl;
+    cout << "======================================" << endl;
+    cout << "Lookahead Point X: " << lookAheadPoint.x << endl;
+    cout << "Lookahead Point Y: " << lookAheadPoint.y << endl;
+    cout << "======================================" << endl;
 
     // Get the curvature of the path
+    // cout << "Gyro: " << reduce_negative_180_to_180(chassis.Gyro.rotation()) << endl;
+    // cout << "Absolute: " << chassis.get_absolute_heading() << endl;
+
     curvature = this->getCurvature(chassis.get_absolute_heading(), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
+
+    // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    // targetVelocity = slew_func(targetVelocity, previousTargetVelocity, 0.2);
+    targetVelocity = velocityPID.compute(targetVelocity - previousTargetVelocity);
     previousTargetVelocity = targetVelocity;
 
-    cout << "Curvature: " << curvature << endl;
+    // cout << "Curvature: " << curvature << endl;
 
     // Calculate the target speeds for the motors
     leftTargetVelocity = (targetVelocity * (2 + curvature * this->trackWidth) / 2);
     rightTargetVelocity = (targetVelocity * (2 - curvature * this->trackWidth) / 2);
 
-    // cout << "Left: " << to_volt(leftTargetVelocity) << endl;
-    // cout << "Right: " << to_volt(rightTargetVelocity) << endl;
+    double ratio = max(leftTargetVelocity, rightTargetVelocity) / 127;
+    if (ratio > 1)
+    {
+      leftTargetVelocity /= ratio;
+      rightTargetVelocity /= ratio;
+    }
 
     // Spin them in whatever direction based on whether you want to move forward or backward
     if (forwards)
     {
-      Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity * 0.2), vex::voltageUnits::volt);
-      Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity * 0.2), vex::voltageUnits::volt);
+      Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
+      Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+
+      // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
     }
     else
     {
       Left.spin(vex::directionType::rev, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
       Right.spin(vex::directionType::rev, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
     }
+
+    lastLookAheadPoint = lookAheadPoint;
+    lastLookAheadPointIndex = closestPointIndex;
 
     wait(waitTime, vex::timeUnits::msec);
   }

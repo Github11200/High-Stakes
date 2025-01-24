@@ -330,14 +330,9 @@ int buttonsWrapper()
       mogoControl.toggle();
 
     // Frog
-    if (FrogButton.pressing())
-    {
-      FrogMech.set(!FrogMech.value());
-      while (FrogButton.pressing())
-      {
-        vex::wait(20, vex::timeUnits::msec);
-      }
-    }
+    while (FrogButton.pressing())
+      FrogMech.set(true);
+    FrogMech.set(false);
 
     // Descore
     // if (DescoreButton.pressing())
