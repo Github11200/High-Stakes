@@ -377,7 +377,8 @@ void testing(string c)
 
   Pursuit *purePursuit = new Pursuit(12.75);
   cout << "pure pursuit class created..." << endl;
-  purePursuit->followPath("path.txt", 5, 10000, true, 0.4, 0, 0);
+  // purePursuit->followPath("path.txt", 5, 10000, true, 0.3, 0, 0);
+  chassis.drive_to_point(5, 5);
 }
 
 // Part after 2nd wall stake not tested with current PID

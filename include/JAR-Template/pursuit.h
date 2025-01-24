@@ -36,6 +36,11 @@ struct Point
   {
     return this->x * other.x + this->y * other.y;
   }
+
+  bool operator==(const Point &other)
+  {
+    return (this->x == other.x) && (this->y == other.y) && (this->speed == other.speed);
+  }
 };
 
 typedef vector<Point> Path;

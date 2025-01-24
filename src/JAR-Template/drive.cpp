@@ -392,12 +392,12 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
 
     drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
-    heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
+    heading_output = slew(heading_output, prev_heading_output, slew_ang);
     if (drive_error < 3)
     {
       heading_output = 0;
     }
-    drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
+    drive_output = slew(drive_output, prev_drive_output, slew_lat);
 
     float prev_drive_output = drive_output;
     float prev_heading_output = heading_output;

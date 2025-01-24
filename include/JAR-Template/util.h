@@ -1,4 +1,4 @@
-float slew_func(float target, float current, float maxChange);
+float slew(float target, float current, float maxChange);
 
 float reduce_0_to_360(float angle);
 

@@ -39,7 +39,7 @@ double Pursuit::Dot(Point a, Point b)
 
 Point Pursuit::lerp(Point startPoint, Point endPoint, double t)
 {
-  return startPoint + (this->distance(startPoint, endPoint) * t);
+  return startPoint + Point((endPoint - startPoint).x * t, (endPoint - startPoint).y * t, 0);
 }
 
 double Pursuit::signum(double x)
@@ -138,7 +138,7 @@ double Pursuit::circleIntersect(Point p1, Point p2, double currentX, double curr
 
     if (t2 >= 0 && t2 <= 1)
       return t2;
-    else if (t1 >= 0 && t1 <= 1)
+    if (t1 >= 0 && t1 <= 1)
       return t1;
   }
 
@@ -186,7 +186,7 @@ double Pursuit::getCurvature(double theta, double currentX, double currentY, dou
 void test(double X_position, double Y_position, double drive_kp, double drive_ki, double drive_kd)
 {
   PID drivePID(hypot(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position()), drive_kp, drive_ki, drive_kd, 0);
-  PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading()), 0.3, 0, 0, 0);
+  PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading()), 0.2, 0, 0, 0);
   float prev_drive_output = 0;
   float prev_heading_output = 0;
   bool close = false;
@@ -208,8 +208,9 @@ void test(double X_position, double Y_position, double drive_kp, double drive_ki
   // This if statement prevents the heading correction from acting up after the robot gets close
   // to being settled.
 
-  drive_output = clamp(drive_output, -fabs(heading_scale_factor) * 12, fabs(heading_scale_factor) * 12);
-  heading_output = clamp(heading_output, -12, 12);
+  drive_output = clamp(drive_output, -fabs(heading_scale_factor) * 3, fabs(heading_scale_factor) * 3);
+  heading_output = clamp(heading_output, -3, 3);
+  heading_output = slew(heading_output, prev_heading_output, 0.1);
   if (drive_error < 3)
   {
     heading_output = 0;
@@ -224,37 +225,78 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
 {
   cout << "Starting to follow path..." << endl;
   // Path path = this->loadPathFromFile(fileName);
-  Path path = vector<Point>({Point(0, 0, 30.128),
-                             Point(-0.077, -1.997, 20),
-                             Point(-0.586, -0.788, 39.445),
-                             Point(-0.774, 1.202, 32.375),
-                             Point(-0.252, 0.972, 30.054),
-                             Point(0.391, -0.902, 20),
-                             Point(1.687, 0.316, 87.19),
-                             Point(2.583, 2.104, 99.795),
-                             Point(3.45, 3.906, 97.234),
-                             Point(4.339, 5.698, 95.804),
-                             Point(5.269, 7.469, 95.256),
-                             Point(6.252, 9.21, 93.108),
-                             Point(7.291, 10.919, 90.339),
-                             Point(8.4, 12.583, 87.482),
-                             Point(9.577, 14.199, 84.529),
-                             Point(10.829, 15.759, 81.469),
-                             Point(12.165, 17.247, 78.29),
-                             Point(13.579, 18.661, 74.977),
-                             Point(15.072, 19.991, 71.509),
-                             Point(16.657, 21.209, 67.865),
-                             Point(18.319, 22.32, 64.015),
-                             Point(20.054, 23.313, 59.918),
-                             Point(21.856, 24.18, 55.518),
-                             Point(23.719, 24.905, 50.739),
-                             Point(25.633, 25.483, 45.46),
-                             Point(27.584, 25.921, 39.482),
-                             Point(29.56, 26.222, 32.42),
-                             Point(31.552, 26.389, 23.308),
-                             Point(33.691, 26.443, 0),
-                             Point(33.691, 26.443, 0),
-                             Point(53.684, 26.941, 0)});
+  Path path = vector<Point>({Point(0.239, -0.239, 83.209),
+                             Point(1.576, 1.248, 82.666),
+                             Point(2.914, 2.735, 82.12),
+                             Point(4.251, 4.223, 81.57),
+                             Point(5.588, 5.71, 81.017),
+                             Point(6.925, 7.197, 80.459),
+                             Point(8.263, 8.684, 79.898),
+                             Point(9.6, 10.171, 79.333),
+                             Point(10.937, 11.658, 78.763),
+                             Point(12.275, 13.146, 78.19),
+                             Point(13.612, 14.633, 77.612),
+                             Point(14.949, 16.12, 77.03),
+                             Point(16.286, 17.607, 76.444),
+                             Point(17.624, 19.094, 75.853),
+                             Point(18.961, 20.581, 75.257),
+                             Point(20.298, 22.068, 74.657),
+                             Point(21.636, 23.556, 74.052),
+                             Point(22.973, 25.043, 73.442),
+                             Point(24.53, 24.613, 72.945),
+                             Point(26.158, 23.451, 72.326),
+                             Point(27.768, 22.265, 71.701),
+                             Point(29.357, 21.05, 71.07),
+                             Point(30.916, 19.798, 70.434),
+                             Point(32.434, 18.495, 69.792),
+                             Point(33.893, 17.128, 69.145),
+                             Point(35.274, 15.682, 68.491),
+                             Point(36.546, 14.139, 67.831),
+                             Point(37.697, 12.504, 67.164),
+                             Point(38.765, 10.813, 66.491),
+                             Point(39.819, 9.113, 65.811),
+                             Point(40.916, 7.441, 65.123),
+                             Point(42.078, 5.813, 64.429),
+                             Point(43.3, 4.23, 63.727),
+                             Point(44.576, 2.69, 63.017),
+                             Point(45.895, 1.187, 62.298),
+                             Point(46.711, -0.438, 61.638),
+                             Point(46.259, -2.385, 60.904),
+                             Point(45.678, -4.299, 60.161),
+                             Point(44.935, -6.154, 59.409),
+                             Point(43.997, -7.919, 58.647),
+                             Point(42.838, -9.546, 57.875),
+                             Point(41.466, -10.999, 57.093),
+                             Point(39.919, -12.265, 56.3),
+                             Point(38.255, -13.374, 55.495),
+                             Point(36.532, -14.389, 54.678),
+                             Point(34.787, -15.366, 53.849),
+                             Point(33.047, -16.353, 53.007),
+                             Point(31.333, -17.382, 52.151),
+                             Point(29.657, -18.474, 51.281),
+                             Point(28.032, -19.639, 50.396),
+                             Point(26.463, -20.879, 49.495),
+                             Point(24.953, -22.191, 48.577),
+                             Point(23.503, -23.567, 47.642),
+                             Point(21.749, -23.415, 46.803),
+                             Point(19.936, -22.574, 45.832),
+                             Point(18.217, -21.553, 44.84),
+                             Point(16.619, -20.353, 43.826),
+                             Point(15.159, -18.988, 42.787),
+                             Point(13.844, -17.482, 41.723),
+                             Point(12.657, -15.874, 40.63),
+                             Point(11.576, -14.191, 39.507),
+                             Point(10.562, -12.467, 38.351),
+                             Point(9.577, -10.727, 37.16),
+                             Point(8.579, -8.993, 35.928),
+                             Point(7.526, -7.293, 34.653),
+                             Point(6.38, -5.654, 33.33),
+                             Point(5.111, -4.11, 31.951),
+                             Point(3.699, -2.695, 30.511),
+                             Point(2.145, -1.438, 29),
+                             Point(0.239, -0.239, 0),
+                             Point(0.239, -0.239, 0),
+                             Point(-16.691, 10.409, 0)});
 
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
@@ -287,15 +329,6 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
       break;
     }
 
-    // We've reached the end of the path
-    // if (closestPoint.speed == 0)
-    // {
-    //   cout << "Dipping..." << endl;
-    //   cout << "Robot X: " << chassis.get_X_position() << endl;
-    //   cout << "Robot Y: " << chassis.get_Y_position() << endl;
-    //   break;
-    // }
-
     // cout << "Robot X: " << chassis.get_X_position() << endl;
     // cout << "Robot Y: " << chassis.get_Y_position() << endl;
     // cout << "======================================" << endl;
@@ -306,22 +339,32 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
     lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
 
-    cout << "Robot X: " << chassis.get_X_position() << endl;
-    cout << "Robot Y: " << chassis.get_Y_position() << endl;
-    cout << "======================================" << endl;
-    cout << "Lookahead Point X: " << lookAheadPoint.x << endl;
-    cout << "Lookahead Point Y: " << lookAheadPoint.y << endl;
-    cout << "======================================" << endl;
+    if (lookAheadPoint == lastLookAheadPoint)
+    {
+      // cout << "LAX: " << lookAheadPoint.x << "\n";
+      // cout << "LAY: " << lookAheadPoint.y << "\n";
+      // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
+      // wait(waitTime, vex::timeUnits::msec);
+      chassis.drive_to_point(lookAheadPoint.x, lookAheadPoint.y, 3, 3);
+      continue;
+    }
 
-    // Get the curvature of the path
+    // cout << "RX: " << chassis.get_X_position() << endl;
+    // cout << "RY: " << chassis.get_Y_position() << endl;
+    // cout << "======================================" << endl;
+    // cout << "LPX: " << lookAheadPoint.x << endl;
+    // cout << "LPY: " << lookAheadPoint.y << endl;
+    // cout << "======================================" << endl;
+
     // cout << "Gyro: " << reduce_negative_180_to_180(chassis.Gyro.rotation()) << endl;
     // cout << "Absolute: " << chassis.get_absolute_heading() << endl;
 
-    curvature = this->getCurvature(chassis.get_absolute_heading(), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
+    // Get the curvature of the path
+    curvature = this->getCurvature(M_PI / 2 - to_rad(reduce_negative_180_to_180(chassis.Gyro.rotation())), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
 
     // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    targetVelocity = velocityPID.compute(targetVelocity - previousTargetVelocity);
+    targetVelocity = slew(targetVelocity, previousTargetVelocity, 0.5);
     previousTargetVelocity = targetVelocity;
 
     // cout << "Curvature: " << curvature << endl;
@@ -329,6 +372,10 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     // Calculate the target speeds for the motors
     leftTargetVelocity = (targetVelocity * (2 + curvature * this->trackWidth) / 2);
     rightTargetVelocity = (targetVelocity * (2 - curvature * this->trackWidth) / 2);
+
+    // cout << "LV: " << leftTargetVelocity << "\n";
+    // cout << "RV:  " << rightTargetVelocity << "\n";
+    // cout << "=============================================\n";
 
     double ratio = max(leftTargetVelocity, rightTargetVelocity) / 127;
     if (ratio > 1)
@@ -340,15 +387,15 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     // Spin them in whatever direction based on whether you want to move forward or backward
     if (forwards)
     {
-      Left.spin(vex::directionType::fwd, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
-      Right.spin(vex::directionType::fwd, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+      Left.spin(vex::directionType::fwd, leftTargetVelocity, vex::percentUnits::pct);
+      Right.spin(vex::directionType::fwd, rightTargetVelocity, vex::percentUnits::pct);
 
       // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
     }
     else
     {
-      Left.spin(vex::directionType::rev, to_volt(leftTargetVelocity), vex::voltageUnits::volt);
-      Right.spin(vex::directionType::rev, to_volt(rightTargetVelocity), vex::voltageUnits::volt);
+      Left.spin(vex::directionType::rev, leftTargetVelocity, vex::percentUnits::pct);
+      Right.spin(vex::directionType::rev, rightTargetVelocity, vex::percentUnits::pct);
     }
 
     lastLookAheadPoint = lookAheadPoint;
