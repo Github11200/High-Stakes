@@ -392,12 +392,12 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
 
     drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
-    heading_output = slew(heading_output, prev_heading_output, slew_ang);
+    // heading_output = slew(heading_output, prev_heading_output, slew_ang);
+    // drive_output = slew(drive_output, prev_drive_output, slew_lat);
     if (drive_error < 3)
     {
       heading_output = 0;
     }
-    drive_output = slew(drive_output, prev_drive_output, slew_lat);
 
     float prev_drive_output = drive_output;
     float prev_heading_output = heading_output;
@@ -407,6 +407,10 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_max_v
   desired_heading = get_absolute_heading();
   DriveL.stop(hold);
   DriveR.stop(hold);
+
+  cout << "RX: " << chassis.get_X_position() << "\n";
+  cout << "RY: " << chassis.get_Y_position() << "\n";
+  cout << "Theta: " << chassis.get_absolute_heading() << "\n";
 }
 
 void Drive::turn_to_point(float X_position, float Y_position)

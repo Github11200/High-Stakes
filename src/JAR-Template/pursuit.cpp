@@ -225,78 +225,49 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
 {
   cout << "Starting to follow path..." << endl;
   // Path path = this->loadPathFromFile(fileName);
-  Path path = vector<Point>({Point(0.239, -0.239, 83.209),
-                             Point(1.576, 1.248, 82.666),
-                             Point(2.914, 2.735, 82.12),
-                             Point(4.251, 4.223, 81.57),
-                             Point(5.588, 5.71, 81.017),
-                             Point(6.925, 7.197, 80.459),
-                             Point(8.263, 8.684, 79.898),
-                             Point(9.6, 10.171, 79.333),
-                             Point(10.937, 11.658, 78.763),
-                             Point(12.275, 13.146, 78.19),
-                             Point(13.612, 14.633, 77.612),
-                             Point(14.949, 16.12, 77.03),
-                             Point(16.286, 17.607, 76.444),
-                             Point(17.624, 19.094, 75.853),
-                             Point(18.961, 20.581, 75.257),
-                             Point(20.298, 22.068, 74.657),
-                             Point(21.636, 23.556, 74.052),
-                             Point(22.973, 25.043, 73.442),
-                             Point(24.53, 24.613, 72.945),
-                             Point(26.158, 23.451, 72.326),
-                             Point(27.768, 22.265, 71.701),
-                             Point(29.357, 21.05, 71.07),
-                             Point(30.916, 19.798, 70.434),
-                             Point(32.434, 18.495, 69.792),
-                             Point(33.893, 17.128, 69.145),
-                             Point(35.274, 15.682, 68.491),
-                             Point(36.546, 14.139, 67.831),
-                             Point(37.697, 12.504, 67.164),
-                             Point(38.765, 10.813, 66.491),
-                             Point(39.819, 9.113, 65.811),
-                             Point(40.916, 7.441, 65.123),
-                             Point(42.078, 5.813, 64.429),
-                             Point(43.3, 4.23, 63.727),
-                             Point(44.576, 2.69, 63.017),
-                             Point(45.895, 1.187, 62.298),
-                             Point(46.711, -0.438, 61.638),
-                             Point(46.259, -2.385, 60.904),
-                             Point(45.678, -4.299, 60.161),
-                             Point(44.935, -6.154, 59.409),
-                             Point(43.997, -7.919, 58.647),
-                             Point(42.838, -9.546, 57.875),
-                             Point(41.466, -10.999, 57.093),
-                             Point(39.919, -12.265, 56.3),
-                             Point(38.255, -13.374, 55.495),
-                             Point(36.532, -14.389, 54.678),
-                             Point(34.787, -15.366, 53.849),
-                             Point(33.047, -16.353, 53.007),
-                             Point(31.333, -17.382, 52.151),
-                             Point(29.657, -18.474, 51.281),
-                             Point(28.032, -19.639, 50.396),
-                             Point(26.463, -20.879, 49.495),
-                             Point(24.953, -22.191, 48.577),
-                             Point(23.503, -23.567, 47.642),
-                             Point(21.749, -23.415, 46.803),
-                             Point(19.936, -22.574, 45.832),
-                             Point(18.217, -21.553, 44.84),
-                             Point(16.619, -20.353, 43.826),
-                             Point(15.159, -18.988, 42.787),
-                             Point(13.844, -17.482, 41.723),
-                             Point(12.657, -15.874, 40.63),
-                             Point(11.576, -14.191, 39.507),
-                             Point(10.562, -12.467, 38.351),
-                             Point(9.577, -10.727, 37.16),
-                             Point(8.579, -8.993, 35.928),
-                             Point(7.526, -7.293, 34.653),
-                             Point(6.38, -5.654, 33.33),
-                             Point(5.111, -4.11, 31.951),
-                             Point(3.699, -2.695, 30.511),
-                             Point(2.145, -1.438, 29),
-                             Point(0.239, -0.239, 0),
-                             Point(0.239, -0.239, 0),
-                             Point(-16.691, 10.409, 0)});
+  Path path = vector<Point>({Point(0.239, -0.239, 100),
+                             Point(0.253, 1.761, 99.63),
+                             Point(0.263, 3.761, 99.684),
+                             Point(0.271, 5.761, 96.237),
+                             Point(0.277, 7.761, 90.783),
+                             Point(0.281, 9.761, 84.979),
+                             Point(0.283, 11.761, 78.749),
+                             Point(0.283, 13.761, 71.982),
+                             Point(0.279, 15.761, 64.509),
+                             Point(0.274, 17.761, 56.049),
+                             Point(0.266, 19.761, 46.059),
+                             Point(0.254, 21.761, 33.188),
+                             Point(0.24, 23.761, 16.486),
+                             Point(0.298, 25.754, 16.486),
+                             Point(0.873, 27.662, 16.486),
+                             Point(1.923, 29.357, 16.486),
+                             Point(3.334, 30.768, 16.486),
+                             Point(5.003, 31.865, 16.486),
+                             Point(6.835, 32.661, 16.486),
+                             Point(8.77, 33.156, 16.486),
+                             Point(10.759, 33.346, 16.486),
+                             Point(12.753, 33.229, 16.486),
+                             Point(14.705, 32.805, 16.486),
+                             Point(16.559, 32.063, 16.486),
+                             Point(18.269, 31.031, 16.486),
+                             Point(19.79, 29.736, 24.638),
+                             Point(21.09, 28.219, 32.79),
+                             Point(22.159, 26.53, 40.942),
+                             Point(23.005, 24.72, 49.094),
+                             Point(23.414, 22.784, 57.246),
+                             Point(23.55, 20.789, 57.246),
+                             Point(23.673, 18.793, 57.246),
+                             Point(23.782, 16.796, 57.246),
+                             Point(23.871, 14.798, 57.246),
+                             Point(23.935, 12.799, 57.246),
+                             Point(23.966, 10.799, 57.246),
+                             Point(23.952, 8.799, 57.246),
+                             Point(23.878, 6.801, 56.534),
+                             Point(23.734, 4.806, 46.649),
+                             Point(23.54, 2.815, 34.002),
+                             Point(23.357, 0.824, 11.668),
+                             Point(23.336, 0.558, 0),
+                             Point(23.336, 0.558, 0)});
 
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
@@ -344,8 +315,8 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
       // cout << "LAX: " << lookAheadPoint.x << "\n";
       // cout << "LAY: " << lookAheadPoint.y << "\n";
       // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
-      // wait(waitTime, vex::timeUnits::msec);
-      chassis.drive_to_point(lookAheadPoint.x, lookAheadPoint.y, 3, 3);
+      wait(waitTime, vex::timeUnits::msec);
+      // chassis.drive_to_point(lookAheadPoint.x, lookAheadPoint.y, 3, 3);
       continue;
     }
 
@@ -364,7 +335,7 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
 
     // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    targetVelocity = slew(targetVelocity, previousTargetVelocity, 0.5);
+    targetVelocity = slew(targetVelocity, previousTargetVelocity, 5);
     previousTargetVelocity = targetVelocity;
 
     // cout << "Curvature: " << curvature << endl;
@@ -377,7 +348,7 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     // cout << "RV:  " << rightTargetVelocity << "\n";
     // cout << "=============================================\n";
 
-    double ratio = max(leftTargetVelocity, rightTargetVelocity) / 127;
+    double ratio = max(leftTargetVelocity, rightTargetVelocity) / 100;
     if (ratio > 1)
     {
       leftTargetVelocity /= ratio;

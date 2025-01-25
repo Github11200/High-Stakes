@@ -12,8 +12,8 @@ IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 
 void default_constants()
 {
-  chassis.set_drive_constants(12, 0.7, 0.01, 1.7, 3, 13);
-  chassis.set_heading_constants(12, 0.28, 0.1, 1.9, 1, 0);
+  chassis.set_drive_constants(12, 0.75, 0.01, 1.7, 3, 12);
+  chassis.set_heading_constants(12, 0.28, 0.1, 1.9, 1, 12);
   chassis.set_turn_constants(12, 0.28, 0.1, 1.9, 1);
   chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
 
@@ -377,8 +377,7 @@ void testing(string c)
 
   Pursuit *purePursuit = new Pursuit(12.75);
   cout << "pure pursuit class created..." << endl;
-  // purePursuit->followPath("path.txt", 5, 10000, true, 0.3, 0, 0);
-  chassis.drive_to_point(5, 5);
+  purePursuit->followPath("path.txt", 12.75, 10000, true, 0.3, 0, 0);
 }
 
 // Part after 2nd wall stake not tested with current PID
