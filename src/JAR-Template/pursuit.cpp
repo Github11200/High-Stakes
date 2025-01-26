@@ -183,92 +183,8 @@ double Pursuit::getCurvature(double theta, double currentX, double currentY, dou
   return side * ((2 * x) / (d * d));
 }
 
-void test(double X_position, double Y_position, double drive_kp, double drive_ki, double drive_kd)
+void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD)
 {
-  PID drivePID(hypot(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position()), drive_kp, drive_ki, drive_kd, 0);
-  PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading()), 0.2, 0, 0, 0);
-  float prev_drive_output = 0;
-  float prev_heading_output = 0;
-  bool close = false;
-  float drive_error = hypot(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position());
-  // The drive error is just equal to the distance between the current and desired points.
-  float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_position - chassis.get_X_position(), Y_position - chassis.get_Y_position())) - chassis.get_absolute_heading());
-  // This uses atan2(x,y) rather than atan2(y,x) because doing so places 0 degrees on the positive Y axis.
-  float drive_output = drivePID.compute(drive_error);
-
-  float heading_scale_factor = cos(to_rad(heading_error));
-  drive_output *= heading_scale_factor;
-  // The scale factor slows the drive down the more it's facing away from the desired point,
-  // and that way the heading correction has time to catch up.
-  heading_error = reduce_negative_90_to_90(heading_error);
-  // Here we reduce -90 to 90 because this allows the robot to travel backwards if it's easier
-  // to do so.
-  float heading_output = headingPID.compute(heading_error);
-
-  // This if statement prevents the heading correction from acting up after the robot gets close
-  // to being settled.
-
-  drive_output = clamp(drive_output, -fabs(heading_scale_factor) * 3, fabs(heading_scale_factor) * 3);
-  heading_output = clamp(heading_output, -3, 3);
-  heading_output = slew(heading_output, prev_heading_output, 0.1);
-  if (drive_error < 3)
-  {
-    heading_output = 0;
-  }
-
-  prev_drive_output = drive_output;
-  prev_heading_output = heading_output;
-  chassis.drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
-}
-
-void Pursuit::followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD)
-{
-  cout << "Starting to follow path..." << endl;
-  // Path path = this->loadPathFromFile(fileName);
-  Path path = vector<Point>({Point(0.239, -0.239, 100),
-                             Point(0.253, 1.761, 99.63),
-                             Point(0.263, 3.761, 99.684),
-                             Point(0.271, 5.761, 96.237),
-                             Point(0.277, 7.761, 90.783),
-                             Point(0.281, 9.761, 84.979),
-                             Point(0.283, 11.761, 78.749),
-                             Point(0.283, 13.761, 71.982),
-                             Point(0.279, 15.761, 64.509),
-                             Point(0.274, 17.761, 56.049),
-                             Point(0.266, 19.761, 46.059),
-                             Point(0.254, 21.761, 33.188),
-                             Point(0.24, 23.761, 16.486),
-                             Point(0.298, 25.754, 16.486),
-                             Point(0.873, 27.662, 16.486),
-                             Point(1.923, 29.357, 16.486),
-                             Point(3.334, 30.768, 16.486),
-                             Point(5.003, 31.865, 16.486),
-                             Point(6.835, 32.661, 16.486),
-                             Point(8.77, 33.156, 16.486),
-                             Point(10.759, 33.346, 16.486),
-                             Point(12.753, 33.229, 16.486),
-                             Point(14.705, 32.805, 16.486),
-                             Point(16.559, 32.063, 16.486),
-                             Point(18.269, 31.031, 16.486),
-                             Point(19.79, 29.736, 24.638),
-                             Point(21.09, 28.219, 32.79),
-                             Point(22.159, 26.53, 40.942),
-                             Point(23.005, 24.72, 49.094),
-                             Point(23.414, 22.784, 57.246),
-                             Point(23.55, 20.789, 57.246),
-                             Point(23.673, 18.793, 57.246),
-                             Point(23.782, 16.796, 57.246),
-                             Point(23.871, 14.798, 57.246),
-                             Point(23.935, 12.799, 57.246),
-                             Point(23.966, 10.799, 57.246),
-                             Point(23.952, 8.799, 57.246),
-                             Point(23.878, 6.801, 56.534),
-                             Point(23.734, 4.806, 46.649),
-                             Point(23.54, 2.815, 34.002),
-                             Point(23.357, 0.824, 11.668),
-                             Point(23.336, 0.558, 0),
-                             Point(23.336, 0.558, 0)});
-
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
   Point lookAheadPoint;
@@ -293,42 +209,16 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     closestPoint = path[closestPointIndex];
 
     if (closestPoint.speed == 0)
-    {
-      cout << "Dipping..." << endl;
-      cout << "Robot X: " << chassis.get_X_position() << endl;
-      cout << "Robot Y: " << chassis.get_Y_position() << endl;
       break;
-    }
-
-    // cout << "Robot X: " << chassis.get_X_position() << endl;
-    // cout << "Robot Y: " << chassis.get_Y_position() << endl;
-    // cout << "======================================" << endl;
-    // cout << "Closest Point X: " << closestPoint.x << endl;
-    // cout << "Closest Point Y: " << closestPoint.y << endl;
-    // cout << "======================================" << endl;
 
     // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
     lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
 
     if (lookAheadPoint == lastLookAheadPoint)
     {
-      // cout << "LAX: " << lookAheadPoint.x << "\n";
-      // cout << "LAY: " << lookAheadPoint.y << "\n";
-      // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
       wait(waitTime, vex::timeUnits::msec);
-      // chassis.drive_to_point(lookAheadPoint.x, lookAheadPoint.y, 3, 3);
       continue;
     }
-
-    // cout << "RX: " << chassis.get_X_position() << endl;
-    // cout << "RY: " << chassis.get_Y_position() << endl;
-    // cout << "======================================" << endl;
-    // cout << "LPX: " << lookAheadPoint.x << endl;
-    // cout << "LPY: " << lookAheadPoint.y << endl;
-    // cout << "======================================" << endl;
-
-    // cout << "Gyro: " << reduce_negative_180_to_180(chassis.Gyro.rotation()) << endl;
-    // cout << "Absolute: " << chassis.get_absolute_heading() << endl;
 
     // Get the curvature of the path
     curvature = this->getCurvature(M_PI / 2 - to_rad(reduce_negative_180_to_180(chassis.Gyro.rotation())), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
@@ -338,15 +228,9 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     targetVelocity = slew(targetVelocity, previousTargetVelocity, 5);
     previousTargetVelocity = targetVelocity;
 
-    // cout << "Curvature: " << curvature << endl;
-
     // Calculate the target speeds for the motors
     leftTargetVelocity = (targetVelocity * (2 + curvature * this->trackWidth) / 2);
     rightTargetVelocity = (targetVelocity * (2 - curvature * this->trackWidth) / 2);
-
-    // cout << "LV: " << leftTargetVelocity << "\n";
-    // cout << "RV:  " << rightTargetVelocity << "\n";
-    // cout << "=============================================\n";
 
     double ratio = max(leftTargetVelocity, rightTargetVelocity) / 100;
     if (ratio > 1)
@@ -360,8 +244,6 @@ void Pursuit::followPath(string fileName, double lookAheadDistance, double timeo
     {
       Left.spin(vex::directionType::fwd, leftTargetVelocity, vex::percentUnits::pct);
       Right.spin(vex::directionType::fwd, rightTargetVelocity, vex::percentUnits::pct);
-
-      // test(lookAheadPoint.x, lookAheadPoint.y, kP, kI, kD);
     }
     else
     {

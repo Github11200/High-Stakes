@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
+#include "../include/auto/skills.h"
 
 using namespace vex;
 using namespace std;
@@ -147,15 +148,8 @@ void testing(string c)
   odom_constants();
   cout << "constants defined" << endl;
 
-  // while (true)
-  // {
-  //   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  //   vex::wait(100, msec);
-  // }
-
   Pursuit *purePursuit = new Pursuit(12.75);
-  cout << "pure pursuit class created..." << endl;
-  purePursuit->followPath("path.txt", 12.75, 10000, true, 0.3, 0, 0);
+  purePursuit->followPath(skills.at(0), 12.75, 10000, true, 0.3, 0, 0);
 }
 
 // Part after 2nd wall stake not tested with current PID

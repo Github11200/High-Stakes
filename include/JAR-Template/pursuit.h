@@ -67,7 +67,7 @@ public:
 
   double getCurvature(double theta, double currentX, double currentY, double lookAheadX, double lookAheadY);
 
-  void followPath(string fileName, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD);
+  void followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD);
 };
 
 #endif
