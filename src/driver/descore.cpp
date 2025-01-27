@@ -2,26 +2,19 @@
 
 using namespace vex;
 
-DescoreControl::DescoreControl()
-{
-  // Rename the doinker piston :)
-  this->DescorePiston = &Doinker;
-}
-
 int DescoreControl::descoreRing()
 {
-  // while (DescoreButton.pressing())
-  // {
-  //   if (Intake.velocity(vex::percentUnits::pct) > 10)
-  //     Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-  //   else
-  //   {
-  //     this->DescorePiston->set(true);
-  //     wait(0.5, vex::timeUnits::sec);
-  //     this->DescorePiston->set(false);
-  //   }
-  //   wait(20, vex::timeUnits::msec);
-  // }
+  Hooks.spin(vex::directionType::rev, 5, vex::voltageUnits::volt);
+  if (Hooks.velocity(rpm) < 1 && OuttakeButton.pressing())
+  {
+    vex::wait(2, sec);
+    if (Hooks.velocity(rpm) < 1 && OuttakeButton.pressing())
+    {
+      Intake.stop(coast);
+      Hooks.stop(hold);
+      Doinker.set(true);
+    }
+  }
 
   return 1;
 }

@@ -8,12 +8,8 @@ using namespace std;
 
 class DescoreControl
 {
-private:
-    digital_out *DescorePiston;
-
 public:
-    DescoreControl();
-    int descoreRing();
+  int descoreRing();
 };
 
 #endif

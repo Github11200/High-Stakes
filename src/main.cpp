@@ -300,7 +300,7 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   MogoControl mogoControl;
-  // DescoreControl descoreControl;
+  DescoreControl descoreControl;
 
   while (true)
   {
@@ -335,8 +335,8 @@ int buttonsWrapper()
     FrogMech.set(false);
 
     // Descore
-    // if (DescoreButton.pressing())
-    //   descoreControl.descoreRing();
+    if (DescoreButton.pressing())
+      descoreControl.descoreRing();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {

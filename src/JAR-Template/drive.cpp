@@ -769,10 +769,31 @@ void Drive::holonomic_drive_to_pose(float X_position, float Y_position, float an
 
 void Drive::control_arcade()
 {
+
   float throttle = deadband(controller(primary).Axis3.value(), 5);
-  float turn = deadband(controller(primary).Axis1.value(), 5);
-  DriveL.spin(fwd, to_volt(throttle + turn), volt);
-  DriveR.spin(fwd, to_volt(throttle - turn), volt);
+  throttle = throttle / 1.27;
+  float influence = deadband(controller(primary).Axis1.value(), 5);
+  influence = influence / 1.27;
+  float leftpow;
+  float rightpow;
+
+  throttle = pow(throttle, 3) / 10000;
+  influence = pow(influence, 3) / 10000;
+
+  leftpow = throttle + influence;
+  rightpow = throttle - influence;
+
+  if (leftpow == 0)
+  {
+    DriveL.stop(brake);
+  }
+  if (rightpow == 0)
+  {
+    DriveR.stop(brake);
+  }
+
+  DriveL.spin(fwd, to_volt(leftpow), volt);
+  DriveR.spin(fwd, to_volt(rightpow), volt);
 }
 
 /**
