@@ -88,24 +88,16 @@ void IntakeControl::outtake()
   while (OuttakeButton.pressing())
   {
     Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
-    Hooks.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+    Hooks.spin(vex::directionType::rev, 5, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
-    if (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
+    if (Hooks.velocity(rpm) < 1 && OuttakeButton.pressing())
     {
-      vex::wait(1, sec);
-      if (Hooks.velocity(rpm) < 2 && OuttakeButton.pressing())
+      vex::wait(2, sec);
+      if (Hooks.velocity(rpm) < 1 && OuttakeButton.pressing())
       {
         Intake.stop(coast);
         Hooks.stop(hold);
         Doinker.set(true);
-        vex::wait(2, sec);
-        while (OuttakeButton.pressing())
-        {
-          Doinker.set(false);
-          vex::wait(0.3, sec);
-          Doinker.set(true);
-          vex::wait(0.3, sec);
-        }
       }
     }
   }
