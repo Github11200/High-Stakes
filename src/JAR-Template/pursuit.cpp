@@ -183,7 +183,14 @@ double Pursuit::getCurvature(double theta, double currentX, double currentY, dou
   return side * ((2 * x) / (d * d));
 }
 
-void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD)
+double Pursuit::fullStateFeedback(double currentX, double currentY, double targetX, double targetY, double targetVelocity, double currentVelocity, double kP, double kV) {
+  double positionError = hypot(targetX - currentX, targetY - currentY);
+  double velocityError = targetVelocity - currentVelocity;
+
+  return (kP * positionError) + (kV * velocityError);
+}
+
+void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double slewGain, double kP, double kV)
 {
   Point lastPointOnPath = path[path.size() - 1];
   Point closestPoint;
@@ -225,7 +232,8 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
     // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    targetVelocity = slew(targetVelocity, previousTargetVelocity, 5);
+    targetVelocity = slew(targetVelocity, previousTargetVelocity, slewGain);
+    targetVelocity = this->fullStateFeedback(chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y, closestPoint.speed, previousTargetVelocity, kP, kV);
     previousTargetVelocity = targetVelocity;
 
     // Calculate the target speeds for the motors

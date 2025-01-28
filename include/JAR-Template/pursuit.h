@@ -66,8 +66,9 @@ public:
   Point findLookAheadPoint(Path path, Point lastLookAhead, int lastLookAheadIndex, int closestPointIndex, double lookAheadDistance, double currentX, double currentY);
 
   double getCurvature(double theta, double currentX, double currentY, double lookAheadX, double lookAheadY);
+  double fullStateFeedback(double currentX, double currentY, double targetX, double targetY, double targetVelocity, double currentVelocity, double kP, double kV);
 
-  void followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double kP, double kI, double kD);
+  void followPath(Path path, double lookAheadDistance, double timeout, bool forwards, double slewGain, double kP, double kV);
 };
 
 #endif
