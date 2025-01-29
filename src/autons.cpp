@@ -159,7 +159,7 @@ void auton_skills()
   intakeToFrogAuton = false;
 
   odom_constants();
-  chassis.set_coordinates(-58, 0, 0);
+  chassis.set_coordinates(-62, 0, 90);
 
   cout << "skills auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -174,18 +174,21 @@ void auton_skills()
   intakeSort = false;
 
   chassis.drive_to_point(-47.212, 0);
-  chassis.turn_to_point(-47.212, -23.503);
+  chassis.turn_to_point(-47.212, -23.503, 180);
 
   // Clamp onto the goal, using goal rush code tech
-  chassis.drive_timeout = 800;
+  chassis.heading_max_voltage = 0;
+  chassis.drive_max_voltage = 6;
   chassis.drive_to_point(-47.212, -23.503);
   Clamp.set(true);
-  chassis.drive_to_point(-47.212, -23.503);
   chassis.drive_timeout = 4000;
   intakeSort = true;
 
+  chassis.turn_to_point(skills[0][0].x, skills[0][0].y);
   // Eat a couple of rings, end up facing pile of blue
-  purePursuit->followPath(skills[0], 12.75, 10000, false, 17, 5, 0.8);
+  purePursuit->followPath(skills[0], 12.75, 10000, true, 3, 5, 0.8);
+
+  return;
 
   // Grab two red rings from under blue rings, holding them both for frog
   intakeSort = false;
