@@ -26,6 +26,7 @@ void default_constants()
 void odom_constants()
 {
   default_constants();
+  cout << "odom constants set" << endl;
 }
 
 int colorSortingAutonTaskWrapper()
@@ -129,7 +130,7 @@ void positive_corner_rush(string c)
 
 void testing(string c)
 {
-  cout << "testing auto started" << endl;
+  cout << "testing auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
 
@@ -146,7 +147,6 @@ void testing(string c)
     alliance = "blue";
   }
   odom_constants();
-  cout << "constants defined" << endl;
 
   Pursuit *purePursuit = new Pursuit(12.75);
   purePursuit->followPath(skills[0], 12.75, 10000, false, 17, 5, 0.8);
@@ -159,16 +159,65 @@ void auton_skills()
   intakeToFrogAuton = false;
 
   odom_constants();
-  chassis.set_coordinates(-56, 0, 0);
+  chassis.set_coordinates(-58, 0, 0);
 
-  cout << chassis.get_X_position() << endl;
-  cout << chassis.get_Y_position() << endl;
+  cout << "skills auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
 
+  Pursuit *purePursuit = new Pursuit(12.75);
+
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
   intakeSort = false;
-  vex::wait(0.5, vex::timeUnits::sec);
+
+  chassis.drive_to_point(-47.212, 0);
+  chassis.turn_to_point(-47.212, -23.503);
+
+  // Clamp onto the goal, using goal rush code tech
+  chassis.drive_timeout = 800;
+  chassis.drive_to_point(-47.212, -23.503);
+  Clamp.set(true);
+  chassis.drive_to_point(-47.212, -23.503);
+  chassis.drive_timeout = 4000;
+  intakeSort = true;
+
+  // Eat a couple of rings, end up facing pile of blue
+  purePursuit->followPath(skills[0], 12.75, 10000, false, 17, 5, 0.8);
+
+  // Grab two red rings from under blue rings, holding them both for frog
+  intakeSort = false;
+  intakeToFrogAuton = true;
+  chassis.drive_to_point(58.962, -47.269);
+
+  // Score on wall stake
+  chassis.drive_to_point(0, -47.269);
+  chassis.turn_to_point(0, -59.059);
+  chassis.drive_to_point(0, -59.059);
+
+  FrogMech.set(true);
+  vex::wait(150, msec);
+  FrogMech.set(false);
+  intakeToFrogAuton = true;
+  vex::wait(500, msec);
+  FrogMech.set(true);
+  vex::wait(150, msec);
+  FrogMech.set(false);
+
+  // Clean up the rest of the rings in the corner
+  chassis.drive_to_point(0, -47.269);
+  chassis.turn_to_point(100, -47.269);
+  purePursuit->followPath(skills[1], 12.75, 10000, false, 17, 5, 0.8);
+
+  // Drop the goal in the corner
+  Clamp.set(false);
+  chassis.drive_to_point(-51.979, -62.038);
+
+  // Push the mogo out of the way, then score on alliance stake
+  purePursuit->followPath(skills[2], 12.75, 10000, false, 17, 5, 0.8);
+  chassis.drive_to_point(47.141, 0);
+  chassis.turn_to_angle(180);
+  chassis.drive_to_point(-58, 0);
 }

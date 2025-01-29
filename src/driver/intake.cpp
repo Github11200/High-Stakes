@@ -118,13 +118,17 @@ void IntakeControl::intakeToFrogAutonTask()
   {
     if (intakeToFrogAuton)
     {
+      OpticalSensor.setLightPower(100, pct);
       // Spin the intake until the optical sensor senses a ring color
       while (!OpticalSensor.isNearObject())
       {
-        Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-        Hooks.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-        wait(10, vex::timeUnits::msec);
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        Hooks.spin(vex::directionType::fwd, 7, vex::voltageUnits::volt);
+        wait(30, vex::timeUnits::msec);
       }
+      OpticalSensor.setLightPower(0, pct);
+      wait(0.15, vex::timeUnits::sec);
+
       Intake.stop(vex::brakeType::brake);
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;

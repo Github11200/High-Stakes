@@ -219,13 +219,13 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
     if (closestPoint.speed == 0)
     {
-      cout << "breh" << endl;
+      cout << "Exiting Pure Pursuit curve" << endl;
       Left.stop(brake);
       Right.stop(brake);
       break;
     }
 
-    // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
+    // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersects the line
     lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
 
     if (lookAheadPoint == lastLookAheadPoint)
@@ -276,7 +276,6 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     wait(waitTime, vex::timeUnits::msec);
   }
 
-  cout << "BREH" << endl;
-  cout << chassis.get_X_position() << endl;
-  cout << chassis.get_Y_position() << endl;
+  cout << "Exited Pure Pursuit Curve. Final Position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 }

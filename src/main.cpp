@@ -157,17 +157,6 @@ void updateScreen()
   Brain.Screen.setFillColor(black);
 }
 
-void senseTemp()
-{
-  Brain.Screen.setPenColor(white);
-  chassisTemp = FrontLeft.temperature();
-  intakeTemp = FrontLeft.temperature();
-  Brain.Screen.printAt(5, 20, "Chassis Temp");
-  Brain.Screen.printAt(5, 40, ToString(chassisTemp).c_str());
-  Brain.Screen.printAt(165, 20, "Intake Temp");
-  Brain.Screen.printAt(165, 40, ToString(intakeTemp).c_str());
-}
-
 void firstPress()
 {
   ringStopped = false;
@@ -183,7 +172,7 @@ void pre_auton(void)
 
   alliance = "skills";
 
-  chassis.calibrate_inertial();
+  chassis.calibrate_robot();
   chassis.set_coordinates(0, 0, 0);
 
   updateScreen();
@@ -261,7 +250,8 @@ void pre_auton(void)
       Brain.Screen.clearScreen();
       updateScreen();
     }
-    task::sleep(20);
+    // task::sleep(20);
+    vex::wait(20, msec);
   }
 }
 
@@ -333,6 +323,7 @@ int buttonsWrapper()
     // Frog
     while (FrogButton.pressing())
       FrogMech.set(true);
+    vex::wait(20, msec);
     FrogMech.set(false);
 
     // Descore
@@ -380,10 +371,6 @@ int joystickWrapper()
 
 void usercontrol(void)
 {
-  pre_match = false;
-  pre_driver = false;
-  OpticalSensor.setLightPower(0, vex::percentUnits::pct);
-
   // Auton testing code start
   // wait(2500, msec);
   // auton_skills();
@@ -391,7 +378,12 @@ void usercontrol(void)
   // intakeSort = false;
   // pre_driver = false;
   // Intake.stop(vex::brakeType::coast);
+  // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
+
+  pre_match = false;
+  pre_driver = false;
+  OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   task buttons = task(buttonsWrapper);
 
