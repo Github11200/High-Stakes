@@ -19,7 +19,6 @@ int DescoreControl::descoreRing()
     }
   }
   wait(10, vex::timeUnits::msec);
-  Intake.stop(vex::brakeType::coast);
   Hooks.stop(vex::brakeType::coast);
   Doinker.set(false);
 
