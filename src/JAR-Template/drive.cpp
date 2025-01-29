@@ -476,9 +476,21 @@ void Drive::set_heading(float orientation_deg)
 
 void Drive::set_coordinates(float X_position, float Y_position, float orientation_deg)
 {
+  R_ForwardTracker.setPosition(0, vex::rotationUnits::deg);
+  R_SidewaysTracker.setPosition(0, vex::rotationUnits::deg);
+
   odom.set_position(X_position, Y_position, orientation_deg, get_ForwardTracker_position(), get_SidewaysTracker_position());
+
   set_heading(orientation_deg);
   odom_task = task(position_track_task);
+}
+
+void Drive::calibrate_inertial()
+{
+  Gyro.calibrate();
+  while (Gyro.isCalibrating())
+    wait(50, vex::timeUnits::msec);
+  Controller.rumble("....");
 }
 
 /**

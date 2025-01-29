@@ -5,6 +5,7 @@ private:
   float SidewaysTracker_center_distance;
   float ForwardTracker_position;
   float SideWaysTracker_position;
+
 public:
   float X_position;
   float Y_position;

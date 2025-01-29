@@ -183,6 +183,7 @@ void pre_auton(void)
 
   alliance = "skills";
 
+  chassis.calibrate_inertial();
   chassis.set_coordinates(0, 0, 0);
 
   updateScreen();
@@ -385,7 +386,7 @@ void usercontrol(void)
 
   // Auton testing code start
   // wait(2500, msec);
-  // testing("red");
+  // auton_skills();
 
   // intakeSort = false;
   // pre_driver = false;

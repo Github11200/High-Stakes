@@ -149,15 +149,20 @@ void testing(string c)
   cout << "constants defined" << endl;
 
   Pursuit *purePursuit = new Pursuit(12.75);
-  purePursuit->followPath(skills.at(0), 12.75, 10000, true, 0.3, 0, 0);
+  purePursuit->followPath(skills[0], 12.75, 10000, false, 17, 5, 0.8);
 }
 
 // Part after 2nd wall stake not tested with current PID
 void auton_skills()
 {
   pre_driver = true;
+  intakeToFrogAuton = false;
 
   odom_constants();
+  chassis.set_coordinates(-56, 0, 0);
+
+  cout << chassis.get_X_position() << endl;
+  cout << chassis.get_Y_position() << endl;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
@@ -165,4 +170,5 @@ void auton_skills()
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
   intakeSort = false;
+  vex::wait(0.5, vex::timeUnits::sec);
 }

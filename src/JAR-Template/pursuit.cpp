@@ -183,7 +183,8 @@ double Pursuit::getCurvature(double theta, double currentX, double currentY, dou
   return side * ((2 * x) / (d * d));
 }
 
-double Pursuit::fullStateFeedback(double currentX, double currentY, double targetX, double targetY, double targetVelocity, double currentVelocity, double kP, double kV) {
+double Pursuit::fullStateFeedback(double currentX, double currentY, double targetX, double targetY, double targetVelocity, double currentVelocity, double kP, double kV)
+{
   double positionError = hypot(targetX - currentX, targetY - currentY);
   double velocityError = targetVelocity - currentVelocity;
 
@@ -204,10 +205,11 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
   double leftTargetVelocity;
   double rightTargetVelocity;
 
-  PID velocityPID(0, kP, kI, kD, 0);
-
   // Used in the wait() function at the end of each loop iteration
   double waitTime = 20;
+
+  // for (int i = 0; i < path.size(); ++i)
+  //   cout << "X: " << path[i].x << "\nY: " << path[i].y << "\nSpeed: " << path[i].speed << endl;
 
   for (int i = 0; true; ++i)
   {
@@ -216,13 +218,21 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     closestPoint = path[closestPointIndex];
 
     if (closestPoint.speed == 0)
+    {
+      cout << "breh" << endl;
+      Left.stop(brake);
+      Right.stop(brake);
       break;
+    }
 
     // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersections the line
     lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
 
     if (lookAheadPoint == lastLookAheadPoint)
     {
+      cout << "X: " << closestPoint.x << endl;
+      cout << "Y: " << closestPoint.y << endl;
+      cout << "Speed: " << closestPoint.speed << endl;
       wait(waitTime, vex::timeUnits::msec);
       continue;
     }
@@ -232,13 +242,14 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
     // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    targetVelocity = slew(targetVelocity, previousTargetVelocity, slewGain);
     targetVelocity = this->fullStateFeedback(chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y, closestPoint.speed, previousTargetVelocity, kP, kV);
-    previousTargetVelocity = targetVelocity;
+    // targetVelocity = slew(targetVelocity, previousTargetVelocity, slewGain);
 
     // Calculate the target speeds for the motors
-    leftTargetVelocity = (targetVelocity * (2 + curvature * this->trackWidth) / 2);
-    rightTargetVelocity = (targetVelocity * (2 - curvature * this->trackWidth) / 2);
+    leftTargetVelocity = (slew(targetVelocity, previousTargetVelocity, slewGain) * (2 + curvature * this->trackWidth) / 2);
+    rightTargetVelocity = (slew(targetVelocity, previousTargetVelocity, slewGain) * (2 - curvature * this->trackWidth) / 2);
+
+    previousTargetVelocity = targetVelocity;
 
     double ratio = max(leftTargetVelocity, rightTargetVelocity) / 100;
     if (ratio > 1)
@@ -264,4 +275,8 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
     wait(waitTime, vex::timeUnits::msec);
   }
+
+  cout << "BREH" << endl;
+  cout << chassis.get_X_position() << endl;
+  cout << chassis.get_Y_position() << endl;
 }

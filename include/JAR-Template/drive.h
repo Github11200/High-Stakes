@@ -129,6 +129,7 @@ public:
   float get_ForwardTracker_position();
   float get_SidewaysTracker_position();
   void set_coordinates(float X_position, float Y_position, float orientation_deg);
+  void calibrate_inertial();
   void set_heading(float orientation_deg);
   void position_track();
   static int position_track_task();
