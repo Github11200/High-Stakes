@@ -233,10 +233,10 @@ void auton_skills()
   Intake.stop();
   purePursuit->followPath(skills[2], 12.75, 10000, true, 17, 5, 0.8);
   chassis.drive_to_point(47.141, -2);
-  chassis.turn_to_point(61, 0, 180);
+  chassis.turn_to_point(61, -2, 180);
   Intake.spin(fwd, 12, volt);
   chassis.heading_max_voltage = 0;
-  chassis.drive_to_point(61, 0);
+  chassis.drive_to_point(61, -2);
   odom_constants();
 
   intakeSort = true;
