@@ -197,13 +197,14 @@ void auton_skills()
   chassis.turn_to_point(58.962, -47.269);
   chassis.drive_to_point(58.962, -47.269);
 
-  // Score on wall stake
+  // Align to wall stake
   chassis.turn_to_point(0, -47.269, 180);
   chassis.drive_to_point(0, -47.269);
 
-  chassis.heading_max_voltage = 0;
-  chassis.turn_to_point(0, -61);
-  chassis.drive_to_point(0, -61);
+  // Turn to the actual wall stake position, then drive forward
+  chassis.turn_to_point(0, -69.388);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(14);
   default_constants();
 
   FrogMech.set(true);
@@ -237,10 +238,11 @@ void auton_skills()
   Intake.stop();
   chassis.drive_to_point(47.141, 5);
   chassis.drive_to_point(47.141, 0);
-  chassis.turn_to_angle(270);
-  Intake.spin(fwd, 12, volt);
-  chassis.heading_max_voltage = 0;
-  chassis.drive_distance(17, 0);
+
+  // Turn to the actual alliance stake position
+  chassis.turn_to_point(69.388, 0, 180);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-17);
   odom_constants();
 
   intakeSort = true;
