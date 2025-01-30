@@ -200,14 +200,16 @@ void auton_skills()
   // Score on wall stake
   chassis.turn_to_point(0, -47.269, 180);
   chassis.drive_to_point(0, -47.269);
+
+  chassis.heading_max_voltage = 0;
   chassis.turn_to_point(0, -61);
   chassis.drive_to_point(0, -61);
+  default_constants();
 
   FrogMech.set(true);
   vex::wait(1000, msec);
   FrogMech.set(false);
   intakeToFrogAuton = true;
-  vex::wait(1000, msec);
   while (intakeToFrogAuton)
   {
     wait(50, msec);
@@ -221,7 +223,7 @@ void auton_skills()
   chassis.turn_to_point(-100, -47.269);
   intakeSort = true;
   purePursuit->followPath(skills[1], 12.75, 10000, true, 17, 3.5, 0.8);
-  vex::wait(500, msec);
+  vex::wait(300, msec);
   intakeSort = false;
   odom_constants();
 
@@ -230,13 +232,15 @@ void auton_skills()
   chassis.drive_to_point(-51.979, -62.038);
 
   // Push the mogo out of the way, then score on alliance stake
+  intakeToFrogAuton = true;
+  purePursuit->followPath(skills[2], 15, 10000, true, 17, 5, 0.8);
   Intake.stop();
-  purePursuit->followPath(skills[2], 12.75, 10000, true, 17, 5, 0.8);
-  chassis.drive_to_point(47.141, -2);
-  chassis.turn_to_point(61, -2, 180);
+  chassis.drive_to_point(47.141, 5);
+  chassis.drive_to_point(47.141, 0);
+  chassis.turn_to_angle(270);
   Intake.spin(fwd, 12, volt);
   chassis.heading_max_voltage = 0;
-  chassis.drive_to_point(61, -2);
+  chassis.drive_distance(17, 0);
   odom_constants();
 
   intakeSort = true;
@@ -244,4 +248,7 @@ void auton_skills()
   intakeSort = false;
   Intake.stop();
   vex::wait(0.5, vex::timeUnits::sec);
+
+  cout << "Final X: " << chassis.get_X_position() << endl;
+  cout << "Final Y: " << chassis.get_Y_position() << endl;
 }
