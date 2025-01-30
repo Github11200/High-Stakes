@@ -129,7 +129,6 @@ void IntakeControl::intakeToFrogAutonTask()
       OpticalSensor.setLightPower(0, pct);
       wait(0.15, vex::timeUnits::sec);
 
-      Intake.stop(vex::brakeType::brake);
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;
     }
@@ -156,7 +155,6 @@ void IntakeControl::colorSortingAutonTask()
     else if (!intakeToFrogAuton) // don't stop the intake if other systems are running
     {
       OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
-      Intake.stop();
       Hooks.stop();
     }
   }

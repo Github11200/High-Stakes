@@ -8,6 +8,7 @@ extern bool doinked;
 extern bool intakeToFrogAuton;
 extern bool intakeSort;
 extern bool intakeRev;
+extern bool only_rollers;
 extern bool pre_match;
 extern bool pre_driver;
 extern bool ringStopped;

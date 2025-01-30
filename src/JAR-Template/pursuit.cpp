@@ -230,9 +230,6 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
     if (lookAheadPoint == lastLookAheadPoint)
     {
-      cout << "X: " << closestPoint.x << endl;
-      cout << "Y: " << closestPoint.y << endl;
-      cout << "Speed: " << closestPoint.speed << endl;
       wait(waitTime, vex::timeUnits::msec);
       continue;
     }

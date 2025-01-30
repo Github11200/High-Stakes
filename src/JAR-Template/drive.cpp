@@ -567,7 +567,7 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
     heading_error = reduce_negative_90_to_90(heading_error);
     float heading_output = headingPID.compute(heading_error);
 
-    if (drive_error < drive_settle_error)
+    if (drive_error < 3)
     {
       heading_output = 0;
     }
