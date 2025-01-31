@@ -133,6 +133,7 @@ public:
   void set_heading(float orientation_deg);
   void position_track();
   static int position_track_task();
+  void stop_position_track_task();
   vex::task odom_task;
   float get_X_position();
   float get_Y_position();

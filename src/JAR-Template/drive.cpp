@@ -846,3 +846,9 @@ int Drive::position_track_task()
   chassis.position_track();
   return (0);
 }
+
+void Drive::stop_position_track_task()
+{
+  odom_task.stop();
+  odom_task.~task();
+}

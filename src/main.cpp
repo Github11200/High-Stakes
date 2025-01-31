@@ -385,6 +385,7 @@ void usercontrol(void)
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
+  chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
   while (1)
