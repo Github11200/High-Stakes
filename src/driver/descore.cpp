@@ -7,7 +7,7 @@ int DescoreControl::descoreRing()
   while (DescoreButton.pressing())
   {
     cout << "yuibbu" << endl;
-    Hooks.spin(vex::directionType::rev, 5, vex::voltageUnits::volt);
+    Hooks.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
     wait(50, vex::timeUnits::msec);
     if (Hooks.velocity(pct) < 5 && DescoreButton.pressing())
     {

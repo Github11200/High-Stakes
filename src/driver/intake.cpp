@@ -69,11 +69,11 @@ void IntakeControl::intakeToFrog()
   {
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     Hooks.spin(vex::directionType::fwd, 5, vex::voltageUnits::volt);
-    wait(30, vex::timeUnits::msec);
+    wait(60, vex::timeUnits::msec);
   }
   ringStopped = true;
   OpticalSensor.setLightPower(0, pct);
-  wait(0.25, vex::timeUnits::sec);
+  wait(0.31, vex::timeUnits::sec);
   // if (!IntakeToFrogButton.pressing())
   // {
   //   Hooks.spin(vex::directionType::rev, 6, vex::voltageUnits::volt);
@@ -124,10 +124,10 @@ void IntakeControl::intakeToFrogAutonTask()
       {
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
         Hooks.spin(vex::directionType::fwd, 5, vex::voltageUnits::volt);
-        wait(30, vex::timeUnits::msec);
+        wait(60, vex::timeUnits::msec);
       }
       OpticalSensor.setLightPower(0, pct);
-      wait(0.25, vex::timeUnits::sec);
+      wait(0.31, vex::timeUnits::sec);
 
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;
@@ -150,7 +150,7 @@ void IntakeControl::colorSortingAutonTask()
     else if (intakeRev)
     {
       Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-      Hooks.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+      Hooks.stop();
     }
     else if (!intakeToFrogAuton) // don't stop the intake if other systems are running
     {
