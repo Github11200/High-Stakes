@@ -187,7 +187,7 @@ void auton_skills()
   intakeSort = true;
 
   // Eat a couple of rings, end up facing pile of blue
-  purePursuit->followPath(skills[0], 12.75, 10000, true, 17, 2, 0.8);
+  purePursuit->followPath(skills[0], 12.75, 10000, true, 17, 3, 0.8);
 
   // Grab two red rings from under blue rings, holding them both for frog
   intakeSort = false;
@@ -198,19 +198,20 @@ void auton_skills()
 
   // Align to wall stake
   chassis.turn_to_point(0, -47.269, 180);
-  chassis.drive_to_point(0, -47.269);
+  chassis.drive_to_point(2, -47.269);
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_to_point(0, -69.388);
   chassis.drive_timeout = 600;
   chassis.drive_distance(14);
+  chassis.turn_to_point(0, -69.388);
   default_constants();
 
   // Score twice on wall stake
   FrogMech.set(true);
-  vex::wait(1000, msec);
+  vex::wait(700, msec);
   FrogMech.set(false);
-  vex::wait(1000, msec);
+  vex::wait(700, msec);
   intakeToFrogAuton = true;
   int frogTimeout = 4000;
   while (intakeToFrogAuton && (frogTimeout >= 0))
@@ -238,14 +239,14 @@ void auton_skills()
 
   // Drive across the entire field
   intakeToFrogAuton = true;
-  chassis.drive_to_point(47.141, -30.852);
+  chassis.drive_to_point(45.141, -30.852);
   chassis.turn_to_point(47.141, 0, 180);
   Intake.stop();
-  chassis.drive_to_point(47.141, -16);
 
   // Clamp the far goal
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(47.141, 0);
+  chassis.drive_distance(-16);
+  // chassis.drive_to_point(47.141, 0);
   odom_constants();
   Clamp.set(true);
   vex::wait(100, msec);
@@ -282,6 +283,7 @@ void auton_skills()
   chassis.turn_to_point(0, 69.388);
   chassis.drive_timeout = 1000;
   chassis.drive_distance(26);
+  chassis.turn_to_point(0, 69.388);
   odom_constants();
 
   // Score once on 2nd wall stake

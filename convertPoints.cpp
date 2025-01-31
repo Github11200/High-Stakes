@@ -66,7 +66,7 @@ int main()
   pathFile.close();
 
   for (auto Point : path)
-    cout << "Point(" << Point.x << ", " << Point.y << ", " << point.speed << ")," << endl;
+    cout << "Point(" << Point.x << ", " << Point.y << ", " << Point.speed << ")," << endl;
 
   return 0;
 }

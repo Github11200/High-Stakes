@@ -381,12 +381,12 @@ void usercontrol(void)
   Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
-  pre_match = false;
-  pre_driver = false;
-  OpticalSensor.setLightPower(0, vex::percentUnits::pct);
+  // pre_match = false;
+  // pre_driver = false;
+  // OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  chassis.stop_position_track_task();
-  task buttons = task(buttonsWrapper);
+  // chassis.stop_position_track_task();
+  // task buttons = task(buttonsWrapper);
 
   while (1)
   {
