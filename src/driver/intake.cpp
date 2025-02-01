@@ -73,7 +73,7 @@ void IntakeControl::intakeToFrog()
   }
   ringStopped = true;
   OpticalSensor.setLightPower(0, pct);
-  wait(0.48, vex::timeUnits::sec);
+  wait(0.49, vex::timeUnits::sec);
   Intake.stop(vex::brakeType::brake);
   Hooks.stop(vex::brakeType::brake);
 }
@@ -122,7 +122,7 @@ void IntakeControl::intakeToFrogAutonTask()
         wait(60, vex::timeUnits::msec);
       }
       OpticalSensor.setLightPower(0, pct);
-      wait(0.48, vex::timeUnits::sec);
+      wait(0.49, vex::timeUnits::sec);
 
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;

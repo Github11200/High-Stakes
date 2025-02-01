@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
 #include "../include/auto/skills.h"
+#include "../include/auto/negativeRingRush.h"
 
 using namespace vex;
 using namespace std;
@@ -92,6 +93,12 @@ void negative_ring_rush(string c)
 {
   pre_driver = true;
 
+  odom_constants();
+  chassis.set_coordinates(-50, 0, 23.556);
+
+  cout << "negative ring rush auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
   if (c == "red")
@@ -104,7 +111,35 @@ void negative_ring_rush(string c)
     reversed = 1;
     alliance = "blue";
   }
-  odom_constants();
+
+  Pursuit *purePursuit = new Pursuit(12.75);
+
+  // Move back and clamp the mogo
+  chassis.drive_max_voltage = 6;
+  chassis.drive_to_point(-31, 23.556);
+  Clamp.set(true);
+  vex::wait(100, msec);
+
+  intakeSort = true;
+
+  // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
+  chassis.turn_to_point(-16.786, 30.027);
+  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+
+  // Follow the path again but backwards
+  std::reverse(negativeRingRush[0].begin(), negativeRingRush[0].end());
+  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, false, 17, 3, 0.8);
+
+  // Turn to face the third ring
+  chassis.turn_to_point(-23.456, 47.051);
+  chassis.drive_to_point(-23.456, 47.051);
+
+  // Turn to the first point in the second path
+  chassis.turn_to_point(negativeRingRush[1][0].x, negativeRingRush[1][0].y);
+
+  // Follow the second path to the corner and intake the ring in the stack (hopefully)
+  purePursuit->followPath(negativeRingRush[1], 12.75, 10000, true, 17, 3, 0.8);
+  wait(500, vex::timeUnits::msec);
 }
 
 // NOT TESTED WITH CURRENT PID
@@ -198,13 +233,13 @@ void auton_skills()
 
   // Align to wall stake
   chassis.turn_to_point(0, -47.269, 180);
-  chassis.drive_to_point(2, -47.269);
+  chassis.drive_to_point(6, -47.269);
 
   // Turn to the actual wall stake position, then drive forward
-  chassis.turn_to_point(0, -69.388);
+  chassis.turn_to_point(2, -69.388);
   chassis.drive_timeout = 600;
   chassis.drive_distance(14);
-  chassis.turn_to_point(0, -69.388);
+  chassis.turn_to_point(2, -69.388);
   default_constants();
 
   // Score twice on wall stake
@@ -235,18 +270,20 @@ void auton_skills()
   intakeSort = false;
   odom_constants();
   Clamp.set(false);
-  chassis.drive_to_point(-51.979, -62.038);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-10);
+  odom_constants();
 
   // Drive across the entire field
   intakeToFrogAuton = true;
-  chassis.drive_to_point(45.141, -30.852);
-  chassis.turn_to_point(47.141, 0, 180);
+  chassis.drive_to_point(47.141, -30.852);
+  chassis.turn_to_angle(180);
   Intake.stop();
 
   // Clamp the far goal
   chassis.drive_max_voltage = 6;
-  chassis.drive_distance(-16);
-  // chassis.drive_to_point(47.141, 0);
+  chassis.heading_max_voltage = 6;
+  chassis.drive_distance(-30, 180);
   odom_constants();
   Clamp.set(true);
   vex::wait(100, msec);
@@ -254,17 +291,26 @@ void auton_skills()
 
   // Go through the ladder and clean up the 2nd red corner.
   purePursuit->followPath(skills[2], 15, 10000, true, 17, 3, 0.8);
+
+  // Get the last ring in the triangle
+  odom_constants();
+  chassis.turn_to_point(-55.921, 40.268);
+  chassis.drive_to_point(-55.921, 40.268);
+
   odom_constants();
   intakeSort = false;
   Clamp.set(false);
-  chassis.drive_to_point(-60.918, 54.716);
+  chassis.turn_to_point(-60.918, 54.716, 180);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-14);
+  odom_constants();
 
   // Clamp onto the final fillable goal
   chassis.turn_to_point(-47.141, 42);
   chassis.drive_to_point(-47.141, 42);
-  chassis.turn_to_point(-47.141, 28, 180);
+  chassis.turn_to_point(-47.141, 25, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(-47.141, 28);
+  chassis.drive_to_point(-47.141, 25);
   odom_constants();
   Clamp.set(true);
   vex::wait(100, msec);
@@ -273,27 +319,34 @@ void auton_skills()
   // Pick up one ring for frog
   chassis.turn_to_point(-28.54, 43.239);
   chassis.drive_to_point(-28.54, 43.239);
-  intakeToFrogAuton = true;
 
   // Align in front of wall stake
-  chassis.turn_to_point(0, 42.202);
-  chassis.drive_to_point(0, 42.202);
+  chassis.turn_to_point(0, 38.202);
+  chassis.drive_to_point(0, 38.202);
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_to_point(0, 69.388);
   chassis.drive_timeout = 1000;
-  chassis.drive_distance(26);
+  intakeSort = false;
+  intakeToFrogAuton = true;
+  chassis.drive_distance(26, 0, 6, 6);
   chassis.turn_to_point(0, 69.388);
   odom_constants();
 
   // Score once on 2nd wall stake
+  frogTimeout = 4000;
+  while (intakeToFrogAuton && (frogTimeout >= 0))
+  {
+    wait(50, msec);
+    frogTimeout -= 50;
+  }
   FrogMech.set(true);
   vex::wait(1000, msec);
   FrogMech.set(false);
 
   intakeSort = true;
   chassis.drive_to_point(0, 53.127);
-  chassis.turn_to_angle(90);
+  chassis.turn_to_angle(110);
 
   // Eat two rings
   purePursuit->followPath(skills[3], 15, 10000, true, 17, 4, 0.8);
@@ -302,26 +355,28 @@ void auton_skills()
   // Eat rings under blue rings in the corner
   chassis.turn_to_point(45.5, 45.5);
   chassis.drive_to_point(45.5, 45.5);
-  chassis.turn_to_point(46.77, 57.867);
-  chassis.drive_to_point(46.77, 57.867);
+  chassis.turn_to_point(46.77, 56.867);
+  chassis.drive_to_point(46.77, 56.867);
   chassis.turn_to_point(45.5, 45.5, 180);
   chassis.drive_to_point(45.5, 45.5);
-  chassis.turn_to_point(57.867, 46.77);
+  chassis.turn_to_point(56.867, 45.77);
   intakeSort = false;
   intakeToFrogAuton = true;
-  chassis.drive_to_point(57.867, 46.77);
+  chassis.drive_to_point(56.867, 45.77);
 
   // Put last full mogo in corner
   chassis.turn_to_point(60.449, 55.51, 180);
   vex::wait(300, msec);
   Clamp.set(false);
-  chassis.drive_to_point(60.449, 55.51);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-10);
+  odom_constants();
 
   // Align to alliance stake
   purePursuit->followPath(skills[4], 15, 10000, true, 17, 4, 0.8);
 
   // Turn to the actual alliance stake position
-  chassis.turn_to_point(69.388, 0, 180);
+  chassis.turn_to_point(69.388, -3, 180);
   chassis.drive_timeout = 1000;
   chassis.drive_distance(-24);
   odom_constants();
@@ -333,9 +388,9 @@ void auton_skills()
   Intake.stop();
 
   // Push last goal into corner
-  chassis.drive_to_point(54.086, 0);
+  chassis.drive_to_point(58.086, 0);
   chassis.turn_to_point(60.449, -55.733, 180);
-  chassis.drive_timeout = 1000;
+  chassis.drive_timeout = 4000;
   chassis.drive_to_point(60.449, -55.733);
   odom_constants();
 
