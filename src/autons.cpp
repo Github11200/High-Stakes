@@ -2,6 +2,7 @@
 #include "../include/driver/intake.h"
 #include "../include/auto/skills.h"
 #include "../include/auto/negativeRingRush.h"
+#include "../include/auto/positiveGoalRush.h"
 
 using namespace vex;
 using namespace std;
@@ -121,8 +122,8 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-23.456, 47.051);
 
   // Touch ladder
-  chassis.turn_to_point(-23.456, 11.855);
-  chassis.drive_to_point(-47.141, 11.855);
+  chassis.turn_to_point(-23.773, 0);
+  chassis.drive_to_point(-23.773, 0);
 }
 
 // NOT TESTED
@@ -220,16 +221,22 @@ void negative_ring_rush(string c)
   // Intake the stack, hopefully color sorting the first one
   chassis.turn_to_point(-47.141, -14.564);
   chassis.drive_to_point(-47.141, -14.564);
+
+  // Touch ladder
+  chassis.turn_to_point(-23.773, 0);
+  chassis.drive_timeout = 600;
+  chassis.drive_to_point(-23.773, 0);
+  chassis.drive_to_point(-23.773, 0);
 }
 
-// NOT TESTED WITH CURRENT PID
-void positive_corner_rush(string c)
+// NOT TESTED
+void positive_goal_rush(string c)
 {
   pre_driver = true;
 
   odom_constants();
 
-  cout << "positive corner rush auto started, initial position:" << endl;
+  cout << "positive goal rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
@@ -238,16 +245,65 @@ void positive_corner_rush(string c)
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-56.35, 20.793, 0);
+    chassis.set_coordinates(-50, -60, 0);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(56.35, 20.793, 0);
+    chassis.set_coordinates(50, -60, 0);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
+
+  // Rush to the goal
+  if (alliance == "red")
+    purePursuit->followPath(positiveGoalRush[0], 12.75, 10000, false, 17, 5, 0.8);
+  else
+    purePursuit->followPath(positiveGoalRush[1], 12.75, 10000, false, 17, 5, 0.8);
+  Doinker.set(true);
+
+  // Come back
+  std::reverse(positiveGoalRush[0].begin(), positiveGoalRush[0].end());
+  if (alliance == "red")
+    purePursuit->followPath(positiveGoalRush[0], 12.75, 10000, false, 17, 5, 0.8);
+  else
+    purePursuit->followPath(positiveGoalRush[1], 12.75, 10000, false, 17, 5, 0.8);
+
+  // Drag the goal in the middle of the tiles before letting go
+  if (alliance == "red")
+    chassis.turn_to_angle(60);
+  else
+    chassis.turn_to_angle(240);
+  Doinker.set(false);
+
+  // Turn around and clamp the goal
+  chassis.turn_to_point(0, -60, 180);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_to_point(35.818, -60);
+  Clamp.set(true);
+  intakeSort = true;
+  odom_constants();
+
+  // Eat a ring, but save it for the other goal
+  chassis.turn_to_point(23.701, -47.141);
+  chassis.drive_to_point(35.818, -60);
+  Clamp.set(false);
+  intakeSort = false;
+
+  // Clamp the 2nd goal
+  chassis.turn_to_point(23.701, -23.701, 180);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_to_point(23.701, -23.701);
+  Clamp.set(true);
+  intakeSort = true;
+  odom_constants();
+
+  // Touch the ladder
+  chassis.turn_to_point(0, -23.701);
+  chassis.drive_timeout = 600;
+  chassis.drive_to_point(0, -23.701);
+  chassis.drive_to_point(0, -23.701);
 }
 
 void testing(string c)

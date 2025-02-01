@@ -276,7 +276,7 @@ void autonomous(void)
       negative_ring_rush(alliance);
       break;
     case 3:
-      positive_corner_rush(alliance);
+      positive_goal_rush(alliance);
       break;
     case 4:
       testing(alliance);
