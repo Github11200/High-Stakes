@@ -49,52 +49,116 @@ int intakeToFrogAutonTaskWrapper()
   return 1;
 }
 
-// NOT TESTED WITH CURRENT PID
+// NOT TESTED
 void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
+  odom_constants();
+
+  cout << "negative alliance stake auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
-  if (c == "blue")
-  {
-    reversed = -1;
-    alliance = "blue";
-  }
-  else if (c == "red")
+
+  if (c == "red")
   {
     reversed = 1;
     alliance = "red";
+    chassis.set_coordinates(-56.35, 20.793, 0);
   }
-  odom_constants();
+  else
+  {
+    reversed = -1;
+    alliance = "blue";
+    chassis.set_coordinates(56.35, 20.793, 0);
+  }
+
+  Pursuit *purePursuit = new Pursuit(12.75);
+
+  // Push rings out of the way in front of alliance stake
+  chassis.drive_to_point(-56.35 * reversed, 0);
+
+  // Score on alliance stake
+  chassis.turn_to_point(-69 * reversed, 0, 180);
+  chassis.drive_to_point(-56.35 * reversed, 0);
+  intakeSort = true;
+  vex::wait(0.5, vex::timeUnits::sec);
+  intakeSort = false;
+  Intake.stop();
+
+  // Drive away from alliance stake, getting in line with mogo
+  chassis.turn_to_point(-42.644 * reversed, 12.252);
+  chassis.drive_to_point(-42.644 * reversed, 12.252);
+
+  // Clamp mogo
+  chassis.turn_to_point(-31 * reversed, 23.556);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_to_point(-31 * reversed, 23.556);
+  Clamp.set(true);
+  vex::wait(100, msec);
+
+  intakeSort = true;
+
+  // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
+  chassis.turn_to_point(-16.786 * reversed, 30.027);
+  if (alliance == "red")
+    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  else
+    vex::wait(500, msec); // Replace with mirrored path on x-axis
+
+  // Follow the path again but backwards
+  std::reverse(negativeRingRush[0].begin(), negativeRingRush[0].end());
+
+  if (alliance == "red")
+    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  else
+    vex::wait(500, msec); // Replace with mirrored path on x-axis
+
+  // Eat the third ring
+  chassis.turn_to_point(-23.456, 47.051);
+  chassis.drive_to_point(-23.456, 47.051);
+
+  // Touch ladder
+  chassis.turn_to_point(-23.456, 11.855);
+  chassis.drive_to_point(-47.141, 11.855);
 }
 
-// DONE AND TESTED WITH CURRENT PID
+// NOT TESTED
 void positive_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  odom_constants();
 
+  cout << "positive alliance stake auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
-  if (c == "blue")
-  {
-    reversed = -1;
-  }
-  else if (c == "red")
+  if (c == "red")
   {
     reversed = 1;
+    alliance = "red";
+    chassis.set_coordinates(-50, 23.556, 270);
   }
-  odom_constants();
+  else
+  {
+    reversed = -1;
+    alliance = "blue";
+    chassis.set_coordinates(50, 23.556, 90);
+  }
+
+  Pursuit *purePursuit = new Pursuit(12.75);
 }
 
-// NOT TESTED WITH CURRENT PID
+// NOT TESTED
 void negative_ring_rush(string c)
 {
   pre_driver = true;
 
   odom_constants();
-  chassis.set_coordinates(-50, 0, 23.556);
 
   cout << "negative ring rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -103,34 +167,43 @@ void negative_ring_rush(string c)
   int reversed;
   if (c == "red")
   {
-    reversed = -1;
-    alliance = "red";
-  }
-  else if (c == "blue")
-  {
     reversed = 1;
+    alliance = "red";
+    chassis.set_coordinates(-50, 23.556, 270);
+  }
+  else
+  {
+    reversed = -1;
     alliance = "blue";
+    chassis.set_coordinates(50, 23.556, 90);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
 
   // Move back and clamp the mogo
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(-31, 23.556);
+  chassis.drive_to_point(-31 * reversed, 23.556);
   Clamp.set(true);
   vex::wait(100, msec);
 
   intakeSort = true;
 
   // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
-  chassis.turn_to_point(-16.786, 30.027);
-  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  chassis.turn_to_point(-16.786 * reversed, 30.027);
+  if (alliance == "red")
+    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  else
+    vex::wait(500, msec); // Replace with mirrored path on x-axis
 
   // Follow the path again but backwards
   std::reverse(negativeRingRush[0].begin(), negativeRingRush[0].end());
-  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, false, 17, 3, 0.8);
 
-  // Turn to face the third ring
+  if (alliance == "red")
+    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  else
+    vex::wait(500, msec); // Replace with mirrored path on x-axis
+
+  // Eat the third ring
   chassis.turn_to_point(-23.456, 47.051);
   chassis.drive_to_point(-23.456, 47.051);
 
@@ -139,7 +212,14 @@ void negative_ring_rush(string c)
 
   // Follow the second path to the corner and intake the ring in the stack (hopefully)
   purePursuit->followPath(negativeRingRush[1], 12.75, 10000, true, 17, 3, 0.8);
-  wait(500, vex::timeUnits::msec);
+  vex::wait(500, vex::timeUnits::msec);
+
+  // Back away
+  chassis.drive_to_point(-47.141, 26.753);
+
+  // Intake the stack, hopefully color sorting the first one
+  chassis.turn_to_point(-47.141, -14.564);
+  chassis.drive_to_point(-47.141, -14.564);
 }
 
 // NOT TESTED WITH CURRENT PID
@@ -147,19 +227,27 @@ void positive_corner_rush(string c)
 {
   pre_driver = true;
 
+  odom_constants();
+
+  cout << "positive corner rush auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
-    reversed = -1;
-    alliance = "red";
-  }
-  else if (c == "blue")
-  {
     reversed = 1;
-    alliance = "blue";
+    alliance = "red";
+    chassis.set_coordinates(-56.35, 20.793, 0);
   }
-  odom_constants();
+  else
+  {
+    reversed = -1;
+    alliance = "blue";
+    chassis.set_coordinates(56.35, 20.793, 0);
+  }
+
+  Pursuit *purePursuit = new Pursuit(12.75);
 }
 
 void testing(string c)

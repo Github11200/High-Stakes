@@ -387,7 +387,7 @@ void Drive::right_swing_to_angle(float angle, float swing_max_voltage, float swi
     float error = reduce_negative_180_to_180(angle - get_absolute_heading());
     float output = swingPID.compute(error);
     output = clamp(output, -turn_max_voltage, turn_max_voltage);
-    DriveR.spin(reverse, output, volt);
+    DriveR.spin(vex::reverse, output, volt);
     DriveL.stop(hold);
     task::sleep(10);
   }
