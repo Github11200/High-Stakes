@@ -200,7 +200,7 @@ void negative_ring_rush(string c)
   std::reverse(negativeRingRush[0].begin(), negativeRingRush[0].end());
 
   if (alliance == "red")
-    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, false, 17, 3, 0.8);
   else
     vex::wait(500, msec); // Replace with mirrored path on x-axis
 
@@ -258,9 +258,9 @@ void positive_goal_rush(string c)
 
   // Rush to the goal
   if (alliance == "red")
-    purePursuit->followPath(positiveGoalRush[0], 12.75, 10000, false, 17, 5, 0.8);
+    purePursuit->followPath(positiveGoalRush[0], 12.75, 10000, true, 17, 5, 0.8);
   else
-    purePursuit->followPath(positiveGoalRush[1], 12.75, 10000, false, 17, 5, 0.8);
+    purePursuit->followPath(positiveGoalRush[1], 12.75, 10000, true, 17, 5, 0.8);
   Doinker.set(true);
 
   // Come back
