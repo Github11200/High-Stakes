@@ -88,6 +88,7 @@ float intakeTemp = 0;
 bool pre_match = true;
 bool pre_driver = true;
 bool ringStopped = false;
+int descoreTime = 0;
 
 void setColor(vex::color colour)
 {
@@ -372,13 +373,13 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // Auton testing code start
-  wait(2500, msec);
-  auton_skills();
+  // wait(2500, msec);
+  // auton_skills();
 
-  intakeSort = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
-  Hooks.stop(vex::brakeType::coast);
+  // intakeSort = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
+  // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;

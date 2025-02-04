@@ -12,3 +12,4 @@ extern bool only_rollers;
 extern bool pre_match;
 extern bool pre_driver;
 extern bool ringStopped;
+extern int descoreTime;
