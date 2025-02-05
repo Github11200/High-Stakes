@@ -438,8 +438,8 @@ void auton_skills()
 
   // Get the last ring in the triangle
   odom_constants();
-  chassis.turn_to_point(-55.921, 40.268);
-  chassis.drive_to_point(-55.921, 40.268);
+  chassis.turn_to_point(-57.921, 39.268);
+  chassis.drive_to_point(-57.921, 39.268);
 
   odom_constants();
   intakeSort = false;
@@ -496,50 +496,45 @@ void auton_skills()
   purePursuit->followPath(skills[3], 15, 10000, true, 17, 4, 0.8);
   odom_constants();
 
+  wait(500, vex::timeUnits::msec);
+
   // Eat rings under blue rings in the corner
+
+  // First ring is the corner one in the triangle
   chassis.turn_to_point(45.5, 45.5);
-  chassis.drive_to_point(45.5, 45.5);
+  chassis.drive_to_point(45.5, 45.5, 0, 8, 8);
+
+  // Then the one to the left of it
   chassis.turn_to_point(46.77, 56.867);
   chassis.drive_to_point(46.77, 56.867);
+
+  // Move back
   chassis.turn_to_point(45.5, 45.5, 180);
   chassis.drive_to_point(45.5, 45.5);
-  chassis.turn_to_point(56.867, 45.77);
-  intakeSort = false;
-  intakeToFrogAuton = true;
-  chassis.drive_to_point(56.867, 45.77);
+
+  // Last ring in the corner
+  chassis.turn_to_point(58.867, 45.77);
+  chassis.drive_to_point(58.867, 45.77);
 
   // Put last full mogo in corner
   chassis.turn_to_point(60.449, 55.51, 180);
+  chassis.drive_distance(5);
   vex::wait(300, msec);
   Clamp.set(false);
-  chassis.drive_timeout = 600;
-  chassis.drive_distance(-10);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(-15, chassis.get_absolute_heading(), 12, 12);
   odom_constants();
 
-  // Align to alliance stake
-  purePursuit->followPath(skills[4], 15, 10000, true, 17, 4, 0.8);
+  chassis.turn_to_point(65.449, -55.733, 180);
+  purePursuit->followPath(skills[4], 12.75, 10000, false, 17, 3, 0.8);
 
-  // Turn to the actual alliance stake position
-  chassis.turn_to_point(69.388, -3, 180);
-  chassis.drive_timeout = 1000;
-  chassis.drive_distance(-24);
-  odom_constants();
+  // // Push last goal into corner
+  // chassis.drive_timeout = 4000;
+  // chassis.drive_to_point(65.449, -55.733);
+  // odom_constants();
 
-  // Score on alliance stake
-  intakeSort = true;
-  vex::wait(0.5, vex::timeUnits::sec);
-  intakeSort = false;
-  Intake.stop();
+  // chassis.drive_distance(20);
 
-  // Push last goal into corner
-  chassis.drive_to_point(58.086, 0);
-  chassis.turn_to_point(60.449, -55.733, 180);
-  chassis.drive_timeout = 4000;
-  chassis.drive_to_point(60.449, -55.733);
-  odom_constants();
-
-  chassis.drive_distance(20);
-
-  cout << "Final X: " << chassis.get_X_position() << endl;
-  cout << "Final Y: " << chassis.get_Y_position() << endl;
+  // cout << "Final X: " << chassis.get_X_position() << endl;
+  // cout << "Final Y: " << chassis.get_Y_position() << endl;
 }
