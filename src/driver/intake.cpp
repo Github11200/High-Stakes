@@ -45,7 +45,7 @@ void IntakeControl::ejectRing()
   // by spinning it in reverse, we either toss the ring straight out
   // or have the previous hook come from behind and knock it off
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-  Hooks.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  Hooks.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
   wait(500, vex::timeUnits::msec);
 }
 

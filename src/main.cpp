@@ -373,20 +373,20 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // // Auton testing code start
-  // wait(2500, msec);
-  // auton_skills();
+  wait(2500, msec);
+  negative_alliance_stake_rush("blue");
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
-  // Hooks.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
+  Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  chassis.stop_position_track_task();
+  // chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
   while (1)

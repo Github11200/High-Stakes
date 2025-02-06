@@ -852,3 +852,77 @@ void Drive::stop_position_track_task()
   odom_task.stop();
   odom_task.~task();
 }
+
+void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead)
+{
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
+}
+
+void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage)
+{
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
+}
+
+void Drive::boomerang_curve(float X_position, float Y_position, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout)
+{
+  boomerang_curve(X_position, Y_position, final_heading, d_lead, drive_max_voltage, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, heading_kp, heading_ki, heading_kd, heading_starti);
+}
+
+void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float d_lead, float drive_max_voltage, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float heading_kp, float heading_ki, float heading_kd, float heading_starti)
+{
+
+  float hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
+  float X_carrot = X_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
+  float Y_carrot = Y_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
+
+  PID drivePID(hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position()), drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
+  PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_carrot - get_X_position(), Y_carrot - get_Y_position())) - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
+  cout << drive_kp << drive_ki << drive_kd;
+  float prev_drive_output = 0;
+  float prev_heading_output = 0;
+  while (drivePID.is_settled() == false)
+  {
+    // Recalculate the carrot point
+    hypoteneuse = hypot(X_end - get_X_position(), Y_end - get_Y_position());
+    X_carrot = X_end - hypoteneuse * sin(to_rad(final_heading)) * d_lead;
+    Y_carrot = Y_end - hypoteneuse * cos(to_rad(final_heading)) * d_lead;
+
+    // Error to the carrot point
+    float drive_error = hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position());
+
+    // The heading error towards the carrot point
+    float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_carrot - get_X_position(), Y_carrot - get_Y_position())) - get_absolute_heading());
+
+    // This uses atan2(x,y) rather than atan2(y,x) because doing so places 0 degrees on the positive Y axis.
+    float drive_output = drivePID.compute(drive_error);
+
+    float heading_scale_factor = cos(to_rad(heading_error));
+
+    drive_output *= heading_scale_factor;
+    // The scale factor slows the drive down the more it's facing away from the desired point,
+    // and that way the heading correction has time to catch up.
+    heading_error = reduce_negative_90_to_90(heading_error);
+    // Here we reduce -90 to 90 because this allows the robot to travel backwards if it's easier
+    // to do so.
+    float heading_output = headingPID.compute(heading_error);
+
+    // This if statement prevents the heading correction from acting up after the robot gets close
+    // to being settled.
+    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
+    // heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    // heading_output = slew_func(heading_output, prev_heading_output, slew_ang);
+    if (drive_error < drive_settle_error)
+    {
+      heading_output = 0;
+    }
+    // else
+    // {
+    //   drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
+    // }
+
+    float prev_drive_output = drive_output;
+    float prev_heading_output = heading_output;
+    drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
+    task::sleep(10);
+  }
+}

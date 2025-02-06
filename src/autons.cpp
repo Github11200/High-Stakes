@@ -13,6 +13,13 @@ bool intakeRev = false;
 bool raiseFrog = false;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 
+vector<Point> mirrorPath(vector<Point> originalPath)
+{
+  for (int i = 0; i < originalPath.size(); ++i)
+    originalPath[i].x = -originalPath[i].x;
+  return originalPath;
+}
+
 void default_constants()
 {
   chassis.set_drive_constants(12, 0.75, 0.01, 1.7, 3);
@@ -68,12 +75,15 @@ void negative_alliance_stake_rush(string c)
     reversed = 1;
     alliance = "red";
     chassis.set_coordinates(-56.35, 20.793, 0);
+    cout << "RED" << endl;
   }
   else
   {
     reversed = -1;
     alliance = "blue";
     chassis.set_coordinates(56.35, 20.793, 0);
+    for (int i = 0; i < negativeRingRush.size(); ++i)
+      negativeRingRush[i] = mirrorPath(negativeRingRush[i]);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
@@ -83,7 +93,9 @@ void negative_alliance_stake_rush(string c)
 
   // Score on alliance stake
   chassis.turn_to_point(-69 * reversed, 0, 180);
-  chassis.drive_to_point(-56.35 * reversed, 0);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-7, chassis.get_absolute_heading());
+  odom_constants();
   intakeSort = true;
   vex::wait(0.5, vex::timeUnits::sec);
   intakeSort = false;
@@ -94,36 +106,36 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-42.644 * reversed, 12.252);
 
   // Clamp mogo
-  chassis.turn_to_point(-31 * reversed, 23.556);
+  chassis.turn_to_point(-22.535 * reversed, 26, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(-31 * reversed, 23.556);
+  chassis.drive_to_point(-22.535 * reversed, 26);
   Clamp.set(true);
   vex::wait(100, msec);
 
   intakeSort = true;
 
   // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
-  chassis.turn_to_point(-16.786 * reversed, 30.027);
-  if (alliance == "red")
-    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
-  else
-    vex::wait(500, msec); // Replace with mirrored path on x-axis
+  chassis.turn_to_point(-17.218 * reversed, 26.157);
+  purePursuit->followPath(negativeRingRush[0], 10, 10000, true, 17, 3, 0.8);
 
-  // Follow the path again but backwards
-  std::reverse(negativeRingRush[0].begin(), negativeRingRush[0].end());
+  chassis.drive_distance(15, 0);
+  chassis.drive_distance(-15, 0);
 
-  if (alliance == "red")
-    purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
-  else
-    vex::wait(500, msec); // Replace with mirrored path on x-axis
+  purePursuit->followPath(negativeRingRush[1], 10, 10000, false, 17, 3, 0.8);
 
   // Eat the third ring
-  chassis.turn_to_point(-23.456, 47.051);
-  chassis.drive_to_point(-23.456, 47.051);
+  chassis.turn_to_point(-23.456 * reversed, 47.051);
+  chassis.drive_to_point(-23.456 * reversed, 47.051);
+
+  wait(300, vex::timeUnits::msec);
+
+  // For elims, get 1 more ring
+  // chassis.turn_to_point(-43.637 * reversed, -3.44);
+  // chassis.drive_to_point(-43.637 * reversed, -3.44);
 
   // Touch ladder
-  chassis.turn_to_point(-23.773, 0);
-  chassis.drive_to_point(-23.773, 0);
+  chassis.turn_to_point(-23.773 * reversed, 0);
+  chassis.drive_to_point(-23.773 * reversed, 0);
 }
 
 // NOT TESTED
@@ -177,6 +189,8 @@ void negative_ring_rush(string c)
     reversed = -1;
     alliance = "blue";
     chassis.set_coordinates(50, 23.556, 90);
+    for (vector<Point> path : negativeRingRush)
+      mirrorPath(path);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
