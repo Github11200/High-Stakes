@@ -115,19 +115,20 @@ void negative_alliance_stake_rush(string c)
   intakeSort = true;
 
   // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
-  chassis.turn_to_point(-17.218 * reversed, 26.157);
-  purePursuit->followPath(negativeRingRush[0], 10, 10000, true, 17, 3, 0.8);
+  chassis.turn_to_point(negativeRingRush[0][3].x, negativeRingRush[0][3].y);
+  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
 
-  chassis.drive_distance(15, 0);
-  chassis.drive_distance(-15, 0);
+  chassis.drive_distance(18, 0);
+  chassis.drive_distance(-10, 0);
+  odom_constants();
 
-  purePursuit->followPath(negativeRingRush[1], 10, 10000, false, 17, 3, 0.8);
+  purePursuit->followPath(negativeRingRush[1], 12.75, 10000, false, 17, 3, 0.8);
 
   // Eat the third ring
   chassis.turn_to_point(-23.456 * reversed, 47.051);
   chassis.drive_to_point(-23.456 * reversed, 47.051);
 
-  wait(300, vex::timeUnits::msec);
+  wait(500, vex::timeUnits::msec);
 
   // For elims, get 1 more ring
   // chassis.turn_to_point(-43.637 * reversed, -3.44);
@@ -135,6 +136,9 @@ void negative_alliance_stake_rush(string c)
 
   // Touch ladder
   chassis.turn_to_point(-23.773 * reversed, 0);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_to_point(-23.773 * reversed, 0);
+  chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
 }
 
@@ -527,13 +531,12 @@ void auton_skills()
   chassis.drive_to_point(45.5, 45.5);
 
   // Last ring in the corner
-  chassis.turn_to_point(58.867, 45.77);
-  chassis.drive_to_point(58.867, 45.77);
+  chassis.turn_to_point(58.867, 47.77);
+  chassis.drive_to_point(58.867, 47.77);
 
   // Put last full mogo in corner
   chassis.turn_to_point(60.449, 55.51, 180);
   chassis.drive_distance(5);
-  vex::wait(300, msec);
   Clamp.set(false);
   chassis.drive_timeout = 700;
   chassis.drive_distance(-15, chassis.get_absolute_heading(), 12, 12);

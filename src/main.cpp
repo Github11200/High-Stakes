@@ -374,7 +374,7 @@ void usercontrol(void)
 {
   // // Auton testing code start
   wait(2500, msec);
-  negative_alliance_stake_rush("blue");
+  auton_skills();
 
   intakeSort = false;
   pre_driver = false;
