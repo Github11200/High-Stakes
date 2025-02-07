@@ -327,9 +327,9 @@ int buttonsWrapper()
     vex::wait(20, msec);
     FrogMech.set(false);
 
-    // Descore
-    if (DescoreButton.pressing())
-      descoreControl.descoreRing();
+    // // Descore
+    // if (DescoreButton.pressing())
+    //   descoreControl.descoreRing();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {
@@ -372,21 +372,21 @@ int joystickWrapper()
 
 void usercontrol(void)
 {
-  // // Auton testing code start
-  wait(2500, msec);
-  auton_skills();
+  // Auton testing code start
+  // wait(2500, msec);
+  // auton_skills();
 
-  intakeSort = false;
-  pre_driver = false;
-  Intake.stop(vex::brakeType::coast);
-  Hooks.stop(vex::brakeType::coast);
+  // intakeSort = false;
+  // pre_driver = false;
+  // Intake.stop(vex::brakeType::coast);
+  // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  // chassis.stop_position_track_task();
+  chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
   while (1)

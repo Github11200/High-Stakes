@@ -68,14 +68,12 @@ void IntakeControl::intakeToFrog()
   while (!OpticalSensor.isNearObject() && IntakeToFrogButton.pressing() && !ringStopped)
   {
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    Hooks.spin(vex::directionType::fwd, 7, vex::voltageUnits::volt);
+    Hooks.spin(vex::directionType::fwd, 10, vex::voltageUnits::volt);
     wait(60, vex::timeUnits::msec);
   }
   OpticalSensor.setLightPower(0, pct);
-  if (OpticalSensor.isNearObject() && ringStopped == false)
-  {
-    Hooks.spinFor(vex::directionType::fwd, 720, degrees, 70, vex::velocityUnits::pct, true);
-  }
+  while (OpticalSensor.isNearObject() && IntakeToFrogButton.pressing() && !ringStopped)
+    Hooks.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
   ringStopped = true;
   Intake.stop(vex::brakeType::brake);
   Hooks.stop(vex::brakeType::brake);
@@ -121,12 +119,12 @@ void IntakeControl::intakeToFrogAutonTask()
       while (!OpticalSensor.isNearObject())
       {
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-        Hooks.spin(vex::directionType::fwd, 4, vex::voltageUnits::volt);
+        Hooks.spin(vex::directionType::fwd, 7, vex::voltageUnits::volt);
         wait(60, vex::timeUnits::msec);
       }
       OpticalSensor.setLightPower(0, pct);
-      wait(0.52, vex::timeUnits::sec);
-
+      while (OpticalSensor.isNearObject())
+        Hooks.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;
     }
