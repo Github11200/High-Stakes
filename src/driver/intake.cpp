@@ -72,11 +72,11 @@ void IntakeControl::intakeToFrog()
     wait(60, vex::timeUnits::msec);
   }
   OpticalSensor.setLightPower(0, pct);
-  ringStopped = true;
-  if (OpticalSensor.isNearObject())
+  if (OpticalSensor.isNearObject() && ringStopped == false)
   {
-    wait(0.125, vex::timeUnits::sec);
+    Hooks.spinFor(vex::directionType::fwd, 720, degrees, 70, vex::velocityUnits::pct, true);
   }
+  ringStopped = true;
   Intake.stop(vex::brakeType::brake);
   Hooks.stop(vex::brakeType::brake);
 }

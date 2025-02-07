@@ -496,7 +496,7 @@ void auton_skills()
   odom_constants();
 
   // Score once on 2nd wall stake
-  frogTimeout = 4000;
+  frogTimeout = 3000;
   while (intakeToFrogAuton && (frogTimeout >= 0))
   {
     wait(50, msec);
