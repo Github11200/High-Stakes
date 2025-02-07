@@ -28,7 +28,7 @@ vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button OuttakeButton = Controller.ButtonY;
 vex::controller::button FrogButton = Controller.ButtonL2;
 vex::controller::button IntakeToFrogButton = Controller.ButtonR1;
-vex::controller::button DoinkerButton = Controller.ButtonUp;
+vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;
 vex::controller::button DescoreButton = Controller.ButtonA;
 

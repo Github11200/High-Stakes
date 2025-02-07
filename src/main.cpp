@@ -374,7 +374,7 @@ void usercontrol(void)
 {
   // Auton testing code start
   // wait(2500, msec);
-  // auton_skills();
+  // testing("red");
 
   // intakeSort = false;
   // pre_driver = false;

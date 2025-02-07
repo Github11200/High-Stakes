@@ -331,6 +331,7 @@ void testing(string c)
   pre_driver = true;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
@@ -344,8 +345,10 @@ void testing(string c)
   }
   odom_constants();
 
-  Pursuit *purePursuit = new Pursuit(12.75);
-  purePursuit->followPath(skills[0], 12.75, 10000, false, 17, 5, 0.8);
+  Clamp.set(true);
+  intakeSort = false;
+  intakeToFrogAuton = true;
+  wait(10, vex::timeUnits::sec);
 }
 
 void auton_skills()
