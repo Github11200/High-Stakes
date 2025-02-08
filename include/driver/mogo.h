@@ -22,6 +22,9 @@ public:
 
   /// @brief Will toggle between clamped and released based on current state
   void toggle();
+
+  /// @brief Resets it back to the up position
+  void reset();
 };
 
 #endif

@@ -49,6 +49,7 @@ public:
   rotation R_SidewaysTracker;
   encoder E_ForwardTracker;
   encoder E_SidewaysTracker;
+  double imu_constant;
 
   float turn_max_voltage;
   float turn_kp;

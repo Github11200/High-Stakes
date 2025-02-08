@@ -220,7 +220,7 @@ void Drive::set_swing_exit_conditions(float swing_settle_error, float swing_sett
 
 float Drive::get_absolute_heading()
 {
-  return (reduce_0_to_360(Gyro.rotation() * 360.0 / gyro_scale));
+  return (reduce_0_to_360((Gyro.rotation() * 360.0) / gyro_scale));
 }
 
 /**

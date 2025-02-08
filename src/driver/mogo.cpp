@@ -15,14 +15,30 @@ void MogoControl::toggle()
     {
       Clamp.set(true);
       this->mogoState = CLAMPED;
+      Brain.Screen.clearScreen();
+      Brain.Screen.setFillColor(vex::color::green);
+      Brain.Screen.drawRectangle(0, 0, 200, 160);
     }
     else
     {
       Clamp.set(false);
       this->mogoState = RELEASED;
+      Brain.Screen.clearScreen();
+      Brain.Screen.setFillColor(vex::color::red);
+      Brain.Screen.drawRectangle(0, 0, 200, 160);
     }
-    while (ClampButton.pressing()){
+    while (ClampButton.pressing())
+    {
       wait(25, vex::timeUnits::msec);
     }
   }
+}
+
+void MogoControl::reset()
+{
+  Brain.Screen.clearScreen();
+  Brain.Screen.setFillColor(vex::color::red);
+  Brain.Screen.drawRectangle(0, 0, 200, 160);
+  Clamp.set(false);
+  this->mogoState = RELEASED;
 }

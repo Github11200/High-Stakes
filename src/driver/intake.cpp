@@ -28,7 +28,7 @@ bool IntakeControl::shouldEjectRing()
       return ringColor == red;
 
     else if (alliance == "skills")
-      return false;
+      return ringColor = blue;
   }
   return false;
 }
@@ -121,12 +121,13 @@ void IntakeControl::intakeToFrogAutonTask()
       while (!OpticalSensor.isNearObject())
       {
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-        Hooks.spin(vex::directionType::fwd, 7, vex::voltageUnits::volt);
+        Hooks.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
         wait(60, vex::timeUnits::msec);
       }
       OpticalSensor.setLightPower(0, pct);
-      while (OpticalSensor.isNearObject())
+      while (OpticalSensor.isNearObject() && intakeToFrogAuton)
         Hooks.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
+      Hooks.spinFor(vex::directionType::rev, 90, vex::rotationUnits::deg, 100, vex::velocityUnits::pct);
       Hooks.stop(vex::brakeType::brake);
       intakeToFrogAuton = false;
     }

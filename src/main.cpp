@@ -39,7 +39,7 @@ Drive chassis(
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-    360,
+    (((19.6 + 18.3 + 18.7) / 3 + 3600)) / 10,
 
     /*---------------------------------------------------------------------------*/
     /*                                  PAUSE!                                   */
@@ -174,7 +174,9 @@ void pre_auton(void)
   alliance = "skills";
 
   chassis.calibrate_robot();
-  chassis.set_coordinates(0, 0, 0);
+
+  vex::wait(3000, vex::timeUnits::msec);
+  return;
 
   updateScreen();
 
@@ -259,6 +261,9 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
+  auton_skills();
+
+  return;
   if (alliance == "skills")
   {
     auton_skills();
@@ -327,6 +332,9 @@ int buttonsWrapper()
     vex::wait(20, msec);
     FrogMech.set(false);
 
+    if (ClampResetButton.pressing())
+      mogoControl.reset();
+
     // // Descore
     // if (DescoreButton.pressing())
     //   descoreControl.descoreRing();
@@ -373,13 +381,13 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // Auton testing code start
-  // wait(2500, msec);
-  // testing("red");
+  wait(3000, msec);
+  auton_skills();
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
-  // Hooks.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
+  Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;

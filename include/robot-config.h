@@ -24,6 +24,7 @@ extern vex::controller::button IntakeToFrogButton;
 extern vex::controller::button FrogButton;
 extern vex::controller::button DoinkerButton;
 extern vex::controller::button ClampButton;
+extern vex::controller::button ClampResetButton;
 extern vex::controller::button DescoreButton;
 
 extern motor_group Left;
