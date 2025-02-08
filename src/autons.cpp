@@ -118,6 +118,7 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_point(negativeRingRush[0][3].x, negativeRingRush[0][3].y);
   purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
 
+  chassis.turn_to_angle(0);
   chassis.drive_distance(18, 0);
   chassis.drive_distance(-10, 0);
   odom_constants();

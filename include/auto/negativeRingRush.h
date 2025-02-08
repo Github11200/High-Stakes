@@ -19,6 +19,7 @@ vector<Path> negativeRingRush({vector<Point>({
                                    Point(-11.271, 37.721, 30),
                                    Point(-11.259, 38.273, 0),
                                    Point(-11.259, 38.273, 0),
+                                   Point(-11.259, 58.269, 0),
                                }),
                                vector<Point>({
                                    Point(-11.259, 45, 20),
@@ -35,6 +36,7 @@ vector<Path> negativeRingRush({vector<Point>({
                                    Point(-21.387, 26.245, 20),
                                    Point(-22.535, 26, 0),
                                    Point(-22.535, 26, 0),
+                                   Point(-42.095, 21.828, 0),
                                }),
                                vector<Point>({
                                    Point(-23.456, 47.051, 97.239),
