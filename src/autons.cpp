@@ -140,6 +140,8 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
+  Left.stop(vex::brakeType::brake);
+  Right.stop(vex::brakeType::brake);
 }
 
 // NOT TESTED
@@ -149,44 +151,72 @@ void positive_alliance_stake_rush(string c)
 
   odom_constants();
 
-  cout << "positive alliance stake auto started, initial position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
-  chassis.set_coordinates(50.197, -23.622, 90);
   if (c == "red")
   {
-    reversed = 1;
+    chassis.set_coordinates(-50.197, -23.622, 270);
+    reversed = -1;
     alliance = "red";
   }
   else
   {
-    reversed = -1;
+    chassis.set_coordinates(50.197, -23.622, 90);
+    reversed = 1;
     alliance = "blue";
   }
 
-  alliance = "skills";
+  cout << "positive alliance stake auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", " << chassis.get_absolute_heading() << endl;
 
   Pursuit *purePursuit = new Pursuit(12.75);
 
+  // Get the goal
   chassis.drive_max_voltage = 5;
-  chassis.drive_distance(-28, 90);
-  wait(500, vex::timeUnits::msec);
+  if (alliance == "blue")
+  {
+    chassis.drive_distance(-28, 90);
+  }
+  else
+  {
+    chassis.drive_distance(-28, 270);
+  }
+  wait(100, vex::timeUnits::msec);
   Clamp.set(true);
   wait(500, vex::timeUnits::msec);
 
   odom_constants();
 
-  chassis.turn_to_point(23.467, -47.118);
+  // Get one ring
+  chassis.turn_to_point(23.467 * reversed, -47.118);
   intakeSort = true;
-  chassis.drive_to_point(23.467, -47.118);
-  wait(1000, vex::timeUnits::msec);
+  chassis.drive_to_point(23.467 * reversed, -47.118);
+  wait(500, vex::timeUnits::msec);
 
-  chassis.drive_max_voltage = 5;
+  // Put the mogo near the positive corner
+  chassis.turn_to_angle(0);
+  wait(300, vex::timeUnits::msec);
+  Clamp.set(false);
+  wait(300, vex::timeUnits::msec);
+  intakeSort = false;
 
-  chassis.turn_to_point(23.609, -0.21);
-  chassis.drive_to_point(23.609, -0.21);
+  chassis.drive_distance(5, 0);
+
+  if (alliance == "blue")
+  {
+    chassis.turn_to_angle(90);
+  }
+  else
+  {
+    chassis.turn_to_angle(270);
+  }
+  chassis.drive_timeout = 1000;
+  chassis.heading_max_voltage = 0;
+  chassis.drive_distance(-5);
+  chassis.drive_max_voltage = 0;
+  Left.stop(vex::brakeType::coast);
+  Right.stop(vex::brakeType::coast);
+  vex::wait(100, sec);
 }
 
 // NOT TESTED
@@ -222,6 +252,7 @@ void negative_ring_rush(string c)
   chassis.drive_max_voltage = 6;
   chassis.drive_to_point(-31 * reversed, 23.556);
   Clamp.set(true);
+
   vex::wait(100, msec);
 
   intakeSort = true;
