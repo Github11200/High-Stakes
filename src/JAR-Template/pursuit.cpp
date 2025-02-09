@@ -208,9 +208,6 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
   // Used in the wait() function at the end of each loop iteration
   double waitTime = 20;
 
-  // for (int i = 0; i < path.size(); ++i)
-  //   cout << "X: " << path[i].x << "\nY: " << path[i].y << "\nSpeed: " << path[i].speed << endl;
-
   for (int i = 0; true; ++i)
   {
     // Get the closest point on the path

@@ -28,7 +28,7 @@ bool IntakeControl::shouldEjectRing()
       return ringColor == red;
 
     else if (alliance == "skills")
-      return ringColor = blue;
+      return false;
   }
   return false;
 }

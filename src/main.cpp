@@ -39,7 +39,7 @@ Drive chassis(
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-    (((19.6 + 18.3 + 18.7) / 3 + 3600)) / 10,
+    360 /*(((19.6 + 18.3 + 18.7) / 3 + 3600)) / 10*/,
 
     /*---------------------------------------------------------------------------*/
     /*                                  PAUSE!                                   */
@@ -171,7 +171,7 @@ void pre_auton(void)
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
 
-  alliance = "skills";
+  alliance = "blue";
 
   chassis.calibrate_robot();
 

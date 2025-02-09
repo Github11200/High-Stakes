@@ -97,7 +97,7 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_distance(-7, chassis.get_absolute_heading());
   odom_constants();
   intakeSort = true;
-  vex::wait(0.5, vex::timeUnits::sec);
+  vex::wait(0.3, vex::timeUnits::sec);
   intakeSort = false;
   Intake.stop();
 
@@ -123,13 +123,12 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_distance(-10, 0);
   odom_constants();
 
-  purePursuit->followPath(negativeRingRush[1], 12.75, 10000, false, 17, 3, 0.8);
+  // 12.75 and 8 before
+  purePursuit->followPath(negativeRingRush[1], 15, 10000, false, 20, 11, 0.8);
 
   // Eat the third ring
   chassis.turn_to_point(-23.456 * reversed, 47.051);
   chassis.drive_to_point(-23.456 * reversed, 47.051);
-
-  wait(500, vex::timeUnits::msec);
 
   // For elims, get 1 more ring
   // chassis.turn_to_point(-43.637 * reversed, -3.44);
@@ -137,7 +136,7 @@ void negative_alliance_stake_rush(string c)
 
   // Touch ladder
   chassis.turn_to_point(-23.773 * reversed, 0);
-  chassis.drive_max_voltage = 6;
+  chassis.drive_max_voltage = 12;
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
@@ -155,20 +154,39 @@ void positive_alliance_stake_rush(string c)
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
+  chassis.set_coordinates(50.197, -23.622, 90);
   if (c == "red")
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-50, 23.556, 270);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(50, 23.556, 90);
   }
 
+  alliance = "skills";
+
   Pursuit *purePursuit = new Pursuit(12.75);
+
+  chassis.drive_max_voltage = 5;
+  chassis.drive_distance(-28, 90);
+  wait(500, vex::timeUnits::msec);
+  Clamp.set(true);
+  wait(500, vex::timeUnits::msec);
+
+  odom_constants();
+
+  chassis.turn_to_point(23.467, -47.118);
+  intakeSort = true;
+  chassis.drive_to_point(23.467, -47.118);
+  wait(1000, vex::timeUnits::msec);
+
+  chassis.drive_max_voltage = 5;
+
+  chassis.turn_to_point(23.609, -0.21);
+  chassis.drive_to_point(23.609, -0.21);
 }
 
 // NOT TESTED
@@ -264,13 +282,13 @@ void positive_goal_rush(string c)
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-50, -60, 0);
+    chassis.set_coordinates(-50, -60, 90);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(50, -60, 0);
+    chassis.set_coordinates(50, -60, 270);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
@@ -282,8 +300,19 @@ void positive_goal_rush(string c)
     purePursuit->followPath(positiveGoalRush[1], 12.75, 10000, true, 17, 5, 0.8);
   Doinker.set(true);
 
+  return;
+
   // Come back
   std::reverse(positiveGoalRush[0].begin(), positiveGoalRush[0].end());
+  std::reverse(positiveGoalRush[1].begin(), positiveGoalRush[1].end());
+  positiveGoalRush[0][0].speed = 100;
+  positiveGoalRush[0][1].speed = 100;
+  positiveGoalRush[0][positiveGoalRush.size() - 1].speed = 0;
+  positiveGoalRush[0][positiveGoalRush.size() - 2].speed = 0;
+  positiveGoalRush[1][0].speed = 100;
+  positiveGoalRush[1][1].speed = 100;
+  positiveGoalRush[1][positiveGoalRush.size() - 1].speed = 0;
+  positiveGoalRush[1][positiveGoalRush.size() - 2].speed = 0;
   if (alliance == "red")
     purePursuit->followPath(positiveGoalRush[0], 12.75, 10000, false, 17, 5, 0.8);
   else
@@ -297,36 +326,37 @@ void positive_goal_rush(string c)
   Doinker.set(false);
 
   // Turn around and clamp the goal
-  chassis.turn_to_point(0, -60, 180);
+  chassis.turn_to_point(0 * reversed, -60, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(35.818, -60);
+  chassis.drive_to_point(35.818 * reversed, -60);
   Clamp.set(true);
   intakeSort = true;
   odom_constants();
 
   // Eat a ring, but save it for the other goal
-  chassis.turn_to_point(23.701, -47.141);
-  chassis.drive_to_point(35.818, -60);
+  chassis.turn_to_point(23.701 * reversed, -47.141);
+  chassis.drive_to_point(35.818 * reversed, -60);
   Clamp.set(false);
   intakeSort = false;
 
   // Clamp the 2nd goal
-  chassis.turn_to_point(23.701, -23.701, 180);
+  chassis.turn_to_point(23.701 * reversed, -23.701, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(23.701, -23.701);
+  chassis.drive_to_point(23.701 * reversed, -23.701);
   Clamp.set(true);
   intakeSort = true;
   odom_constants();
 
   // Touch the ladder
-  chassis.turn_to_point(0, -23.701);
+  chassis.turn_to_point(0 * reversed, -23.701);
   chassis.drive_timeout = 600;
-  chassis.drive_to_point(0, -23.701);
-  chassis.drive_to_point(0, -23.701);
+  chassis.drive_to_point(0 * reversed, -23.701);
+  chassis.drive_to_point(0 * reversed, -23.701);
 }
 
 void testing(string c)
 {
+  chassis.set_coordinates(0, 0, 0);
   cout << "testing auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
@@ -346,15 +376,7 @@ void testing(string c)
   }
   odom_constants();
 
-  intakeSort = false;
-  intakeToFrogAuton = true;
-  while (intakeToFrogAuton)
-  {
-    wait(10, vex::timeUnits::msec);
-  }
-  FrogMech.set(true);
-  wait(700, vex::timeUnits::msec);
-  wait(50, vex::timeUnits::sec);
+  chassis.drive_distance(-10);
 }
 
 void auton_skills()
@@ -564,7 +586,7 @@ void auton_skills()
   chassis.drive_distance(-16.5, chassis.get_absolute_heading(), 12, 12);
   odom_constants();
 
-  chassis.drive_distance(2);
+  chassis.drive_distance(5);
   chassis.turn_to_point(65.449, -55.733, 180);
   purePursuit->followPath(skills[4], 15, 10000, false, 17, 4, 0.8);
 
