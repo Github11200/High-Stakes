@@ -389,18 +389,7 @@ void usercontrol(void)
   // Intake.stop(vex::brakeType::coast);
   // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
-
-  int x = 0;
-  while (true)
-  {
-    ExampleStruct payload{x};
-    Message msg{"my_topic_name", payload};
-    std::cout << static_cast<json>(msg) << std::flush;
-
-    x++;
-    wait(20, vex::timeUnits::msec);
-  }
-
+  
   pre_match = false;
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);

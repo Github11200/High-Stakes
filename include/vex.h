@@ -20,7 +20,6 @@
 #include "global-variables.h"
 #include "autons.h"
 #include "functional"
-#include "logging.hpp"
 
 #define waitUntil(condition) \
   do                         \
