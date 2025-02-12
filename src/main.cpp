@@ -39,7 +39,7 @@ Drive chassis(
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-    360 /*(((19.6 + 18.3 + 18.7) / 3 + 3600)) / 10*/,
+    ((19.6 + 18.3 + 18.7) / 3 + 3600) / 10,
 
     /*---------------------------------------------------------------------------*/
     /*                                  PAUSE!                                   */
@@ -389,7 +389,7 @@ void usercontrol(void)
   // Intake.stop(vex::brakeType::coast);
   // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
-  
+
   pre_match = false;
   pre_driver = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
