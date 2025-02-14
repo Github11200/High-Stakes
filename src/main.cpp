@@ -39,7 +39,7 @@ Drive chassis(
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-    ((19.6 + 18.3 + 18.7) / 3 + 3600) / 10,
+    (3600 - (19.6 + 18.3 + 18.7 + 21.51 + 19.16 + 20.35) / 6) / 10,
 
     /*---------------------------------------------------------------------------*/
     /*                                  PAUSE!                                   */
@@ -261,7 +261,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  positive_alliance_stake_rush("red");
+  auton_skills();
 
   return;
   if (alliance == "skills")
@@ -382,7 +382,7 @@ void usercontrol(void)
 {
   // Auton testing code start
   // wait(3000, msec);
-  // auton_skills();
+  // testing("red");
 
   // intakeSort = false;
   // pre_driver = false;
