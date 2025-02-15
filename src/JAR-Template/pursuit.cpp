@@ -210,8 +210,10 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
 
   for (int i = 0; true; ++i)
   {
+    Point robotPosition(chassis.get_X_position(), chassis.get_Y_position(), chassis.get_absolute_heading());
+
     // Get the closest point on the path
-    int closestPointIndex = this->findClosestPoint(path, chassis.get_X_position(), chassis.get_Y_position());
+    int closestPointIndex = this->findClosestPoint(path, robotPosition.x, robotPosition.y);
     closestPoint = path[closestPointIndex];
 
     if (closestPoint.speed == 0)
@@ -223,7 +225,7 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     }
 
     // Get the point where the circle intersects, it doesn't have to be a point that's in the path, just whatever x, y position it intersects the line
-    lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, chassis.get_X_position(), chassis.get_Y_position());
+    lookAheadPoint = this->findLookAheadPoint(path, lastLookAheadPoint, lastLookAheadPointIndex, closestPointIndex, lookAheadDistance, robotPosition.x, robotPosition.x);
 
     if (lookAheadPoint == lastLookAheadPoint)
     {
@@ -232,11 +234,11 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     }
 
     // Get the curvature of the path
-    curvature = this->getCurvature(M_PI / 2 - to_rad(reduce_negative_180_to_180(chassis.Gyro.rotation())), chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y);
+    curvature = this->getCurvature(M_PI / 2 - to_rad(reduce_negative_180_to_180(chassis.Gyro.rotation())), robotPosition.x, robotPosition.y, lookAheadPoint.x, lookAheadPoint.y);
 
     // Calculate the velocities
     targetVelocity = closestPoint.speed;
-    targetVelocity = this->fullStateFeedback(chassis.get_X_position(), chassis.get_Y_position(), lookAheadPoint.x, lookAheadPoint.y, closestPoint.speed, previousTargetVelocity, kP, kV);
+    targetVelocity = this->fullStateFeedback(robotPosition.x, robotPosition.y, lookAheadPoint.x, lookAheadPoint.y, closestPoint.speed, previousTargetVelocity, kP, kV);
     // targetVelocity = slew(targetVelocity, previousTargetVelocity, slewGain);
 
     // Calculate the target speeds for the motors

@@ -398,7 +398,7 @@ void positive_goal_rush(string c)
 
 void testing(string c)
 {
-  chassis.set_coordinates(0, 0, 90);
+  chassis.set_coordinates(-62, 0, 90);
   cout << "testing auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
@@ -420,8 +420,14 @@ void testing(string c)
 
   while (true)
   {
-    cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-    vex::wait(1, sec);
+    // cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << "\nTheta: " << chassis.get_absolute_heading() << endl;
+    Brain.Screen.clearScreen();
+    Brain.Screen.setPenColor(vex::color::white);
+    Brain.Screen.printAt(5, 20, "X: %f\n", chassis.get_X_position());
+    Brain.Screen.printAt(5, 60, "Y: %f\n", chassis.get_Y_position());
+    Brain.Screen.printAt(5, 100, "Theta: %f\n", chassis.get_absolute_heading());
+    // Brain.Screen.print("X: %f\nY: %f\nTheta: %f", chassis.get_X_position(), chassis.get_Y_position(), chassis.get_absolute_heading());
+    vex::wait(100, vex::timeUnits::msec);
   }
 }
 
@@ -480,16 +486,19 @@ void auton_skills()
 
   // Turn to the actual wall stake position, then drive forward
   // chassis.turn_to_point(2, -69.388);
+  chassis.turn_settle_error = 0.5;
   chassis.turn_to_point(0, -69.388);
   chassis.drive_timeout = 600;
   chassis.drive_distance(26);
-  // chassis.turn_to_point(0, -69.388);
+  chassis.turn_to_point(0, -69.388);
+  cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
   default_constants();
 
   // Score twice on wall stake
   FrogMech.set(true);
   vex::wait(700, msec);
   FrogMech.set(false);
+  vex::wait(700, msec);
   intakeToFrogAuton = true;
   int frogTimeout = 3000;
   while (intakeToFrogAuton && (frogTimeout >= 0))
@@ -497,7 +506,7 @@ void auton_skills()
     wait(50, msec);
     frogTimeout -= 50;
   }
-  wait(200, vex::timeUnits::msec);
+  wait(100, vex::timeUnits::msec);
   intakeToFrogAuton = false;
   FrogMech.set(true);
   vex::wait(700, msec);
@@ -538,21 +547,18 @@ void auton_skills()
 
   // Line up in front of the ladder
   fast_exit_conditions();
-  chassis.turn_to_point(23.764, -23.764);
   chassis.drive_to_point(23.764, -23.764);
   intakeSort = false;
 
   // Go through the ladder
   // purePursuit->followPath(skills[2], 15, 10000, true, 17, 3, 0.8);
-  chassis.turn_to_point(-23.764, 23.764);
-  chassis.drive_to_point(0, 0);
   Intake.stop();
+  chassis.turn_to_point(-23.764, 23.764);
   chassis.drive_to_point(-23.764, 23.764);
-  vex::wait(200, msec);
 
   // Eat up the two stored rings, and eat the corner of the corner rings
   intakeSort = true;
-  chassis.drive_to_point(-44.1, 44.1);
+  chassis.drive_to_point(-44.1, 44.1, 0, 6, 6);
 
   // Back up and eat a ring x2
   chassis.turn_to_point(-56.571, 45.86);
@@ -591,9 +597,11 @@ void auton_skills()
   chassis.drive_to_point(0, 41.202);
 
   // Turn to the actual wall stake position, then drive forward
+  chassis.turn_settle_error = 0.5;
   chassis.turn_to_point(0, 69.388);
   chassis.drive_timeout = 1000;
   chassis.drive_distance(26);
+  default_constants();
   // chassis.turn_to_point(0, 69.388);
 
   // Score once on 2nd wall stake
@@ -602,12 +610,13 @@ void auton_skills()
   FrogMech.set(false);
   intakeToFrogAuton = true;
   frogTimeout = 3000;
+  vex::wait(700, msec);
   while (intakeToFrogAuton && (frogTimeout >= 0))
   {
     wait(50, msec);
     frogTimeout -= 50;
   }
-  wait(200, vex::timeUnits::msec);
+  wait(100, vex::timeUnits::msec);
   intakeToFrogAuton = false;
   FrogMech.set(true);
   vex::wait(700, msec);

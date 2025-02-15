@@ -261,7 +261,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  auton_skills();
+  positive_goal_rush("red");
 
   return;
   if (alliance == "skills")
@@ -381,13 +381,13 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // Auton testing code start
-  // wait(3000, msec);
-  // testing("red");
+  wait(3000, msec);
+  positive_goal_rush("blue");
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
-  // Hooks.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
+  Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
