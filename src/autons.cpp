@@ -321,79 +321,80 @@ void positive_goal_rush(string c)
   {
     reversed = -1;
     alliance = "red";
-    chassis.set_coordinates(-47.538, -60.141, 115);
+    chassis.set_coordinates(-47.538, -60.141, 66.54);
   }
   else
   {
     reversed = 1;
     alliance = "blue";
-    chassis.set_coordinates(47.538, -34.141, 245);
+    chassis.set_coordinates(47.538, -34.141, 246.54);
   }
 
   Pursuit *purePursuit = new Pursuit(12.75);
 
   // Rush to the goal
   Doinker.set(true);
-  intakeToFrogAuton = true;
   if (alliance == "blue")
   {
     // Goal rush
     fast_exit_conditions();
-    chassis.drive_distance(30.4, 245);
-    chassis.drive_distance(-30.4, 245);
+    chassis.drive_distance(44.4, 246.54);
+    Intake.spin(fwd, 100, pct);
+    chassis.drive_distance(-48.4, 246.54); // go a bit further back on blue to avoid hitting other mogo
 
     odom_constants();
-    // Turn the goal so that its position is consistent and it's away from the other goal
-    chassis.turn_to_angle(225);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
     chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
-    chassis.turn_to_angle(70); // Tune this value to clamp on the goal
+    chassis.turn_to_angle(76.54); // Tune this value to clamp on the goal
   }
   else
   {
     fast_exit_conditions();
-    chassis.drive_distance(30.4, 115);
-    chassis.drive_distance(-30.4, 115);
+    chassis.drive_distance(44.4, 66.54);
+    Intake.spin(fwd, 100, pct);
+    chassis.drive_distance(-44.4, 66.54);
 
     odom_constants();
-    // Turn the goal so that its position is consistent and it's away from the other goal
-    chassis.turn_to_angle(225);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
     chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
-    chassis.turn_to_angle(70); // Tune this value to clamp on the goal
+    chassis.turn_to_angle(280); // Tune this value to clamp on the goal
   }
 
   // Clamp the goal and score a ring
   chassis.drive_max_voltage = 6;
-  chassis.drive_distance(-10);
+  chassis.drive_distance(-15);
   Clamp.set(true);
-  vex::wait(100, msec);
+  vex::wait(200, msec);
   intakeSort = true;
-  vex::wait(1000, msec);
+  vex::wait(300, msec);
+  intakeSort = false;
   Clamp.set(false);
-  chassis.drive_distance(10);
+
+  // Turn towards the corner to drop it closer to it
+  chassis.turn_to_point(66.325 * reversed, -66.457, 180);
 
   // Clamp the 2nd goal
   chassis.turn_to_point(23.701 * reversed, -23.701, 180);
   chassis.drive_max_voltage = 6;
   chassis.drive_to_point(23.701 * reversed, -23.701);
   Clamp.set(true);
+  vex::wait(200, msec);
   intakeSort = true;
   odom_constants();
 
   // Touch the ladder
   chassis.turn_to_point(0 * reversed, -23.701);
   chassis.drive_timeout = 600;
-  chassis.drive_to_point(0 * reversed, -23.701);
-  chassis.drive_to_point(0 * reversed, -23.701);
+  chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
+  chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
 }
 
 void testing(string c)
