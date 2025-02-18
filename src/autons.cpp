@@ -383,7 +383,7 @@ void positive_goal_rush(string c)
 
   // Clamp the 2nd goal
   chassis.turn_to_point(23.701 * reversed, -23.701, 180);
-  chassis.drive_max_voltage = 6;
+  chassis.drive_max_voltage = 3;
   chassis.drive_to_point(23.701 * reversed, -23.701);
   Clamp.set(true);
   vex::wait(200, msec);
@@ -537,13 +537,13 @@ void auton_skills()
 
   // Clamp the far goal
   odom_constants();
-  chassis.turn_to_point(47.141, 0, 180);
+  chassis.turn_to_point(47.141 + 5, 0, 180);
   chassis.drive_max_voltage = 6;
   chassis.heading_max_voltage = 6;
-  chassis.drive_to_point(47.141, 0);
+  chassis.drive_to_point(47.141 + 5, 0);
   odom_constants();
   Clamp.set(true);
-  vex::wait(100, msec);
+  vex::wait(200, msec);
   intakeSort = true;
 
   // Line up in front of the ladder
@@ -599,29 +599,29 @@ void auton_skills()
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_settle_error = 0.5;
-  chassis.turn_to_point(0, 69.388);
+  chassis.turn_to_point(0 + 1, 69.388);
   chassis.drive_timeout = 1000;
   chassis.drive_distance(26);
   default_constants();
-  // chassis.turn_to_point(0, 69.388);
+  chassis.turn_to_point(0 + 1, 69.388);
 
   // Score once on 2nd wall stake
   FrogMech.set(true);
-  vex::wait(700, msec);
+  vex::wait(800, msec);
   FrogMech.set(false);
-  intakeToFrogAuton = true;
-  frogTimeout = 3000;
-  vex::wait(700, msec);
-  while (intakeToFrogAuton && (frogTimeout >= 0))
-  {
-    wait(50, msec);
-    frogTimeout -= 50;
-  }
-  wait(100, vex::timeUnits::msec);
-  intakeToFrogAuton = false;
-  FrogMech.set(true);
-  vex::wait(700, msec);
-  FrogMech.set(false);
+  // intakeToFrogAuton = true;
+  // frogTimeout = 3000;
+  vex::wait(800, msec);
+  // while (intakeToFrogAuton && (frogTimeout >= 0))
+  // {
+  //   wait(50, msec);
+  //   frogTimeout -= 50;
+  // }
+  // wait(100, vex::timeUnits::msec);
+  // intakeToFrogAuton = false;
+  // FrogMech.set(true);
+  // vex::wait(700, msec);
+  // FrogMech.set(false);
 
   // Eat two rings before the blue corner
   // purePursuit->followPath(skills[3], 15, 10000, true, 17, 4, 0.8);
@@ -635,21 +635,21 @@ void auton_skills()
   chassis.drive_to_point(23.381, 23.481);
 
   // First ring is the corner one in the triangle
-  chassis.turn_to_point(44.1, 44.1);
-  chassis.drive_to_point(44.1, 44.1);
+  chassis.turn_to_point(44.1 + 3, 44.1);
+  chassis.drive_to_point(44.1 + 3, 44.1);
 
   // Back up and eat a ring x2
   chassis.drive_timeout = 900;
-  chassis.turn_to_point(45.86, 56.571);
-  chassis.drive_to_point(45.86, 56.571);
-  chassis.turn_to_point(42.6, 42.6, 180);
-  chassis.drive_to_point(42.6, 42.6);
-  chassis.turn_to_point(56.571, 45.86);
-  chassis.drive_to_point(56.571, 45.86);
+  chassis.turn_to_point(45.86 + 3, 56.571);
+  chassis.drive_to_point(45.86 + 3, 56.571);
+  chassis.turn_to_point(42.6 + 3, 42.6, 180);
+  chassis.drive_to_point(42.6 + 3, 42.6);
+  chassis.turn_to_point(56.571 + 3, 45.86);
+  chassis.drive_to_point(56.571 + 3, 45.86);
 
   // Doinker out the corner
   Doinker.set(true);
-  chassis.turn_to_point(60.449, 56.51);
+  chassis.turn_to_point(60.449 + 5, 56.51);
   chassis.drive_timeout = 600;
   chassis.drive_distance(15);
   chassis.turn_timeout = 400;
@@ -657,7 +657,7 @@ void auton_skills()
   fast_exit_conditions();
 
   // Put last full mogo in corner
-  chassis.turn_to_point(60.449, 56.51, 180);
+  chassis.turn_to_point(60.449 + 5, 56.51, 180);
   Clamp.set(false);
   Doinker.set(false);
   chassis.drive_timeout = 400;
@@ -668,8 +668,8 @@ void auton_skills()
   chassis.drive_distance(5);
 
   // Clamp the final goal
-  chassis.turn_to_point(59.149, 23.481, 180);
-  chassis.drive_to_point(59.149, 23.481, 0, 6, 6);
+  chassis.turn_to_point(59.149 + 5, 23.481, 180);
+  chassis.drive_to_point(59.149 + 5, 23.481, 0, 6, 6);
   Clamp.set(true);
   vex::wait(100, msec);
 
@@ -680,7 +680,7 @@ void auton_skills()
 
   chassis.turn_to_angle(0);
   chassis.drive_timeout = 700;
-  chassis.turn_to_point(65.449, -55.733, 180);
+  chassis.turn_to_point(65.449, -55.733 - 5, 180);
   Doinker.set(false);
   Clamp.set(false);
   chassis.drive_distance(-18);
