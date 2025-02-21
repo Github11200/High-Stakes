@@ -100,17 +100,17 @@ void negative_alliance_stake_rush(string c)
   Pursuit *purePursuit = new Pursuit(12.75);
 
   // Push rings out of the way in front of alliance stake
+  exact_exit_conditions();
   chassis.drive_to_point(-56.35 * reversed, 0);
 
   // Score on alliance stake
-  chassis.turn_to_point(-69 * reversed, 0, 180);
+  chassis.turn_to_point(-69 * reversed, 0);
   chassis.drive_timeout = 600;
-  chassis.drive_distance(-7, chassis.get_absolute_heading());
+  chassis.drive_distance(9);
   default_constants();
-  intakeSort = true;
-  vex::wait(0.3, vex::timeUnits::sec);
-  intakeSort = false;
-  Intake.stop();
+  FrogMech.set(true);
+  wait(500, msec);
+  FrogMech.set(false);
 
   // Drive away from alliance stake, getting in line with mogo
   chassis.turn_to_point(-42.644 * reversed, 12.252);
