@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bits/stdc++.h>
 #include <iostream>
 #include <math.h>
 #include <stdio.h>
@@ -9,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <limits.h>
+#include <algorithm>
 #include "v5.h"
 #include "v5_vcs.h"
 #include "robot-config.h"

@@ -28,7 +28,7 @@ bool IntakeControl::shouldEjectRing()
       return ringColor == red;
 
     else if (alliance == "skills")
-      return false;
+      return ringColor == blue;
   }
   return false;
 }
@@ -53,12 +53,19 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
+    if (alliance == "skills")
+    {
+      OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
+      if (shouldEjectRing())
+        ejectRing();
+    }
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     Hooks.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   Intake.stop(vex::brakeType::coast);
   Hooks.stop(vex::brakeType::coast);
+  OpticalSensor.setLightPower(0, pct); // turn off the light to save battery :):):)
 }
 
 void IntakeControl::intakeToFrog()

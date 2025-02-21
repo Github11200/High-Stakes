@@ -22,25 +22,29 @@ vector<Point> mirrorPath(vector<Point> originalPath)
 
 void default_constants()
 {
-  chassis.set_drive_constants(12, 0.75, 0.01, 1.7, 3);
+  // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
+  chassis.set_drive_constants(12, 1, 0, 0, 3);
   chassis.set_heading_constants(12, 0.28, 0.1, 1.9, 1);
   chassis.set_turn_constants(12, 0.28, 0.1, 1.9, 1);
   chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
 
+  // Each exit condition set is in the form of (settle_error, settle_time, timeout).
   chassis.set_drive_exit_conditions(1.5, 100, 4000);
   chassis.set_turn_exit_conditions(1.5, 100, 800);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
-}
-
-void odom_constants()
-{
-  default_constants();
 }
 
 void fast_exit_conditions()
 {
   chassis.set_drive_exit_conditions(2, 0.01, 4000);
   chassis.set_turn_exit_conditions(2, 0.01, 800);
+  chassis.set_swing_exit_conditions(1, 5000, 5000);
+}
+
+void exact_exit_conditions()
+{
+  chassis.set_drive_exit_conditions(0.5, 200, 4000);
+  chassis.set_turn_exit_conditions(0.5, 200, 800);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
 
@@ -69,7 +73,7 @@ void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
-  odom_constants();
+  default_constants();
 
   cout << "negative alliance stake auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -102,7 +106,7 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_point(-69 * reversed, 0, 180);
   chassis.drive_timeout = 600;
   chassis.drive_distance(-7, chassis.get_absolute_heading());
-  odom_constants();
+  default_constants();
   intakeSort = true;
   vex::wait(0.3, vex::timeUnits::sec);
   intakeSort = false;
@@ -128,7 +132,7 @@ void negative_alliance_stake_rush(string c)
   chassis.turn_to_angle(0);
   chassis.drive_distance(18, 0);
   chassis.drive_distance(-10, 0);
-  odom_constants();
+  default_constants();
 
   // 12.75 and 8 before
   purePursuit->followPath(negativeRingRush[1], 15, 10000, false, 20, 11, 0.8);
@@ -156,7 +160,7 @@ void positive_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
-  odom_constants();
+  default_constants();
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
@@ -192,7 +196,7 @@ void positive_alliance_stake_rush(string c)
   Clamp.set(true);
   wait(500, vex::timeUnits::msec);
 
-  odom_constants();
+  default_constants();
 
   // Get one ring
   chassis.turn_to_point(23.467 * reversed, -47.118);
@@ -231,7 +235,7 @@ void negative_ring_rush(string c)
 {
   pre_driver = true;
 
-  odom_constants();
+  default_constants();
 
   cout << "negative ring rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -309,7 +313,7 @@ void positive_goal_rush(string c)
 {
   pre_driver = true;
 
-  odom_constants();
+  default_constants();
 
   cout << "positive goal rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -338,11 +342,11 @@ void positive_goal_rush(string c)
   {
     // Goal rush
     fast_exit_conditions();
-    chassis.drive_distance(44.4, 246.54);
+    chassis.drive_distance(41.4, 246.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-48.4, 246.54); // go a bit further back on blue to avoid hitting other mogo
+    chassis.drive_distance(-45.4, 246.54); // go a bit further back on blue to avoid hitting other mogo
 
-    odom_constants();
+    default_constants();
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
@@ -354,11 +358,11 @@ void positive_goal_rush(string c)
   else
   {
     fast_exit_conditions();
-    chassis.drive_distance(44.4, 66.54);
+    chassis.drive_distance(41.4, 66.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-44.4, 66.54);
+    chassis.drive_distance(-41.4, 66.54);
 
-    odom_constants();
+    default_constants();
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
@@ -376,10 +380,10 @@ void positive_goal_rush(string c)
   intakeSort = true;
   vex::wait(300, msec);
   intakeSort = false;
-  Clamp.set(false);
 
   // Turn towards the corner to drop it closer to it
-  chassis.turn_to_point(66.325 * reversed, -66.457, 180);
+  chassis.turn_to_point(70 * reversed, -70, 180);
+  Clamp.set(false);
 
   // Clamp the 2nd goal
   chassis.turn_to_point(23.701 * reversed, -23.701, 180);
@@ -388,18 +392,51 @@ void positive_goal_rush(string c)
   Clamp.set(true);
   vex::wait(200, msec);
   intakeSort = true;
-  odom_constants();
+  default_constants();
+
+  return;
 
   // Touch the ladder
-  chassis.turn_to_point(0 * reversed, -23.701);
-  chassis.drive_timeout = 600;
-  chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
-  chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
+  // chassis.turn_to_point(0 * reversed, -23.701);
+  // chassis.drive_timeout = 600;
+  // chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
+  // chassis.drive_to_point(0 * reversed, -23.701, 0, 5, 5);
+
+  // Clear out the corner
+  if (alliance == "red")
+  {
+    chassis.turn_to_point(-56.548, -23.701);
+    chassis.drive_to_point(-56.548, -23.701);
+    Doinker.set(true);
+    chassis.turn_to_point(-59.726, -23.701);
+    chassis.drive_to_point(-59.726, -23.701);
+
+    chassis.turn_max_voltage = 4;
+    chassis.turn_to_point(-21.787, -57.668);
+    chassis.turn_max_voltage = 12;
+    chassis.drive_to_point(-21.787, -57.668);
+  }
+  else
+  {
+    chassis.turn_to_point(14.763, -59.655);
+    chassis.drive_to_point(14.763, -59.655);
+    Doinker.set(true);
+    chassis.turn_to_point(53.696, -60.847);
+    chassis.drive_to_point(53.696, -60.847);
+
+    chassis.turn_max_voltage = 4;
+    chassis.turn_to_point(59.059, -33.633);
+    chassis.turn_max_voltage = 12;
+    chassis.drive_to_point(59.059, -33.633);
+  }
+
+  chassis.turn_to_point(24.17 * reversed, 0);
+  chassis.drive_to_point(24.17 * reversed, 0);
 }
 
 void testing(string c)
 {
-  chassis.set_coordinates(-62, 0, 90);
+  chassis.set_coordinates(0, 0, 0);
   cout << "testing auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
@@ -407,6 +444,11 @@ void testing(string c)
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
   int reversed;
+  float kP = 1;
+  float kI = 0;
+  float kD = 0;
+  float settle_error = 1.5;
+
   if (c == "red")
   {
     reversed = -1;
@@ -417,19 +459,93 @@ void testing(string c)
     reversed = 1;
     alliance = "blue";
   }
-  odom_constants();
+  default_constants();
 
   while (true)
   {
-    // cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << "\nTheta: " << chassis.get_absolute_heading() << endl;
+    // Do all the data-giving
     Brain.Screen.clearScreen();
     Brain.Screen.setPenColor(vex::color::white);
     Brain.Screen.printAt(5, 20, "X: %f\n", chassis.get_X_position());
     Brain.Screen.printAt(5, 60, "Y: %f\n", chassis.get_Y_position());
     Brain.Screen.printAt(5, 100, "Theta: %f\n", chassis.get_absolute_heading());
-    // Brain.Screen.print("X: %f\nY: %f\nTheta: %f", chassis.get_X_position(), chassis.get_Y_position(), chassis.get_absolute_heading());
-    vex::wait(100, vex::timeUnits::msec);
+    Brain.Screen.printAt(200, 20, "kP: %f\n", kP);
+    Brain.Screen.printAt(200, 60, "kI: %f\n", kI);
+    Brain.Screen.printAt(200, 100, "kD: %f\n", kD);
+    Brain.Screen.printAt(200, 140, "settle_error: %f\n", settle_error);
+
+    // All movement control
+    if (Controller.ButtonA.pressing())
+    {
+      chassis.set_coordinates(0, 0, 0);
+    }
+    else if (Controller.ButtonB.pressing())
+    {
+      chassis.drive_to_point(0, 47.6);
+    }
+    else if (Controller.ButtonX.pressing())
+    {
+      chassis.drive_to_point(0, 23.8);
+    }
+    // Print data
+    else if (Controller.ButtonY.pressing())
+    {
+      cout << "kP: " << kP << ", kI: " << kI << ", kD: " << kD << ", settle error: " << settle_error << endl;
+      cout << "X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << ", Theta: " << chassis.get_absolute_heading() << endl;
+    }
+    // Change PID
+    else if (Controller.ButtonUp.pressing())
+    {
+      kP += 0.1;
+      cout << "kP: " << kP << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    else if (Controller.ButtonDown.pressing())
+    {
+      kP -= 0.1;
+      cout << "kP: " << kP << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    else if (Controller.ButtonRight.pressing())
+    {
+      kD += 0.1;
+      cout << "kD: " << kD << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    else if (Controller.ButtonLeft.pressing())
+    {
+      kD -= 0.1;
+      cout << "kD: " << kD << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    else if (Controller.ButtonL1.pressing())
+    {
+      kI += 0.01;
+      cout << "kI: " << kI << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    else if (Controller.ButtonL2.pressing())
+    {
+      kI -= 0.01;
+      cout << "kI: " << kI << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 3);
+    }
+    // Exit conditions
+    else if (Controller.ButtonR1.pressing())
+    {
+      settle_error += 0.25;
+      cout << "settle error: " << settle_error << endl;
+      chassis.set_drive_exit_conditions(settle_error, 100, 4000);
+    }
+    else if (Controller.ButtonR2.pressing())
+    {
+      settle_error -= 0.25;
+      cout << "settle error: " << settle_error << endl;
+      chassis.set_drive_exit_conditions(settle_error, 100, 4000);
+    }
+    vex::wait(300, vex::timeUnits::msec);
   }
+  vex::wait(100000000, sec);
 }
 
 void auton_skills()
@@ -437,7 +553,7 @@ void auton_skills()
   pre_driver = true;
   intakeToFrogAuton = false;
 
-  odom_constants();
+  default_constants();
   chassis.set_coordinates(-61, 0, 90);
 
   cout << "skills auto started, initial position:" << endl;
@@ -464,7 +580,7 @@ void auton_skills()
   chassis.heading_max_voltage = 0;
   chassis.drive_max_voltage = 6;
   chassis.drive_to_point(-47.212, -23.503);
-  odom_constants();
+  default_constants();
   Clamp.set(true);
   vex::wait(100, msec);
   intakeSort = true;
@@ -479,7 +595,7 @@ void auton_skills()
   chassis.drive_to_point(58.962, -47.269);
   intakeSort = false;
   intakeToFrogAuton = true;
-  odom_constants();
+  default_constants();
 
   // Align to wall stake
   chassis.turn_to_point(0, -38.202, 180);
@@ -489,9 +605,9 @@ void auton_skills()
   // chassis.turn_to_point(2, -69.388);
   chassis.turn_settle_error = 0.5;
   chassis.turn_to_point(0, -69.388);
-  chassis.drive_timeout = 600;
-  chassis.drive_distance(26);
-  chassis.turn_to_point(0, -69.388);
+  chassis.drive_timeout = 800;
+  chassis.drive_distance(35);
+  // chassis.turn_to_point(0, -69.388);
   cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
   default_constants();
 
@@ -536,12 +652,12 @@ void auton_skills()
   chassis.drive_to_point(23.764, -23.764);
 
   // Clamp the far goal
-  odom_constants();
+  default_constants();
   chassis.turn_to_point(47.141 + 5, 0, 180);
   chassis.drive_max_voltage = 6;
   chassis.heading_max_voltage = 6;
   chassis.drive_to_point(47.141 + 5, 0);
-  odom_constants();
+  default_constants();
   Clamp.set(true);
   vex::wait(200, msec);
   intakeSort = true;
@@ -577,12 +693,12 @@ void auton_skills()
   chassis.drive_distance(-18);
 
   // Clamp onto the final fillable goal
-  chassis.turn_to_point(-47.141, 48);
+  // chassis.turn_to_point(-47.141, 48);
   chassis.drive_to_point(-47.141, 48);
-  odom_constants();
-  chassis.turn_to_point(-47.141, 23.574, 180);
+  default_constants();
+  chassis.turn_to_point(-47.141 - 1, 23.574, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(-47.141, 23.574);
+  chassis.drive_to_point(-47.141 - 1, 23.574);
   Clamp.set(true);
   vex::wait(100, msec);
   intakeSort = true;
@@ -603,7 +719,7 @@ void auton_skills()
   chassis.drive_timeout = 1000;
   chassis.drive_distance(26);
   default_constants();
-  chassis.turn_to_point(0 + 1, 69.388);
+  // chassis.turn_to_point(0 + 1, 69.388);
 
   // Score once on 2nd wall stake
   FrogMech.set(true);
@@ -635,15 +751,15 @@ void auton_skills()
   chassis.drive_to_point(23.381, 23.481);
 
   // First ring is the corner one in the triangle
-  chassis.turn_to_point(44.1 + 3, 44.1);
-  chassis.drive_to_point(44.1 + 3, 44.1);
+  chassis.turn_to_point(44.1 + 2, 44.1);
+  chassis.drive_to_point(44.1 + 2, 44.1);
 
   // Back up and eat a ring x2
   chassis.drive_timeout = 900;
-  chassis.turn_to_point(45.86 + 3, 56.571);
-  chassis.drive_to_point(45.86 + 3, 56.571);
-  chassis.turn_to_point(42.6 + 3, 42.6, 180);
-  chassis.drive_to_point(42.6 + 3, 42.6);
+  chassis.turn_to_point(45.86 + 2, 56.571);
+  chassis.drive_to_point(45.86 + 2, 56.571);
+  chassis.turn_to_point(42.6 + 2, 42.6, 180);
+  chassis.drive_to_point(42.6 + 2, 42.6);
   chassis.turn_to_point(56.571 + 3, 45.86);
   chassis.drive_to_point(56.571 + 3, 45.86);
 
@@ -664,12 +780,12 @@ void auton_skills()
   chassis.drive_distance(-16.5, chassis.get_absolute_heading());
 
   // Get out of the corner
-  odom_constants();
+  default_constants();
   chassis.drive_distance(5);
 
   // Clamp the final goal
-  chassis.turn_to_point(59.149 + 5, 23.481, 180);
-  chassis.drive_to_point(59.149 + 5, 23.481, 0, 6, 6);
+  chassis.turn_to_point(59.149 + 3, 23.481, 180);
+  chassis.drive_to_point(59.149 + 3, 23.481, 0, 6, 6);
   Clamp.set(true);
   vex::wait(100, msec);
 
@@ -680,7 +796,7 @@ void auton_skills()
 
   chassis.turn_to_angle(0);
   chassis.drive_timeout = 700;
-  chassis.turn_to_point(65.449, -55.733 - 5, 180);
+  chassis.turn_to_point(70, -70, 180);
   Doinker.set(false);
   Clamp.set(false);
   chassis.drive_distance(-18);
@@ -689,7 +805,7 @@ void auton_skills()
   // // Push last goal into corner
   // chassis.drive_timeout = 4000;
   // chassis.drive_to_point(65.449, -55.733);
-  // odom_constants();
+  // default_constants();
 
   // chassis.drive_distance(20);
 

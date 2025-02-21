@@ -2,7 +2,6 @@
 #include "../include/driver/intake.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
-#include "../include/driver/descore.h"
 #include <robot-config.h>
 #include <string>
 #include <sstream>
@@ -78,9 +77,11 @@ Drive chassis(
     2,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    -0.6
+    -0);
 
-);
+// Actual - 95.25
+// First run - 95.83
+// Second run - 95.76
 
 int current_auton_selection = 4;
 float chassisTemp = 0;
@@ -171,12 +172,11 @@ void pre_auton(void)
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
 
-  alliance = "blue";
+  alliance = "skills";
 
   chassis.calibrate_robot();
 
   vex::wait(3000, vex::timeUnits::msec);
-  return;
 
   updateScreen();
 
@@ -261,9 +261,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  positive_goal_rush("blue");
 
-  return;
   if (alliance == "skills")
   {
     auton_skills();
@@ -297,7 +295,6 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   MogoControl mogoControl;
-  DescoreControl descoreControl;
 
   while (true)
   {
@@ -318,7 +315,10 @@ int buttonsWrapper()
     if (OuttakeButton.pressing())
       intakeControl.outtake();
     else if (IntakeButton.pressing())
+    {
+      cout << alliance << endl;
       intakeControl.intake();
+    }
     else if (IntakeToFrogButton.pressing())
       intakeControl.intakeToFrog();
 
@@ -381,13 +381,14 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // Auton testing code start
-  // wait(3000, msec);
-  // positive_goal_rush("blue");
+  wait(3000, msec);
+  testing("red");
+  // auton_skills();
 
-  // intakeSort = false;
-  // pre_driver = false;
-  // Intake.stop(vex::brakeType::coast);
-  // Hooks.stop(vex::brakeType::coast);
+  intakeSort = false;
+  pre_driver = false;
+  Intake.stop(vex::brakeType::coast);
+  Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
@@ -401,6 +402,8 @@ void usercontrol(void)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
+
+    cout << alliance << endl;
     chassis.control_arcade();
 
     wait(20, msec);

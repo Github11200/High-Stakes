@@ -549,6 +549,10 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
   PID headingPID(start_angle_deg - get_absolute_heading(), heading_kp, heading_ki, heading_kd, heading_starti);
   bool line_settled = false;
   bool prev_line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
+
+  // double previousDriveOutput = 0;
+  // double previousHeadingOutput = 0;
+
   while (!drivePID.is_settled())
   {
     line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
@@ -578,6 +582,9 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
     drive_output = clamp_min_voltage(drive_output, drive_min_voltage);
 
     drive_with_voltage(left_voltage_scaling(drive_output, heading_output), right_voltage_scaling(drive_output, heading_output));
+
+    // previousDriveOutput = drive_output;
+    // previousHeadingOutput = heading_output;
     task::sleep(10);
   }
 }
@@ -878,8 +885,8 @@ void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float
   PID drivePID(hypot(X_carrot - get_X_position(), Y_carrot - get_Y_position()), drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(to_deg(atan2(X_carrot - get_X_position(), Y_carrot - get_Y_position())) - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
   cout << drive_kp << drive_ki << drive_kd;
-  float prev_drive_output = 0;
-  float prev_heading_output = 0;
+  // float prev_drive_output = 0;
+  // float prev_heading_output = 0;
   while (drivePID.is_settled() == false)
   {
     // Recalculate the carrot point
@@ -920,8 +927,8 @@ void Drive::boomerang_curve(float X_end, float Y_end, float final_heading, float
     //   drive_output = slew_func(drive_output, prev_drive_output, slew_lat);
     // }
 
-    float prev_drive_output = drive_output;
-    float prev_heading_output = heading_output;
+    // float prev_drive_output = drive_output;
+    // float prev_heading_output = heading_output;
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }
