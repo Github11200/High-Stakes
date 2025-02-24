@@ -264,6 +264,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
+  negative_alliance_stake_rush("red");
 
   if (alliance == "skills")
   {
@@ -385,7 +386,7 @@ void usercontrol(void)
 {
   // Auton testing code start
   wait(3000, msec);
-  positive_goal_rush("red");
+  negative_alliance_stake_rush("red");
   // auton_skills();
 
   intakeSort = false;

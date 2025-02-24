@@ -49,8 +49,8 @@ void fast_exit_conditions()
 
 void exact_exit_conditions()
 {
-  chassis.set_drive_exit_conditions(1, 200, 4000);
-  chassis.set_turn_exit_conditions(1, 200, 800);
+  chassis.set_drive_exit_conditions(0.5, 200, 4000);
+  chassis.set_turn_exit_conditions(1, 200, 1200);
   chassis.set_swing_exit_conditions(1, 5000, 5000);
 }
 
@@ -109,13 +109,13 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-56.35 * reversed, 0);
 
   // Score on alliance stake
-  chassis.turn_to_point(-69 * reversed, 0);
+  chassis.turn_to_point(-69 * reversed, 0, 180);
   chassis.drive_timeout = 600;
-  chassis.drive_distance(9);
+  chassis.drive_distance(-9);
   default_constants();
-  FrogMech.set(true);
-  wait(500, msec);
-  FrogMech.set(false);
+  intakeSort = true;
+  wait(350, vex::timeUnits::msec);
+  intakeSort = false;
 
   // Drive away from alliance stake, getting in line with mogo
   chassis.turn_to_point(-42.644 * reversed, 12.252);
@@ -129,19 +129,17 @@ void negative_alliance_stake_rush(string c)
   vex::wait(100, msec);
 
   intakeSort = true;
+  goal_constants();
 
   // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
   chassis.turn_to_point(negativeRingRush[0][3].x, negativeRingRush[0][3].y);
-  purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
-
-  chassis.turn_to_angle(0);
-  chassis.drive_distance(18, 0);
-  chassis.drive_distance(-10, 0);
-  default_constants();
+  // purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
+  chassis.drive_to_pose(-11.259 * reversed, 58.269, 0, 0.1, 0, 0, 10, 10);
 
   // 12.75 and 8 before
-  purePursuit->followPath(negativeRingRush[1], 15, 10000, false, 20, 11, 0.8);
+  chassis.drive_to_pose(-22.535 * reversed, 26, 180, 0.1, 0, 0);
 
+  goal_constants();
   // Eat the third ring
   chassis.turn_to_point(-23.456 * reversed, 47.051);
   chassis.drive_to_point(-23.456 * reversed, 47.051);
@@ -152,7 +150,7 @@ void negative_alliance_stake_rush(string c)
 
   // Touch ladder
   chassis.turn_to_point(-23.773 * reversed, 0);
-  chassis.drive_max_voltage = 12;
+  chassis.drive_max_voltage = 7;
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
