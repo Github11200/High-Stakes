@@ -291,6 +291,8 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
+  DriveL.stop(coast);
+  DriveR.stop(coast);
 }
 
 /**
@@ -345,6 +347,8 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }
+  DriveL.stop(coast);
+  DriveR.stop(coast);
 }
 
 /**
@@ -484,13 +488,12 @@ void Drive::set_coordinates(float X_position, float Y_position, float orientatio
 
 void Drive::calibrate_robot()
 {
+  R_ForwardTracker.resetPosition();
+  R_SidewaysTracker.resetPosition();
   Gyro.calibrate();
   while (Gyro.isCalibrating())
     wait(50, vex::timeUnits::msec);
   Controller.rumble("....");
-
-  R_ForwardTracker.setPosition(0, vex::rotationUnits::deg);
-  R_SidewaysTracker.setPosition(0, vex::rotationUnits::deg);
 }
 
 /**
@@ -556,10 +559,11 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
   while (!drivePID.is_settled())
   {
     line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
-    if (line_settled && !prev_line_settled)
-    {
-      break;
-    }
+    // if (line_settled && !prev_line_settled)
+    // {
+    //   cout << "dwahuhaid" << endl;
+    //   break;
+    // }
     prev_line_settled = line_settled;
 
     float drive_error = hypot(X_position - get_X_position(), Y_position - get_Y_position());
@@ -571,7 +575,7 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
     heading_error = reduce_negative_90_to_90(heading_error);
     float heading_output = headingPID.compute(heading_error);
 
-    if (drive_error < 3)
+    if (drive_error < 10)
     {
       heading_output = 0;
     }
@@ -585,8 +589,11 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
 
     // previousDriveOutput = drive_output;
     // previousHeadingOutput = heading_output;
+    cout << drive_error << endl;
     task::sleep(10);
   }
+  DriveL.stop(coast);
+  DriveR.stop(coast);
 }
 
 /**
@@ -722,6 +729,8 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
+  DriveL.stop(coast);
+  DriveR.stop(coast);
 }
 
 /**

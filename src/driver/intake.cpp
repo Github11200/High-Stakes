@@ -15,6 +15,7 @@ bool IntakeControl::shouldEjectRing()
   color ringColor = NULL;
   if (isNear)
   {
+    cout << "isNear" << endl;
     if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
       ringColor = blue;
 
@@ -22,13 +23,16 @@ bool IntakeControl::shouldEjectRing()
       ringColor = red;
 
     if (alliance == "red")
+    {
+      cout << "color: " << ringColor << endl;
       return ringColor == blue;
+    }
 
     else if (alliance == "blue")
       return ringColor == red;
 
     else if (alliance == "skills")
-      return ringColor == blue;
+      return false;
   }
   return false;
 }
@@ -53,7 +57,7 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
-    if (alliance == "skills")
+    if (alliance == "red")
     {
       OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
       if (shouldEjectRing())

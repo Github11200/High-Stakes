@@ -63,7 +63,7 @@ Drive chassis(
     PORT2,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
-    2,
+    1.98298,
 
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -74,10 +74,12 @@ Drive chassis(
     PORT10,
 
     // Sideways tracker diameter (reverse to make the direction switch):
-    2,
+    1.98298,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    -0);
+    -0.6
+
+);
 
 // Actual - 95.25
 // First run - 95.83
@@ -172,7 +174,8 @@ void pre_auton(void)
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
 
-  alliance = "skills";
+  // CHANGE THIS FOR MATCHES
+  alliance = "red";
 
   chassis.calibrate_robot();
 
@@ -382,7 +385,7 @@ void usercontrol(void)
 {
   // Auton testing code start
   wait(3000, msec);
-  testing("red");
+  positive_goal_rush("red");
   // auton_skills();
 
   intakeSort = false;
@@ -402,8 +405,6 @@ void usercontrol(void)
   {
     // Replace this line with chassis.control_tank(); for tank drive
     // or chassis.control_holonomic(); for holo drive.
-
-    cout << alliance << endl;
     chassis.control_arcade();
 
     wait(20, msec);
