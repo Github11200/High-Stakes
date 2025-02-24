@@ -349,34 +349,33 @@ void positive_goal_rush(string c)
     Intake.spin(fwd, 100, pct);
     chassis.drive_distance(-45.4, 246.54); // go a bit further back on blue to avoid hitting other mogo
 
-    default_constants();
-
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
     chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
+
+    default_constants();
     chassis.turn_to_angle(76.54); // Tune this value to clamp on the goal
   }
   else
   {
     fast_exit_conditions();
-    chassis.drive_distance(41.4, 66.54);
+    chassis.drive_distance(40.4, 66.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-30, 66.54);
-
-    default_constants();
+    chassis.drive_distance(-26, 66.54);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
-    chassis.drive_distance(-5);
+    chassis.drive_distance(-9);
 
     // Turn around to clamp the goal
+    default_constants();
     chassis.turn_to_angle(260); // Tune this value to clamp on the goal
   }
 
   // Clamp the goal and score a ring
-  chassis.drive_max_voltage = 4;
+  chassis.drive_max_voltage = 6;
   chassis.drive_distance(-19);
   Clamp.set(true);
   vex::wait(200, msec);
@@ -385,10 +384,11 @@ void positive_goal_rush(string c)
   intakeSort = false;
 
   // Turn towards the corner to drop it closer to it
-  chassis.turn_to_point(70 * reversed, -70, 180);
-  chassis.drive_timeout = 250;
-  chassis.drive_to_point(70 * reversed, -70);
+  chassis.turn_to_point(40 * reversed, -40, 180);
+  chassis.drive_timeout = 400;
   Clamp.set(false);
+  chassis.drive_to_point(40 * reversed, -40);
+  chassis.drive_distance(10);
 
   // Clamp the 2nd goal
   chassis.turn_to_point(23.701 * reversed, -23.701, 180);
@@ -420,9 +420,8 @@ void positive_goal_rush(string c)
     Doinker.set(true);
     chassis.drive_to_point(-59.726, -53.298);
 
-    chassis.turn_to_point(-21.787, -57.668);
-    chassis.turn_max_voltage = 12;
-    chassis.drive_to_point(-21.787, -57.668);
+    chassis.turn_to_point(-21.787, -60.668);
+    chassis.drive_to_point(-21.787, -60.668);
   }
   else
   {
@@ -436,8 +435,8 @@ void positive_goal_rush(string c)
     chassis.drive_to_point(59.059, -33.633);
   }
 
-  chassis.turn_to_point(24.17 * reversed, -11);
-  chassis.drive_to_point(24.17 * reversed, -11);
+  chassis.turn_to_point(24.17 * reversed, -10);
+  chassis.drive_to_point(24.17 * reversed, -10);
 }
 
 void testing(string c)
