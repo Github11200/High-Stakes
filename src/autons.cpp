@@ -393,7 +393,7 @@ void positive_goal_rush(string c)
   // Clamp the 2nd goal
   chassis.turn_to_point(23.701 * reversed, -23.701, 180);
   chassis.drive_max_voltage = 12;
-  chassis.drive_timeout = 300;
+  chassis.drive_timeout = 350;
   chassis.drive_to_point(23.701 * reversed, -23.701);
   default_constants();
   chassis.drive_max_voltage = 4;
