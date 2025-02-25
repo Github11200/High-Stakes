@@ -26,6 +26,8 @@ extern vex::controller::button DoinkerButton;
 extern vex::controller::button ClampButton;
 extern vex::controller::button ClampResetButton;
 extern vex::controller::button DescoreButton;
+extern vex::controller::button RedAllianceButton;
+extern vex::controller::button BlueAllianceButton;
 
 extern motor_group Left;
 extern motor_group Right;

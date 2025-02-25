@@ -339,6 +339,10 @@ int buttonsWrapper()
     if (ClampResetButton.pressing())
       mogoControl.reset();
 
+    if (RedAllianceButton.pressing())
+      alliance = "red";
+    else if (BlueAllianceButton.pressing())
+      alliance = "blue";
     // // Descore
     // if (DescoreButton.pressing())
     //   descoreControl.descoreRing();

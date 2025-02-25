@@ -23,10 +23,7 @@ bool IntakeControl::shouldEjectRing()
       ringColor = red;
 
     if (alliance == "red")
-    {
-      cout << "color: " << ringColor << endl;
       return ringColor == blue;
-    }
 
     else if (alliance == "blue")
       return ringColor == red;
@@ -57,12 +54,9 @@ void IntakeControl::intake()
 {
   while (IntakeButton.pressing())
   {
-    if (alliance == "red")
-    {
-      OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
-      if (shouldEjectRing())
-        ejectRing();
-    }
+    OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
+    if (shouldEjectRing())
+      ejectRing();
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     Hooks.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
