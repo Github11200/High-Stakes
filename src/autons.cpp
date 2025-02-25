@@ -354,7 +354,6 @@ void positive_goal_rush(string c)
     chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
-
     default_constants();
     chassis.turn_to_angle(76.54); // Tune this value to clamp on the goal
   }
@@ -367,7 +366,7 @@ void positive_goal_rush(string c)
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
-    chassis.drive_distance(-9);
+    chassis.drive_distance(-10);
 
     // Turn around to clamp the goal
     default_constants();
@@ -375,7 +374,7 @@ void positive_goal_rush(string c)
   }
 
   // Clamp the goal and score a ring
-  chassis.drive_max_voltage = 6;
+  chassis.drive_max_voltage = 5;
   chassis.drive_distance(-19);
   Clamp.set(true);
   vex::wait(200, msec);
@@ -385,7 +384,7 @@ void positive_goal_rush(string c)
 
   // Turn towards the corner to drop it closer to it
   chassis.turn_to_point(40 * reversed, -40, 180);
-  chassis.drive_timeout = 400;
+  chassis.drive_timeout = 500;
   Clamp.set(false);
   chassis.drive_to_point(40 * reversed, -40);
   chassis.drive_distance(10);
@@ -414,15 +413,18 @@ void positive_goal_rush(string c)
   chassis.drive_timeout = 1000;
   if (alliance == "red")
   {
+
     chassis.turn_to_point(-56.548, -23.701);
     chassis.drive_to_point(-56.548, -23.701);
-    chassis.turn_to_point(-59.726, -53.298);
+
+    chassis.turn_to_point(-59.726, -54.298);
     Doinker.set(true);
-    chassis.drive_to_point(-59.726, -53.298);
+    chassis.drive_to_point(-59.726, -54.298);
 
     chassis.turn_to_point(-21.787, -60.668);
     chassis.drive_to_point(-21.787, -60.668);
   }
+  // BLUE HAS TO BE CHANGED
   else
   {
     chassis.turn_to_point(14.763, -59.655);
