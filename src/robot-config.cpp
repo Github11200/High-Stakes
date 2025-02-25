@@ -32,6 +32,8 @@ vex::controller::button DoinkerButton = Controller.ButtonX;
 vex::controller::button ClampButton = Controller.ButtonR2;
 vex::controller::button ClampResetButton = Controller.ButtonUp;
 vex::controller::button DescoreButton = Controller.ButtonA;
+vex::controller::button RedAllianceButton = Controller.ButtonRight;
+vex::controller::button BlueAllianceButton = Controller.ButtonLeft;
 
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
