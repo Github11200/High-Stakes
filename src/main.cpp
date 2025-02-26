@@ -343,9 +343,6 @@ int buttonsWrapper()
       alliance = "red";
     else if (BlueAllianceButton.pressing())
       alliance = "blue";
-    // // Descore
-    // if (DescoreButton.pressing())
-    //   descoreControl.descoreRing();
 
     if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
     {

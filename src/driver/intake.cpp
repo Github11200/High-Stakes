@@ -40,7 +40,7 @@ void IntakeControl::ejectRing()
   { // spin it until the ring is not near
     // once it's not near, it's probably in the perfect place for ejection
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    Hooks.spin(vex::directionType::fwd, 11, vex::voltageUnits::volt);
+    Hooks.spin(vex::directionType::fwd, 10, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   // by spinning it in reverse, we either toss the ring straight out

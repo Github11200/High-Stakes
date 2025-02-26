@@ -362,19 +362,19 @@ void positive_goal_rush(string c)
     fast_exit_conditions();
     chassis.drive_distance(40.4, 66.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-24, 66.54);
+    chassis.drive_distance(-31, 66.54);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
-    chassis.drive_distance(-15);
+    chassis.drive_distance(-10);
 
     // Turn around to clamp the goal
     default_constants();
-    chassis.turn_to_angle(260); // Tune this value to clamp on the goal
+    chassis.turn_to_angle(270); // Tune this value to clamp on the goal
   }
 
   // Clamp the goal and score a ring
-  chassis.drive_max_voltage = 6;
+  chassis.drive_max_voltage = 5;
   chassis.drive_distance(-21);
   Clamp.set(true);
   vex::wait(200, msec);
@@ -416,11 +416,12 @@ void positive_goal_rush(string c)
 
     chassis.turn_to_point(-56.548, -23.701);
     chassis.drive_to_point(-56.548, -23.701);
-    chassis.turn_to_point(-58.5, -54.298);
+    chassis.turn_to_point(-60, -56.298);
     Doinker.set(true);
-    chassis.drive_to_point(-58.5, -54.298);
+    chassis.drive_to_point(-60, -56.298);
 
     chassis.turn_to_point(-21.787, -60.668);
+    Doinker.set(false);
     chassis.drive_to_point(-21.787, -60.668);
   }
   // BLUE HAS TO BE CHANGED
