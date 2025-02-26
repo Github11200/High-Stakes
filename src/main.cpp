@@ -386,8 +386,8 @@ int joystickWrapper()
 void usercontrol(void)
 {
   // Auton testing code start
-  // wait(3000, msec);
-  // positive_goal_rush("red");
+  wait(3000, msec);
+  positive_goal_rush("blue");
   // auton_skills();
 
   intakeSort = false;
