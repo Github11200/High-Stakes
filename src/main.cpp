@@ -387,8 +387,7 @@ void usercontrol(void)
 {
   // Auton testing code start
   wait(3000, msec);
-  positive_goal_rush("red");
-  // auton_skills();
+  auton_skills();
 
   intakeSort = false;
   pre_driver = false;

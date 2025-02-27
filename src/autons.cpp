@@ -666,7 +666,7 @@ void auton_skills()
   // chassis.turn_to_point(2, -69.388);
   chassis.turn_settle_error = 0.5;
   chassis.turn_to_point(0, -69.388);
-  chassis.drive_timeout = 800;
+  chassis.drive_timeout = 500;
   chassis.drive_distance(35);
   // chassis.turn_to_point(0, -69.388);
   cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
@@ -711,8 +711,9 @@ void auton_skills()
   chassis.turn_to_point(1.576, -46.908);
   intakeToFrogAuton = true;
   chassis.drive_to_point(1.576, -46.908);
-  // chassis.turn_to_point(23.764, -23.764); don't think i need this one, time save
-  chassis.drive_to_point(23.764, -23.764);
+  // chassis.turn_to_point(23.764, -23.764); // "don't think i need this one, time save" - Alex, "bruh" - Jinay
+  chassis.drive_timeout = 1100;
+  chassis.drive_to_point(23.764, -23.764, 12, 12, 12);
 
   // Clamp the far goal
   default_constants();
@@ -818,11 +819,11 @@ void auton_skills()
   chassis.drive_to_point(23.381, 23.481);
 
   // First ring is the corner one in the triangle
+  chassis.drive_timeout = 1100;
   chassis.turn_to_point(44.1 + 2, 44.1);
   chassis.drive_to_point(44.1 + 2, 44.1);
 
   // Back up and eat a ring x2
-  chassis.drive_timeout = 900;
   chassis.turn_to_point(45.86 + 2, 56.571);
   chassis.drive_to_point(45.86 + 2, 56.571);
   chassis.turn_to_point(42.6 + 2, 42.6, 180);
@@ -852,6 +853,7 @@ void auton_skills()
   chassis.drive_distance(5);
 
   // Clamp the final goal
+  intakeSort = false;
   chassis.turn_to_point(59.149 + 3, 23.481, 180);
   chassis.drive_to_point(59.149 + 3, 23.481, 0, 6, 6);
   Clamp.set(true);
@@ -869,6 +871,7 @@ void auton_skills()
   Doinker.set(false);
   Clamp.set(false);
   default_constants();
+  chassis.drive_timeout = 500;
   chassis.drive_distance(-18);
   chassis.drive_distance(10);
 
