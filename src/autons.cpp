@@ -345,28 +345,28 @@ void positive_goal_rush(string c)
   {
     // Goal rush
     fast_exit_conditions();
-    chassis.drive_distance(41.4, 246.54);
+    chassis.drive_distance(40.4, 246.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-40.4, 280); // go a bit further back on blue to avoid hitting other mogo
+    chassis.drive_to_pose(26.284, -53.894, 285);
 
-    // Let go of the goal and move back to make sure it's free
+    // Let go of the goal and move back to make sure it's free (fly away)
     Doinker.set(false);
     chassis.drive_distance(-10);
 
     // Turn around to clamp the goal
     default_constants();
-    chassis.turn_to_angle(120); // Tune this value to clamp on the goal
+    chassis.turn_to_angle(155); // Tune this value to clamp on the goal
   }
   else
   {
     fast_exit_conditions();
     chassis.drive_distance(40.4, 66.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-31, 66.54);
+    chassis.drive_distance(-32, 66.54);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
-    chassis.drive_distance(-10);
+    chassis.drive_distance(-9);
 
     // Turn around to clamp the goal
     default_constants();
@@ -376,56 +376,47 @@ void positive_goal_rush(string c)
   if (alliance == "blue")
   {
     // Clamp the goal and score a ring
-    chassis.drive_max_voltage = 5;
-    chassis.drive_distance(-18);
+    chassis.drive_max_voltage = 4;
+    chassis.drive_distance(-19.5);
     Clamp.set(true);
+    goal_constants();
     vex::wait(200, msec);
     intakeSort = true;
-    vex::wait(300, msec);
-    intakeSort = false;
-
-    // Turn towards the corner to drop it closer to it
-    chassis.turn_to_point(35 * reversed, -40, 180);
-    chassis.drive_timeout = 550;
-    Clamp.set(false);
-    chassis.drive_to_point(35 * reversed, -44);
-    chassis.drive_distance(7);
   }
   else
   {
     // Clamp the goal and score a ring
     chassis.drive_max_voltage = 5;
-    chassis.drive_distance(-21);
+    chassis.drive_distance(-20);
     Clamp.set(true);
+    goal_constants();
     vex::wait(200, msec);
     intakeSort = true;
     vex::wait(300, msec);
     intakeSort = false;
 
     // Turn towards the corner to drop it closer to it
-    chassis.turn_to_point(40 * reversed, -40, 180);
-    chassis.drive_timeout = 500;
+    chassis.turn_to_point(31.321 * reversed, -50.518, 180);
+    chassis.drive_timeout = 320;
     Clamp.set(false);
-    chassis.drive_to_point(40 * reversed, -40);
+    default_constants();
+    chassis.drive_to_point(31.321 * reversed, -50.518);
     chassis.drive_distance(10);
-  }
 
-  chassis.turn_to_point(23.701 * reversed, -24.701, 180);
-  // Clamp the 2nd goal
-  if (alliance == "red")
-  {
+    // Clamp the 2nd goal
+    chassis.turn_to_point(23.701 * reversed, -24.701, 180);
     chassis.drive_max_voltage = 12;
     chassis.drive_timeout = 350;
     chassis.drive_to_point(23.701 * reversed, -24.701);
-  }
 
-  default_constants();
-  chassis.drive_max_voltage = 4;
-  chassis.drive_to_point(23.701 * reversed, -23.701);
-  Clamp.set(true);
-  vex::wait(200, msec);
-  intakeSort = true;
-  default_constants();
+    default_constants();
+    chassis.drive_max_voltage = 4;
+    chassis.drive_to_point(23.701 * reversed, -23.701);
+    Clamp.set(true);
+    vex::wait(200, msec);
+    intakeSort = true;
+    default_constants();
+  }
 
   // Touch the ladder
   // chassis.turn_to_point(0 * reversed, -23.701);
@@ -453,17 +444,32 @@ void positive_goal_rush(string c)
   {
     chassis.turn_to_point(21.701, -58.548);
     chassis.drive_to_point(21.701, -58.548);
-    chassis.turn_to_point(56.298, -60);
+    chassis.turn_to_point(56.298, -62);
     Doinker.set(true);
-    chassis.drive_to_point(56.298, -60);
+    chassis.drive_to_point(56.298, -62);
+    Clamp.set(false);
+    intakeSort = false;
+    intakeToFrogAuton = true;
 
     chassis.turn_to_point(60.668, -21.633);
     Doinker.set(false);
     chassis.drive_to_point(60.668, -21.633);
   }
 
-  chassis.turn_to_point(24.17 * reversed, 0);
-  chassis.drive_to_point(24.17 * reversed, 0);
+  if (alliance == "blue")
+  {
+    default_constants();
+    chassis.turn_to_point(20.304, -23.503, 180);
+    chassis.drive_max_voltage = 5;
+    chassis.drive_to_point(20.304, -23.503);
+    Clamp.set(true);
+    wait(200, msec);
+    intakeSort = true;
+  }
+
+  chassis.drive_max_voltage = 12;
+  chassis.turn_to_point(20.17 * reversed, 0);
+  chassis.drive_to_point(20.17 * reversed, 0);
 }
 
 void testing(string c)
