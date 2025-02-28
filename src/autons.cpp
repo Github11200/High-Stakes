@@ -106,10 +106,11 @@ void negative_alliance_stake_rush(string c)
 
   // Push rings out of the way in front of alliance stake
   exact_exit_conditions();
+  chassis.drive_timeout = 1500;
   chassis.drive_to_point(-56.35 * reversed, 0);
 
   // Score on alliance stake
-  chassis.turn_to_point(-69 * reversed, 0, 180);
+  chassis.turn_to_point(-71 * reversed, 0, 180);
   chassis.drive_timeout = 600;
   chassis.drive_distance(-9);
   default_constants();
@@ -345,7 +346,7 @@ void positive_goal_rush(string c)
   {
     // Goal rush
     fast_exit_conditions();
-    chassis.drive_distance(40.4, 246.54);
+    chassis.drive_distance(40.4 - 1, 246.54);
     Intake.spin(fwd, 100, pct);
     chassis.drive_to_pose(26.284, -53.894, 285);
 
@@ -360,9 +361,9 @@ void positive_goal_rush(string c)
   else
   {
     fast_exit_conditions();
-    chassis.drive_distance(40.4, 66.54);
+    chassis.drive_distance(40.4 - 1, 66.54);
     Intake.spin(fwd, 100, pct);
-    chassis.drive_distance(-32, 66.54);
+    chassis.drive_distance(-32 + 1, 66.54);
 
     // Let go of the goal and move back to make sure it's free
     Doinker.set(false);
@@ -390,30 +391,31 @@ void positive_goal_rush(string c)
     chassis.drive_distance(-20);
     Clamp.set(true);
     goal_constants();
-    vex::wait(200, msec);
+    vex::wait(100, msec);
     intakeSort = true;
     vex::wait(300, msec);
     intakeSort = false;
 
-    // Turn towards the corner to drop it closer to it
-    chassis.turn_to_point(31.321 * reversed, -50.518, 180);
+    // Drop it in a spot
+    fast_exit_conditions();
+    chassis.turn_to_point(34.321 * reversed, -49.518, 180);
     chassis.drive_timeout = 320;
     Clamp.set(false);
-    default_constants();
-    chassis.drive_to_point(31.321 * reversed, -50.518);
+    chassis.drive_to_point(34.321 * reversed, -49.518);
     chassis.drive_distance(10);
 
     // Clamp the 2nd goal
-    chassis.turn_to_point(23.701 * reversed, -24.701, 180);
+    default_constants();
+    chassis.turn_to_point(21.701 * reversed, -24.701, 180);
     chassis.drive_max_voltage = 12;
-    chassis.drive_timeout = 350;
-    chassis.drive_to_point(23.701 * reversed, -24.701);
+    chassis.drive_timeout = 370;
+    chassis.drive_to_point(21.701 * reversed, -24.701);
 
     default_constants();
     chassis.drive_max_voltage = 4;
-    chassis.drive_to_point(23.701 * reversed, -23.701);
+    chassis.drive_to_point(21.701 * reversed, -23.701);
     Clamp.set(true);
-    vex::wait(200, msec);
+    vex::wait(100, msec);
     intakeSort = true;
     default_constants();
   }
@@ -436,9 +438,9 @@ void positive_goal_rush(string c)
     Doinker.set(true);
     chassis.drive_to_point(-60, -56.298);
 
-    chassis.turn_to_point(-21.787, -60.668);
+    chassis.turn_to_point(-20.787, -60.668);
     Doinker.set(false);
-    chassis.drive_to_point(-21.787, -60.668);
+    chassis.drive_to_point(-20.787, -60.668);
   }
   else
   {
@@ -659,15 +661,18 @@ void auton_skills()
   goal_constants();
 
   // Align to wall stake
-  chassis.turn_to_point(0, -38.202, 180);
-  chassis.drive_to_point(6, -38.202); // wtf why is this 6 and why does this work ????
+  chassis.turn_to_point(0, -41.202, 180);
+  chassis.drive_to_point(6, -41.202); // wtf why is this 6 and why does this work ????
 
   // Turn to the actual wall stake position, then drive forward
   // chassis.turn_to_point(2, -69.388);
   chassis.turn_settle_error = 0.5;
-  chassis.turn_to_point(0, -69.388);
-  chassis.drive_timeout = 500;
-  chassis.drive_distance(35);
+  exact_exit_conditions();
+  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 800;
+  chassis.turn_to_point(0 + 5, -69.388); // "off by theoretical" - Alex, physc kid
+  chassis.drive_distance(30);
+  wait(100, vex::timeUnits::msec);
   // chassis.turn_to_point(0, -69.388);
   cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
   default_constants();
@@ -692,9 +697,12 @@ void auton_skills()
   FrogMech.set(false);
 
   // Clean up the rest of the rings in the corner
+  chassis.drive_timeout = 800;
   chassis.drive_to_point(0, -47.269);
   chassis.turn_to_point(-100, -47.269);
   intakeSort = true;
+  default_constants();
+  goal_constants();
   purePursuit->followPath(skills[1], 12.75, 10000, true, 17, 3.5, 0.8);
 
   // Drop the goal in the corner
@@ -711,8 +719,9 @@ void auton_skills()
   chassis.turn_to_point(1.576, -46.908);
   intakeToFrogAuton = true;
   chassis.drive_to_point(1.576, -46.908);
-  // chassis.turn_to_point(23.764, -23.764); // "don't think i need this one, time save" - Alex, "bruh" - Jinay
+  chassis.turn_to_point(23.764, -23.764); // "don't think i need this one, time save" - Alex, "bruh" - Jinay
   chassis.drive_timeout = 1100;
+  chassis.drive_timeout = 800;
   chassis.drive_to_point(23.764, -23.764, 12, 12, 12);
 
   // Clamp the far goal
@@ -742,11 +751,11 @@ void auton_skills()
   intakeSort = true;
   chassis.drive_to_point(-44.1, 44.1, 0, 6, 6);
 
-  // Back up and eat a ring x2
-  chassis.turn_to_point(-56.571, 45.86);
-  chassis.drive_to_point(-56.571, 45.86);
-  chassis.turn_to_point(-42.6, 42.6, 180);
-  chassis.drive_to_point(-42.6, 42.6);
+  // // Back up and eat a ring x2
+  // chassis.turn_to_point(-56.571, 45.86);
+  // chassis.drive_to_point(-56.571, 45.86);
+  // chassis.turn_to_point(-42.6, 42.6, 180);
+  // chassis.drive_to_point(-42.6, 42.6);
   chassis.turn_to_point(-45.86, 56.571);
   chassis.drive_to_point(-45.86, 56.571);
 
@@ -782,8 +791,10 @@ void auton_skills()
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_settle_error = 0.5;
+  exact_exit_conditions();
+  chassis.drive_timeout = 800;
+  chassis.turn_timeout = 800;
   chassis.turn_to_point(0, 69.388); // + 1
-  chassis.drive_timeout = 1000;
   chassis.drive_distance(26);
   default_constants();
   goal_constants();
@@ -811,6 +822,7 @@ void auton_skills()
   // purePursuit->followPath(skills[3], 15, 10000, true, 17, 4, 0.8);
   intakeSort = true;
   fast_exit_conditions();
+  chassis.drive_timeout = 800;
   chassis.drive_to_point(0, 53.127);
   chassis.turn_to_point(23.381, 47.007);
   chassis.drive_to_point(23.381, 47.007);
@@ -820,20 +832,20 @@ void auton_skills()
 
   // First ring is the corner one in the triangle
   chassis.drive_timeout = 1100;
-  chassis.turn_to_point(44.1 + 2, 44.1);
-  chassis.drive_to_point(44.1 + 2, 44.1);
+  chassis.turn_to_point(44.1, 44.1);
+  chassis.drive_to_point(44.1, 44.1);
 
   // Back up and eat a ring x2
-  chassis.turn_to_point(45.86 + 2, 56.571);
-  chassis.drive_to_point(45.86 + 2, 56.571);
-  chassis.turn_to_point(42.6 + 2, 42.6, 180);
-  chassis.drive_to_point(42.6 + 2, 42.6);
-  chassis.turn_to_point(56.571 + 3, 45.86);
-  chassis.drive_to_point(56.571 + 3, 45.86);
+  chassis.turn_to_point(45.86, 56.571);
+  chassis.drive_to_point(45.86, 56.571);
+  chassis.turn_to_point(42.6, 42.6, 180);
+  chassis.drive_to_point(42.6, 42.6);
+  chassis.turn_to_point(56.571, 45.86);
+  chassis.drive_to_point(56.571, 45.86);
 
   // Doinker out the corner
   Doinker.set(true);
-  chassis.turn_to_point(60.449 + 5, 56.51);
+  chassis.turn_to_point(60.449, 56.51);
   chassis.drive_timeout = 600;
   chassis.drive_distance(15);
   chassis.turn_timeout = 400;
@@ -841,7 +853,7 @@ void auton_skills()
   fast_exit_conditions();
 
   // Put last full mogo in corner
-  chassis.turn_to_point(60.449 + 5, 56.51, 180);
+  chassis.turn_to_point(60.449, 56.51, 180);
   Clamp.set(false);
   default_constants();
   Doinker.set(false);
@@ -854,16 +866,17 @@ void auton_skills()
 
   // Clamp the final goal
   intakeSort = false;
-  chassis.turn_to_point(59.149 + 3, 23.481, 180);
-  chassis.drive_to_point(59.149 + 3, 23.481, 0, 6, 6);
+  chassis.turn_to_point(59.149, 23.481, 180);
+  chassis.drive_timeout = 800;
+  chassis.drive_to_point(59.149, 23.481, 0, 6, 6);
   Clamp.set(true);
   goal_constants();
   vex::wait(100, msec);
 
   // Doinker and path to the last corner
-  chassis.turn_to_angle(210);
+  chassis.turn_to_point(55.734, 18.548);
   Doinker.set(true);
-  purePursuit->followPath(skills[4], 15, 10000, true, 17, 4, 0.8);
+  purePursuit->followPath(skills[4], 15, 10000, true, 17, 3, 0.8);
 
   chassis.turn_to_angle(0);
   chassis.drive_timeout = 700;
