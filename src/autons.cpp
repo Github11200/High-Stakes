@@ -880,7 +880,7 @@ void auton_skills()
   vex::wait(100, msec);
 
   // Doinker and path to the last corner
-  chassis.turn_to_point(55.734, 18.548);
+  chassis.turn_to_point(56.559, 18.069);
   Doinker.set(true);
   purePursuit->followPath(skills[4], 20, 10000, true, 17, 4, 0.8);
 
