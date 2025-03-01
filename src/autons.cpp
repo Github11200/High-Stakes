@@ -711,11 +711,13 @@ void auton_skills()
   fast_exit_conditions();
   Clamp.set(false);
   default_constants();
+  fast_exit_conditions();
   chassis.drive_timeout = 600;
   chassis.drive_distance(-10);
   chassis.drive_timeout = 4000;
 
   // Eat the ring in front of ladder
+  chassis.turn_timeout = 400;
   chassis.turn_to_point(1.576, -46.908);
   intakeToFrogAuton = true;
   chassis.drive_to_point(1.576, -46.908);
@@ -727,8 +729,8 @@ void auton_skills()
   // Clamp the far goal
   default_constants();
   chassis.turn_to_point(47.141, 0, 180); // +5
-  chassis.drive_max_voltage = 6;
-  chassis.heading_max_voltage = 6;
+  chassis.drive_max_voltage = 5;
+  chassis.heading_max_voltage = 5;
   chassis.drive_to_point(47.141, 0); // +5
   default_constants();
   Clamp.set(true);
@@ -780,21 +782,23 @@ void auton_skills()
   intakeSort = true;
 
   // Pick up one ring for frog
-  chassis.turn_to_point(-23.503, 46.931);
-  chassis.drive_to_point(-23.503, 46.931);
+  chassis.drive_timeout = 800;
+  chassis.turn_to_point(-23.503 - 2, 46.931 + 3);
+  chassis.drive_to_point(-23.503 - 2, 46.931 + 3);
+  default_constants();
   intakeSort = false;
   intakeToFrogAuton = true;
 
   // Align in front of wall stake
-  chassis.turn_to_point(0, 41.202); // added 3 cus its crashed into ladder
-  chassis.drive_to_point(0, 41.202);
+  chassis.turn_to_point(0.5, 41.202); // added 3 cus its crashed into ladder
+  chassis.drive_to_point(0.5, 41.202);
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_settle_error = 0.5;
   exact_exit_conditions();
   chassis.drive_timeout = 800;
   chassis.turn_timeout = 800;
-  chassis.turn_to_point(0, 69.388); // + 1
+  chassis.turn_to_point(0.5, 69.388); // + 1
   chassis.drive_distance(26);
   default_constants();
   goal_constants();
@@ -836,6 +840,7 @@ void auton_skills()
   chassis.drive_to_point(44.1, 44.1);
 
   // Back up and eat a ring x2
+  chassis.drive_timeout = 800;
   chassis.turn_to_point(45.86, 56.571);
   chassis.drive_to_point(45.86, 56.571);
   chassis.turn_to_point(42.6, 42.6, 180);
@@ -853,7 +858,7 @@ void auton_skills()
   fast_exit_conditions();
 
   // Put last full mogo in corner
-  chassis.turn_to_point(60.449, 56.51, 180);
+  chassis.turn_to_point(62.449, 58.51, 180);
   Clamp.set(false);
   default_constants();
   Doinker.set(false);
@@ -862,7 +867,7 @@ void auton_skills()
 
   // Get out of the corner
   default_constants();
-  chassis.drive_distance(5);
+  chassis.drive_distance(8);
 
   // Clamp the final goal
   intakeSort = false;
@@ -871,12 +876,13 @@ void auton_skills()
   chassis.drive_to_point(59.149, 23.481, 0, 6, 6);
   Clamp.set(true);
   goal_constants();
+  fast_exit_conditions();
   vex::wait(100, msec);
 
   // Doinker and path to the last corner
   chassis.turn_to_point(55.734, 18.548);
   Doinker.set(true);
-  purePursuit->followPath(skills[4], 15, 10000, true, 17, 3, 0.8);
+  purePursuit->followPath(skills[4], 20, 10000, true, 17, 4, 0.8);
 
   chassis.turn_to_angle(0);
   chassis.drive_timeout = 700;

@@ -264,7 +264,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  positive_goal_rush("blue");
+  auton_skills();
 
   if (alliance == "skills")
   {
