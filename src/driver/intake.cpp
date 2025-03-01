@@ -68,6 +68,7 @@ void IntakeControl::intake()
 
 void IntakeControl::intakeToFrog()
 {
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   OpticalSensor.setLightPower(100, pct);
   // Spin the intake until the optical sensor senses a ring color
   while (!OpticalSensor.isNearObject() && IntakeToFrogButton.pressing() && !ringStopped)
@@ -80,7 +81,7 @@ void IntakeControl::intakeToFrog()
   while (OpticalSensor.isNearObject() && IntakeToFrogButton.pressing() && !ringStopped)
     Hooks.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
   ringStopped = true;
-  Intake.stop(vex::brakeType::brake);
+  // Intake.stop(vex::brakeType::brake);
   Hooks.stop(vex::brakeType::hold);
   wait(0.1, vex::timeUnits::sec);
   Hooks.stop(vex::brakeType::coast);

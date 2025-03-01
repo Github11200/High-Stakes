@@ -398,22 +398,22 @@ void positive_goal_rush(string c)
 
     // Drop it in a spot
     fast_exit_conditions();
-    chassis.turn_to_point(34.321 * reversed, -49.518, 180);
-    chassis.drive_timeout = 320;
+    chassis.turn_to_point(35.321 * reversed, -46.518, 180);
+    chassis.drive_timeout = 400;
     Clamp.set(false);
-    chassis.drive_to_point(34.321 * reversed, -49.518);
+    chassis.drive_to_point(35.321 * reversed, -46.518);
     chassis.drive_distance(10);
 
     // Clamp the 2nd goal
     default_constants();
-    chassis.turn_to_point(21.701 * reversed, -24.701, 180);
+    chassis.turn_to_point(21.701 * reversed, -22.701, 180);
     chassis.drive_max_voltage = 12;
     chassis.drive_timeout = 370;
-    chassis.drive_to_point(21.701 * reversed, -24.701);
+    chassis.drive_to_point(21.701 * reversed, -22.701);
 
     default_constants();
     chassis.drive_max_voltage = 4;
-    chassis.drive_to_point(21.701 * reversed, -23.701);
+    chassis.drive_to_point(21.701 * reversed, -22.701);
     Clamp.set(true);
     vex::wait(100, msec);
     intakeSort = true;
@@ -434,9 +434,9 @@ void positive_goal_rush(string c)
 
     chassis.turn_to_point(-56.548, -23.701);
     chassis.drive_to_point(-56.548, -23.701);
-    chassis.turn_to_point(-60, -56.298);
+    chassis.turn_to_point(-60, -58.298);
     Doinker.set(true);
-    chassis.drive_to_point(-60, -56.298);
+    chassis.drive_to_point(-60, -58.298);
 
     chassis.turn_to_point(-20.787, -60.668);
     Doinker.set(false);

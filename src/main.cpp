@@ -325,6 +325,10 @@ int buttonsWrapper()
     }
     else if (IntakeToFrogButton.pressing())
       intakeControl.intakeToFrog();
+    else
+    {
+      Intake.stop(coast);
+    }
 
     // Mogo
     if (ClampButton.pressing())
