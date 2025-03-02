@@ -123,9 +123,10 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-42.644 * reversed, 12.252);
 
   // Clamp mogo
-  chassis.turn_to_point(-22.535 * reversed, 26, 180);
+  // REMOVE THE -2 IT'S ONLY FOR THE 9181G MATCH
+  chassis.turn_to_point(-22.535 * reversed, 26 - 2, 180);
   chassis.drive_max_voltage = 6;
-  chassis.drive_to_point(-22.535 * reversed, 26);
+  chassis.drive_to_point(-22.535 * reversed, 26 - 2);
   Clamp.set(true);
   vex::wait(100, msec);
 
@@ -135,7 +136,8 @@ void negative_alliance_stake_rush(string c)
   // Turn towards the first point in the path and then follow the path to get the 2 rings from the 8 stack
   chassis.turn_to_point(negativeRingRush[0][3].x, negativeRingRush[0][3].y);
   // purePursuit->followPath(negativeRingRush[0], 12.75, 10000, true, 17, 3, 0.8);
-  chassis.drive_to_pose(-11.259 * reversed, 58.269, 0, 0.1, 0, 0, 10, 10);
+  chassis.drive_timeout = 3000;
+  chassis.drive_to_pose((-11.259 - 3) * reversed, 58.269, 0, 0.1, 0, 0, 10, 10);
 
   // 12.75 and 8 before
   chassis.drive_to_pose(-22.535 * reversed, 26, 180, 0.1, 0, 0);
@@ -186,52 +188,56 @@ void positive_alliance_stake_rush(string c)
 
   Pursuit *purePursuit = new Pursuit(12.75);
 
-  // Get the goal
-  chassis.drive_max_voltage = 5;
-  if (alliance == "blue")
-  {
-    chassis.drive_distance(-28, 90);
-  }
-  else
-  {
-    chassis.drive_distance(-28, 270);
-  }
-  wait(100, vex::timeUnits::msec);
-  Clamp.set(true);
-  wait(500, vex::timeUnits::msec);
+  // // Get the goal
+  // chassis.drive_max_voltage = 5;
+  // if (alliance == "blue")
+  // {
+  //   chassis.drive_distance(-28, 90);
+  // }
+  // else
+  // {
+  //   chassis.drive_distance(-28, 270);
+  // }
+  // wait(100, vex::timeUnits::msec);
+  // Clamp.set(true);
+  // wait(500, vex::timeUnits::msec);
 
-  default_constants();
+  // default_constants();
 
-  // Get one ring
-  chassis.turn_to_point(23.467 * reversed, -47.118);
-  intakeSort = true;
-  chassis.drive_to_point(23.467 * reversed, -47.118);
-  wait(500, vex::timeUnits::msec);
+  // // Get one ring
+  // chassis.turn_to_point(23.467 * reversed, -47.118);
+  // intakeSort = true;
+  // chassis.drive_to_point(23.467 * reversed, -47.118);
+  // wait(500, vex::timeUnits::msec);
 
-  // Put the mogo near the positive corner
-  chassis.turn_to_angle(0);
-  wait(300, vex::timeUnits::msec);
-  Clamp.set(false);
-  wait(300, vex::timeUnits::msec);
-  intakeSort = false;
+  // // Put the mogo near the positive corner
+  // chassis.turn_to_angle(0);
+  // wait(300, vex::timeUnits::msec);
+  // Clamp.set(false);
+  // wait(300, vex::timeUnits::msec);
+  // intakeSort = false;
 
-  chassis.drive_distance(5, 0);
+  // chassis.drive_distance(5, 0);
 
-  if (alliance == "blue")
-  {
-    chassis.turn_to_angle(90);
-  }
-  else
-  {
-    chassis.turn_to_angle(270);
-  }
-  chassis.drive_timeout = 1000;
-  chassis.heading_max_voltage = 0;
-  chassis.drive_distance(-5);
-  chassis.drive_max_voltage = 0;
-  Left.stop(vex::brakeType::coast);
-  Right.stop(vex::brakeType::coast);
-  vex::wait(100, sec);
+  // if (alliance == "blue")
+  // {
+  //   chassis.turn_to_angle(90);
+  // }
+  // else
+  // {
+  //   chassis.turn_to_angle(270);
+  // }
+  // chassis.drive_timeout = 1000;
+  // chassis.heading_max_voltage = 0;
+  // chassis.drive_distance(-5);
+  // chassis.drive_max_voltage = 0;
+  // Left.stop(vex::brakeType::coast);
+  // Right.stop(vex::brakeType::coast);
+  // vex::wait(100, sec);
+
+  chassis.drive_distance(5);
+vex:
+  wait(30, sec);
 }
 
 // NOT TESTED
@@ -351,8 +357,9 @@ void positive_goal_rush(string c)
     chassis.drive_to_pose(26.284, -53.894, 285);
 
     // Let go of the goal and move back to make sure it's free (fly away)
+    chassis.drive_distance(-6);
     Doinker.set(false);
-    chassis.drive_distance(-10);
+    chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
     default_constants();
@@ -371,8 +378,10 @@ void positive_goal_rush(string c)
 
     // Turn around to clamp the goal
     default_constants();
-    chassis.turn_to_angle(270); // Tune this value to clamp on the goal
+    chassis.turn_to_angle(265); // Tune this value to clamp on the goal
   }
+
+  vex::wait(1, sec);
 
   if (alliance == "blue")
   {
@@ -432,8 +441,8 @@ void positive_goal_rush(string c)
   if (alliance == "red")
   {
 
-    chassis.turn_to_point(-56.548, -23.701);
-    chassis.drive_to_point(-56.548, -23.701);
+    chassis.turn_to_point(-54.548, -23.701);
+    chassis.drive_to_point(-54.548, -23.701);
     chassis.turn_to_point(-60, -58.298);
     Doinker.set(true);
     chassis.drive_to_point(-60, -58.298);
@@ -444,8 +453,8 @@ void positive_goal_rush(string c)
   }
   else
   {
-    chassis.turn_to_point(21.701, -58.548);
-    chassis.drive_to_point(21.701, -58.548);
+    chassis.turn_to_point(21.701, -56.548);
+    chassis.drive_to_point(21.701, -56.548);
     chassis.turn_to_point(56.298, -62);
     Doinker.set(true);
     chassis.drive_to_point(56.298, -62);
@@ -640,6 +649,7 @@ void auton_skills()
   // Clamp onto the goal
   chassis.heading_max_voltage = 0;
   chassis.drive_max_voltage = 6;
+  // chassis.drive_timeout = 1500;
   chassis.drive_to_point(-47.212, -23.503);
   default_constants();
   Clamp.set(true);
@@ -790,15 +800,15 @@ void auton_skills()
   intakeToFrogAuton = true;
 
   // Align in front of wall stake
-  chassis.turn_to_point(0.5, 41.202); // added 3 cus its crashed into ladder
-  chassis.drive_to_point(0.5, 41.202);
+  chassis.turn_to_point(0.75, 41.202); // added 3 cus its crashed into ladder
+  chassis.drive_to_point(0.75, 41.202);
 
   // Turn to the actual wall stake position, then drive forward
   chassis.turn_settle_error = 0.5;
   exact_exit_conditions();
   chassis.drive_timeout = 800;
   chassis.turn_timeout = 800;
-  chassis.turn_to_point(0.5, 69.388); // + 1
+  chassis.turn_to_point(0.75, 69.388); // + 1
   chassis.drive_distance(26);
   default_constants();
   goal_constants();
@@ -843,13 +853,15 @@ void auton_skills()
   chassis.drive_timeout = 800;
   chassis.turn_to_point(45.86, 56.571);
   chassis.drive_to_point(45.86, 56.571);
+  chassis.turn_timeout = 200;
   chassis.turn_to_point(42.6, 42.6, 180);
+  chassis.turn_timeout = 800;
   chassis.drive_to_point(42.6, 42.6);
   chassis.turn_to_point(56.571, 45.86);
+  Doinker.set(true);
   chassis.drive_to_point(56.571, 45.86);
 
   // Doinker out the corner
-  Doinker.set(true);
   chassis.turn_to_point(60.449, 56.51);
   chassis.drive_timeout = 600;
   chassis.drive_distance(15);
@@ -872,7 +884,7 @@ void auton_skills()
   // Clamp the final goal
   intakeSort = false;
   chassis.turn_to_point(59.149, 23.481, 180);
-  chassis.drive_timeout = 800;
+  chassis.drive_timeout = 1000;
   chassis.drive_to_point(59.149, 23.481, 0, 6, 6);
   Clamp.set(true);
   goal_constants();
