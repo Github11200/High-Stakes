@@ -161,16 +161,10 @@ void updateScreen()
   Brain.Screen.setFillColor(black);
 }
 
-void firstPress()
-{
-  ringStopped = false;
-}
-
 void pre_auton(void)
 {
   vexcodeInit();
 
-  FrogMech.set(false);
   OpticalSensor.gestureDisable();
   OpticalSensor.setLightPower(0, pct);
 
@@ -303,13 +297,20 @@ int buttonsWrapper()
   while (true)
   {
     chassis.control_arcade();
-    IntakeToFrogButton.pressed(firstPress);
 
     // Doinker
-    if (DoinkerButton.pressing())
+    if (RightDoinkerButton.pressing())
     {
-      Doinker.set(!Doinker.value());
-      while (DoinkerButton.pressing())
+      RightDoinker.set(!RightDoinker.value());
+      while (RightDoinkerButton.pressing())
+      {
+        vex::wait(20, vex::timeUnits::msec);
+      }
+    }
+    if (LeftDoinkerButton.pressing())
+    {
+      LeftDoinker.set(!LeftDoinker.value());
+      while (LeftDoinkerButton.pressing())
       {
         vex::wait(20, vex::timeUnits::msec);
       }
@@ -319,26 +320,15 @@ int buttonsWrapper()
     if (OuttakeButton.pressing())
       intakeControl.outtake();
     else if (IntakeButton.pressing())
-    {
-      cout << alliance << endl;
       intakeControl.intake();
-    }
-    else if (IntakeToFrogButton.pressing())
-      intakeControl.intakeToFrog();
+    else if (LadyBrownLoadButton.pressing())
+      intakeControl.intakeToLadyBrown();
     else
-    {
       Intake.stop(coast);
-    }
 
     // Mogo
     if (ClampButton.pressing())
       mogoControl.toggle();
-
-    // Frog
-    while (FrogButton.pressing())
-      FrogMech.set(true);
-    vex::wait(20, msec);
-    FrogMech.set(false);
 
     if (ClampResetButton.pressing())
       mogoControl.reset();

@@ -31,7 +31,7 @@ public:
   void intake();
 
   /// @brief This will intake the ring, and stop it in time for the frog
-  void intakeToFrog();
+  void intakeToLadyBrown();
 
   /// @brief Spin the intake to outtake the ring or put it into the redirect
   void outtake();

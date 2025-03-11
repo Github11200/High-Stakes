@@ -10,7 +10,6 @@ using namespace std;
 bool intakeToFrogAuton = false;
 bool intakeSort = false;
 bool intakeRev = false;
-bool raiseFrog = false;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 
 vector<Point> mirrorPath(vector<Point> originalPath)
@@ -157,8 +156,6 @@ void negative_alliance_stake_rush(string c)
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
   chassis.drive_to_point(-23.773 * reversed, 0);
-  Left.stop(vex::brakeType::brake);
-  Right.stop(vex::brakeType::brake);
 }
 
 // NOT TESTED
@@ -347,7 +344,7 @@ void positive_goal_rush(string c)
   Pursuit *purePursuit = new Pursuit(12.75);
 
   // Rush to the goal
-  Doinker.set(true);
+  RightDoinker.set(true);
   if (alliance == "blue")
   {
     // Goal rush
@@ -358,7 +355,7 @@ void positive_goal_rush(string c)
 
     // Let go of the goal and move back to make sure it's free (fly away)
     chassis.drive_distance(-6);
-    Doinker.set(false);
+    RightDoinker.set(false);
     chassis.drive_distance(-5);
 
     // Turn around to clamp the goal
@@ -373,7 +370,7 @@ void positive_goal_rush(string c)
     chassis.drive_distance(-32 + 1, 66.54);
 
     // Let go of the goal and move back to make sure it's free
-    Doinker.set(false);
+    RightDoinker.set(false);
     chassis.drive_distance(-9);
 
     // Turn around to clamp the goal
@@ -444,11 +441,11 @@ void positive_goal_rush(string c)
     chassis.turn_to_point(-54.548, -23.701);
     chassis.drive_to_point(-54.548, -23.701);
     chassis.turn_to_point(-60, -58.298);
-    Doinker.set(true);
+    RightDoinker.set(true);
     chassis.drive_to_point(-60, -58.298);
 
     chassis.turn_to_point(-20.787, -60.668);
-    Doinker.set(false);
+    RightDoinker.set(false);
     chassis.drive_to_point(-20.787, -60.668);
   }
   else
@@ -456,14 +453,14 @@ void positive_goal_rush(string c)
     chassis.turn_to_point(21.701, -56.548);
     chassis.drive_to_point(21.701, -56.548);
     chassis.turn_to_point(56.298, -62);
-    Doinker.set(true);
+    RightDoinker.set(true);
     chassis.drive_to_point(56.298, -62);
     Clamp.set(false);
     intakeSort = false;
     intakeToFrogAuton = true;
 
     chassis.turn_to_point(60.668, -21.633);
-    Doinker.set(false);
+    RightDoinker.set(false);
     chassis.drive_to_point(60.668, -21.633);
   }
 
@@ -689,9 +686,9 @@ void auton_skills()
   goal_constants();
 
   // Score twice on wall stake
-  FrogMech.set(true);
+  // FrogMech.set(true);
   vex::wait(700, msec);
-  FrogMech.set(false);
+  // FrogMech.set(false);
   vex::wait(700, msec);
   intakeToFrogAuton = true;
   int frogTimeout = 3000;
@@ -702,9 +699,9 @@ void auton_skills()
   }
   wait(100, vex::timeUnits::msec);
   intakeToFrogAuton = false;
-  FrogMech.set(true);
+  // FrogMech.set(true);
   vex::wait(700, msec);
-  FrogMech.set(false);
+  // FrogMech.set(false);
 
   // Clean up the rest of the rings in the corner
   chassis.drive_timeout = 800;
@@ -815,9 +812,9 @@ void auton_skills()
   // chassis.turn_to_point(0 + 1, 69.388);
 
   // Score once on 2nd wall stake
-  FrogMech.set(true);
+  // FrogMech.set(true);
   vex::wait(800, msec);
-  FrogMech.set(false);
+  // FrogMech.set(false);
   // intakeToFrogAuton = true;
   // frogTimeout = 3000;
   vex::wait(800, msec);
@@ -858,7 +855,7 @@ void auton_skills()
   chassis.turn_timeout = 800;
   chassis.drive_to_point(42.6, 42.6);
   chassis.turn_to_point(56.571, 45.86);
-  Doinker.set(true);
+  RightDoinker.set(true);
   chassis.drive_to_point(56.571, 45.86);
 
   // Doinker out the corner
@@ -873,7 +870,7 @@ void auton_skills()
   chassis.turn_to_point(62.449, 58.51, 180);
   Clamp.set(false);
   default_constants();
-  Doinker.set(false);
+  RightDoinker.set(false);
   chassis.drive_timeout = 400;
   chassis.drive_distance(-16.5, chassis.get_absolute_heading());
 
@@ -893,13 +890,13 @@ void auton_skills()
 
   // Doinker and path to the last corner
   chassis.turn_to_point(56.559, 18.069);
-  Doinker.set(true);
+  RightDoinker.set(true);
   purePursuit->followPath(skills[4], 20, 10000, true, 17, 4, 0.8);
 
   chassis.turn_to_angle(0);
   chassis.drive_timeout = 700;
   chassis.turn_to_point(70, -70, 180);
-  Doinker.set(false);
+  RightDoinker.set(false);
   Clamp.set(false);
   default_constants();
   chassis.drive_timeout = 500;
