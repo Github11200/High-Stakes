@@ -217,8 +217,8 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     if (closestPoint.speed == 0)
     {
       cout << "Exiting Pure Pursuit curve" << endl;
-      DriveL.stop(brake);
-      DriveR.stop(brake);
+      chassis.DriveL.stop(brake);
+      chassis.DriveR.stop(brake);
       break;
     }
 
@@ -255,13 +255,13 @@ void Pursuit::followPath(Path path, double lookAheadDistance, double timeout, bo
     // Spin them in whatever direction based on whether you want to move forward or backward
     if (forwards)
     {
-      DriveL.spin(vex::directionType::fwd, leftTargetVelocity, vex::percentUnits::pct);
-      DriveR.spin(vex::directionType::fwd, rightTargetVelocity, vex::percentUnits::pct);
+      chassis.DriveL.spin(vex::directionType::fwd, leftTargetVelocity, vex::percentUnits::pct);
+      chassis.DriveR.spin(vex::directionType::fwd, rightTargetVelocity, vex::percentUnits::pct);
     }
     else
     {
-      DriveL.spin(vex::directionType::rev, leftTargetVelocity, vex::percentUnits::pct);
-      DriveR.spin(vex::directionType::rev, rightTargetVelocity, vex::percentUnits::pct);
+      chassis.DriveL.spin(vex::directionType::rev, leftTargetVelocity, vex::percentUnits::pct);
+      chassis.DriveR.spin(vex::directionType::rev, rightTargetVelocity, vex::percentUnits::pct);
     }
 
     lastLookAheadPoint = lookAheadPoint;
