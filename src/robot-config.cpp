@@ -12,8 +12,8 @@ controller Controller;
 
 motor FrontRight = motor(PORT18, ratio6_1, true);
 motor FrontLeft = motor(PORT17, ratio6_1, false);
-motor MiddleRight = motor(PORT19, ratio6_1, true);
-motor MiddleLeft = motor(PORT14, ratio6_1, false);
+motor MiddleRight = motor(PORT19, ratio6_1, false);
+motor MiddleLeft = motor(PORT14, ratio6_1, true);
 motor BackRight = motor(PORT8, ratio6_1, true);
 motor BackLeft = motor(PORT16, ratio6_1, false);
 motor Intake = motor(PORT12, ratio6_1, true);
