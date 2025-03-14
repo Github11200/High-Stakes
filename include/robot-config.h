@@ -12,12 +12,13 @@ extern motor MiddleLeft;
 extern motor BackRight;
 extern motor BackLeft;
 extern motor Intake;
-extern motor LadyBrown;
+extern motor LadyBrownMotor;
 extern digital_out Clamp;
 extern digital_out DoinkerClamp;
 extern digital_out RightDoinker;
 extern digital_out LeftDoinker;
 extern optical OpticalSensor;
+extern rotation LadyBrownRoation;
 
 extern vex::controller::button IntakeButton;
 extern vex::controller::button LadyBrownRaiseButton;

@@ -17,11 +17,13 @@ motor MiddleLeft = motor(PORT14, ratio6_1, true);
 motor BackRight = motor(PORT8, ratio6_1, true);
 motor BackLeft = motor(PORT16, ratio6_1, false);
 motor Intake = motor(PORT12, ratio6_1, true);
+motor LadyBrownMotor = motor(PORT15, ratio36_1, true);
 digital_out RightDoinker = digital_out(Brain.ThreeWirePort.A);
 digital_out LeftDoinker = digital_out(Brain.ThreeWirePort.B);
 digital_out Clamp = digital_out(Brain.ThreeWirePort.C);
 digital_out DoinkerClamp = digital_out(Brain.ThreeWirePort.D);
 optical OpticalSensor = optical(PORT1);
+rotation LadyBrownRotation = rotation(PORT10);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
 vex::controller::button LadyBrownRaiseButton = Controller.ButtonL2;
