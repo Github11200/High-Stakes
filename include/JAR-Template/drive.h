@@ -1,5 +1,6 @@
+#ifndef DRIVE_H
+#define DRIVE_H
 
-#pragma once
 #include "vex.h"
 
 enum drive_setup
@@ -18,44 +19,224 @@ enum drive_setup
 
 struct DriveParams
 {
-  float drive_min_voltage;
-  float drive_max_voltage;
-  float heading_max_voltage;
-  float drive_settle_error;
-  float drive_settle_time;
-  float drive_timeout;
-  float drive_kp;
-  float drive_ki;
-  float drive_kd;
-  float drive_starti;
-  float heading_kp;
-  float heading_ki;
-  float heading_kd;
-  float heading_starti;
+  float drive_min_voltage = 0;
+  float drive_max_voltage = 12;
+  float heading_max_voltage = 10;
+  float drive_settle_error = 1;
+  float drive_settle_time = 100;
+  float drive_timeout = 8000;
+  float drive_kp = 0.8;
+  float drive_ki = 0.01;
+  float drive_kd = 4.4;
+  float drive_starti = 3;
+  float heading_kp = 0.18;
+  float heading_ki = 0.02;
+  float heading_kd = 1;
+  float heading_starti = 1;
+
+  DriveParams &set_min_voltage(float val)
+  {
+    drive_min_voltage = val;
+    return *this;
+  }
+
+  DriveParams &set_max_voltage(float val)
+  {
+    drive_max_voltage = val;
+    return *this;
+  }
+
+  DriveParams &set_heading_max_voltage(float val)
+  {
+    heading_max_voltage = val;
+    return *this;
+  }
+
+  DriveParams &set_settle_error(float val)
+  {
+    drive_settle_error = val;
+    return *this;
+  }
+
+  DriveParams &set_settle_time(float val)
+  {
+    drive_settle_time = val;
+    return *this;
+  }
+
+  DriveParams &set_timeout(float val)
+  {
+    drive_timeout = val;
+    return *this;
+  }
+
+  DriveParams &set_kp(float val)
+  {
+    drive_kp = val;
+    return *this;
+  }
+
+  DriveParams &set_ki(float val)
+  {
+    drive_ki = val;
+    return *this;
+  }
+
+  DriveParams &set_kd(float val)
+  {
+    drive_kd = val;
+    return *this;
+  }
+
+  DriveParams &set_starti(float val)
+  {
+    drive_starti = val;
+    return *this;
+  }
+
+  DriveParams &set_heading_kp(float val)
+  {
+    heading_kp = val;
+    return *this;
+  }
+
+  DriveParams &set_heading_ki(float val)
+  {
+    heading_ki = val;
+    return *this;
+  }
+
+  DriveParams &set_heading_kd(float val)
+  {
+    heading_kd = val;
+    return *this;
+  }
+
+  DriveParams &set_heading_starti(float val)
+  {
+    heading_starti = val;
+    return *this;
+  }
 };
 
 struct TurnParams
 {
-  float turn_max_voltage;
-  float turn_settle_error;
-  float turn_settle_time;
-  float turn_timeout;
-  float turn_kp;
-  float turn_ki;
-  float turn_kd;
-  float turn_starti;
+  float turn_max_voltage = 10;
+  float turn_settle_error = 1;
+  float turn_settle_time = 100;
+  float turn_timeout = 800;
+  float turn_kp = 0.18;
+  float turn_ki = 0.02;
+  float turn_kd = 1;
+  float turn_starti = 1;
+
+  TurnParams &set_max_voltage(float val)
+  {
+    turn_max_voltage = val;
+    return *this;
+  }
+
+  TurnParams &set_settle_error(float val)
+  {
+    turn_settle_error = val;
+    return *this;
+  }
+
+  TurnParams &set_settle_time(float val)
+  {
+    turn_settle_time = val;
+    return *this;
+  }
+
+  TurnParams &set_timeout(float val)
+  {
+    turn_timeout = val;
+    return *this;
+  }
+
+  TurnParams &set_kp(float val)
+  {
+    turn_kp = val;
+    return *this;
+  }
+
+  TurnParams &set_ki(float val)
+  {
+    turn_ki = val;
+    return *this;
+  }
+
+  TurnParams &set_kd(float val)
+  {
+    turn_kd = val;
+    return *this;
+  }
+
+  TurnParams &set_starti(float val)
+  {
+    turn_starti = val;
+    return *this;
+  }
 };
 
 struct SwingParams
 {
-  float swing_max_voltage;
-  float swing_settle_error;
-  float swing_settle_time;
-  float swing_timeout;
-  float swing_kp;
-  float swing_ki;
-  float swing_kd;
-  float swing_starti;
+  float swing_max_voltage = 12;
+  float swing_settle_error = 1;
+  float swing_settle_time = 5000;
+  float swing_timeout = 5000;
+  float swing_kp = 0.3;
+  float swing_ki = 0.01;
+  float swing_kd = 2;
+  float swing_starti = 3;
+
+  SwingParams &set_max_voltage(float val)
+  {
+    swing_max_voltage = val;
+    return *this;
+  }
+
+  SwingParams &set_settle_error(float val)
+  {
+    swing_settle_error = val;
+    return *this;
+  }
+
+  SwingParams &set_settle_time(float val)
+  {
+    swing_settle_time = val;
+    return *this;
+  }
+
+  SwingParams &set_timeout(float val)
+  {
+    swing_timeout = val;
+    return *this;
+  }
+
+  SwingParams &set_kp(float val)
+  {
+    swing_kp = val;
+    return *this;
+  }
+
+  SwingParams &set_ki(float val)
+  {
+    swing_ki = val;
+    return *this;
+  }
+
+  SwingParams &set_kd(float val)
+  {
+    swing_kd = val;
+    return *this;
+  }
+
+  SwingParams &set_starti(float val)
+  {
+    swing_starti = val;
+    return *this;
+  }
 };
 
 /**
@@ -150,14 +331,14 @@ public:
   void set_drive_exit_conditions(float drive_settle_error, float drive_settle_time, float drive_timeout);
   void set_swing_exit_conditions(float swing_settle_error, float swing_settle_time, float swing_timeout);
 
-  void turn_to_angle(float angle, TurnParams params);
-  void drive_distance(float distance, float heading, DriveParams params);
-  void left_swing_to_angle(float angle, SwingParams params);
-  void right_swing_to_angle(float angle, SwingParams params);
-  void drive_to_point(float X_position, float Y_position, DriveParams driveParams);
-  void drive_to_pose(float X_position, float Y_position, float angle, float lead, float setback, DriveParams params);
-  void turn_to_point(float X_position, float Y_position, float extra_angle_deg, TurnParams params);
-  void holonomic_drive_to_pose(float X_position, float Y_position, float angle, DriveParams params);
+  void turn_to_angle(float angle, TurnParams turnParams = {});
+  void drive_distance(float distance, float heading, DriveParams driveParams = {});
+  void left_swing_to_angle(float angle, SwingParams swingParams = {});
+  void right_swing_to_angle(float angle, SwingParams swingParams = {});
+  void drive_to_point(float X_position, float Y_position, DriveParams driveParams = {});
+  void drive_to_pose(float X_position, float Y_position, float angle, float lead, float setback, DriveParams driveParams = {});
+  void turn_to_point(float X_position, float Y_position, float extra_angle_deg, TurnParams turnParams = {});
+  void holonomic_drive_to_pose(float X_position, float Y_position, float angle, DriveParams driveParams = {}, TurnParams turnParams = {});
 
   Odom odom;
   float get_ForwardTracker_position();
@@ -178,3 +359,5 @@ public:
   void control_tank();
   void control_holonomic();
 };
+
+#endif

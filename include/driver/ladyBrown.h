@@ -12,9 +12,12 @@ private:
   PID *ladyBrownPID;
   double loadingPositionAngle;
   double maxVoltage;
+  double slewChange;
+  double maxAngle;
+  double minAngle;
 
 public:
-  LadyBrown(double loadingPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double raisingSlew);
+  LadyBrown(double loadingPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle);
 
   /**
    * @brief Gets the lady brown into loading position
@@ -33,6 +36,8 @@ public:
    *
    */
   void lower();
+
+  void autonScore();
 };
 
 #endif

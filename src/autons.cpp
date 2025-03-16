@@ -100,8 +100,6 @@ void negative_alliance_stake_rush(string c)
     for (int i = 0; i < negativeRingRush.size(); ++i)
       negativeRingRush[i] = mirrorPath(negativeRingRush[i]);
   }
-
-  chassis.drive_to_point(5, 5, {.drive_settle_time = 5, .drive_settle_error = 5});
 }
 
 // NOT TESTED
