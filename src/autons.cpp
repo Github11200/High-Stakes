@@ -19,38 +19,33 @@ vector<Point> mirrorPath(vector<Point> originalPath)
   return originalPath;
 }
 
-void default_constants()
+DriveParams goal_constants()
 {
-  // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
-  chassis.set_drive_constants(12, 0.8, 0.01, 4.4, 3);
-  chassis.set_heading_constants(10, 0.18, 0.02, 1, 1);
-  chassis.set_turn_constants(10, 0.18, 0.02, 1, 1);
-  chassis.set_swing_constants(12, 0.3, 0.01, 2, 3);
+  DriveParams goalParams;
+  goalParams.set_max_voltage(12).set_kp(0.7).set_ki(0.01).set_kd(3.5).set_starti(3);
+  goalParams.set_heading_max_voltage(10).set_heading_kp(0.15).set_heading_ki(0.02).set_heading_kd(1).set_heading_starti(1);
 
-  // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(1, 100, 8000);
-  chassis.set_turn_exit_conditions(1, 100, 800);
-  chassis.set_swing_exit_conditions(1, 5000, 5000);
+  return goalParams;
 }
 
-void goal_constants()
+ExitConditions fast_exit_conditions()
 {
-  chassis.set_drive_constants(12, 0.7, 0.01, 3.5, 3);
-  chassis.set_heading_constants(10, 0.15, 0.02, 1, 1);
+  ExitConditions fastExitConditions;
+  fastExitConditions.driveParams.set_settle_error(2).set_settle_time(0.01).set_timeout(4000);
+  fastExitConditions.turnParams.set_settle_error(2).set_settle_time(0.01).set_timeout(800);
+  fastExitConditions.swingParams.set_settle_error(1).set_settle_time(5000).set_timeout(5000);
+
+  return fastExitConditions;
 }
 
-void fast_exit_conditions()
+ExitConditions exact_exit_conditions()
 {
-  chassis.set_drive_exit_conditions(2, 0.01, 4000);
-  chassis.set_turn_exit_conditions(2, 0.01, 800);
-  chassis.set_swing_exit_conditions(1, 5000, 5000);
-}
+  ExitConditions exactExitConditions;
+  exactExitConditions.driveParams.set_settle_error(0.5).set_settle_time(200).set_timeout(4000);
+  exactExitConditions.turnParams.set_settle_error(1).set_settle_time(200).set_timeout(1200);
+  exactExitConditions.swingParams.set_settle_error(1).set_settle_time(5000).set_timeout(5000);
 
-void exact_exit_conditions()
-{
-  chassis.set_drive_exit_conditions(0.5, 200, 4000);
-  chassis.set_turn_exit_conditions(1, 200, 1200);
-  chassis.set_swing_exit_conditions(1, 5000, 5000);
+  return exactExitConditions;
 }
 
 int colorSortingAutonTaskWrapper()
@@ -77,8 +72,6 @@ int intakeToFrogAutonTaskWrapper()
 void negative_alliance_stake_rush(string c)
 {
   pre_driver = true;
-
-  default_constants();
 
   cout << "negative alliance stake auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -107,8 +100,6 @@ void positive_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
-  default_constants();
-
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
   int reversed;
   if (c == "red")
@@ -132,8 +123,6 @@ void positive_alliance_stake_rush(string c)
 void negative_ring_rush(string c)
 {
   pre_driver = true;
-
-  default_constants();
 
   cout << "negative ring rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
@@ -163,8 +152,6 @@ void positive_goal_rush(string c)
 {
   pre_driver = true;
 
-  default_constants();
-
   cout << "positive goal rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
@@ -190,7 +177,6 @@ void testing(string c)
   chassis.set_coordinates(0, 0, 0);
   cout << "testing auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  cout << chassis.get_ForwardTracker_position() << endl;
   pre_driver = true;
 
   task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
@@ -218,7 +204,6 @@ void auton_skills()
   pre_driver = true;
   intakeToFrogAuton = false;
 
-  default_constants();
   chassis.set_coordinates(-61, 0, 90);
 
   cout << "skills auto started, initial position:" << endl;

@@ -137,3 +137,18 @@ bool PID::is_settled()
   }
   return (false);
 }
+
+/**
+ * @brief This method will simply reset all the properties so
+ * it is possible to reuse the same PID class without having to
+ * instantiate a new one.
+ *
+ */
+void PID::reset()
+{
+  this->accumulated_error = 0;
+  this->previous_error = 0;
+  this->output = 0;
+  this->time_spent_settled = 0;
+  this->time_spent_running = 0;
+}

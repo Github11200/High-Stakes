@@ -42,3 +42,13 @@ void MogoControl::reset()
   Clamp.set(false);
   this->mogoState = RELEASED;
 }
+
+void MogoControl::autonDelayedClamp(int delay)
+{
+  static int staticDelay = delay; // Make it static so it persists
+
+  thread clampDelayThread([]()
+                          {
+                            wait(staticDelay, vex::timeUnits::msec);
+                            Clamp.set(true); });
+}

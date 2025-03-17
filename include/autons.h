@@ -1,11 +1,19 @@
 #pragma once
 #include "JAR-Template/drive.h"
+#include "driver/mogo.h"
 
 class Drive;
 
 extern Drive chassis;
 
-void default_constants();
+struct ExitConditions
+{
+  DriveParams driveParams;
+  TurnParams turnParams;
+  SwingParams swingParams;
+};
+
+vector<Point> mirrorPath(vector<Point> originalPath);
 
 void negative_alliance_stake_rush(std::string c);
 void positive_alliance_stake_rush(std::string c);

@@ -2,10 +2,11 @@
 
 using namespace vex;
 
-LadyBrown::LadyBrown(double loadingPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle)
+LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle)
 {
   this->ladyBrownPID = new PID(0, kP, 0, kD, 0, settleError, settleTime, timeout);
   this->loadingPositionAngle = loadingPositionAngle;
+  this->scoringPositionAngle = scoringPositionAngle;
   this->maxVoltage = maxVoltage;
   this->slewChange = slewChange;
   this->maxAngle = maxAngle;
@@ -14,6 +15,8 @@ LadyBrown::LadyBrown(double loadingPositionAngle, double maxVoltage, double kP, 
 
 void LadyBrown::loading()
 {
+  double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
+  double output = this->ladyBrownPID->compute(error);
   while (!this->ladyBrownPID->is_settled())
   {
     double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
@@ -23,6 +26,7 @@ void LadyBrown::loading()
     LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
+  this->ladyBrownPID->reset();
 }
 
 void LadyBrown::raise()
@@ -47,6 +51,27 @@ void LadyBrown::lower()
   LadyBrownMotor.stop(vex::brakeType::hold);
 }
 
-void LadyBrown::autonScore()
+void LadyBrown::score()
 {
+  while (!this->ladyBrownPID->is_settled())
+  {
+    double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->scoringPositionAngle;
+    double output = this->ladyBrownPID->compute(error);
+
+    output = clamp(output, -this->maxVoltage, this->maxVoltage);
+    LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
+  }
+  this->ladyBrownPID->reset();
+}
+
+void LadyBrown::autonScore(int delay)
+{
+  static int staticDelay = delay; // Make it static so it persists
+  static LadyBrown *ladyBrownPtr = this;
+
+  thread ladyBrownDelayThread([]()
+                              {
+                            wait(staticDelay, vex::timeUnits::msec);
+                            ladyBrownPtr->score(); });
 }
