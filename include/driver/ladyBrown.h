@@ -35,6 +35,8 @@ public:
   /// @brief Scores the ring after a set number of milliseconds
   /// @param delay The number of milliseconds you want to delay by
   void autonScore(int delay);
+
+  void ladyBrownAutonTask();
 };
 
 #endif

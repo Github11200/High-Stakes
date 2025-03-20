@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
+#include "../include/driver/ladyBrown.h"
 #include "../include/auto/skills.h"
 #include "../include/auto/negativeRingRush.h"
 #include "../include/auto/positiveGoalRush.h"
@@ -7,10 +8,13 @@
 using namespace vex;
 using namespace std;
 
-bool intakeToFrogAuton = false;
+bool intakeToLadyBrownAuton = false;
 bool intakeSort = false;
 bool intakeRev = false;
+bool ladyBrownScore = false;
+float ladyBrownDelay = 0;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
+LadyBrown ladyBrown(20, 180, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
 
 vector<Point> mirrorPath(vector<Point> originalPath)
 {
@@ -48,21 +52,21 @@ ExitConditions exact_exit_conditions()
   return exactExitConditions;
 }
 
-int colorSortingAutonTaskWrapper()
+int intakeAutonTaskWrapper()
 {
   while (true)
   {
-    intakeControl.colorSortingAutonTask();
+    intakeControl.intakeAutonTask();
     vex::wait(50, vex::timeUnits::msec);
   }
   return 1;
 }
 
-int intakeToFrogAutonTaskWrapper()
+int ladyBrownAutonTaskWrapper()
 {
   while (true)
   {
-    intakeControl.intakeToFrogAutonTask();
+    ladyBrown.ladyBrownAutonTask();
     vex::wait(50, vex::timeUnits::msec);
   }
   return 1;
@@ -76,7 +80,7 @@ void negative_alliance_stake_rush(string c)
   cout << "negative alliance stake auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
 
   if (c == "red")
@@ -100,7 +104,7 @@ void positive_alliance_stake_rush(string c)
 {
   pre_driver = true;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
@@ -127,24 +131,26 @@ void negative_ring_rush(string c)
   cout << "negative ring rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
+  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-50, 23.556, 270);
+    chassis.set_coordinates(-50.788, 27.547, 72);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(50, 23.556, 90);
-    for (vector<Point> path : negativeRingRush)
-      mirrorPath(path);
+    chassis.set_coordinates(50.788, 27.547, 282);
   }
 
-  Pursuit *purePursuit = new Pursuit(12.75);
+  // Pursuit *purePursuit = new Pursuit(12.75);
+
+  intakeSort = true;
+  chassis.drive_to_point(-9.868, 41.452);
 }
 
 // NOT TESTED
@@ -155,8 +161,7 @@ void positive_goal_rush(string c)
   cout << "positive goal rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-  task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
@@ -179,8 +184,7 @@ void testing(string c)
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
   pre_driver = true;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-  task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
   float kP = 0.18;
   float kI = 0.02;
@@ -202,15 +206,14 @@ void testing(string c)
 void auton_skills()
 {
   pre_driver = true;
-  intakeToFrogAuton = false;
+  intakeToLadyBrownAuton = false;
 
   chassis.set_coordinates(-61, 0, 90);
 
   cout << "skills auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task colorSortingAutonTask = task(colorSortingAutonTaskWrapper);
-  task intakeToFrogAutonTask = task(intakeToFrogAutonTaskWrapper);
+  task intakeAutonTask = task(intakeAutonTaskWrapper);
 
   alliance = "red";
 }

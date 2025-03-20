@@ -15,11 +15,11 @@ LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, d
 
 void LadyBrown::loading()
 {
-  double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
+  double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
   double output = this->ladyBrownPID->compute(error);
   while (!this->ladyBrownPID->is_settled())
   {
-    double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
+    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
@@ -55,7 +55,7 @@ void LadyBrown::score()
 {
   while (!this->ladyBrownPID->is_settled())
   {
-    double error = LadyBrownRoation.angle(vex::rotationUnits::deg) - this->scoringPositionAngle;
+    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->scoringPositionAngle;
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
@@ -74,4 +74,29 @@ void LadyBrown::autonScore(int delay)
                               {
                             wait(staticDelay, vex::timeUnits::msec);
                             ladyBrownPtr->score(); });
+}
+
+void LadyBrown::ladyBrownAutonTask()
+{
+  if (pre_driver)
+  {
+    if (intakeToLadyBrownAuton)
+    {
+      loading();
+    }
+    else if (ladyBrownScore)
+    {
+      autonScore(ladyBrownDelay);
+      ladyBrownScore = false;
+    }
+    else
+    {
+      while (LadyBrownRotation.angle(vex::rotationUnits::deg) > this->minAngle)
+      {
+        LadyBrownMotor.spin(fwd, -12, volt);
+        vex::wait(30, msec);
+      }
+      LadyBrownMotor.stop(coast);
+    }
+  }
 }

@@ -30,7 +30,7 @@ public:
   /// @brief Spin the intake to take in a ring
   void intake();
 
-  /// @brief This will intake the ring, and stop it in time for the frog
+  /// @brief This will intake the ring, and stop it in time for the lady brown
   void intakeToLadyBrown();
 
   /// @brief Spin the intake to outtake the ring or put it into the redirect
@@ -38,9 +38,7 @@ public:
 
   int hue_difference(int hue1, int hue2);
 
-  void intakeToFrogAutonTask();
-
-  void colorSortingAutonTask();
+  void intakeAutonTask();
 };
 
 #endif

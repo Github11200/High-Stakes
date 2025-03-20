@@ -79,6 +79,7 @@ void IntakeControl::intakeToLadyBrown()
   }
   OpticalSensor.setLightPower(0, pct);
   Intake.stop(vex::brakeType::brake);
+  ringStopped = false;
 }
 
 void IntakeControl::outtake()
@@ -107,31 +108,7 @@ int IntakeControl::hue_difference(int hue1, int hue2)
   }
 }
 
-void IntakeControl::intakeToFrogAutonTask()
-{
-  if (pre_driver)
-  {
-    if (intakeToFrogAuton)
-    {
-      OpticalSensor.setLightPower(100, pct);
-      // Spin the intake until the optical sensor senses a ring color
-      while (!OpticalSensor.isNearObject())
-      {
-        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-        // Hooks.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
-        wait(60, vex::timeUnits::msec);
-      }
-      OpticalSensor.setLightPower(0, pct);
-      while (OpticalSensor.isNearObject() && intakeToFrogAuton)
-        // Hooks.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
-        // Hooks.spinFor(vex::directionType::rev, 90, vex::rotationUnits::deg, 100, vex::velocityUnits::pct);
-        // Hooks.stop(vex::brakeType::brake);
-        intakeToFrogAuton = false;
-    }
-  }
-}
-
-void IntakeControl::colorSortingAutonTask()
+void IntakeControl::intakeAutonTask()
 {
   if (pre_driver) // make sure to not stop the intake during driver control
   {
@@ -146,9 +123,27 @@ void IntakeControl::colorSortingAutonTask()
     {
       Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
     }
-    else if (!intakeToFrogAuton) // don't stop the intake if other systems are running
+    else if (intakeToLadyBrownAuton)
+    {
+      while (true)
+      {
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        if (Intake.velocity(pct) < 5)
+        {
+          wait(2, sec);
+          if (Intake.velocity(pct) < 5)
+          {
+            break;
+          }
+        }
+        wait(60, vex::timeUnits::msec);
+      }
+      intakeToLadyBrownAuton = false;
+    }
+    else
     {
       OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
+      Intake.stop(coast);
     }
   }
 }

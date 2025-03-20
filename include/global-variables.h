@@ -1,14 +1,8 @@
-extern long double x;
-extern long double y;
-extern double theta;
-extern bool L1_pressing;
-extern bool clamped;
-extern bool R1_pressing;
-extern bool doinked;
-extern bool intakeToFrogAuton;
+extern bool intakeToLadyBrownAuton;
 extern bool intakeSort;
 extern bool intakeRev;
-extern bool only_rollers;
+extern bool ladyBrownScore;
+extern float ladyBrownDelay;
 extern bool pre_match;
 extern bool pre_driver;
 extern bool ringStopped;

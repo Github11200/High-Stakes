@@ -18,7 +18,7 @@ extern digital_out DoinkerClamp;
 extern digital_out RightDoinker;
 extern digital_out LeftDoinker;
 extern optical OpticalSensor;
-extern rotation LadyBrownRoation;
+extern rotation LadyBrownRotation;
 
 extern vex::controller::button IntakeButton;
 extern vex::controller::button LadyBrownRaiseButton;
