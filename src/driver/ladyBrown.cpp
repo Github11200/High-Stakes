@@ -2,11 +2,12 @@
 
 using namespace vex;
 
-LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle)
+LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double allianceStakeAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle)
 {
   this->ladyBrownPID = new PID(0, kP, 0, kD, 0, settleError, settleTime, timeout);
   this->loadingPositionAngle = loadingPositionAngle;
   this->scoringPositionAngle = scoringPositionAngle;
+  this->allianceStakeAngle = allianceStakeAngle;
   this->maxVoltage = maxVoltage;
   this->slewChange = slewChange;
   this->maxAngle = maxAngle;
@@ -76,6 +77,31 @@ void LadyBrown::autonScore(int delay)
                             ladyBrownPtr->score(); });
 }
 
+void LadyBrown::allianceStakeScore()
+{
+  while (!this->ladyBrownPID->is_settled())
+  {
+    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->allianceStakeAngle;
+    double output = this->ladyBrownPID->compute(error);
+
+    output = clamp(output, -this->maxVoltage, this->maxVoltage);
+    LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
+  }
+  this->ladyBrownPID->reset();
+}
+
+void LadyBrown::allianceStakeAutonScore(int delay)
+{
+  static int staticDelay = delay; // Make it static so it persists
+  static LadyBrown *ladyBrownPtr = this;
+
+  thread ladyBrownDelayThread([]()
+                              {
+                            wait(staticDelay, vex::timeUnits::msec);
+                            ladyBrownPtr->allianceStakeScore(); });
+}
+
 void LadyBrown::ladyBrownAutonTask()
 {
   if (pre_driver)
@@ -88,6 +114,11 @@ void LadyBrown::ladyBrownAutonTask()
     {
       autonScore(ladyBrownDelay);
       ladyBrownScore = false;
+    }
+    else if (ladyBrownAllianceStakeScore)
+    {
+      allianceStakeAutonScore(ladyBrownDelay);
+      ladyBrownAllianceStakeScore = false;
     }
     else
     {

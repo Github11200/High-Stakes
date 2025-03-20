@@ -12,9 +12,10 @@ bool intakeToLadyBrownAuton = false;
 bool intakeSort = false;
 bool intakeRev = false;
 bool ladyBrownScore = false;
+bool ladyBrownAllianceStakeScore = false;
 float ladyBrownDelay = 0;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-LadyBrown ladyBrown(20, 180, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
+LadyBrown ladyBrown(20, 180, 220, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
 
 vector<Point> mirrorPath(vector<Point> originalPath)
 {
@@ -149,8 +150,49 @@ void negative_ring_rush(string c)
 
   // Pursuit *purePursuit = new Pursuit(12.75);
 
+  // Rush for center rings
   intakeSort = true;
+  LeftDoinker.set(true);
+  chassis.drive_to_point(-10.1, 43.158);
+
+  // Clamp goal
+  chassis.drive_to_pose(-23.773, 23.773, 0, 0.5, 0);
+  Clamp.set(true);
+
+  // Eat rushed ring in doinker + one more
+  LeftDoinker.set(false);
   chassis.drive_to_point(-9.868, 41.452);
+
+  // Go to the corner and eat two rings
+  chassis.turn_to_angle(270);
+  chassis.drive_to_pose(-62.507, 62.507, 315, 0.5, 0);
+  vex::wait(300, msec);
+  chassis.drive_distance(-15, 315);
+  chassis.drive_distance(10, 315);
+  vex::wait(300, msec);
+
+  // Eat stack in front of alliance stake, hopefully color sorting the first one
+  chassis.turn_to_point(-43.041, -16.153, 0);
+  intakeSort = false;
+  ringStopped = false;
+  intakeToLadyBrownAuton = true;
+  chassis.drive_to_point(-43.041, -16.153);
+  vex::wait(300, msec);
+
+  // Stick out the doinker to swat away the ring in front of alliance stake, then turn to it
+  RightDoinker.set(true);
+  chassis.drive_to_point(-49, 0);
+  chassis.turn_to_point(-69, 0, 0);
+  RightDoinker.set(false);
+
+  chassis.heading_max_voltage = 0;
+  chassis.drive_distance(15, 270);
+  chassis.drive_distance(-15, 270);
+  chassis.heading_max_voltage = 12;
+
+  intakeToLadyBrownAuton = false;
+  ladyBrownAllianceStakeScore = true;
+  vex::wait(100, sec);
 }
 
 // NOT TESTED

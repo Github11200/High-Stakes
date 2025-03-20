@@ -125,7 +125,7 @@ void IntakeControl::intakeAutonTask()
     }
     else if (intakeToLadyBrownAuton)
     {
-      while (true)
+      while (!ringStopped)
       {
         Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
         if (Intake.velocity(pct) < 5)
@@ -133,12 +133,11 @@ void IntakeControl::intakeAutonTask()
           wait(2, sec);
           if (Intake.velocity(pct) < 5)
           {
-            break;
+            ringStopped = true;
           }
         }
         wait(60, vex::timeUnits::msec);
       }
-      intakeToLadyBrownAuton = false;
     }
     else
     {

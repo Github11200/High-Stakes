@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
+#include "../include/driver/ladyBrown.h"
 #include "../include/driver/joystick.h"
 #include "../include/driver/mogo.h"
 #include <robot-config.h>
@@ -292,6 +293,7 @@ void autonomous(void)
 int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
+  LadyBrown ladyBrown(20, 180, 220, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
   MogoControl mogoControl;
 
   while (true)
@@ -322,7 +324,10 @@ int buttonsWrapper()
     else if (IntakeButton.pressing())
       intakeControl.intake();
     else if (LadyBrownLoadButton.pressing())
+    {
       intakeControl.intakeToLadyBrown();
+      ladyBrown.loading();
+    }
     else
       Intake.stop(coast);
 

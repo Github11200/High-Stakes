@@ -12,13 +12,14 @@ private:
   PID *ladyBrownPID;
   double loadingPositionAngle;
   double scoringPositionAngle;
+  double allianceStakeAngle;
   double maxVoltage;
   double slewChange;
   double maxAngle;
   double minAngle;
 
 public:
-  LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle);
+  LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double allianceStakeAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle);
 
   /// @brief Gets the lady brown into loading position
   void loading();
@@ -35,6 +36,13 @@ public:
   /// @brief Scores the ring after a set number of milliseconds
   /// @param delay The number of milliseconds you want to delay by
   void autonScore(int delay);
+
+  /// @brief Gets the lady brown into scoring position
+  void allianceStakeScore();
+
+  /// @brief Scores the ring after a set number of milliseconds
+  /// @param delay The number of milliseconds you want to delay by
+  void allianceStakeAutonScore(int delay);
 
   void ladyBrownAutonTask();
 };

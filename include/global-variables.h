@@ -2,6 +2,7 @@ extern bool intakeToLadyBrownAuton;
 extern bool intakeSort;
 extern bool intakeRev;
 extern bool ladyBrownScore;
+extern bool ladyBrownAllianceStakeScore;
 extern float ladyBrownDelay;
 extern bool pre_match;
 extern bool pre_driver;
