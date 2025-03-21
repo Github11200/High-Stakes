@@ -88,30 +88,88 @@ int mogoAutonTaskWrapper()
 }
 
 // NOT TESTED
-void negative_alliance_stake_rush(string c)
+void solo_awp(string c)
 {
   pre_driver = true;
 
-  cout << "negative alliance stake auto started, initial position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
   task intakeAutonTask = task(intakeAutonTaskWrapper);
+  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
+  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
 
   if (c == "red")
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-56.35, 20.793, 0);
+    chassis.set_coordinates(-56.548, 11.855, 225);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(56.35, 20.793, 0);
-    for (int i = 0; i < negativeRingRush.size(); ++i)
-      negativeRingRush[i] = mirrorPath(negativeRingRush[i]);
+    chassis.set_coordinates(56.548, 11.855, 135);
   }
+
+  cout << "solo awp auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  // Load ring into lady brown (we're out of size if it starts loaded i think)
+  ringStopped = false;
+  intakeToLadyBrownAuton = true;
+  vex::wait(500, msec);
+  intakeToLadyBrownAuton = false;
+
+  // Score on alliance stake
+  ladyBrownAllianceStakeScore = true;
+  chassis.drive_distance(2, 225);
+  vex::wait(500, msec);
+  ladyBrownAllianceStakeScore = false;
+
+  // Curve into goal and clamp
+  mogoClampDelay = 900;
+  mogoClamp = true;
+  chassis.drive_to_pose(-23.773, 23.773, 270, 0.5, 0);
+
+  // Use ring rush to get rings on line
+  LeftDoinker.set(true);
+  chassis.turn_to_point(-8.478, 38.671, 0);
+  intakeSort = true;
+  chassis.drive_to_point(-8.478, 38.671);
+
+  // Pull back the ring in the doinker
+  chassis.turn_to_point(-23.376, 15.43, 180);
+  chassis.drive_to_point(-23.376, 15.43);
+  LeftDoinker.set(false);
+
+  // Eat the ring stack and doinkered ring
+  chassis.turn_to_point(-23.376, 47.014, 0);
+  chassis.drive_to_point(-23.376, 47.014);
+
+  // Travel across the field, also eating up our alliance's preload
+  chassis.turn_to_point(-42.048, 19.204, 0);
+  chassis.drive_to_point(-42.048, 19.204);
+  chassis.drive_to_point(-58.733, -47.141);
+
+  // Drop goal out of the way and get the other one
+  chassis.turn_to_angle(160);
+  vex::wait(300, msec);
+  Clamp.set(false);
+  intakeSort = false;
+  chassis.turn_to_point(-23.574, -23.503, 180);
+  mogoClampDelay = 900;
+  mogoClamp = true;
+  chassis.drive_to_point(-23.574, -23.503);
+  intakeSort = true;
+
+  // Eat the positive 2-stack
+  chassis.turn_to_point(-23.574, -47.339, 0);
+  chassis.drive_to_point(-23.574, -47.339);
+
+  // Touch ladder
+  chassis.turn_to_point(-15.232, -26.681, 0);
+  chassis.drive_to_point(-15.232, -26.681);
+  ladyBrownAllianceStakeScore = true;
+  vex::wait(100, sec);
 }
 
 // NOT TESTED

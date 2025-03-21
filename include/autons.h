@@ -15,7 +15,7 @@ struct ExitConditions
 
 vector<Point> mirrorPath(vector<Point> originalPath);
 
-void negative_alliance_stake_rush(std::string c);
+void solo_awp(std::string c);
 void positive_six_ring(std::string c);
 void negative_ring_rush(std::string c);
 void positive_goal_rush(std::string c);

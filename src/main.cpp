@@ -150,11 +150,11 @@ void updateScreen()
     Brain.Screen.printAt(5, 20, "SKILLS");
   }
   Brain.Screen.setFillColor(green);
-  Brain.Screen.printAt(165, 20, "negative alliance stake rush");
+  Brain.Screen.printAt(165, 20, "solo awp");
   Brain.Screen.setFillColor(cyan);
-  Brain.Screen.printAt(325, 20, "positive alliance stake rush");
+  Brain.Screen.printAt(325, 20, "positive six ring");
   Brain.Screen.setFillColor(red);
-  Brain.Screen.printAt(5, 140, "negative ring rush");
+  Brain.Screen.printAt(5, 140, "negative six ring");
   Brain.Screen.setFillColor(orange);
   Brain.Screen.printAt(165, 140, "positive mogo rush");
   Brain.Screen.setFillColor(purple);
@@ -259,7 +259,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  negative_alliance_stake_rush("blue");
+  solo_awp("blue");
 
   if (alliance == "skills")
   {
@@ -270,7 +270,7 @@ void autonomous(void)
     switch (current_auton_selection)
     {
     case 0:
-      negative_alliance_stake_rush(alliance);
+      solo_awp(alliance);
       break;
     case 1:
       positive_six_ring(alliance);
