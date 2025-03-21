@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "../include/driver/intake.h"
 #include "../include/driver/ladyBrown.h"
+#include "../include/driver/mogo.h"
 #include "../include/auto/skills.h"
 #include "../include/auto/negativeRingRush.h"
 #include "../include/auto/positiveGoalRush.h"
@@ -14,8 +15,11 @@ bool intakeRev = false;
 bool ladyBrownScore = false;
 bool ladyBrownAllianceStakeScore = false;
 float ladyBrownDelay = 0;
+bool mogoClamp = false;
+float mogoClampDelay = 0;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 LadyBrown ladyBrown(20, 180, 220, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
+MogoControl mogoControl;
 
 vector<Point> mirrorPath(vector<Point> originalPath)
 {
@@ -73,6 +77,16 @@ int ladyBrownAutonTaskWrapper()
   return 1;
 }
 
+int mogoAutonTaskWrapper()
+{
+  while (true)
+  {
+    mogoControl.mogoAutonTask();
+    vex::wait(50, vex::timeUnits::msec);
+  }
+  return 1;
+}
+
 // NOT TESTED
 void negative_alliance_stake_rush(string c)
 {
@@ -101,27 +115,74 @@ void negative_alliance_stake_rush(string c)
 }
 
 // NOT TESTED
-void positive_alliance_stake_rush(string c)
+void positive_six_ring(string c)
 {
   pre_driver = true;
 
   task intakeAutonTask = task(intakeAutonTaskWrapper);
+  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
+  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
-    chassis.set_coordinates(-50.197, -23.622, 270);
+    chassis.set_coordinates(-51.312, -29.859, 78);
     reversed = -1;
     alliance = "red";
   }
   else
   {
-    chassis.set_coordinates(50.197, -23.622, 90);
+    chassis.set_coordinates(51.312, -29.859, 282);
     reversed = 1;
     alliance = "blue";
   }
 
-  cout << "positive alliance stake auto started, initial position:" << endl;
+  cout << "positive six ring started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", " << chassis.get_absolute_heading() << endl;
+
+  // Drive back and clamp the goal
+  mogoClampDelay = 800;
+  mogoClamp = true;
+  chassis.drive_to_point(23.701, -23.701);
+  intakeSort = true;
+
+  // Go to the center and doinker two rings
+  chassis.turn_to_point(9.995, -10.79, 0);
+  chassis.drive_to_point(9.995, -10.79);
+  LeftDoinker.set(true);
+  chassis.turn_to_angle(300);
+  chassis.drive_distance(5, 300);
+  RightDoinker.set(true);
+
+  // Go back, lining up the doinkered rings in a smooth path for later
+  chassis.drive_to_pose(40.784, -35.421, 330, 0.5, 0);
+  LeftDoinker.set(false);
+  RightDoinker.set(false);
+
+  // Curve to eat all the doinkered rings + the one in a stack
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(10, 0);
+  chassis.right_swing_to_angle(180);
+  chassis.drive_to_point(23.493, -47.191);
+
+  // Eat two rings from the corner
+  chassis.turn_to_angle(90);
+  chassis.drive_to_pose(62.507, -62.507, 135, 0.5, 0);
+  vex::wait(300, msec);
+  chassis.drive_distance(-15, 135);
+  RightDoinker.set(true);
+  chassis.drive_distance(10, 135);
+  vex::wait(300, msec);
+
+  // Clear out the corner and drop goal in
+  chassis.turn_to_angle(0);
+  RightDoinker.set(false);
+  chassis.turn_to_point(66.544, -66.544, 180);
+  Clamp.set(false);
+
+  // Touch ladder
+  chassis.drive_to_pose(11.771, -32.102, 303, 0.5, 0);
+  ladyBrownAllianceStakeScore = true;
+  vex::wait(100, sec);
 }
 
 // NOT TESTED
@@ -129,11 +190,9 @@ void negative_ring_rush(string c)
 {
   pre_driver = true;
 
-  cout << "negative ring rush auto started, initial position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-
   task intakeAutonTask = task(intakeAutonTaskWrapper);
   task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
+  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
   if (c == "red")
   {
@@ -148,6 +207,9 @@ void negative_ring_rush(string c)
     chassis.set_coordinates(50.788, 27.547, 282);
   }
 
+  cout << "negative ring rush auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
   // Pursuit *purePursuit = new Pursuit(12.75);
 
   // Rush for center rings
@@ -156,8 +218,9 @@ void negative_ring_rush(string c)
   chassis.drive_to_point(-10.1, 43.158);
 
   // Clamp goal
+  mogoClampDelay = 800;
+  mogoClamp = true;
   chassis.drive_to_pose(-23.773, 23.773, 0, 0.5, 0);
-  Clamp.set(true);
 
   // Eat rushed ring in doinker + one more
   LeftDoinker.set(false);
@@ -191,6 +254,13 @@ void negative_ring_rush(string c)
   chassis.heading_max_voltage = 12;
 
   intakeToLadyBrownAuton = false;
+  ladyBrownAllianceStakeScore = true;
+  vex::wait(1, sec);
+
+  // Touch ladder
+  chassis.drive_distance(-25, 270);
+  ladyBrownAllianceStakeScore = false;
+  chassis.turn_to_point(-23.821, 0, 0);
   ladyBrownAllianceStakeScore = true;
   vex::wait(100, sec);
 }

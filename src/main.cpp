@@ -273,7 +273,7 @@ void autonomous(void)
       negative_alliance_stake_rush(alliance);
       break;
     case 1:
-      positive_alliance_stake_rush(alliance);
+      positive_six_ring(alliance);
       break;
     case 2:
       negative_ring_rush(alliance);
