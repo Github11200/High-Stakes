@@ -89,6 +89,7 @@ Drive chassis(
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
+bool ladyBrownGoDown = false;
 bool pre_match = true;
 bool pre_driver = true;
 bool ringStopped = false;
@@ -293,7 +294,7 @@ void autonomous(void)
 int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-  LadyBrown ladyBrown(20, 180, 220, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
+  LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 5);
   MogoControl mogoControl;
 
   while (true)
@@ -327,9 +328,21 @@ int buttonsWrapper()
     {
       intakeControl.intakeToLadyBrown();
       ladyBrown.loading();
+      ladyBrownGoDown = true;
     }
     else
-      Intake.stop(coast);
+    {
+      OpticalSensor.setLightPower(0, pct);
+      Intake.stop(brake);
+    }
+
+    // Lady Brown
+    if (LadyBrownRaiseButton.pressing())
+      ladyBrown.raise();
+    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown)
+      ladyBrown.lower();
+    else
+      LadyBrownMotor.stop(hold);
 
     // Mogo
     if (ClampButton.pressing())
@@ -343,30 +356,30 @@ int buttonsWrapper()
     else if (BlueAllianceButton.pressing())
       alliance = "blue";
 
-    if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
-    {
-      if (Controller.ButtonUp.pressing())
-        cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
-      else if (Controller.ButtonRight.pressing())
-        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
-      else if (Controller.ButtonLeft.pressing())
-      {
-        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-      }
-      else if (Controller.ButtonB.pressing())
-      {
-        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
-        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-      }
-      else if (Controller.ButtonDown.pressing())
-      {
-        cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
-      }
-      wait(100, vex::timeUnits::msec);
-    }
+    // if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
+    // {
+    //   if (Controller.ButtonUp.pressing())
+    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
+    //   else if (Controller.ButtonRight.pressing())
+    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
+    //   else if (Controller.ButtonLeft.pressing())
+    //   {
+    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+    //   }
+    //   else if (Controller.ButtonB.pressing())
+    //   {
+    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
+    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+    //   }
+    //   else if (Controller.ButtonDown.pressing())
+    //   {
+    //     cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
+    //   }
+    //   wait(100, vex::timeUnits::msec);
+    // }
 
-    vex::wait(60, vex::timeUnits::msec);
+    vex::wait(50, vex::timeUnits::msec);
   }
 
   return 1;
@@ -396,6 +409,7 @@ void usercontrol(void)
 
   pre_match = false;
   pre_driver = false;
+  ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   chassis.stop_position_track_task();

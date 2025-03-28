@@ -22,16 +22,16 @@ extern rotation LadyBrownRotation;
 
 extern vex::controller::button IntakeButton;
 extern vex::controller::button LadyBrownRaiseButton;
-extern vex::controller::button LadyBrownLowerButton;
+// extern vex::controller::button LadyBrownLowerButton;
 extern vex::controller::button LadyBrownLoadButton;
-
 extern vex::controller::button ClampButton;
+
 extern vex::controller::button RightDoinkerButton;
 extern vex::controller::button LeftDoinkerButton;
 extern vex::controller::button OuttakeButton;
-
 extern vex::controller::button ClampResetButton;
-extern vex::controller::button DoinkerClampButton;
+
+// extern vex::controller::button DoinkerClampButton;
 extern vex::controller::button RedAllianceButton;
 extern vex::controller::button BlueAllianceButton;
 

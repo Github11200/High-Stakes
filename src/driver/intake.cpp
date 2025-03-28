@@ -58,38 +58,34 @@ void IntakeControl::intake()
     Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
-  Intake.stop(vex::brakeType::coast);
-  OpticalSensor.setLightPower(0, pct); // turn off the light to save battery :):):)
 }
 
 void IntakeControl::intakeToLadyBrown()
 {
-  while (LadyBrownLoadButton.pressing() && !ringStopped)
+  while (LadyBrownLoadButton.pressing())
   {
-    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    wait(60, vex::timeUnits::msec);
-    if (Intake.velocity(pct) < 5)
+    while (!ringStopped && LadyBrownLoadButton.pressing())
     {
-      wait(2, sec);
+      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      wait(60, vex::timeUnits::msec);
       if (Intake.velocity(pct) < 5)
       {
-        ringStopped = true;
+        wait(2, sec);
+        if (Intake.velocity(pct) < 5)
+        {
+          ringStopped = true;
+        }
       }
     }
+    wait(60, vex::timeUnits::msec);
   }
-  OpticalSensor.setLightPower(0, pct);
-  Intake.stop(vex::brakeType::brake);
   ringStopped = false;
 }
 
 void IntakeControl::outtake()
 {
-  while (OuttakeButton.pressing())
-  {
-    Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
-    wait(10, vex::timeUnits::msec);
-  }
-  Intake.stop(vex::brakeType::coast);
+  Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+  wait(10, vex::timeUnits::msec);
 }
 
 int IntakeControl::hue_difference(int hue1, int hue2)

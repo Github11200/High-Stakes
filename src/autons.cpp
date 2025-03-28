@@ -14,11 +14,12 @@ bool intakeSort = false;
 bool intakeRev = false;
 bool ladyBrownScore = false;
 bool ladyBrownAllianceStakeScore = false;
+bool ladyBrownAllianceHoldUp = false;
 float ladyBrownDelay = 0;
 bool mogoClamp = false;
 float mogoClampDelay = 0;
 IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-LadyBrown ladyBrown(20, 180, 220, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
+LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
 MogoControl mogoControl;
 
 vector<Point> mirrorPath(vector<Point> originalPath)
