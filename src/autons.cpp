@@ -357,10 +357,10 @@ void testing(string c)
 
   task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
-  float kP = 0.18;
-  float kI = 0.02;
-  float kD = 1;
-  float settle_error = 1;
+  // float kP = 0.18;
+  // float kI = 0.02;
+  // float kD = 1;
+  // float settle_error = 1;
 
   if (c == "red")
   {

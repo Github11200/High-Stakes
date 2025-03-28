@@ -17,8 +17,6 @@ LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, d
 
 void LadyBrown::autonLoading()
 {
-  double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
-  double output = this->ladyBrownPID->compute(error);
   while (!this->ladyBrownPID->is_settled())
   {
     double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
