@@ -106,39 +106,36 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeAutonTask()
 {
-  if (pre_driver) // make sure to not stop the intake during driver control
+  if (intakeSort) // the variable that the autonomous sets to true to spin the intake
   {
-    if (intakeSort) // the variable that the autonomous sets to true to spin the intake
+    OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
+    if (shouldEjectRing())
+      ejectRing();
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  }
+  else if (intakeRev)
+  {
+    Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+  }
+  else if (intakeToLadyBrownAuton)
+  {
+    while (!ringStopped)
     {
-      OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
-      if (shouldEjectRing())
-        ejectRing();
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    }
-    else if (intakeRev)
-    {
-      Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-    }
-    else if (intakeToLadyBrownAuton)
-    {
-      while (!ringStopped)
+      if (Intake.velocity(pct) < 5)
       {
-        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        wait(2, sec);
         if (Intake.velocity(pct) < 5)
         {
-          wait(2, sec);
-          if (Intake.velocity(pct) < 5)
-          {
-            ringStopped = true;
-          }
+          ringStopped = true;
         }
-        wait(60, vex::timeUnits::msec);
       }
+      wait(60, vex::timeUnits::msec);
     }
-    else
-    {
-      OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
-      Intake.stop(coast);
-    }
+  }
+  else
+  {
+    OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
+    Intake.stop(coast);
   }
 }

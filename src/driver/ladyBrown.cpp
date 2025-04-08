@@ -131,30 +131,27 @@ void LadyBrown::holdUp()
 
 void LadyBrown::ladyBrownAutonTask()
 {
-  if (pre_driver)
+  if (intakeToLadyBrownAuton)
   {
-    if (intakeToLadyBrownAuton)
+    autonLoading();
+  }
+  else if (ladyBrownScore)
+  {
+    autonScore(ladyBrownDelay);
+    ladyBrownScore = false;
+  }
+  else if (ladyBrownAllianceStakeScore)
+  {
+    allianceStakeAutonScore(ladyBrownDelay);
+    ladyBrownAllianceStakeScore = false;
+  }
+  else
+  {
+    while (LadyBrownRotation.angle(vex::rotationUnits::deg) > this->minAngle)
     {
-      autonLoading();
+      LadyBrownMotor.spin(fwd, -12, volt);
+      vex::wait(30, msec);
     }
-    else if (ladyBrownScore)
-    {
-      autonScore(ladyBrownDelay);
-      ladyBrownScore = false;
-    }
-    else if (ladyBrownAllianceStakeScore)
-    {
-      allianceStakeAutonScore(ladyBrownDelay);
-      ladyBrownAllianceStakeScore = false;
-    }
-    else
-    {
-      while (LadyBrownRotation.angle(vex::rotationUnits::deg) > this->minAngle)
-      {
-        LadyBrownMotor.spin(fwd, -12, volt);
-        vex::wait(30, msec);
-      }
-      LadyBrownMotor.stop(coast);
-    }
+    LadyBrownMotor.stop(coast);
   }
 }

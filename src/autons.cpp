@@ -22,7 +22,7 @@ IntakeControl intakeControl(12, 3, OpticalSensor.hue());
 LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
 MogoControl mogoControl;
 
-vector<Point> mirrorPath(vector<Point> originalPath)
+vector<Point> Autonomous::mirrorPath(vector<Point> originalPath)
 {
   for (int i = 0; i < originalPath.size(); ++i)
     originalPath[i].x = -originalPath[i].x;
@@ -58,7 +58,28 @@ ExitConditions exact_exit_conditions()
   return exactExitConditions;
 }
 
-int intakeAutonTaskWrapper()
+Autonomous::Autonomous()
+{
+  this->allianceColor = allianceColor;
+
+  static Autonomous *autonomousPointer = this;
+  this->intakeAutonTask = thread([]()
+                                 { autonomousPointer->intakeAutonTaskWrapper(); });
+  this->ladyBrownAutonTask = thread([]()
+                                    { autonomousPointer->ladyBrownAutonTaskWrapper(); });
+  this->mogoAutonTask = thread([]()
+                               { autonomousPointer->mogoAutonTaskWrapper(); });
+}
+Autonomous::~Autonomous()
+{
+  this->intakeAutonTask.~thread();
+  this->ladyBrownAutonTask.~thread();
+  this->mogoAutonTask.~thread();
+}
+
+void Autonomous::setAllianceColor(vex::color allianceColor) { this->allianceColor = allianceColor; }
+
+int Autonomous::intakeAutonTaskWrapper()
 {
   while (true)
   {
@@ -68,7 +89,7 @@ int intakeAutonTaskWrapper()
   return 1;
 }
 
-int ladyBrownAutonTaskWrapper()
+int Autonomous::ladyBrownAutonTaskWrapper()
 {
   while (true)
   {
@@ -78,7 +99,7 @@ int ladyBrownAutonTaskWrapper()
   return 1;
 }
 
-int mogoAutonTaskWrapper()
+int Autonomous::mogoAutonTaskWrapper()
 {
   while (true)
   {
@@ -89,16 +110,11 @@ int mogoAutonTaskWrapper()
 }
 
 // NOT TESTED
-void solo_awp(string c)
+void Autonomous::solo_awp()
 {
-  pre_driver = true;
-
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
-  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
-  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
 
-  if (c == "red")
+  if (this->allianceColor == vex::color::red)
   {
     reversed = 1;
     alliance = "red";
@@ -174,15 +190,11 @@ void solo_awp(string c)
 }
 
 // NOT TESTED
-void positive_six_ring(string c)
+void Autonomous::positive_six_ring()
 {
-  pre_driver = true;
-
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
-  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
-  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
-  if (c == "red")
+
+  if (this->allianceColor == vex::color::red)
   {
     chassis.set_coordinates(-51.312, -29.859, 78);
     reversed = -1;
@@ -245,15 +257,11 @@ void positive_six_ring(string c)
 }
 
 // NOT TESTED
-void negative_ring_rush(string c)
+void Autonomous::negative_ring_rush()
 {
-  pre_driver = true;
-
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
-  task ladyBrownAutonTask = task(ladyBrownAutonTaskWrapper);
-  task mogoAutonTask = task(mogoAutonTaskWrapper);
   int reversed;
-  if (c == "red")
+
+  if (this->allianceColor == vex::color::red)
   {
     reversed = 1;
     alliance = "red";
@@ -325,16 +333,14 @@ void negative_ring_rush(string c)
 }
 
 // NOT TESTED
-void positive_goal_rush(string c)
+void Autonomous::positive_goal_rush()
 {
-  pre_driver = true;
 
   cout << "positive goal rush auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
   int reversed;
-  if (c == "red")
+  if (this->allianceColor == vex::color::red)
   {
     reversed = -1;
     alliance = "red";
@@ -348,35 +354,8 @@ void positive_goal_rush(string c)
   }
 }
 
-void testing(string c)
+void Autonomous::auton_skills()
 {
-  chassis.set_coordinates(0, 0, 0);
-  cout << "testing auto started, initial position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
-  pre_driver = true;
-
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
-  int reversed;
-  // float kP = 0.18;
-  // float kI = 0.02;
-  // float kD = 1;
-  // float settle_error = 1;
-
-  if (c == "red")
-  {
-    reversed = -1;
-    alliance = "red";
-  }
-  else if (c == "blue")
-  {
-    reversed = 1;
-    alliance = "blue";
-  }
-}
-
-void auton_skills()
-{
-  pre_driver = true;
   intakeToLadyBrownAuton = false;
 
   chassis.set_coordinates(-61, 0, 90);
@@ -384,7 +363,25 @@ void auton_skills()
   cout << "skills auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  task intakeAutonTask = task(intakeAutonTaskWrapper);
-
   alliance = "red";
+}
+
+void Autonomous::testing()
+{
+  chassis.set_coordinates(0, 0, 0);
+  cout << "testing auto started, initial position:" << endl;
+  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+
+  int reversed;
+
+  if (this->allianceColor == vex::color::red)
+  {
+    reversed = -1;
+    alliance = "red";
+  }
+  else if (this->allianceColor == vex::color::blue)
+  {
+    reversed = 1;
+    alliance = "blue";
+  }
 }

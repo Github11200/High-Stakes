@@ -82,10 +82,7 @@ Drive chassis(
 
 );
 
-// Actual - 95.25
-// First run - 95.83
-// Second run - 95.76
-
+Autonomous autonomousClass;
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
@@ -260,30 +257,30 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  solo_awp("blue");
+  autonomousClass.setAllianceColor(vex::color::red);
 
   if (alliance == "skills")
   {
-    auton_skills();
+    autonomousClass.auton_skills();
   }
   else if (true)
   {
     switch (current_auton_selection)
     {
     case 0:
-      solo_awp(alliance);
+      autonomousClass.solo_awp();
       break;
     case 1:
-      positive_six_ring(alliance);
+      autonomousClass.positive_six_ring();
       break;
     case 2:
-      negative_ring_rush(alliance);
+      autonomousClass.negative_ring_rush();
       break;
     case 3:
-      positive_goal_rush(alliance);
+      autonomousClass.positive_goal_rush();
       break;
     case 4:
-      testing(alliance);
+      autonomousClass.testing();
       break;
     default:
       break;

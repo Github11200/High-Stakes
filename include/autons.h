@@ -2,8 +2,6 @@
 #include "JAR-Template/drive.h"
 #include "driver/mogo.h"
 
-class Drive;
-
 extern Drive chassis;
 
 struct ExitConditions
@@ -13,12 +11,32 @@ struct ExitConditions
   SwingParams swingParams;
 };
 
-vector<Point> mirrorPath(vector<Point> originalPath);
+class Autonomous
+{
+private:
+  color allianceColor;
 
-void solo_awp(std::string c);
-void positive_six_ring(std::string c);
-void negative_ring_rush(std::string c);
-void positive_goal_rush(std::string c);
-void testing(std::string c);
+  thread intakeAutonTask;
+  thread ladyBrownAutonTask;
+  thread mogoAutonTask;
 
-void auton_skills();
+  int mogoAutonTaskWrapper();
+  int ladyBrownAutonTaskWrapper();
+  int intakeAutonTaskWrapper();
+
+public:
+  Autonomous();
+  ~Autonomous();
+
+  vector<Point> mirrorPath(vector<Point> originalPath);
+
+  void setAllianceColor(vex::color allianceColor);
+
+  void solo_awp();
+  void positive_six_ring();
+  void negative_ring_rush();
+  void positive_goal_rush();
+  void auton_skills();
+
+  void testing();
+};

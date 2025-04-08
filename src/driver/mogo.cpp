@@ -55,12 +55,9 @@ void MogoControl::autonDelayedClamp(int delay)
 
 void MogoControl::mogoAutonTask()
 {
-  if (pre_driver) // make sure to not stop the intake during driver control
+  if (mogoClamp) // the variable that the autonomous sets to true to spin the intake
   {
-    if (mogoClamp) // the variable that the autonomous sets to true to spin the intake
-    {
-      autonDelayedClamp(mogoClampDelay);
-      mogoClamp = false;
-    }
+    autonDelayedClamp(mogoClampDelay);
+    mogoClamp = false;
   }
 }
