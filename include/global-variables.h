@@ -9,5 +9,4 @@ extern float ladyBrownDelay;
 extern bool mogoClamp;
 extern float mogoClampDelay;
 extern bool pre_match;
-extern bool pre_driver;
 extern bool ringStopped;
