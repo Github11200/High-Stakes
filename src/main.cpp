@@ -27,7 +27,7 @@ Drive chassis(
     motor_group(FrontRight, MiddleRight, BackRight),
 
     // Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-    PORT9,
+    PORT19,
 
     // Input your wheel diameter. (4" omnis are actually closer to 4.125"):
     2.75,
@@ -61,7 +61,7 @@ Drive chassis(
     // If you are using position tracking, this is the Forward Tracker port (the tracker which runs parallel to the direction of the chassis).
     // If this is a rotation sensor, enter it in "PORT1" format, inputting the port below.
     // If this is an encoder, enter the port as an integer. Triport A will be a "1", Triport B will be a "2", etc.
-    PORT2,
+    PORT14,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
     1.98298,
@@ -72,7 +72,7 @@ Drive chassis(
     0,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
-    PORT10,
+    PORT13,
 
     // Sideways tracker diameter (reverse to make the direction switch):
     1.98298,
