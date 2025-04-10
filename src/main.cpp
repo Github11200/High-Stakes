@@ -82,7 +82,7 @@ Drive chassis(
 
 );
 
-Autonomous autonomousClass;
+// Autonomous autonomousClass;
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
@@ -170,7 +170,7 @@ void pre_auton(void)
   // CHANGE THIS FOR MATCHES
   alliance = "red";
 
-  chassis.calibrate_robot();
+  // chassis.calibrate_robot();
 
   vex::wait(3000, vex::timeUnits::msec);
 
@@ -256,44 +256,46 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  pre_match = false;
-  autonomousClass.setAllianceColor(vex::color::red);
+  // pre_match = false;
+  // // autonomousClass.setAllianceColor(vex::color::red);
 
-  if (alliance == "skills")
-  {
-    autonomousClass.auton_skills();
-  }
-  else if (true)
-  {
-    switch (current_auton_selection)
-    {
-    case 0:
-      autonomousClass.solo_awp();
-      break;
-    case 1:
-      autonomousClass.positive_six_ring();
-      break;
-    case 2:
-      autonomousClass.negative_ring_rush();
-      break;
-    case 3:
-      autonomousClass.positive_goal_rush();
-      break;
-    case 4:
-      autonomousClass.testing();
-      break;
-    default:
-      break;
-    }
-  }
+  // if (alliance == "skills")
+  // {
+  //   autonomousClass.auton_skills();
+  // }
+  // else if (true)
+  // {
+  //   switch (current_auton_selection)
+  //   {
+  //   case 0:
+  //     autonomousClass.solo_awp();
+  //     break;
+  //   case 1:
+  //     autonomousClass.positive_six_ring();
+  //     break;
+  //   case 2:
+  //     autonomousClass.negative_ring_rush();
+  //     break;
+  //   case 3:
+  //     autonomousClass.positive_goal_rush();
+  //     break;
+  //   case 4:
+  //     autonomousClass.testing();
+  //     break;
+  //   default:
+  //     break;
+  //   }
+  // }
 }
 
 int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-  LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 5);
+  //                                         kP  kD
+  LadyBrown ladyBrown(40, 166, 207, 116, 12, 0.3, 1.5, 0.5, 0.5, 2000, 1, 360, 2);
   MogoControl mogoControl;
 
+  LadyBrownMotor.setBrake(vex::brakeType::hold);
   while (true)
   {
     chassis.control_arcade();
@@ -323,14 +325,14 @@ int buttonsWrapper()
       intakeControl.intake();
     else if (LadyBrownLoadButton.pressing())
     {
-      intakeControl.intakeToLadyBrown();
-      ladyBrown.loading();
       ladyBrownGoDown = true;
+      ringStopped = false;
+      ladyBrown.loading();
     }
     else
     {
       OpticalSensor.setLightPower(0, pct);
-      Intake.stop(brake);
+      Intake.stop(coast);
     }
 
     // Lady Brown
@@ -338,8 +340,6 @@ int buttonsWrapper()
       ladyBrown.raise();
     else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown)
       ladyBrown.lower();
-    else
-      LadyBrownMotor.stop(hold);
 
     // Mogo
     if (ClampButton.pressing())
@@ -382,16 +382,6 @@ int buttonsWrapper()
   return 1;
 }
 
-int joystickWrapper()
-{
-  while (true)
-  {
-    chassis.control_arcade();
-    wait(20, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
 void usercontrol(void)
 {
   // Auton testing code start
@@ -409,6 +399,7 @@ void usercontrol(void)
   ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
+  LadyBrownRotation.setPosition(0, vex::rotationUnits::deg);
   chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 

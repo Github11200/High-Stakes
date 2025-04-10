@@ -683,9 +683,9 @@ void Drive::holonomic_drive_to_pose(float X_position, float Y_position, float an
 void Drive::control_arcade()
 {
 
-  float throttle = deadband(controller(primary).Axis3.value(), 5);
+  float throttle = -deadband(controller(primary).Axis3.value(), 5);
   throttle = throttle / 1.27;
-  float influence = deadband(controller(primary).Axis1.value(), 5);
+  float influence = -deadband(controller(primary).Axis1.value(), 5);
   influence = influence / 1.27;
   float leftpow;
   float rightpow;

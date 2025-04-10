@@ -34,6 +34,7 @@ void LadyBrown::raise()
   while (LadyBrownRaiseButton.pressing())
   {
     double voltageOutput = slew(12, LadyBrownMotor.voltage(), this->slewChange);
+    ladyBrownGoDown = false;
     LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
@@ -44,25 +45,54 @@ void LadyBrown::loading()
 {
   while (LadyBrownLoadButton.pressing())
   {
-    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
+    double error = this->loadingPositionAngle - LadyBrownRotation.angle(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
     LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
+
+    if (this->ladyBrownPID->is_settled())
+      break;
+
     wait(10, vex::timeUnits::msec);
   }
+
+  LadyBrownMotor.stop(vex::brakeType::hold);
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  wait(0.1, vex::timeUnits::sec);
+  while (LadyBrownLoadButton.pressing() && !ringStopped)
+  {
+    if (Intake.velocity(pct) < 5)
+    {
+      wait(1, sec);
+      if (Intake.velocity(pct) < 5)
+      {
+        ringStopped = true;
+        ladyBrownGoDown = false;
+      }
+    }
+  }
   this->ladyBrownPID->reset();
+  LadyBrownMotor.stop(vex::brakeType::hold);
+  Intake.stop(vex::brakeType::coast);
 }
 
 void LadyBrown::lower()
 {
-  if (LadyBrownRotation.angle(vex::rotationUnits::deg) > minAngle)
+  while (!LadyBrownRaiseButton.pressing() && !LadyBrownLoadButton.pressing() && ladyBrownGoDown)
   {
-    double voltageOutput = slew(-12, LadyBrownMotor.voltage(), this->slewChange);
-    LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, vex::voltageUnits::volt);
+    double error = -LadyBrownRotation.angle(vex::rotationUnits::deg);
+    double output = this->ladyBrownPID->compute(error);
+
+    output = clamp(output, -this->maxVoltage, this->maxVoltage);
+    LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
+
+    if (this->ladyBrownPID->is_settled())
+      ladyBrownGoDown = false;
+
+    wait(10, vex::timeUnits::msec);
   }
-  else
-    ladyBrownGoDown = false;
+  LadyBrownMotor.stop(vex::brakeType::hold);
 }
 
 void LadyBrown::score()
@@ -152,6 +182,6 @@ void LadyBrown::ladyBrownAutonTask()
       LadyBrownMotor.spin(fwd, -12, volt);
       vex::wait(30, msec);
     }
-    LadyBrownMotor.stop(coast);
+    LadyBrownMotor.stop(hold);
   }
 }
