@@ -30,14 +30,14 @@ vex::controller::button OuttakeButton = Controller.ButtonX;
 
 vex::controller::button LadyBrownRaiseButton = Controller.ButtonL2;
 vex::controller::button LadyBrownLoadButton = Controller.ButtonR1;
-vex::controller::button LadyBrownForwardButton = Controller.ButtonDown;
-vex::controller::button LadyBrownLowerButton = Controller.ButtonB;
+vex::controller::button LadyBrownForwardButton = Controller.ButtonRight;
+vex::controller::button LadyBrownLowerButton = Controller.ButtonY;
 
 vex::controller::button ClampButton = Controller.ButtonR2;
 vex::controller::button ClampResetButton = Controller.ButtonUp;
 
-vex::controller::button LeftDoinkerButton = Controller.ButtonRight;
-vex::controller::button RightDoinkerButton = Controller.ButtonY;
+vex::controller::button LeftDoinkerButton = Controller.ButtonDown;
+vex::controller::button RightDoinkerButton = Controller.ButtonB;
 
 vex::controller::button RedAllianceButton = Controller.ButtonA;
 vex::controller::button BlueAllianceButton = Controller.ButtonLeft;

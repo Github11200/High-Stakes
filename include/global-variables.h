@@ -4,7 +4,6 @@ extern bool intakeRev;
 extern bool ladyBrownScore;
 extern bool ladyBrownAllianceStakeScore;
 extern bool ladyBrownHoldUp;
-extern bool ladyBrownGoDown;
 extern float ladyBrownDelay;
 extern bool mogoClamp;
 extern float mogoClampDelay;

@@ -86,7 +86,6 @@ Drive chassis(
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
-bool ladyBrownGoDown = false;
 bool pre_match = true;
 bool ringStopped = false;
 int descoreTime = 0;
@@ -102,6 +101,11 @@ std::string ToString(int val)
   std::stringstream stream;
   stream << val;
   return stream.str();
+}
+
+void ringStoppedSetFalse()
+{
+  ringStopped = false;
 }
 
 void updateScreen()
@@ -291,10 +295,13 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   //                                         kP  kD
-  LadyBrown ladyBrown(40, 166, 207, 116, 12, 0.3, 1.5, 0.5, 0.5, 2000, 12, 360, 2);
+  LadyBrown ladyBrown(35, 166, 207, 116, 12, 0.3, 1.5, 0.5, 10, 500000000000000, 12, 360, 2);
   MogoControl mogoControl;
 
   LadyBrownMotor.setBrake(vex::brakeType::hold);
+
+  // LadyBrownLoadButton.pressed(ringStoppedSetFalse);
+
   while (true)
   {
     chassis.control_arcade();
@@ -322,11 +329,8 @@ int buttonsWrapper()
       intakeControl.outtake();
     else if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (LadyBrownLoadButton.pressing() && !ringStopped)
-    {
-      ladyBrownGoDown = true;
+    else if (LadyBrownLoadButton.pressing())
       ladyBrown.loading();
-    }
     else
     {
       OpticalSensor.setLightPower(0, pct);
@@ -337,11 +341,9 @@ int buttonsWrapper()
     if (LadyBrownRaiseButton.pressing())
       ladyBrown.raise(12);
     else if (LadyBrownForwardButton.pressing())
-      ladyBrown.raise(6);
+      ladyBrown.raise(3);
     else if (LadyBrownLowerButton.pressing())
-      ladyBrown.lower(12);
-    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown && !ringStopped)
-      ladyBrown.loading();
+      ladyBrown.lower(6);
 
     // Mogo
     if (ClampButton.pressing())
