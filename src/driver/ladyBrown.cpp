@@ -33,9 +33,10 @@ void LadyBrown::raise()
 {
   while (LadyBrownRaiseButton.pressing())
   {
-    double voltageOutput = slew(12, LadyBrownMotor.voltage(), this->slewChange);
+    // double voltageOutput = slew(12, LadyBrownMotor.voltage(), this->slewChange);
     ladyBrownGoDown = false;
-    LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, vex::voltageUnits::volt);
+    ringStopped = false;
+    LadyBrownMotor.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   LadyBrownMotor.stop(vex::brakeType::hold);
@@ -43,7 +44,8 @@ void LadyBrown::raise()
 
 void LadyBrown::loading()
 {
-  while (LadyBrownLoadButton.pressing())
+  Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+  while (LadyBrownLoadButton.pressing() && !LadyBrownRaiseButton.pressing())
   {
     double error = this->loadingPositionAngle - LadyBrownRotation.angle(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
@@ -60,7 +62,7 @@ void LadyBrown::loading()
   LadyBrownMotor.stop(vex::brakeType::hold);
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   wait(0.1, vex::timeUnits::sec);
-  while (LadyBrownLoadButton.pressing() && !ringStopped)
+  while (LadyBrownLoadButton.pressing() && !ringStopped && !LadyBrownRaiseButton.pressing())
   {
     if (Intake.velocity(pct) < 5)
     {
@@ -81,6 +83,7 @@ void LadyBrown::lower()
 {
   while (!LadyBrownRaiseButton.pressing() && !LadyBrownLoadButton.pressing() && ladyBrownGoDown)
   {
+    ringStopped = false;
     double error = -LadyBrownRotation.angle(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 

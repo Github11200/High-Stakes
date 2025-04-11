@@ -366,22 +366,65 @@ void Autonomous::auton_skills()
   alliance = "red";
 }
 
-void Autonomous::testing()
+void testing()
 {
   chassis.set_coordinates(0, 0, 0);
-  cout << "testing auto started, initial position:" << endl;
-  cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
+  float kP = 1;
+  float kI = 0;
+  float kD = 0;
+  float settle_error = 1.5;
 
-  int reversed;
-
-  if (this->allianceColor == vex::color::red)
+  while (true)
   {
-    reversed = -1;
-    alliance = "red";
+    if (Controller.ButtonA.pressing()) // Reset coordinates
+      chassis.set_coordinates(0, 0, 0);
+    else if (Controller.ButtonB.pressing()) // Go forwards
+      chassis.drive_distance(20, 0);
+    else if (Controller.ButtonX.pressing()) // Go backwards
+      chassis.drive_distance(-20, 0);
+    else if (Controller.ButtonY.pressing())
+    { // Print data
+      cout << "kP: " << kP << ", kI: " << kI << ", kD: " << kD << ", settle error: " << settle_error << endl;
+      cout << "X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << ", Theta: " << chassis.get_absolute_heading() << endl;
+    }
+    // Change PID constants
+    else if (Controller.ButtonUp.pressing())
+    {
+      kP += 0.1;
+      cout << "kP: " << kP << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    else if (Controller.ButtonDown.pressing())
+    {
+      kP -= 0.1;
+      cout << "kP: " << kP << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    else if (Controller.ButtonRight.pressing())
+    {
+      kD += 0.1;
+      cout << "kD: " << kD << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    else if (Controller.ButtonLeft.pressing())
+    {
+      kD -= 0.1;
+      cout << "kD: " << kD << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    else if (Controller.ButtonL1.pressing())
+    {
+      kI += 0.01;
+      cout << "kI: " << kI << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    else if (Controller.ButtonL2.pressing())
+    {
+      kI -= 0.01;
+      cout << "kI: " << kI << endl;
+      chassis.set_drive_constants(12, kP, kI, kD, 0);
+    }
+    vex::wait(100, vex::timeUnits::msec);
   }
-  else if (this->allianceColor == vex::color::blue)
-  {
-    reversed = 1;
-    alliance = "blue";
-  }
+  vex::wait(100, sec);
 }

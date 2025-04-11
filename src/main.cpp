@@ -170,7 +170,7 @@ void pre_auton(void)
   // CHANGE THIS FOR MATCHES
   alliance = "red";
 
-  // chassis.calibrate_robot();
+  chassis.calibrate_robot();
 
   vex::wait(3000, vex::timeUnits::msec);
 
@@ -323,10 +323,9 @@ int buttonsWrapper()
       intakeControl.outtake();
     else if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (LadyBrownLoadButton.pressing())
+    else if (LadyBrownLoadButton.pressing() && !ringStopped)
     {
       ladyBrownGoDown = true;
-      ringStopped = false;
       ladyBrown.loading();
     }
     else
@@ -338,7 +337,7 @@ int buttonsWrapper()
     // Lady Brown
     if (LadyBrownRaiseButton.pressing())
       ladyBrown.raise();
-    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown)
+    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown && !ringStopped)
       ladyBrown.lower();
 
     // Mogo
@@ -399,7 +398,7 @@ void usercontrol(void)
   ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  LadyBrownRotation.setPosition(0, vex::rotationUnits::deg);
+  LadyBrownRotation.resetPosition();
   chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
