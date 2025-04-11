@@ -26,12 +26,12 @@ optical OpticalSensor = optical(PORT5);
 rotation LadyBrownRotation = rotation(PORT16);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
-vex::controller::button OuttakeButton = Controller.ButtonB;
+vex::controller::button OuttakeButton = Controller.ButtonX;
 
 vex::controller::button LadyBrownRaiseButton = Controller.ButtonL2;
 vex::controller::button LadyBrownLoadButton = Controller.ButtonR1;
 vex::controller::button LadyBrownForwardButton = Controller.ButtonDown;
-vex::controller::button LadyBrownBackwardButton = Controller.ButtonX;
+vex::controller::button LadyBrownLowerButton = Controller.ButtonB;
 
 vex::controller::button ClampButton = Controller.ButtonR2;
 vex::controller::button ClampResetButton = Controller.ButtonUp;

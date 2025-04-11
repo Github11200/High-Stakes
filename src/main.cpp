@@ -291,7 +291,7 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
   //                                         kP  kD
-  LadyBrown ladyBrown(40, 166, 207, 116, 12, 0.3, 1.5, 0.5, 0.5, 2000, 1, 360, 2);
+  LadyBrown ladyBrown(40, 166, 207, 116, 12, 0.3, 1.5, 0.5, 0.5, 2000, 12, 360, 2);
   MogoControl mogoControl;
 
   LadyBrownMotor.setBrake(vex::brakeType::hold);
@@ -335,9 +335,13 @@ int buttonsWrapper()
 
     // Lady Brown
     if (LadyBrownRaiseButton.pressing())
-      ladyBrown.raise();
+      ladyBrown.raise(12);
+    else if (LadyBrownForwardButton.pressing())
+      ladyBrown.raise(6);
+    else if (LadyBrownLowerButton.pressing())
+      ladyBrown.lower(12);
     else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown && !ringStopped)
-      ladyBrown.lower();
+      ladyBrown.loading();
 
     // Mogo
     if (ClampButton.pressing())

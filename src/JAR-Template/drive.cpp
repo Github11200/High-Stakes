@@ -707,8 +707,6 @@ void Drive::control_arcade()
 
   DriveL.spin(fwd, to_volt(leftpow), volt);
   DriveR.spin(fwd, to_volt(rightpow), volt);
-
-  cout << "drive speed: " << DriveL.velocity(pct) << endl;
   if (DriveL.velocity(pct) > 80)
   {
     Controller.rumble(".");

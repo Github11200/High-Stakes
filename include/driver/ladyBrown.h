@@ -26,13 +26,15 @@ public:
   void autonLoading();
 
   /// @brief Raises the lady brown as the button is pressed
-  void raise();
+  /// @param speed The speed in voltages
+  void raise(double speed);
 
   /// @brief Gets the lady brown into loading position
   void loading();
 
   /// @brief Lowers the lady brown as another button is pressed
-  void lower();
+  /// @param speed The speed in voltages
+  void lower(double speed);
 
   /// @brief Gets the lady brown into scoring position
   void score();
