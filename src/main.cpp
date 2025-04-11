@@ -27,7 +27,7 @@ Drive chassis(
     motor_group(FrontRight, MiddleRight, BackRight),
 
     // Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-    PORT9,
+    PORT19,
 
     // Input your wheel diameter. (4" omnis are actually closer to 4.125"):
     2.75,
@@ -61,7 +61,7 @@ Drive chassis(
     // If you are using position tracking, this is the Forward Tracker port (the tracker which runs parallel to the direction of the chassis).
     // If this is a rotation sensor, enter it in "PORT1" format, inputting the port below.
     // If this is an encoder, enter the port as an integer. Triport A will be a "1", Triport B will be a "2", etc.
-    PORT2,
+    PORT14,
 
     // Input the Forward Tracker diameter (reverse it to make the direction switch):
     1.98298,
@@ -72,7 +72,7 @@ Drive chassis(
     0,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
-    PORT10,
+    PORT13,
 
     // Sideways tracker diameter (reverse to make the direction switch):
     1.98298,
@@ -82,7 +82,7 @@ Drive chassis(
 
 );
 
-Autonomous autonomousClass;
+// Autonomous autonomousClass;
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
@@ -255,44 +255,46 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  pre_match = false;
-  autonomousClass.setAllianceColor(vex::color::red);
+  // pre_match = false;
+  // // autonomousClass.setAllianceColor(vex::color::red);
 
-  if (alliance == "skills")
-  {
-    autonomousClass.auton_skills();
-  }
-  else if (true)
-  {
-    switch (current_auton_selection)
-    {
-    case 0:
-      autonomousClass.solo_awp();
-      break;
-    case 1:
-      autonomousClass.positive_six_ring();
-      break;
-    case 2:
-      autonomousClass.negative_ring_rush();
-      break;
-    case 3:
-      autonomousClass.positive_goal_rush();
-      break;
-    case 4:
-      autonomousClass.testing();
-      break;
-    default:
-      break;
-    }
-  }
+  // if (alliance == "skills")
+  // {
+  //   autonomousClass.auton_skills();
+  // }
+  // else if (true)
+  // {
+  //   switch (current_auton_selection)
+  //   {
+  //   case 0:
+  //     autonomousClass.solo_awp();
+  //     break;
+  //   case 1:
+  //     autonomousClass.positive_six_ring();
+  //     break;
+  //   case 2:
+  //     autonomousClass.negative_ring_rush();
+  //     break;
+  //   case 3:
+  //     autonomousClass.positive_goal_rush();
+  //     break;
+  //   case 4:
+  //     autonomousClass.testing();
+  //     break;
+  //   default:
+  //     break;
+  //   }
+  // }
 }
 
 int buttonsWrapper()
 {
   IntakeControl intakeControl(12, 3, OpticalSensor.hue());
-  LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 5);
+  //                                         kP  kD
+  LadyBrown ladyBrown(40, 166, 207, 116, 12, 0.3, 1.5, 0.5, 0.5, 2000, 1, 360, 2);
   MogoControl mogoControl;
 
+  LadyBrownMotor.setBrake(vex::brakeType::hold);
   while (true)
   {
     chassis.control_arcade();
@@ -320,25 +322,22 @@ int buttonsWrapper()
       intakeControl.outtake();
     else if (IntakeButton.pressing())
       intakeControl.intake();
-    else if (LadyBrownLoadButton.pressing())
+    else if (LadyBrownLoadButton.pressing() && !ringStopped)
     {
-      intakeControl.intakeToLadyBrown();
-      ladyBrown.loading();
       ladyBrownGoDown = true;
+      ladyBrown.loading();
     }
     else
     {
       OpticalSensor.setLightPower(0, pct);
-      Intake.stop(brake);
+      Intake.stop(coast);
     }
 
     // Lady Brown
     if (LadyBrownRaiseButton.pressing())
       ladyBrown.raise();
-    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown)
+    else if (!LadyBrownLoadButton.pressing() && ladyBrownGoDown && !ringStopped)
       ladyBrown.lower();
-    else
-      LadyBrownMotor.stop(hold);
 
     // Mogo
     if (ClampButton.pressing())
@@ -381,16 +380,6 @@ int buttonsWrapper()
   return 1;
 }
 
-int joystickWrapper()
-{
-  while (true)
-  {
-    chassis.control_arcade();
-    wait(20, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
 void usercontrol(void)
 {
   // Auton testing code start
@@ -406,6 +395,7 @@ void usercontrol(void)
   ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
+  LadyBrownRotation.resetPosition();
   chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 

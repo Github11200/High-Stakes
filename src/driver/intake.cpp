@@ -84,8 +84,11 @@ void IntakeControl::intakeToLadyBrown()
 
 void IntakeControl::outtake()
 {
-  Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
-  wait(10, vex::timeUnits::msec);
+  while (OuttakeButton.pressing())
+  {
+    Intake.spin(vex::directionType::rev, this->speed, vex::voltageUnits::volt);
+    wait(10, vex::timeUnits::msec);
+  }
 }
 
 int IntakeControl::hue_difference(int hue1, int hue2)

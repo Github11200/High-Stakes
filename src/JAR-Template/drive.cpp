@@ -683,9 +683,9 @@ void Drive::holonomic_drive_to_pose(float X_position, float Y_position, float an
 void Drive::control_arcade()
 {
 
-  float throttle = deadband(controller(primary).Axis3.value(), 5);
+  float throttle = -deadband(controller(primary).Axis3.value(), 1);
   throttle = throttle / 1.27;
-  float influence = deadband(controller(primary).Axis1.value(), 5);
+  float influence = -deadband(controller(primary).Axis1.value(), 1);
   influence = influence / 1.27;
   float leftpow;
   float rightpow;
@@ -707,6 +707,12 @@ void Drive::control_arcade()
 
   DriveL.spin(fwd, to_volt(leftpow), volt);
   DriveR.spin(fwd, to_volt(rightpow), volt);
+
+  cout << "drive speed: " << DriveL.velocity(pct) << endl;
+  if (DriveL.velocity(pct) > 80)
+  {
+    Controller.rumble(".");
+  }
 }
 
 /**
