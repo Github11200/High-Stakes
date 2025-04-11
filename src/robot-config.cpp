@@ -26,18 +26,19 @@ optical OpticalSensor = optical(PORT1);
 rotation LadyBrownRotation = rotation(PORT10);
 
 vex::controller::button IntakeButton = Controller.ButtonL1;
-vex::controller::button LadyBrownRaiseButton = Controller.ButtonL2;
-vex::controller::button LadyBrownLoadButton = Controller.ButtonR1;
-// vex::controller::button LadyBrownLowerButton = Controller.ButtonR2;
-vex::controller::button ClampButton = Controller.ButtonR2;
-
-vex::controller::button ClampResetButton = Controller.ButtonDown;
-vex::controller::button LeftDoinkerButton = Controller.ButtonRight;
-vex::controller::button RightDoinkerButton = Controller.ButtonY;
 vex::controller::button OuttakeButton = Controller.ButtonB;
 
-// vex::controller::button ClampResetButton = Controller.ButtonX;
-// vex::controller::button DoinkerClampButton = Controller.ButtonUp;
+vex::controller::button LadyBrownRaiseButton = Controller.ButtonL2;
+vex::controller::button LadyBrownLoadButton = Controller.ButtonR1;
+vex::controller::button LadyBrownForwardButton = Controller.ButtonDown;
+vex::controller::button LadyBrownBackwardButton = Controller.ButtonX;
+
+vex::controller::button ClampButton = Controller.ButtonR2;
+vex::controller::button ClampResetButton = Controller.ButtonUp;
+
+vex::controller::button LeftDoinkerButton = Controller.ButtonRight;
+vex::controller::button RightDoinkerButton = Controller.ButtonY;
+
 vex::controller::button RedAllianceButton = Controller.ButtonA;
 vex::controller::button BlueAllianceButton = Controller.ButtonLeft;
 

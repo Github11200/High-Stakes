@@ -114,6 +114,8 @@ void Autonomous::solo_awp()
 {
   int reversed;
 
+  chassis.drive_to_point(5, 5, DriveParams().set_heading_kp(5).set_max_voltage(10));
+
   if (this->allianceColor == vex::color::red)
   {
     reversed = 1;

@@ -88,7 +88,6 @@ float chassisTemp = 0;
 float intakeTemp = 0;
 bool ladyBrownGoDown = false;
 bool pre_match = true;
-bool pre_driver = true;
 bool ringStopped = false;
 int descoreTime = 0;
 
@@ -399,13 +398,11 @@ void usercontrol(void)
   // auton_skills();
 
   // intakeSort = false;
-  // pre_driver = false;
   // Intake.stop(vex::brakeType::coast);
   // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
-  pre_driver = false;
   ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
