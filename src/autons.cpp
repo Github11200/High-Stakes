@@ -18,7 +18,7 @@ bool ladyBrownAllianceHoldUp = false;
 float ladyBrownDelay = 0;
 bool mogoClamp = false;
 float mogoClampDelay = 0;
-IntakeControl intakeControl(12, 3, OpticalSensor.hue());
+IntakeControl intakeControl(12);
 LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
 MogoControl mogoControl;
 
@@ -62,52 +62,32 @@ Autonomous::Autonomous()
 {
   this->allianceColor = allianceColor;
 
-  static Autonomous *autonomousPointer = this;
+  static IntakeControl *intakeControlThingy = &intakeControl;
+  static LadyBrown *ladyBrownThingy = &ladyBrown;
+  static MogoControl *mogoControlThingy = &mogoControl;
   this->intakeAutonTask = thread([]()
-                                 { autonomousPointer->intakeAutonTaskWrapper(); });
+                                 { while (true) {
+                                    intakeControlThingy->intakeAutonTask();
+                                    wait(50, vex::timeUnits::msec);
+                                  } });
   this->ladyBrownAutonTask = thread([]()
-                                    { autonomousPointer->ladyBrownAutonTaskWrapper(); });
-  this->mogoAutonTask = thread([]()
-                               { autonomousPointer->mogoAutonTaskWrapper(); });
+                                    { while (true) {
+                                        ladyBrownThingy->ladyBrownAutonTask();
+                                        wait(50, vex::timeUnits::msec);
+                                      } });
 }
 Autonomous::~Autonomous()
 {
+  this->intakeAutonTask.interrupt();
   this->intakeAutonTask.~thread();
+
+  this->ladyBrownAutonTask.interrupt();
   this->ladyBrownAutonTask.~thread();
-  this->mogoAutonTask.~thread();
+
+  cout << "Killed it" << endl;
 }
 
 void Autonomous::setAllianceColor(vex::color allianceColor) { this->allianceColor = allianceColor; }
-
-int Autonomous::intakeAutonTaskWrapper()
-{
-  while (true)
-  {
-    intakeControl.intakeAutonTask();
-    vex::wait(50, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
-int Autonomous::ladyBrownAutonTaskWrapper()
-{
-  while (true)
-  {
-    ladyBrown.ladyBrownAutonTask();
-    vex::wait(50, vex::timeUnits::msec);
-  }
-  return 1;
-}
-
-int Autonomous::mogoAutonTaskWrapper()
-{
-  while (true)
-  {
-    mogoControl.mogoAutonTask();
-    vex::wait(50, vex::timeUnits::msec);
-  }
-  return 1;
-}
 
 // NOT TESTED
 void Autonomous::solo_awp()
@@ -368,13 +348,23 @@ void Autonomous::auton_skills()
   alliance = "red";
 }
 
-void testing()
+DriveParams changeThingy(float drive_max_voltage, float drive_kp, float drive_ki, float drive_kd, float drive_starti)
 {
+  DriveParams driveParams;
+  driveParams.set_max_voltage(drive_max_voltage).set_kp(drive_kp).set_ki(drive_ki).set_kd(drive_kd).set_starti(drive_starti);
+  return driveParams;
+}
+
+void Autonomous::testing()
+{
+
   chassis.set_coordinates(0, 0, 0);
   float kP = 1;
   float kI = 0;
   float kD = 0;
-  float settle_error = 1.5;
+  float settle_error = 1;
+
+  DriveParams driveParams;
 
   while (true)
   {
@@ -394,37 +384,37 @@ void testing()
     {
       kP += 0.1;
       cout << "kP: " << kP << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     else if (Controller.ButtonDown.pressing())
     {
       kP -= 0.1;
       cout << "kP: " << kP << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     else if (Controller.ButtonRight.pressing())
     {
       kD += 0.1;
       cout << "kD: " << kD << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     else if (Controller.ButtonLeft.pressing())
     {
       kD -= 0.1;
       cout << "kD: " << kD << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     else if (Controller.ButtonL1.pressing())
     {
       kI += 0.01;
       cout << "kI: " << kI << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     else if (Controller.ButtonL2.pressing())
     {
       kI -= 0.01;
       cout << "kI: " << kI << endl;
-      chassis.set_drive_constants(12, kP, kI, kD, 0);
+      driveParams = changeThingy(12, kP, kI, kD, 0);
     }
     vex::wait(100, vex::timeUnits::msec);
   }

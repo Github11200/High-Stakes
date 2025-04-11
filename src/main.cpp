@@ -78,11 +78,11 @@ Drive chassis(
     1.98298,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    -0.6
+    0
 
 );
 
-// Autonomous autonomousClass;
+Autonomous autonomousClass;
 int current_auton_selection = 4;
 float chassisTemp = 0;
 float intakeTemp = 0;
@@ -259,48 +259,46 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  // pre_match = false;
-  // // autonomousClass.setAllianceColor(vex::color::red);
+  pre_match = false;
+  autonomousClass.setAllianceColor(vex::color::red);
 
-  // if (alliance == "skills")
-  // {
-  //   autonomousClass.auton_skills();
-  // }
-  // else if (true)
-  // {
-  //   switch (current_auton_selection)
-  //   {
-  //   case 0:
-  //     autonomousClass.solo_awp();
-  //     break;
-  //   case 1:
-  //     autonomousClass.positive_six_ring();
-  //     break;
-  //   case 2:
-  //     autonomousClass.negative_ring_rush();
-  //     break;
-  //   case 3:
-  //     autonomousClass.positive_goal_rush();
-  //     break;
-  //   case 4:
-  //     autonomousClass.testing();
-  //     break;
-  //   default:
-  //     break;
-  //   }
-  // }
+  if (alliance == "skills")
+  {
+    autonomousClass.auton_skills();
+  }
+  else if (true)
+  {
+    switch (current_auton_selection)
+    {
+    case 0:
+      autonomousClass.solo_awp();
+      break;
+    case 1:
+      autonomousClass.positive_six_ring();
+      break;
+    case 2:
+      autonomousClass.negative_ring_rush();
+      break;
+    case 3:
+      autonomousClass.positive_goal_rush();
+      break;
+    case 4:
+      autonomousClass.testing();
+      break;
+    default:
+      break;
+    }
+  }
 }
 
 int buttonsWrapper()
 {
-  IntakeControl intakeControl(12, 3, OpticalSensor.hue());
+  IntakeControl intakeControl(12);
   //                                         kP  kD
-  LadyBrown ladyBrown(35, 166, 207, 116, 12, 0.3, 1.5, 0.5, 10, 500000000000000, 12, 360, 2);
+  LadyBrown ladyBrown(32, 166, 207, 116, 12, 0.3, 1.5, 0.5, 10, 500000000000000000, 12, 360, 2);
   MogoControl mogoControl;
 
   LadyBrownMotor.setBrake(vex::brakeType::hold);
-
-  // LadyBrownLoadButton.pressed(ringStoppedSetFalse);
 
   while (true)
   {
@@ -388,6 +386,8 @@ int buttonsWrapper()
 
 void usercontrol(void)
 {
+  // autonomousClass.testing();
+  // autonomousClass.~Autonomous();
   // Auton testing code start
   // wait(3000, msec);
   // auton_skills();

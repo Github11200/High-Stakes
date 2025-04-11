@@ -306,10 +306,10 @@ void Drive::drive_distance(float distance, float heading, DriveParams driveParam
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
 
-    drive_output = clamp(drive_output, -drive_max_voltage, drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    drive_output = clamp(drive_output, -driveParams.drive_max_voltage, driveParams.drive_max_voltage);
+    heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
 
-    drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
+    drive_with_voltage(slew(drive_output + heading_output, DriveL.voltage(vex::voltageUnits::volt), 1), slew(drive_output - heading_output, DriveL.voltage(vex::voltageUnits::volt), 1));
     task::sleep(10);
   }
   DriveL.stop(coast);

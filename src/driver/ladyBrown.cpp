@@ -180,11 +180,11 @@ void LadyBrown::ladyBrownAutonTask()
   }
   else
   {
-    while (LadyBrownRotation.angle(vex::rotationUnits::deg) > this->minAngle)
-    {
-      LadyBrownMotor.spin(fwd, -12, volt);
-      vex::wait(30, msec);
-    }
+    // while (LadyBrownRotation.position(vex::rotationUnits::deg) > this->minAngle)
+    // {
+    //   LadyBrownMotor.spin(fwd, -12, volt);
+    //   vex::wait(30, msec);
+    // }
     LadyBrownMotor.stop(hold);
   }
 }

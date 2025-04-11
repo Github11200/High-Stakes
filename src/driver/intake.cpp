@@ -2,11 +2,9 @@
 
 using namespace vex;
 
-IntakeControl::IntakeControl(int speed, int numberOfSecondsToRedirect, double originalHueValue)
+IntakeControl::IntakeControl(int speed)
 {
   this->speed = speed;
-  this->numberOfSecondsToRedirect = numberOfSecondsToRedirect;
-  this->originalHueValue = originalHueValue;
 }
 
 bool IntakeControl::shouldEjectRing()
@@ -15,7 +13,6 @@ bool IntakeControl::shouldEjectRing()
   color ringColor = NULL;
   if (isNear)
   {
-    cout << "isNear" << endl;
     if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
       ringColor = blue;
 
@@ -39,7 +36,8 @@ void IntakeControl::ejectRing()
   while (OpticalSensor.isNearObject())
   { // spin it until the ring is not near
     // once it's not near, it's probably in the perfect place for ejection
-    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 1.5, vex::voltageUnits::volt);
+    cout << "we're racist" << endl;
     wait(10, vex::timeUnits::msec);
   }
   // by spinning it in reverse, we either toss the ring straight out

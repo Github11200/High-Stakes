@@ -18,11 +18,6 @@ private:
 
   thread intakeAutonTask;
   thread ladyBrownAutonTask;
-  thread mogoAutonTask;
-
-  int mogoAutonTaskWrapper();
-  int ladyBrownAutonTaskWrapper();
-  int intakeAutonTaskWrapper();
 
 public:
   Autonomous();
