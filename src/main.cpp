@@ -295,7 +295,7 @@ int buttonsWrapper()
 {
   IntakeControl intakeControl(12);
   //                                         kP  kD
-  LadyBrown ladyBrown(32, 166, 207, 116, 12, 0.3, 1.5, 0.5, 10, 500000000000000000, 12, 360, 2);
+  LadyBrown ladyBrown(30, 166, 207, 116, 12, 0.3, 1.5, 0.5, 10, 500000000000000000, 12, 360, 2);
   MogoControl mogoControl;
 
   LadyBrownMotor.setBrake(vex::brakeType::hold);
