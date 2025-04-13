@@ -357,12 +357,7 @@ DriveParams changeThingy(float drive_max_voltage, float drive_kp, float drive_ki
 
 void Autonomous::testing()
 {
-
   chassis.set_coordinates(0, 0, 0);
-  float kP = 1;
-  float kI = 0;
-  float kD = 0;
-  float settle_error = 1;
 
   DriveParams driveParams;
 
@@ -371,50 +366,50 @@ void Autonomous::testing()
     if (Controller.ButtonA.pressing()) // Reset coordinates
       chassis.set_coordinates(0, 0, 0);
     else if (Controller.ButtonB.pressing()) // Go forwards
-      chassis.drive_distance(20, 0);
+      chassis.drive_to_point(0, 20);
     else if (Controller.ButtonX.pressing()) // Go backwards
-      chassis.drive_distance(-20, 0);
+      chassis.drive_to_point(0, 0);
     else if (Controller.ButtonY.pressing())
     { // Print data
-      cout << "kP: " << kP << ", kI: " << kI << ", kD: " << kD << ", settle error: " << settle_error << endl;
+      cout << "kP: " << driveParams.drive_kp << ", kI: " << driveParams.drive_ki << ", kD: " << driveParams.drive_kd << ", settle error: " << driveParams.drive_settle_error << endl;
       cout << "X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << ", Theta: " << chassis.get_absolute_heading() << endl;
     }
     // Change PID constants
     else if (Controller.ButtonUp.pressing())
     {
-      kP += 0.1;
-      cout << "kP: " << kP << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_kp(driveParams.drive_kp + 0.1);
+      cout << "kP: " << driveParams.drive_kp << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     else if (Controller.ButtonDown.pressing())
     {
-      kP -= 0.1;
-      cout << "kP: " << kP << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_kp(driveParams.drive_kp - 0.1);
+      cout << "kP: " << driveParams.drive_kp << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     else if (Controller.ButtonRight.pressing())
     {
-      kD += 0.1;
-      cout << "kD: " << kD << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_kd(driveParams.drive_kd + 0.1);
+      cout << "kD: " << driveParams.drive_kd << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     else if (Controller.ButtonLeft.pressing())
     {
-      kD -= 0.1;
-      cout << "kD: " << kD << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_kd(driveParams.drive_kd - 0.1);
+      cout << "kD: " << driveParams.drive_kd << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     else if (Controller.ButtonL1.pressing())
     {
-      kI += 0.01;
-      cout << "kI: " << kI << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_ki(driveParams.drive_ki + 0.1);
+      cout << "kI: " << driveParams.drive_ki << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     else if (Controller.ButtonL2.pressing())
     {
-      kI -= 0.01;
-      cout << "kI: " << kI << endl;
-      driveParams = changeThingy(12, kP, kI, kD, 0);
+      driveParams.set_ki(driveParams.drive_ki - 0.1);
+      cout << "kI: " << driveParams.drive_ki << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
     vex::wait(100, vex::timeUnits::msec);
   }

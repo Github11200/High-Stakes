@@ -35,7 +35,7 @@ Drive chassis(
     // External ratio, must be in decimal, in the format of input teeth/output teeth.
     // If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
     // If the motor drives the wheel directly, this value is 1:
-    0.75,
+    1,
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
@@ -69,7 +69,7 @@ Drive chassis(
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
     // This distance is in inches:
-    0,
+    -0.5,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
     PORT13,
@@ -78,9 +78,7 @@ Drive chassis(
     1.98298,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    0
-
-);
+    1.25);
 
 Autonomous autonomousClass;
 int current_auton_selection = 4;
@@ -307,19 +305,17 @@ int buttonsWrapper()
     // Doinker
     if (RightDoinkerButton.pressing())
     {
-      RightDoinker.set(!RightDoinker.value());
+      RightDoinker.set(true);
       while (RightDoinkerButton.pressing())
-      {
         vex::wait(20, vex::timeUnits::msec);
-      }
+      RightDoinker.set(false);
     }
     if (LeftDoinkerButton.pressing())
     {
-      LeftDoinker.set(!LeftDoinker.value());
+      LeftDoinker.set(true);
       while (LeftDoinkerButton.pressing())
-      {
         vex::wait(20, vex::timeUnits::msec);
-      }
+      LeftDoinker.set(false);
     }
 
     // Intake
@@ -339,7 +335,7 @@ int buttonsWrapper()
     if (LadyBrownRaiseButton.pressing())
       ladyBrown.raise(12);
     else if (LadyBrownForwardButton.pressing())
-      ladyBrown.raise(3);
+      ladyBrown.raise(6);
     else if (LadyBrownLowerButton.pressing())
       ladyBrown.lower(6);
 
@@ -386,8 +382,20 @@ int buttonsWrapper()
 
 void usercontrol(void)
 {
-  // autonomousClass.testing();
-  // autonomousClass.~Autonomous();
+  chassis.set_coordinates(0, 0, 0);
+  chassis.calibrate_robot();
+  // Brain.Screen.clearScreen();
+  // while (true)
+  // {
+  //   Brain.Screen.clearScreen();
+  //   Brain.Screen.printAt(0, 20, "X: %.5f", chassis.get_X_position());
+  //   Brain.Screen.printAt(0, 60, "Y: %.5f", chassis.get_Y_position());
+  //   Brain.Screen.printAt(0, 100, "Theta: %.5f", chassis.get_absolute_heading());
+  //   wait(20, vex::timeUnits::msec);
+  // }
+
+  autonomousClass.testing();
+  autonomousClass.~Autonomous();
   // Auton testing code start
   // wait(3000, msec);
   // auton_skills();

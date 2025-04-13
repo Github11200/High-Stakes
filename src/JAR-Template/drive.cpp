@@ -301,10 +301,15 @@ void Drive::drive_distance(float distance, float heading, DriveParams driveParam
   while (drivePID.is_settled() == false)
   {
     average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
+    // average_position = chassis.get_Y_position();
     float drive_error = distance + start_average_position - average_position;
     float heading_error = reduce_negative_180_to_180(heading - get_absolute_heading());
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
+
+    cout << "average position: " << average_position << endl;
+    cout << "drive error: " << drive_error << endl;
+    cout << "heading error: " << heading_error << endl;
 
     drive_output = clamp(drive_output, -driveParams.drive_max_voltage, driveParams.drive_max_voltage);
     heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
@@ -489,7 +494,7 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
 {
   PID drivePID(hypot(X_position - get_X_position(), Y_position - get_Y_position()), driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, driveParams.drive_starti, driveParams.drive_settle_error, driveParams.drive_settle_time, driveParams.drive_timeout);
   float start_angle_deg = to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position()));
-  PID headingPID(start_angle_deg - get_absolute_heading(), heading_kp, heading_ki, heading_kd, heading_starti);
+  PID headingPID(start_angle_deg - get_absolute_heading(), driveParams.heading_kp, driveParams.heading_ki, driveParams.heading_kd, driveParams.heading_starti);
   bool line_settled = false;
   bool prev_line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
 
@@ -520,16 +525,15 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
       heading_output = 0;
     }
 
-    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * driveParams.drive_max_voltage, fabs(heading_scale_factor) * driveParams.drive_max_voltage);
+    heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
 
-    drive_output = clamp_min_voltage(drive_output, drive_min_voltage);
+    drive_output = clamp_min_voltage(drive_output, driveParams.drive_min_voltage);
 
     drive_with_voltage(left_voltage_scaling(drive_output, heading_output), right_voltage_scaling(drive_output, heading_output));
 
     // previousDriveOutput = drive_output;
     // previousHeadingOutput = heading_output;
-    cout << drive_error << endl;
     task::sleep(10);
   }
   DriveL.stop(coast);
@@ -683,9 +687,9 @@ void Drive::holonomic_drive_to_pose(float X_position, float Y_position, float an
 void Drive::control_arcade()
 {
 
-  float throttle = -deadband(controller(primary).Axis3.value(), 1);
+  float throttle = deadband(controller(primary).Axis3.value(), 1);
   throttle = throttle / 1.27;
-  float influence = -deadband(controller(primary).Axis1.value(), 1);
+  float influence = deadband(controller(primary).Axis1.value(), 1);
   influence = influence / 1.27;
   float leftpow;
   float rightpow;

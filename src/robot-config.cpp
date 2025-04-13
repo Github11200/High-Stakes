@@ -10,12 +10,12 @@ brain Brain;
 // VEXcode device constructors
 controller Controller;
 
-motor FrontRight = motor(PORT18, ratio6_1, true);
-motor FrontLeft = motor(PORT12, ratio6_1, false);
-motor MiddleRight = motor(PORT7, ratio6_1, false);
-motor MiddleLeft = motor(PORT11, ratio6_1, true);
-motor BackRight = motor(PORT17, ratio6_1, true);
-motor BackLeft = motor(PORT15, ratio6_1, false);
+motor FrontRight = motor(PORT18, ratio6_1, false);
+motor FrontLeft = motor(PORT12, ratio6_1, true);
+motor MiddleRight = motor(PORT7, ratio6_1, true);
+motor MiddleLeft = motor(PORT11, ratio6_1, false);
+motor BackRight = motor(PORT17, ratio6_1, false);
+motor BackLeft = motor(PORT15, ratio6_1, true);
 motor Intake = motor(PORT6, ratio6_1, false);
 motor LadyBrownMotor = motor(PORT1, ratio36_1, true);
 digital_out RightDoinker = digital_out(Brain.ThreeWirePort.B);

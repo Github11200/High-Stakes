@@ -51,6 +51,11 @@ void LadyBrown::loading()
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
     LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
 
+    if (IntakeButton.pressing())
+      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    else
+      Intake.stop(vex::brakeType::coast);
+
     wait(10, vex::timeUnits::msec);
   }
 
@@ -85,7 +90,7 @@ void LadyBrown::score()
 {
   while (!this->ladyBrownPID->is_settled())
   {
-    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->scoringPositionAngle;
+    double error = this->scoringPositionAngle - LadyBrownRotation.angle(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);

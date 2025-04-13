@@ -25,7 +25,7 @@ struct DriveParams
   float drive_settle_error = 1;
   float drive_settle_time = 100;
   float drive_timeout = 8000;
-  float drive_kp = 1;
+  float drive_kp = 0.5;
   float drive_ki = 0;
   float drive_kd = 0;
   float drive_starti = 3;
