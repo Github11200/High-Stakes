@@ -19,6 +19,13 @@ private:
   thread intakeAutonTask;
   thread ladyBrownAutonTask;
 
+  DriveParams driveParams;
+  TurnParams turnParams;
+  SwingParams swingParams;
+
+  DriveParams driveParamsWithMogo;
+  TurnParams turnParamsWithMogo;
+
 public:
   Autonomous();
   ~Autonomous();

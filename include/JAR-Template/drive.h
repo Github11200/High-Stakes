@@ -29,6 +29,7 @@ struct DriveParams
   float drive_ki = 0.1;
   float drive_kd = 0.5;
   float drive_starti = 0;
+  float drive_slew = 0.8;
   float heading_kp = 0.06;
   float heading_ki = 0;
   float heading_kd = 0;
@@ -37,7 +38,7 @@ struct DriveParams
   DriveParams &set_min_voltage(float val)
   {
     drive_min_voltage = val;
-    return *this; 
+    return *this;
   }
 
   DriveParams &set_max_voltage(float val)
@@ -91,6 +92,12 @@ struct DriveParams
   DriveParams &set_starti(float val)
   {
     drive_starti = val;
+    return *this;
+  }
+
+  DriveParams &set_drive_slew(float val)
+  {
+    drive_slew = val;
     return *this;
   }
 

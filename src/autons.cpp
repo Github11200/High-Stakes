@@ -64,7 +64,6 @@ Autonomous::Autonomous()
 
   static IntakeControl *intakeControlThingy = &intakeControl;
   static LadyBrown *ladyBrownThingy = &ladyBrown;
-  static MogoControl *mogoControlThingy = &mogoControl;
   this->intakeAutonTask = thread([]()
                                  { while (true) {
                                     intakeControlThingy->intakeAutonTask();
@@ -75,7 +74,14 @@ Autonomous::Autonomous()
                                         ladyBrownThingy->ladyBrownAutonTask();
                                         wait(50, vex::timeUnits::msec);
                                       } });
+
+  this->driveParamsWithMogo.set_kp(driveParams.drive_kp + 0.05);
+  this->driveParamsWithMogo.set_kd(driveParams.drive_kd + 0.5);
+  this->driveParamsWithMogo.set_drive_slew(driveParams.drive_slew - 0.65);
+
+  this->turnParamsWithMogo.set_kp(turnParams.turn_kp - 0.017);
 }
+
 Autonomous::~Autonomous()
 {
   this->intakeAutonTask.interrupt();
@@ -358,38 +364,39 @@ DriveParams changeThingy(float drive_max_voltage, float drive_kp, float drive_ki
 void Autonomous::testing()
 {
   chassis.set_coordinates(0, 0, 0);
+  Clamp.set(true);
 
   DriveParams driveParams;
   TurnParams turnParams;
- 
+
   while (true)
-  { 
+  {
     if (Controller.ButtonA.pressing()) // Reset coordinates
-      chassis.set_coordinates(0, 0, 0);       
-    else if (Controller.ButtonB.pressing()) // Go forwards 
-      chassis.turn_to_angle(90 , turnParams);   
-    else if (Controller.ButtonX.pressing()) // Go backwards    
-      chassis.turn_to_angle(0, turnParams);     
-    else if (Controller.ButtonY.pressing())     
+      chassis.set_coordinates(0, 0, 0);
+    else if (Controller.ButtonB.pressing()) // Go forwards
+      chassis.turn_to_angle(90, turnParams);
+    else if (Controller.ButtonX.pressing()) // Go backwards
+      chassis.turn_to_angle(0, turnParams);
+    else if (Controller.ButtonY.pressing())
     { // Print data
-      cout << "kP: " << turnParams.turn_kp << ", kI: " << turnParams.turn_ki << ", kD: " << turnParams.turn_kd << ", settle error: " << turnParams.turn_settle_error << endl;
+      cout << "kP: " << turnParams.turn_kp << ", kI: " << turnParams.turn_ki << ", kD: " << turnParams.turn_kd << ", settle error: " << turnParams.turn_settle_error << ", drive slew: " << driveParams.drive_slew << endl;
       cout << "X: " << chassis.get_X_position() << ", Y: " << chassis.get_Y_position() << ", Theta: " << chassis.get_absolute_heading() << endl;
-    } 
-    // Change PID constants  
-    else if (Controller.ButtonUp.pressing()) 
-    {   
-      driveParams.set_kp(driveParams.drive_kp + 0.1); 
-      cout << "kP: " << driveParams.drive_kp << endl;                   
-      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
-    } 
-    else if (Controller.ButtonDown.pressing())
-    { 
-      driveParams.set_kp(driveParams.drive_kp - 0.1); 
+    }
+    // Change PID constants
+    else if (Controller.ButtonUp.pressing())
+    {
+      driveParams.set_kp(driveParams.drive_kp + 0.1);
       cout << "kP: " << driveParams.drive_kp << endl;
-      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0); 
-    }   
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
+    }
+    else if (Controller.ButtonDown.pressing())
+    {
+      driveParams.set_kp(driveParams.drive_kp - 0.1);
+      cout << "kP: " << driveParams.drive_kp << endl;
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
+    }
     else if (Controller.ButtonRight.pressing())
-    { 
+    {
       driveParams.set_kd(driveParams.drive_kd + 0.1);
       cout << "kD: " << driveParams.drive_kd << endl;
       driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
@@ -398,15 +405,15 @@ void Autonomous::testing()
     {
       driveParams.set_kd(driveParams.drive_kd - 0.1);
       cout << "kD: " << driveParams.drive_kd << endl;
-      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0); 
-    }  
-    else if (Controller.ButtonL1.pressing()) 
+      driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
+    }
+    else if (Controller.ButtonL1.pressing())
     {
       driveParams.set_ki(driveParams.drive_ki + 0.1);
       cout << "kI: " << driveParams.drive_ki << endl;
       driveParams = changeThingy(12, driveParams.drive_kp, driveParams.drive_ki, driveParams.drive_kd, 0);
     }
-    else if (Controller.ButtonL2.pressing()) 
+    else if (Controller.ButtonL2.pressing())
     {
       driveParams.set_ki(driveParams.drive_ki - 0.1);
       cout << "kI: " << driveParams.drive_ki << endl;

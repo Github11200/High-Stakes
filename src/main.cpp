@@ -382,8 +382,8 @@ int buttonsWrapper()
 
 void usercontrol(void)
 {
-  chassis.set_coordinates(0, 0, 0);
-  chassis.calibrate_robot();
+  // chassis.set_coordinates(0, 0, 0);
+  // chassis.calibrate_robot();
   // Brain.Screen.clearScreen();
   // while (true)
   // {
@@ -394,9 +394,9 @@ void usercontrol(void)
   //   wait(20, vex::timeUnits::msec);
   // }
 
-  autonomousClass.testing();
+  // autonomousClass.testing();
   autonomousClass.~Autonomous();
-  // Auton testing code start 
+  // Auton testing code start
   // wait(3000, msec);
   // auton_skills();
 
