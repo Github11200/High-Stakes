@@ -21,23 +21,23 @@ struct DriveParams
 {
   float drive_min_voltage = 0;
   float drive_max_voltage = 12;
-  float heading_max_voltage = 10;
-  float drive_settle_error = 1;
-  float drive_settle_time = 100;
-  float drive_timeout = 8000;
-  float drive_kp = 0.5;
-  float drive_ki = 0;
-  float drive_kd = 0;
-  float drive_starti = 3;
-  float heading_kp = 0.18;
-  float heading_ki = 0.02;
-  float heading_kd = 1;
-  float heading_starti = 1;
+  float heading_max_voltage = 12;
+  float drive_settle_error = 0.2;
+  float drive_settle_time = 500;
+  float drive_timeout = 4000;
+  float drive_kp = 0.413;
+  float drive_ki = 0.1;
+  float drive_kd = 0.5;
+  float drive_starti = 0;
+  float heading_kp = 0.06;
+  float heading_ki = 0;
+  float heading_kd = 0;
+  float heading_starti = 0;
 
   DriveParams &set_min_voltage(float val)
   {
     drive_min_voltage = val;
-    return *this;
+    return *this; 
   }
 
   DriveParams &set_max_voltage(float val)
@@ -123,12 +123,12 @@ struct TurnParams
 {
   float turn_max_voltage = 10;
   float turn_settle_error = 1;
-  float turn_settle_time = 100;
-  float turn_timeout = 800;
-  float turn_kp = 0.18;
-  float turn_ki = 0.02;
-  float turn_kd = 1;
-  float turn_starti = 1;
+  float turn_settle_time = 500;
+  float turn_timeout = 2000;
+  float turn_kp = 0.19;
+  float turn_ki = 0;
+  float turn_kd = 1.3;
+  float turn_starti = 0;
 
   TurnParams &set_max_voltage(float val)
   {

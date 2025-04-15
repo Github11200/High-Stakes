@@ -39,7 +39,7 @@ Drive chassis(
 
     // Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
     // For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-    (3600 - (19.6 + 18.3 + 18.7 + 21.51 + 19.16 + 20.35) / 6) / 10,
+    (3600 + (0.33 + 1.35 - 0.16) / 3) / 10,
 
     /*---------------------------------------------------------------------------*/
     /*                                  PAUSE!                                   */
@@ -69,7 +69,7 @@ Drive chassis(
     // Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
     // For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
     // This distance is in inches:
-    -0.5,
+    -0.640625,
 
     // Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
     PORT13,
@@ -78,7 +78,7 @@ Drive chassis(
     1.98298,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    1.25);
+    1.625);
 
 Autonomous autonomousClass;
 int current_auton_selection = 4;
@@ -396,7 +396,7 @@ void usercontrol(void)
 
   autonomousClass.testing();
   autonomousClass.~Autonomous();
-  // Auton testing code start
+  // Auton testing code start 
   // wait(3000, msec);
   // auton_skills();
 

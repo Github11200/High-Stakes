@@ -272,10 +272,10 @@ void Drive::turn_to_angle(float angle, TurnParams turnParams)
   {
     float error = reduce_negative_180_to_180(angle - get_absolute_heading());
     float output = turnPID.compute(error);
-    output = clamp(output, -turn_max_voltage, turn_max_voltage);
+    output = clamp(output, -turnParams.turn_max_voltage, turnParams.turn_max_voltage);
     drive_with_voltage(output, -output);
     task::sleep(10);
-  }
+  } 
   DriveL.stop(coast);
   DriveR.stop(coast);
 }
@@ -498,8 +498,8 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
   bool line_settled = false;
   bool prev_line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
 
-  // double previousDriveOutput = 0;
-  // double previousHeadingOutput = 0;
+  double previousDriveOutput = 0;
+  double previousHeadingOutput = 0;
 
   while (!drivePID.is_settled())
   {
@@ -508,9 +508,9 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
     // {
     //   cout << "dwahuhaid" << endl;
     //   break;
-    // }
+    // } 
     prev_line_settled = line_settled;
-
+ 
     float drive_error = hypot(X_position - get_X_position(), Y_position - get_Y_position());
     float heading_error = reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading());
     float drive_output = drivePID.compute(drive_error);
@@ -520,7 +520,7 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
     heading_error = reduce_negative_90_to_90(heading_error);
     float heading_output = headingPID.compute(heading_error);
 
-    if (drive_error < 10)
+    if (drive_error < 10) 
     {
       heading_output = 0;
     }
@@ -529,16 +529,17 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
     heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
 
     drive_output = clamp_min_voltage(drive_output, driveParams.drive_min_voltage);
+    drive_output = slew(drive_output, previousDriveOutput, 0.8);
 
     drive_with_voltage(left_voltage_scaling(drive_output, heading_output), right_voltage_scaling(drive_output, heading_output));
 
-    // previousDriveOutput = drive_output;
-    // previousHeadingOutput = heading_output;
+    previousDriveOutput = drive_output;
+    previousHeadingOutput = heading_output;  
     task::sleep(10);
-  }
+  }   
   DriveL.stop(coast);
   DriveR.stop(coast);
-}
+}  
 
 /**
  * Drives to a specified point and orientation on the field.
