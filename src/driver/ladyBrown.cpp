@@ -19,14 +19,15 @@ void LadyBrown::autonLoading()
 {
   while (!this->ladyBrownPID->is_settled())
   {
-    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->loadingPositionAngle;
+    double error = this->loadingPositionAngle - LadyBrownRotation.position(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 
-    output = clamp(output, -this->maxVoltage, this->maxVoltage);
+    output = clamp(output, -12, 12);
     LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
   this->ladyBrownPID->reset();
+  LadyBrownMotor.stop(vex::brakeType::hold);
 }
 
 void LadyBrown::raise(double speed)
@@ -115,7 +116,7 @@ void LadyBrown::allianceStakeScore()
 {
   while (!this->ladyBrownPID->is_settled())
   {
-    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->allianceStakeAngle;
+    double error = this->allianceStakeAngle - LadyBrownRotation.position(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
@@ -123,6 +124,7 @@ void LadyBrown::allianceStakeScore()
     wait(10, vex::timeUnits::msec);
   }
   this->ladyBrownPID->reset();
+  LadyBrownMotor.stop(vex::brakeType::hold);
 }
 
 void LadyBrown::allianceStakeAutonScore(int delay)
@@ -164,7 +166,10 @@ void LadyBrown::ladyBrownAutonTask()
   else if (ladyBrownAllianceStakeScore)
   {
     allianceStakeAutonScore(ladyBrownDelay);
-    ladyBrownAllianceStakeScore = false;
+  }
+  else if (!ladyBrownAllianceStakeScore)
+  {
+    autonLoading();
   }
   else
   {
@@ -173,6 +178,5 @@ void LadyBrown::ladyBrownAutonTask()
     //   LadyBrownMotor.spin(fwd, -12, volt);
     //   vex::wait(30, msec);
     // }
-    LadyBrownMotor.stop(hold);
   }
 }

@@ -19,7 +19,7 @@ float ladyBrownDelay = 0;
 bool mogoClamp = false;
 float mogoClampDelay = 0;
 IntakeControl intakeControl(12);
-LadyBrown ladyBrown(20, 180, 220, 90, 12, 2, 3, 5, 0.1, 2000, 10000000, 270, 0);
+LadyBrown ladyBrown(5, 166, 212, 116, 6, 0.3, 1.5, 0.5, 10, 1500, 12, 360, 2);
 MogoControl mogoControl;
 
 vector<Point> Autonomous::mirrorPath(vector<Point> originalPath)
@@ -64,16 +64,23 @@ Autonomous::Autonomous()
 
   static IntakeControl *intakeControlThingy = &intakeControl;
   static LadyBrown *ladyBrownThingy = &ladyBrown;
+  static MogoControl *mogoControlThingy = &mogoControl;
   this->intakeAutonTask = thread([]()
                                  { while (true) {
                                     intakeControlThingy->intakeAutonTask();
                                     wait(50, vex::timeUnits::msec);
                                   } });
-  this->ladyBrownAutonTask = thread([]()
-                                    { while (true) {
-                                        ladyBrownThingy->ladyBrownAutonTask();
-                                        wait(50, vex::timeUnits::msec);
-                                      } });
+  // this->ladyBrownAutonTask = thread([]()
+  //                                   { while (true) {
+  //                                       ladyBrownThingy->ladyBrownAutonTask();
+  //                                       wait(50, vex::timeUnits::msec);
+  //                                     } });
+  this->mogoAutonTask = thread([]()
+                               {
+                                  while (true) {
+                                    mogoControlThingy->mogoAutonTask();
+                                    wait(50, vex::timeUnits::msec);
+                                  } });
 
   this->driveParamsWithMogo.set_kp(driveParams.drive_kp + 0.05);
   this->driveParamsWithMogo.set_kd(driveParams.drive_kd + 0.5);
@@ -100,40 +107,61 @@ void Autonomous::solo_awp()
 {
   int reversed;
 
-  chassis.drive_to_point(5, 5, DriveParams().set_heading_kp(5).set_max_voltage(10));
+  LadyBrownRotation.setPosition(29.4, vex::rotationUnits::deg);
 
   if (this->allianceColor == vex::color::red)
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-56.548, 11.855, 225);
+    chassis.set_coordinates(-57.00, 7.6944, 225);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
+    // FIX BLUE COORDINATES
     chassis.set_coordinates(56.548, 11.855, 135);
   }
 
   cout << "solo awp auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
-  // Load ring into lady brown (we're out of size if it starts loaded i think)
-  ringStopped = false;
-  intakeToLadyBrownAuton = true;
-  vex::wait(500, msec);
-  intakeToLadyBrownAuton = false;
-
   // Score on alliance stake
-  ladyBrownAllianceStakeScore = true;
-  chassis.drive_distance(2, 225);
-  vex::wait(500, msec);
-  ladyBrownAllianceStakeScore = false;
+  ladyBrown.allianceStakeScore();
+
+  // Drive in front of the mogo
+  chassis.drive_to_point(-38.3886, 27.6128, this->driveParams);
+
+  // Pull the lady brown back
+  static LadyBrown ladyBrownPointerThing = ladyBrown;
+  thread autonLoadingThread = thread([]()
+                                     { ladyBrown.autonLoading(); this_thread::yield(); });
 
   // Curve into goal and clamp
-  mogoClampDelay = 900;
+  mogoClampDelay = 1500;
   mogoClamp = true;
-  chassis.drive_to_pose(-23.773, 23.773, 270, 0.5, 0);
+
+  // Turn and clamp onto the goal
+  chassis.turn_to_point(-23.5973, 19.6739, 180, TurnParams().set_kp(0.22).set_max_voltage(12).set_timeout(600));
+  chassis.drive_to_point(-23.5973, 19.6739, DriveParams().set_timeout(1500).set_kp(0.5).set_timeout(800));
+
+  intakeSort = true;
+
+  // Turn and drive into the rings
+  chassis.turn_to_point(-33.6118, 40.8943, 0, TurnParams().set_kp(0.22).set_max_voltage(12).set_timeout(60000000000000));
+  chassis.drive_to_point(-33.6118, 40.8943);
+
+  // LeftDoinker.set(true);
+
+  // // Move the bot back and pull the ring back with it
+  // chassis.turn_to_point(-5.21148, 16.2034, 180);
+  // chassis.drive_to_point(-5.21148, 16.2034);
+
+  // // Intake the two rings
+  // chassis.turn_to_point(-39.704, 1.71952, 0);
+  // chassis.drive_to_point(-39.704, 1.71952);
+
+  return;
 
   // Use ring rush to get rings on line
   LeftDoinker.set(true);

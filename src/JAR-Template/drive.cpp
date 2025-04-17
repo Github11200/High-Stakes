@@ -608,8 +608,8 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
     heading_error = reduce_negative_90_to_90(heading_error);
     float heading_output = headingPID.compute(heading_error);
 
-    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * drive_max_voltage, fabs(heading_scale_factor) * drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    drive_output = clamp(drive_output, -fabs(heading_scale_factor) * driveParams.drive_max_voltage, fabs(heading_scale_factor) * driveParams.drive_max_voltage);
+    heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
 
     drive_output = clamp_min_voltage(drive_output, drive_min_voltage);
 
@@ -637,7 +637,7 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
   {
     float error = reduce_negative_180_to_180(to_deg(atan2(X_position - get_X_position(), Y_position - get_Y_position())) - get_absolute_heading() + extra_angle_deg);
     float output = turnPID.compute(error);
-    output = clamp(output, -turn_max_voltage, turn_max_voltage);
+    output = clamp(output, -turnParams.turn_max_voltage, turnParams.turn_max_voltage);
     drive_with_voltage(output, -output);
     task::sleep(10);
   }

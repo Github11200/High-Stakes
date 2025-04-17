@@ -18,6 +18,7 @@ private:
 
   thread intakeAutonTask;
   thread ladyBrownAutonTask;
+  thread mogoAutonTask;
 
   DriveParams driveParams;
   TurnParams turnParams;

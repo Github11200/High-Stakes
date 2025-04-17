@@ -45,12 +45,8 @@ void MogoControl::reset()
 
 void MogoControl::autonDelayedClamp(int delay)
 {
-  static int staticDelay = delay; // Make it static so it persists
-
-  thread clampDelayThread([]()
-                          {
-                            wait(staticDelay, vex::timeUnits::msec);
-                            Clamp.set(true); });
+  wait(delay, vex::timeUnits::msec);
+  Clamp.set(true);
 }
 
 void MogoControl::mogoAutonTask()

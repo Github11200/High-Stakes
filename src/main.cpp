@@ -300,8 +300,6 @@ int buttonsWrapper()
 
   while (true)
   {
-    chassis.control_arcade();
-
     // Doinker
     if (RightDoinkerButton.pressing())
     {
@@ -384,7 +382,7 @@ void usercontrol(void)
 {
   // chassis.set_coordinates(0, 0, 0);
   // chassis.calibrate_robot();
-  // Brain.Screen.clearScreen();
+  // Brain.Screen.clearScreen();s
   // while (true)
   // {
   //   Brain.Screen.clearScreen();
@@ -394,7 +392,10 @@ void usercontrol(void)
   //   wait(20, vex::timeUnits::msec);
   // }
 
+  autonomousClass.setAllianceColor(vex::color::red);
+
   // autonomousClass.testing();
+  // autonomousClass.solo_awp();
   autonomousClass.~Autonomous();
   // Auton testing code start
   // wait(3000, msec);
