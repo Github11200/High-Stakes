@@ -22,9 +22,9 @@ struct DriveParams
   float drive_min_voltage = 0;
   float drive_max_voltage = 12;
   float heading_max_voltage = 12;
-  float drive_settle_error = 0.2;
-  float drive_settle_time = 500;
-  float drive_timeout = 4000;
+  float drive_settle_error = 1;
+  float drive_settle_time = 200;
+  float drive_timeout = 3000;
   float drive_kp = 0.413;
   float drive_ki = 0.1;
   float drive_kd = 0.5;
@@ -129,13 +129,13 @@ struct DriveParams
 struct TurnParams
 {
   float turn_max_voltage = 10;
-  float turn_settle_error = 1;
-  float turn_settle_time = 500;
-  float turn_timeout = 2000;
-  float turn_kp = 0.19;
-  float turn_ki = 0;
+  float turn_settle_error = 1.5;
+  float turn_settle_time = 200;
+  float turn_timeout = 1000;
+  float turn_kp = 0.192;
+  float turn_ki = 0.009;
   float turn_kd = 1.3;
-  float turn_starti = 0;
+  float turn_starti = 10;
 
   TurnParams &set_max_voltage(float val)
   {
