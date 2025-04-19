@@ -134,6 +134,23 @@ void IntakeControl::intakeAutonTask()
       wait(60, vex::timeUnits::msec);
     }
   }
+  else if (keepAllianceRing)
+  {
+    OpticalSensor.setLightPower(100, pct);
+    while (true)
+    {
+      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      // We've already intaked the ring we don't want and are now intaking the one we do want
+      if (OpticalSensor.isNearObject() && this->shouldEjectRing())
+        break;
+      wait(20, vex::timeUnits::msec);
+    }
+    while (!OpticalSensor.isNearObject())
+      Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+    keepAllianceRing = false;
+    Intake.stop(vex::brakeType::coast);
+    OpticalSensor.setLightPower(0, pct);
+  }
   else
   {
     OpticalSensor.setLightPower(0, pct); // turn off the light to save durability

@@ -15,6 +15,7 @@ bool intakeRev = false;
 bool ladyBrownScore = false;
 bool ladyBrownAllianceStakeScore = false;
 bool ladyBrownAllianceHoldUp = false;
+bool keepAllianceRing = false;
 float ladyBrownDelay = 0;
 bool mogoClamp = false;
 float mogoClampDelay = 0;
@@ -130,7 +131,7 @@ void Autonomous::solo_awp()
   ladyBrown.allianceStakeScore();
 
   // Drive in front of the mogo
-  chassis.drive_to_point(-38.3886, 27.6128, DriveParams().set_timeout(1000));
+  chassis.drive_to_point(-38.3886, 27.6128, DriveParams().set_timeout(1200).set_settle_time(0).set_settle_error(0.2).set_min_voltage(2));
 
   // Pull the lady brown back
   static LadyBrown ladyBrownPointerThing = ladyBrown;
@@ -138,63 +139,63 @@ void Autonomous::solo_awp()
                                      { ladyBrown.autonLoading(); cout << "brought it back..." << endl; this_thread::yield(); });
 
   // Turn towards the mogo
-  chassis.turn_to_point(-20.099, 16.6367, 180, this->turnParams.set_timeout(900));
+  chassis.turn_to_point(-20.099, 16.6367, 180, this->turnParams.set_timeout(800));
 
   // Move into goal and clamp
   mogoClampDelay = 900;
   mogoClamp = true;
 
   // Drive into the mogo and clamp
-  chassis.drive_to_point(-20.099, 16.6367, DriveParams().set_min_voltage(3).set_timeout(1000).set_settle_time(0).set_settle_error(0.1));
+  chassis.drive_to_point(-20.099, 16.6367, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(0.1));
 
   intakeSort = true;
-
-  // Go to the rings in the middle
-  chassis.turn_to_point(-7.47664, 32.7364, 0, this->turnParams.set_timeout(1000));
-  LeftDoinker.set(true);
   DriveParams temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.drive_to_point(-7.47664, 32.7364, temporaryDriveWithMogoParams.set_timeout(1200));
 
-  // Pull the ring back with the doinker
+  // Turn to the 8 stack and intake a ring
+  chassis.turn_to_point(-8.12818, 32.7059, 0, this->turnParams.set_timeout(800));
+  LeftDoinker.set(true);
+  chassis.drive_to_point(-8.12818, 32.7059, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(1));
+
+  // Drive back from the 8 stack
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.turn_to_point(-33.1289, 0.491801, 180, this->turnParams.set_timeout(800).set_settle_time(0).set_settle_error(1));
-  chassis.drive_to_point(-33.1289, 0.491801, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(0.1).set_min_voltage(2));
+  chassis.drive_to_point(-24.1765, 14.3371, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(1).set_min_voltage(2));
 
+  // Make the ring align with the other one
+  TurnParams temporaryTurnParamsWithMogo = this->turnParamsWithMogo;
+  chassis.turn_to_angle(13.1214, temporaryTurnParamsWithMogo.set_timeout(800));
   LeftDoinker.set(false);
+  wait(300, vex::timeUnits::msec);
 
-  // Score the other two rings which are in a line
-  temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.turn_to_point(-25.1708, 41.9966, 0, this->turnParams.set_timeout(800));
-  chassis.drive_to_point(-25.1708, 41.9966, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(0.1).set_min_voltage(2));
+  // Intake the two rings in a row
+  chassis.turn_to_point(-27.0271, 47.0456, 0, this->turnParams.set_timeout(800));
+  chassis.drive_to_point(-27.0271, 47.0456, temporaryDriveWithMogoParams.set_timeout(2000).set_settle_time(0).set_settle_error(1).set_min_voltage(2).set_max_voltage(4));
+  wait(500, vex::timeUnits::msec);
 
   // Turn towards the point from which we align to the 2 stack of rings
-  chassis.turn_to_point(-49.6156, 15.9103, 0, this->turnParams.set_timeout(800));
+  chassis.turn_to_point(-48, 15.9103, 0, this->turnParams.set_timeout(800));
   mogoClamp = false;
   Clamp.set(false);
   wait(200, vex::timeUnits::msec);
-  chassis.drive_to_point(-49.6156, 15.9103, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(0.1).set_min_voltage(2));
+  chassis.drive_to_point(-48, 15.9103, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(2).set_min_voltage(2));
 
   // Move into the stack and intake it
-  chassis.turn_to_point(-49.6156, -27.4898, 0, this->turnParams.set_timeout(800));
-  thread intakeStackThread = thread([]()
-                                    {
-                                      // We've already intaked the ring we don't want and are now intaking the one we do want
-                                      if (!intakeControl.shouldEjectRing()) {
-                                        intakeSort = false;
-                                        this_thread::yield(); 
-                                      }
-                                      wait(20, vex::timeUnits::msec); });
-  chassis.drive_to_point(-49.6156, -27.4898, DriveParams().set_timeout(1000).set_settle_time(0).set_settle_error(0.1).set_min_voltage(2));
+  chassis.turn_to_point(-48, -27.4898, 0, this->turnParams.set_timeout(800));
+  intakeSort = false;
+  keepAllianceRing = true;
+  chassis.drive_to_point(-48, -27.4898, DriveParams().set_timeout(3000).set_settle_time(0).set_settle_error(2).set_min_voltage(2).set_max_voltage(4));
+
+  while (keepAllianceRing)
+    wait(10, vex::timeUnits::msec);
 
   // Turn towards the second mogo and drive into it
-  chassis.turn_to_point(-23.2287, -28.8152, 180, this->turnParams.set_timeout(800));
-  mogoClampDelay = 1200;
+  chassis.turn_to_point(-20.2287, -28.8152, 180, this->turnParams.set_timeout(800));
+  mogoClampDelay = 900;
   mogoClamp = true;
-  chassis.drive_to_point(-23.2287, -28.8152, DriveParams().set_timeout(1000).set_settle_time(0).set_settle_error(0.5).set_min_voltage(2));
+  chassis.drive_to_point(-20.2287, -28.8152, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(1).set_min_voltage(2));
   intakeSort = true;
 
   LadyBrownMotor.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-  chassis.turn_to_point(-21.2926, -26.553, 0, this->turnParams.set_timeout(1500));
+  chassis.turn_to_angle(15, this->turnParams.set_timeout(1500));
 }
 
 // NOT TESTED

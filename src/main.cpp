@@ -381,8 +381,8 @@ int buttonsWrapper()
 void usercontrol(void)
 {
   // chassis.set_coordinates(0, 0, 0);
-  chassis.calibrate_robot();
-  // Brain.Screen.clearScreen();s
+  // chassis.calibrate_robot();
+  // Brain.Screen.clearScreen();
   // while (true)
   // {
   //   Brain.Screen.clearScreen();
@@ -394,11 +394,11 @@ void usercontrol(void)
 
   autonomousClass.setAllianceColor(vex::color::red);
 
+  wait(3000, msec);
   // autonomousClass.testing();
   autonomousClass.solo_awp();
   autonomousClass.~Autonomous();
   // Auton testing code start
-  // wait(3000, msec);
   // auton_skills();
 
   // intakeSort = false;
