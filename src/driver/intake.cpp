@@ -145,6 +145,7 @@ void IntakeControl::intakeAutonTask()
         break;
       wait(20, vex::timeUnits::msec);
     }
+    wait(200, vex::timeUnits::msec);
     while (!OpticalSensor.isNearObject())
       Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
     keepAllianceRing = false;

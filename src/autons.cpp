@@ -20,7 +20,7 @@ float ladyBrownDelay = 0;
 bool mogoClamp = false;
 float mogoClampDelay = 0;
 IntakeControl intakeControl(12);
-LadyBrown ladyBrown(5, 166, 212, 116, 6, 0.3, 1.5, 0.5, 10, 1500, 12, 360, 2);
+LadyBrown ladyBrown(116, 166, 212, 116, 7, 0.3, 1.5, 0.5, 10, 1500, 12, 360, 2);
 MogoControl mogoControl;
 
 vector<Point> Autonomous::mirrorPath(vector<Point> originalPath)
@@ -131,7 +131,7 @@ void Autonomous::solo_awp()
   ladyBrown.allianceStakeScore();
 
   // Drive in front of the mogo
-  chassis.drive_to_point(-38.3886, 27.6128, DriveParams().set_timeout(1200).set_settle_time(0).set_settle_error(0.2).set_min_voltage(2));
+  chassis.drive_to_point(-38.3886, 27.6128, DriveParams().set_timeout(1200).set_settle_time(0).set_settle_error(2).set_min_voltage(2));
 
   // Pull the lady brown back
   static LadyBrown ladyBrownPointerThing = ladyBrown;
@@ -139,63 +139,63 @@ void Autonomous::solo_awp()
                                      { ladyBrown.autonLoading(); cout << "brought it back..." << endl; this_thread::yield(); });
 
   // Turn towards the mogo
-  chassis.turn_to_point(-20.099, 16.6367, 180, this->turnParams.set_timeout(800));
+  chassis.turn_to_point(-20.099, 16.6367, 180, TurnParams().set_timeout(800).set_settle_error(2).set_settle_time(0));
 
   // Move into goal and clamp
   mogoClampDelay = 900;
   mogoClamp = true;
 
   // Drive into the mogo and clamp
-  chassis.drive_to_point(-20.099, 16.6367, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(0.1));
+  chassis.drive_to_point(-20.099, 16.6367, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(1));
 
   intakeSort = true;
   DriveParams temporaryDriveWithMogoParams = this->driveParamsWithMogo;
 
-  // Turn to the 8 stack and intake a ring
-  chassis.turn_to_point(-8.12818, 32.7059, 0, this->turnParams.set_timeout(800));
-  LeftDoinker.set(true);
-  chassis.drive_to_point(-8.12818, 32.7059, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(1));
+  // Get the rings in the 8 stack
+  chassis.turn_to_point(-9.35572, 33.9112, 0, TurnParams().set_settle_time(0).set_settle_error(2));
+  // chassis.drive_to_point(-8.35572, 33.9112, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(2).set_min_voltage(1));
 
-  // Drive back from the 8 stack
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.drive_to_point(-24.1765, 14.3371, temporaryDriveWithMogoParams.set_timeout(1200).set_settle_time(0).set_settle_error(1).set_min_voltage(2));
+  // Turn and get the second ring in the 8 stack
+  // chassis.turn_to_point(-9.7989, 49.2747, 0, TurnParams().set_settle_time(0).set_settle_error(3));
+  // chassis.drive_to_point(-9.7989, 49.2747, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(3).set_min_voltage(2));
 
-  // Make the ring align with the other one
-  TurnParams temporaryTurnParamsWithMogo = this->turnParamsWithMogo;
-  chassis.turn_to_angle(13.1214, temporaryTurnParamsWithMogo.set_timeout(800));
-  LeftDoinker.set(false);
-  wait(300, vex::timeUnits::msec);
+  chassis.drive_to_pose(-12.7989, 52.2747, 0, 0.5, 0, temporaryDriveWithMogoParams.set_max_voltage(6));
 
-  // Intake the two rings in a row
-  chassis.turn_to_point(-27.0271, 47.0456, 0, this->turnParams.set_timeout(800));
-  chassis.drive_to_point(-27.0271, 47.0456, temporaryDriveWithMogoParams.set_timeout(2000).set_settle_time(0).set_settle_error(1).set_min_voltage(2).set_max_voltage(4));
-  wait(500, vex::timeUnits::msec);
+  temporaryDriveWithMogoParams = this->driveParamsWithMogo;
 
-  // Turn towards the point from which we align to the 2 stack of rings
-  chassis.turn_to_point(-48, 15.9103, 0, this->turnParams.set_timeout(800));
-  mogoClamp = false;
+  // Turn towards the **first** 2 stack of rings (alliance color on bottom) and intake it
+  temporaryDriveWithMogoParams = this->driveParamsWithMogo;
+  chassis.drive_to_pose(-30.099, 16.6367, 230, 0.2, 0, temporaryDriveWithMogoParams.set_max_voltage(6));
+  chassis.turn_to_point(-26.0841, 46.1544, 0, TurnParams().set_settle_time(0).set_settle_error(2));
+  temporaryDriveWithMogoParams = this->driveParamsWithMogo;
+  chassis.drive_to_point(-26.0841, 46.1544, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(3));
+
+  // Turn towards the other 2 stack (with the rings flipped) and drive into it
+  chassis.turn_to_point(-56.1617, -28.5607, 0, TurnParams());
   Clamp.set(false);
-  wait(200, vex::timeUnits::msec);
-  chassis.drive_to_point(-48, 15.9103, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(2).set_min_voltage(2));
-
-  // Move into the stack and intake it
-  chassis.turn_to_point(-48, -27.4898, 0, this->turnParams.set_timeout(800));
+  mogoClamp = false;
   intakeSort = false;
   keepAllianceRing = true;
-  chassis.drive_to_point(-48, -27.4898, DriveParams().set_timeout(3000).set_settle_time(0).set_settle_error(2).set_min_voltage(2).set_max_voltage(4));
 
-  while (keepAllianceRing)
+  chassis.drive_to_point(-56.1617, -28.5607, DriveParams().set_timeout(3000).set_max_voltage(8).set_settle_time(0).set_settle_error(1));
+
+  int timeout = 2500;
+  while (keepAllianceRing && timeout > 0)
+  {
+    timeout -= 10;
     wait(10, vex::timeUnits::msec);
+  }
 
   // Turn towards the second mogo and drive into it
-  chassis.turn_to_point(-20.2287, -28.8152, 180, this->turnParams.set_timeout(800));
+  chassis.turn_to_point(-20.2287, -28.8152, 180, TurnParams().set_timeout(800).set_settle_time(0).set_settle_error(3));
   mogoClampDelay = 900;
   mogoClamp = true;
-  chassis.drive_to_point(-20.2287, -28.8152, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(1).set_min_voltage(2));
+  chassis.drive_to_point(-20.2287, -28.8152, DriveParams().set_timeout(1500).set_settle_time(0).set_settle_error(1));
   intakeSort = true;
 
-  LadyBrownMotor.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-  chassis.turn_to_angle(15, this->turnParams.set_timeout(1500));
+  chassis.turn_to_angle(20, this->turnParams.set_timeout(1500).set_settle_time(0).set_settle_error(2));
+  LadyBrownMotor.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
 }
 
 // NOT TESTED
