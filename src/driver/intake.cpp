@@ -113,6 +113,12 @@ void IntakeControl::intakeAutonTask()
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    if (Intake.velocity(pct) < 5)
+    {
+      Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
+      wait(150, vex::timeUnits::msec);
+      Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+    }
   }
   else if (intakeRev)
   {

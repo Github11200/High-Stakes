@@ -572,6 +572,7 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
   bool crossed_center_line = false;
   bool center_line_side = is_line_settled(X_position, Y_position, angle + 90, get_X_position(), get_Y_position());
   bool prev_center_line_side = center_line_side;
+  double previousDriveOutput = 0;
   while (!drivePID.is_settled())
   {
     line_settled = is_line_settled(X_position, Y_position, angle, get_X_position(), get_Y_position());
@@ -613,7 +614,11 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
 
     drive_output = clamp_min_voltage(drive_output, drive_min_voltage);
 
+    if (abs(drive_output) > abs(previousDriveOutput))
+      drive_output = slew(drive_output, previousDriveOutput, driveParams.drive_slew);
+
     drive_with_voltage(left_voltage_scaling(drive_output, heading_output), right_voltage_scaling(drive_output, heading_output));
+    previousDriveOutput = drive_output;
     task::sleep(10);
   }
 }
