@@ -539,8 +539,8 @@ void Drive::drive_to_point(float X_position, float Y_position, DriveParams drive
     previousHeadingOutput = heading_output;
     task::sleep(10);
   }
-  DriveL.stop(coast);
-  DriveR.stop(coast);
+  DriveL.stop(brake);
+  DriveR.stop(brake);
 }
 
 /**
@@ -646,8 +646,8 @@ void Drive::turn_to_point(float X_position, float Y_position, float extra_angle_
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
-  DriveL.stop(coast);
-  DriveR.stop(coast);
+  DriveL.stop(brake);
+  DriveR.stop(brake);
 }
 
 /**
