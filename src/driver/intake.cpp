@@ -36,7 +36,7 @@ void IntakeControl::ejectRing()
   while (OpticalSensor.isNearObject())
   { // spin it until the ring is not near
     // once it's not near, it's probably in the perfect place for ejection
-    Intake.spin(vex::directionType::fwd, 1.5, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
     cout << "we're racist" << endl;
     wait(10, vex::timeUnits::msec);
   }
@@ -53,7 +53,7 @@ void IntakeControl::intake()
     OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
     if (shouldEjectRing())
       ejectRing();
-    Intake.spin(vex::directionType::fwd, this->speed, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
 }
@@ -107,18 +107,23 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeAutonTask()
 {
+  static int timeout = 0;
   if (intakeSort) // the variable that the autonomous sets to true to spin the intake
   {
     OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    if (Intake.velocity(pct) < 5)
+    if (Intake.velocity(pct) < 5 && timeout == 1500)
     {
       Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
       wait(150, vex::timeUnits::msec);
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     }
+    else if (Intake.velocity(pct) < 5)
+      timeout += 10;
+    else
+      timeout = 0;
   }
   else if (intakeRev)
   {
@@ -152,14 +157,34 @@ void IntakeControl::intakeAutonTask()
       wait(20, vex::timeUnits::msec);
     }
     wait(200, vex::timeUnits::msec);
-    while (!OpticalSensor.isNearObject())
+    bool restart = true;
+    while (restart)
     {
-      Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
-      wait(20, vex::timeUnits::msec);
+      while (!OpticalSensor.isNearObject())
+      {
+        Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
+        wait(20, vex::timeUnits::msec);
+      }
+      if (this->shouldEjectRing())
+      {
+        while (OpticalSensor.isNearObject())
+          Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        wait(200, vex::timeUnits::msec);
+      }
+      else
+        restart = false;
     }
     keepAllianceRing = false;
     Intake.stop(vex::brakeType::coast);
     OpticalSensor.setLightPower(0, pct);
+  }
+  else if (intakeToGhostFrong)
+  {
+    while (!OpticalSensor.isNearObject())
+      Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
+    Intake.stop(vex::brakeType::coast);
+    intakeToGhostFrong = false;
+    cout << "frong destroyed" << endl;
   }
   else
   {

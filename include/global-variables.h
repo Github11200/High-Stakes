@@ -10,3 +10,4 @@ extern float mogoClampDelay;
 extern bool pre_match;
 extern bool ringStopped;
 extern bool keepAllianceRing;
+extern bool intakeToGhostFrong;
