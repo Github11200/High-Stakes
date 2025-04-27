@@ -424,7 +424,7 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // LadyBrownRotation.resetPosition();
-  // chassis.stop_position_track_task();
+  chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
   while (1)
