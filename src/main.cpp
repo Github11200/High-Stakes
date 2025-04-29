@@ -304,6 +304,7 @@ int buttonsWrapper()
   LadyBrownRotation.resetPosition();
   wait(500, vex::timeUnits::msec);
   cout << "lowered, and reset position" << endl;
+  LadyBrownMotor.stop(vex::brakeType::coast);
 
   IntakeControl intakeControl(12);
   //                                         kP  kD

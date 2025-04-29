@@ -34,6 +34,7 @@ void LadyBrown::raise(double speed)
 {
   while (LadyBrownRaiseButton.pressing() || LadyBrownForwardButton.pressing())
   {
+    Intake.spin(vex::directionType::rev, 0.5, vex::voltageUnits::volt);
     double voltageOutput = slew(speed, LadyBrownMotor.voltage(), this->slewChange);
     ringStopped = false;
     LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, volt);
