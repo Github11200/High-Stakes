@@ -23,9 +23,6 @@ public:
   /// @brief Will toggle between clamped and released based on current state
   void toggle();
 
-  /// @brief Resets it back to the up position
-  void reset();
-
   /// @brief Delays the clamp but a set number of milliseconds
   /// @param delay The number of milliseconds you want to delay by
   void autonDelayedClamp(int delay);

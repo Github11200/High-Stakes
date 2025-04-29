@@ -300,9 +300,9 @@ int buttonsWrapper()
     cout << "lowering..." << endl;
     LadyBrownMotor.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
   }
-  wait(1.5, vex::timeUnits::sec);
+  wait(0.5, vex::timeUnits::sec);
   LadyBrownRotation.resetPosition();
-  wait(500, vex::timeUnits::msec);
+  wait(0.5, vex::timeUnits::sec);
   cout << "lowered, and reset position" << endl;
   LadyBrownMotor.stop(vex::brakeType::coast);
 
@@ -350,13 +350,12 @@ int buttonsWrapper()
       ladyBrown.raise(6);
     else if (LadyBrownLowerButton.pressing())
       ladyBrown.lower(6);
+    else if (LadyBrownDescoreButton.pressing())
+      ladyBrown.descore();
 
     // Mogo
     if (ClampButton.pressing())
       mogoControl.toggle();
-
-    if (ClampResetButton.pressing())
-      mogoControl.reset();
 
     if (RedAllianceButton.pressing())
       alliance = "red";

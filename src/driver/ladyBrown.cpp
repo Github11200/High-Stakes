@@ -34,13 +34,14 @@ void LadyBrown::raise(double speed)
 {
   while (LadyBrownRaiseButton.pressing() || LadyBrownForwardButton.pressing())
   {
-    Intake.spin(vex::directionType::rev, 0.5, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
     double voltageOutput = slew(speed, LadyBrownMotor.voltage(), this->slewChange);
     ringStopped = false;
     LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, volt);
     wait(10, vex::timeUnits::msec);
   }
   LadyBrownMotor.stop(vex::brakeType::hold);
+  Intake.stop(vex::brakeType::coast);
 }
 
 void LadyBrown::loading()
@@ -67,7 +68,6 @@ void LadyBrown::loading()
 
 void LadyBrown::lower(double speed)
 {
-  cout << "breh" << endl;
   while (!LadyBrownRaiseButton.pressing() && !LadyBrownLoadButton.pressing() && LadyBrownLowerButton.pressing())
   {
     cout << LadyBrownRotation.angle() << endl;
@@ -100,6 +100,22 @@ void LadyBrown::score()
     wait(10, vex::timeUnits::msec);
   }
   this->ladyBrownPID->reset();
+}
+
+void LadyBrown::descore()
+{
+  while (LadyBrownDescoreButton.pressing())
+  {
+    double error = 166 - LadyBrownRotation.position(vex::rotationUnits::deg);
+    double output = this->ladyBrownPID->compute(error);
+
+    output = clamp(output, -this->maxVoltage, this->maxVoltage);
+    LadyBrownMotor.spin(vex::directionType::fwd, output, vex::voltageUnits::volt);
+
+    wait(10, vex::timeUnits::msec);
+  }
+  this->ladyBrownPID->reset();
+  LadyBrownMotor.stop(vex::brakeType::hold);
 }
 
 void LadyBrown::autonScore(int delay)

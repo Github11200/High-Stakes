@@ -39,6 +39,9 @@ public:
   /// @brief Gets the lady brown into scoring position
   void score();
 
+  /// @brief Gets the lady brown into descore position
+  void descore();
+
   /// @brief Scores the ring after a set number of milliseconds
   /// @param delay The number of milliseconds you want to delay by
   void autonScore(int delay);

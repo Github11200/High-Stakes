@@ -34,15 +34,6 @@ void MogoControl::toggle()
   }
 }
 
-void MogoControl::reset()
-{
-  Brain.Screen.clearScreen();
-  Brain.Screen.setFillColor(vex::color::red);
-  Brain.Screen.drawRectangle(0, 0, 200, 160);
-  Clamp.set(false);
-  this->mogoState = RELEASED;
-}
-
 void MogoControl::autonDelayedClamp(int delay)
 {
   wait(delay, vex::timeUnits::msec);

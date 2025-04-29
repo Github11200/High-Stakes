@@ -27,9 +27,9 @@ extern vex::controller::button LadyBrownRaiseButton;
 extern vex::controller::button LadyBrownLoadButton;
 extern vex::controller::button LadyBrownForwardButton;
 extern vex::controller::button LadyBrownLowerButton;
+extern vex::controller::button LadyBrownDescoreButton;
 
 extern vex::controller::button ClampButton;
-extern vex::controller::button ClampResetButton;
 
 extern vex::controller::button LeftDoinkerButton;
 extern vex::controller::button RightDoinkerButton;
