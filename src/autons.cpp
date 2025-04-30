@@ -290,13 +290,13 @@ void Autonomous::negative_ring_rush()
   {
     reversed = 1;
     alliance = "red";
-    chassis.set_coordinates(-50.788, 27.547, 78);
+    chassis.set_coordinates(-51.582, 28.739, 70);
   }
   else
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(50.788, 27.547, 282);
+    chassis.set_coordinates(51.582, 28.739, 290);
   }
 
   cout << "negative ring rush auto started, initial position:" << endl;
