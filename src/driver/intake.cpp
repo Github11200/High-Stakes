@@ -162,11 +162,10 @@ void IntakeControl::intakeAutonTask()
   }
   else if (intakeToGhostFrong)
   {
-    while (!OpticalSensor.isNearObject())
+    if (!OpticalSensor.isNearObject())
       Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
-    Intake.stop(vex::brakeType::coast);
-    intakeToGhostFrong = false;
-    cout << "frong destroyed" << endl;
+    else
+      Intake.stop(vex::brakeType::coast);
   }
   else
   {
