@@ -304,6 +304,8 @@ int buttonsWrapper()
   LadyBrownRotation.resetPosition();
   wait(0.5, vex::timeUnits::sec);
   cout << "lowered, and reset position" << endl;
+  LadyBrownMotor.spin(vex::directionType::fwd, 1, vex::voltageUnits::volt);
+  wait(0.1, vex::timeUnits::sec);
   LadyBrownMotor.stop(vex::brakeType::coast);
 
   IntakeControl intakeControl(12);
@@ -407,9 +409,9 @@ void usercontrol(void)
 
   autonomousClass.setAllianceColor(vex::color::blue);
 
-  // wait(3000, msec);
+  wait(3000, msec);
   // autonomousClass.testing();
-  // autonomousClass.auton_skills();
+  autonomousClass.solo_awp();
   autonomousClass.~Autonomous();
   // Auton testing code start
   // auton_skills();

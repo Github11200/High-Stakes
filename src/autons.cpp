@@ -21,7 +21,7 @@ bool mogoClamp = false;
 float mogoClampDelay = 0;
 bool intakeToGhostFrong = false;
 IntakeControl intakeControl(12);
-LadyBrown ladyBrown(116, 166, 210, 116, 9, 0.4, 1.5, 0.5, 10, 1200, 12, 360, 2);
+LadyBrown ladyBrown(116, 166, 210, 116, 12, 0.4, 1.5, 0.5, 10, 1200, 12, 360, 2);
 MogoControl mogoControl;
 
 vector<Point> Autonomous::mirrorPath(vector<Point> originalPath)
@@ -132,9 +132,11 @@ void Autonomous::solo_awp()
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
 
   // Score on alliance stake
-  thread allianceStakeScore = thread([]()
-                                     {  ladyBrown.allianceStakeScore();
-                                        this_thread::yield(); });
+  // thread allianceStakeScore = thread([]()
+  //                                    {  ladyBrown.allianceStakeScore();
+  //                                       this_thread::yield(); });
+  ladyBrown.autonScore(500);
+  chassis.drive_distance(3, chassis.get_absolute_heading(), DriveParams());
 
   // thread odomPrinting = thread([]()
   //                              {
@@ -149,7 +151,6 @@ void Autonomous::solo_awp()
   //                                } });
 
   // Drive in front of the mogo
-  wait(530, vex::timeUnits::msec); // DON'T delete this wait statement, it waits for the lb to have moved a little bit
   chassis.drive_to_point(-38.3886 * reversed, 27.6128, DriveParams().set_timeout(1200).set_settle_time(0).set_settle_error(2.3).set_min_voltage(2).set_drive_slew(12));
 
   // Pull the lady brown back
