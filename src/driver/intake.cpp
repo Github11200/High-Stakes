@@ -110,6 +110,7 @@ void IntakeControl::intakeAutonTask()
   static int timeout = 0;
   if (intakeSort) // the variable that the autonomous sets to true to spin the intake
   {
+    cout << "intaking the frick in" << endl;
     OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
     if (shouldEjectRing())
       ejectRing();
@@ -119,6 +120,7 @@ void IntakeControl::intakeAutonTask()
       Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
       wait(150, vex::timeUnits::msec);
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+      timeout = 0;
     }
     else if (Intake.velocity(pct) < 5)
       timeout += 10;
@@ -127,10 +129,12 @@ void IntakeControl::intakeAutonTask()
   }
   else if (intakeRev)
   {
+    timeout = 0;
     Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
   }
   else if (intakeToLadyBrownAuton)
   {
+    timeout = 0;
     while (!ringStopped)
     {
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
@@ -150,10 +154,21 @@ void IntakeControl::intakeAutonTask()
     OpticalSensor.setLightPower(100, pct);
     while (true)
     {
-      Intake.spin(vex::directionType::fwd, 10, vex::voltageUnits::volt);
+      Intake.spin(vex::directionType::fwd, 9, vex::voltageUnits::volt);
       // We've got the ring we want
       if (OpticalSensor.isNearObject() && !this->shouldEjectRing())
         break;
+      if (Intake.velocity(pct) < 5 && timeout == 1500)
+      {
+        Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
+        wait(150, vex::timeUnits::msec);
+        Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
+        timeout = 0;
+      }
+      else if (Intake.velocity(pct) < 5)
+        timeout += 10;
+      else
+        timeout = 0;
       wait(20, vex::timeUnits::msec);
     }
     keepAllianceRing = false;
@@ -162,6 +177,7 @@ void IntakeControl::intakeAutonTask()
   }
   else if (intakeToGhostFrong)
   {
+    timeout = 0;
     if (!OpticalSensor.isNearObject())
       Intake.spin(vex::directionType::fwd, 8, vex::voltageUnits::volt);
     else
@@ -169,6 +185,7 @@ void IntakeControl::intakeAutonTask()
   }
   else
   {
+    timeout = 0;
     OpticalSensor.setLightPower(0, pct); // turn off the light to save durability
     Intake.stop(coast);
   }

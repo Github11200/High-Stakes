@@ -171,7 +171,7 @@ void pre_auton(void)
   // CHANGE THIS FOR MATCHES
   alliance = "red";
 
-  chassis.calibrate_robot();
+  // chassis.calibrate_robot();
   vex::wait(3000, vex::timeUnits::msec);
 
   updateScreen();
@@ -257,7 +257,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  autonomousClass.setAllianceColor(vex::color::blue);
+  autonomousClass.setAllianceColor(vex::color::red);
 
   autonomousClass.solo_awp();
   return;
@@ -317,75 +317,75 @@ int buttonsWrapper()
   while (true)
   {
     // Doinker
-    if (RightDoinkerButton.pressing())
-    {
-      RightDoinker.set(true);
-      while (RightDoinkerButton.pressing())
-        vex::wait(20, vex::timeUnits::msec);
-      RightDoinker.set(false);
-    }
-    if (LeftDoinkerButton.pressing())
-    {
-      LeftDoinker.set(true);
-      while (LeftDoinkerButton.pressing())
-        vex::wait(20, vex::timeUnits::msec);
-      LeftDoinker.set(false);
-    }
-
-    // Intake
-    if (OuttakeButton.pressing())
-      intakeControl.outtake();
-    else if (IntakeButton.pressing())
-      intakeControl.intake();
-    else if (LadyBrownLoadButton.pressing())
-      ladyBrown.loading();
-    else
-    {
-      OpticalSensor.setLightPower(0, pct);
-      Intake.stop(coast);
-    }
-
-    // Lady Brown
-    if (LadyBrownRaiseButton.pressing())
-      ladyBrown.raise(12);
-    else if (LadyBrownForwardButton.pressing())
-      ladyBrown.raise(6);
-    else if (LadyBrownLowerButton.pressing())
-      ladyBrown.lower(6);
-    else if (LadyBrownDescoreButton.pressing())
-      ladyBrown.descore();
-
-    // Mogo
-    if (ClampButton.pressing())
-      mogoControl.toggle();
-
-    if (RedAllianceButton.pressing())
-      alliance = "red";
-    else if (BlueAllianceButton.pressing())
-      alliance = "blue";
-
-    // if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
+    // if (RightDoinkerButton.pressing())
     // {
-    //   if (Controller.ButtonUp.pressing())
-    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
-    //   else if (Controller.ButtonRight.pressing())
-    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
-    //   else if (Controller.ButtonLeft.pressing())
-    //   {
-    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-    //   }
-    //   else if (Controller.ButtonB.pressing())
-    //   {
-    //     cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
-    //     cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
-    //   }
-    //   else if (Controller.ButtonDown.pressing())
-    //   {
-    //     cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
-    //   }
-    //   wait(100, vex::timeUnits::msec);
+    //   RightDoinker.set(true);
+    //   while (RightDoinkerButton.pressing())
+    //     vex::wait(20, vex::timeUnits::msec);
+    //   RightDoinker.set(false);
     // }
+    // if (LeftDoinkerButton.pressing())
+    // {
+    //   LeftDoinker.set(true);
+    //   while (LeftDoinkerButton.pressing())
+    //     vex::wait(20, vex::timeUnits::msec);
+    //   LeftDoinker.set(false);
+    // }
+
+    // // Intake
+    // if (OuttakeButton.pressing())
+    //   intakeControl.outtake();
+    // else if (IntakeButton.pressing())
+    //   intakeControl.intake();
+    // else if (LadyBrownLoadButton.pressing())
+    //   ladyBrown.loading();
+    // else
+    // {
+    //   OpticalSensor.setLightPower(0, pct);
+    //   Intake.stop(coast);
+    // }
+
+    // // Lady Brown
+    // if (LadyBrownRaiseButton.pressing())
+    //   ladyBrown.raise(12);
+    // else if (LadyBrownForwardButton.pressing())
+    //   ladyBrown.raise(6);
+    // else if (LadyBrownLowerButton.pressing())
+    //   ladyBrown.lower(6);
+    // else if (LadyBrownDescoreButton.pressing())
+    //   ladyBrown.descore();
+
+    // // Mogo
+    // if (ClampButton.pressing())
+    //   mogoControl.toggle();
+
+    // if (RedAllianceButton.pressing())
+    //   alliance = "red";
+    // else if (BlueAllianceButton.pressing())
+    //   alliance = "blue";
+
+    if (Controller.ButtonUp.pressing() || Controller.ButtonRight.pressing() || Controller.ButtonLeft.pressing() || Controller.ButtonB.pressing() || Controller.ButtonDown.pressing())
+    {
+      if (Controller.ButtonUp.pressing())
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << "*reversed, " << chassis.get_Y_position() << ");" << endl;
+      else if (Controller.ButtonRight.pressing())
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
+      else if (Controller.ButtonLeft.pressing())
+      {
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+      }
+      else if (Controller.ButtonB.pressing())
+      {
+        cout << "chassis.turn_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ", 180);" << endl;
+        cout << "chassis.drive_to_point(" << chassis.get_X_position() << ", " << chassis.get_Y_position() << ");" << endl;
+      }
+      else if (Controller.ButtonDown.pressing())
+      {
+        cout << "chassis.turn_to_angle(" << chassis.get_absolute_heading() << ");" << endl;
+      }
+      wait(100, vex::timeUnits::msec);
+    }
 
     vex::wait(50, vex::timeUnits::msec);
   }
@@ -406,13 +406,14 @@ void usercontrol(void)
   //   Brain.Screen.printAt(0, 100, "Theta: %.5f", chassis.get_absolute_heading());
   //   wait(20, vex::timeUnits::msec);
   // }
+  autonomousClass.setAllianceColor(vex::color::red);
 
-  autonomousClass.setAllianceColor(vex::color::blue);
-
+  chassis.calibrate_robot();
   wait(3000, msec);
   // autonomousClass.testing();
-  autonomousClass.solo_awp();
+  autonomousClass.negative_ring_rush();
   autonomousClass.~Autonomous();
+  // return;
   // Auton testing code start
   // auton_skills();
 
@@ -426,7 +427,7 @@ void usercontrol(void)
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
   // LadyBrownRotation.resetPosition();
-  chassis.stop_position_track_task();
+  // chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 
   while (1)

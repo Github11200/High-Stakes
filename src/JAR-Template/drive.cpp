@@ -307,10 +307,6 @@ void Drive::drive_distance(float distance, float heading, DriveParams driveParam
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
 
-    cout << "average position: " << average_position << endl;
-    cout << "drive error: " << drive_error << endl;
-    cout << "heading error: " << heading_error << endl;
-
     drive_output = clamp(drive_output, -driveParams.drive_max_voltage, driveParams.drive_max_voltage);
     heading_output = clamp(heading_output, -driveParams.heading_max_voltage, driveParams.heading_max_voltage);
 
