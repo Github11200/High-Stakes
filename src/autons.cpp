@@ -80,7 +80,7 @@ Autonomous::Autonomous()
   this->mogoAutonTask = thread([]()
                                {
                                   while (true) {
-                                    mogoControlThingy->mogoAutonTask();
+                                    mogoControlThingy->mogoAutonTask(); 
                                     wait(50, vex::timeUnits::msec);
                                   } });
 
@@ -308,7 +308,7 @@ void Autonomous::negative_ring_rush()
   {
     reversed = -1;
     alliance = "blue";
-    chassis.set_coordinates(51.582, 28.739, 290);
+    chassis.set_coordinates(51.582, 28.739, 289);
   }
 
   cout << "negative ring rush auto started, initial position:" << endl;
@@ -328,12 +328,13 @@ void Autonomous::negative_ring_rush()
   else
     RightDoinker.set(true);
   keepAllianceRing = true;
-  chassis.drive_to_point(-10.75801, 43.9829, DriveParams().set_settle_time(0).set_settle_error(2));
+  chassis.drive_to_point(-10.75801, 42.9829, DriveParams().set_settle_time(0).set_settle_error(2).set_drive_slew(0.6));
   keepAllianceRing = true;
 
   // Drive and clamp into the goal
-  chassis.turn_to_point(-22.8325, 16.795, 180, TurnParams().set_settle_time(0).set_settle_error(2));
+  chassis.turn_to_point(-22.8325, 16.795, 180, TurnParams().set_settle_time(20).set_settle_error(2));
   chassis.drive_to_point(-22.8325, 16.795, DriveParams().set_drive_slew(12).set_settle_time(0).set_settle_error(1.5));
+
   Clamp.set(true);
   wait(100, vex::timeUnits::msec);
 
@@ -345,18 +346,24 @@ void Autonomous::negative_ring_rush()
   RightDoinker.set(false);
   chassis.drive_to_point(-20.8112, 52.399, this->driveParamsWithMogo);
 
-  return;
+  chassis.turn_to_point(-48, 48, 0, TurnParams().set_settle_time(0).set_settle_error(2));
+  chassis.drive_to_point(-48, 48, temporaryDriveWithMogoParams.set_max_voltage(8).set_settle_time(0).set_settle_error(2));
 
   // Turn and drive into the corner
-  chassis.turn_to_point(-59.5711, 59.7478, 0, TurnParams().set_settle_time(0).set_settle_error(2));
-  chassis.drive_to_point(-59.5711, 59.7478, temporaryDriveWithMogoParams.set_max_voltage(8));
+  chassis.turn_to_point(-64.5711, 63.7478, 0, TurnParams().set_settle_time(0).set_settle_error(2));
+  chassis.drive_to_point(-64.5711, 63.7478, temporaryDriveWithMogoParams.set_max_voltage(4));
+  chassis.drive_distance(100000, chassis.get_absolute_heading(), DriveParams().set_timeout(500).set_drive_slew(12));
   wait(500, vex::timeUnits::msec);
 
   // Move back from the corner
   chassis.turn_to_point(-47.0608, 50.6669, 180, TurnParams().set_settle_time(0).set_settle_error(2));
   chassis.drive_to_point(-47.0608, 50.6669, this->driveParamsWithMogo);
 
-  // Intake the 2 stack and frick out alliance
+  chassis.drive_distance(10, chassis.get_absolute_heading(), DriveParams());
+
+  return;
+
+  // Intake the 2 stack and frick our alliance
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
   chassis.turn_to_point(-52.6015, -43.5456, 0, TurnParams().set_settle_time(0).set_settle_error(2));
   chassis.drive_to_point(-52.6015, -43.5456, temporaryDriveWithMogoParams.set_max_voltage(8));

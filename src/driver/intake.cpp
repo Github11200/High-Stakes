@@ -36,7 +36,7 @@ void IntakeControl::ejectRing()
   while (OpticalSensor.isNearObject())
   { // spin it until the ring is not near
     // once it's not near, it's probably in the perfect place for ejection
-    Intake.spin(vex::directionType::fwd, 3, vex::voltageUnits::volt);
+    Intake.spin(vex::directionType::fwd, 6, vex::voltageUnits::volt);
     cout << "we're racist" << endl;
     wait(10, vex::timeUnits::msec);
   }
@@ -107,7 +107,7 @@ int IntakeControl::hue_difference(int hue1, int hue2)
 
 void IntakeControl::intakeAutonTask()
 {
-  static int timeout = 0;
+  static int timeout;
   if (intakeSort) // the variable that the autonomous sets to true to spin the intake
   {
     cout << "intaking the frick in" << endl;
@@ -115,9 +115,10 @@ void IntakeControl::intakeAutonTask()
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    if (Intake.velocity(pct) < 5 && timeout == 1500)
+    cout << timeout << endl;
+    if (Intake.velocity(pct) < 5 && timeout >= 200)
     {
-      Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
+      Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
       wait(150, vex::timeUnits::msec);
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
       timeout = 0;
