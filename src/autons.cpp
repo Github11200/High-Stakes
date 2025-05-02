@@ -389,11 +389,14 @@ void Autonomous::negative_ring_rush()
   ladyBrownLoading.interrupt();
   ladyBrownLoading.~thread();
   ladyBrown.resetLadyBrownPID();
-  Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
+  intakeSort = false;
+  intakeRevSlow = true;
+  // Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
   thread ladyBrownHoldUp = thread([]()
                                   { ladyBrown.holdUp(); });
   chassis.turn_to_point(-60.1594, -0.227565, 0, TurnParams());
-  Intake.stop(vex::brakeType::coast);
+  intakeRevSlow = false;
+  intakeSort = true;
   chassis.drive_to_point(-60.1594, -0.227565, temporaryDriveWithMogoParams);
 
   // Turn towards the alliance stake and score
@@ -403,7 +406,6 @@ void Autonomous::negative_ring_rush()
   ladyBrownHoldUp.interrupt();
   ladyBrownHoldUp.~thread();
   ladyBrown.resetLadyBrownPID();
-  Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
   ladyBrown.allianceStakeScore();
   wait(100, vex::timeUnits::msec);
   ladyBrown.holdUp();
