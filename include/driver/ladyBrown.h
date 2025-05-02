@@ -22,6 +22,8 @@ private:
 public:
   LadyBrown(double loadingPositionAngle, double scoringPositionAngle, double allianceStakeAngle, double holdUpAngle, double maxVoltage, double kP, double kD, double settleError, double settleTime, double timeout, double slewChange, double maxAngle, double minAngle);
 
+  void resetLadyBrownPID();
+
   /// @brief Gets the lady brown into loading position
   void autonLoading();
 

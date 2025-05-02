@@ -295,11 +295,11 @@ int buttonsWrapper()
 {
   LadyBrownMotor.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
   wait(200, vex::timeUnits::msec);
-  while (LadyBrownMotor.velocity(pct) > 5)
-  {
-    cout << "lowering..." << endl;
-    LadyBrownMotor.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
-  }
+  // while (LadyBrownMotor.velocity(pct) > 5)
+  // {
+  //   cout << "lowering..." << endl;
+  //   LadyBrownMotor.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+  // }
   wait(0.5, vex::timeUnits::sec);
   LadyBrownRotation.resetPosition();
   wait(0.5, vex::timeUnits::sec);
@@ -312,8 +312,6 @@ int buttonsWrapper()
   //                                         kP  kD
   LadyBrown ladyBrown(28, 166, 207, 116, 12, 0.35, 1.5, 0.5, 10, 500000000000000000, 12, 360, 2);
   MogoControl mogoControl;
-
-  LadyBrownMotor.setBrake(vex::brakeType::hold);
   while (true)
   {
     // Doinker
@@ -410,6 +408,9 @@ void usercontrol(void)
 
   chassis.calibrate_robot();
   wait(3000, msec);
+  LadyBrownRotation.setReversed(true);
+  LadyBrownRotation.resetPosition();
+  wait(0.5, vex::timeUnits::sec);
   // autonomousClass.testing();
   autonomousClass.negative_ring_rush();
   autonomousClass.~Autonomous();

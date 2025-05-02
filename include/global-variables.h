@@ -1,6 +1,7 @@
 extern bool intakeToLadyBrownAuton;
 extern bool intakeSort;
 extern bool intakeRev;
+extern bool intakeRevSlow;
 extern bool ladyBrownScore;
 extern bool ladyBrownAllianceStakeScore;
 extern bool ladyBrownHoldUp;
@@ -11,3 +12,5 @@ extern bool pre_match;
 extern bool ringStopped;
 extern bool keepAllianceRing;
 extern bool intakeToGhostFrong;
+extern bool intakeSpin;
+extern bool shouldAntiJam;

@@ -15,9 +15,14 @@ LadyBrown::LadyBrown(double loadingPositionAngle, double scoringPositionAngle, d
   this->minAngle = minAngle;
 }
 
+void LadyBrown::resetLadyBrownPID()
+{
+  this->ladyBrownPID->reset();
+}
+
 void LadyBrown::autonLoading()
 {
-  while (!this->ladyBrownPID->is_settled())
+  while (true)
   {
     double error = this->loadingPositionAngle - LadyBrownRotation.position(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
@@ -157,9 +162,9 @@ void LadyBrown::allianceStakeAutonScore(int delay)
 
 void LadyBrown::holdUp()
 {
-  while (!this->ladyBrownPID->is_settled())
+  while (true)
   {
-    double error = LadyBrownRotation.angle(vex::rotationUnits::deg) - this->holdUpAngle;
+    double error = this->holdUpAngle - LadyBrownRotation.angle(vex::rotationUnits::deg);
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);
