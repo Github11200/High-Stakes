@@ -24,7 +24,8 @@ bool intakeToGhostFrong = false;
 bool intakeSpin = false;
 bool shouldAntiJam = true;
 IntakeControl intakeControl(12);
-LadyBrown ladyBrown(28, 140, 190, 116, 12, 0.3, 1.5, 0.5, 10, 1200, 12, 360, 2);
+LadyBrown negativeRingRushLadyBrown(28, 140, 190, 116, 12, 0.3, 1.5, 0.5, 10, 1200, 12, 360, 2);
+LadyBrown soloAwpLadyBrown(116, 166, 210, 116, 9, 0.4, 1.5, 0.5, 10, 1200, 12, 360, 2);
 MogoControl mogoControl;
 
 vector<Point> Autonomous::mirrorPath(vector<Point> originalPath)
@@ -68,7 +69,7 @@ Autonomous::Autonomous()
   this->allianceColor = allianceColor;
 
   static IntakeControl *intakeControlThingy = &intakeControl;
-  static LadyBrown *ladyBrownThingy = &ladyBrown;
+  static LadyBrown *ladyBrownThingy = &negativeRingRushLadyBrown;
   static MogoControl *mogoControlThingy = &mogoControl;
   this->intakeAutonTask = thread([]()
                                  { while (true) {
@@ -128,7 +129,7 @@ void Autonomous::solo_awp()
     chassis.set_coordinates(57.00, 7.6944, 135);
   }
 
-  static LadyBrown ladyBrownPointerThing = ladyBrown;
+  static LadyBrown ladyBrownPointerThing = soloAwpLadyBrown;
   static Drive driveReference = chassis;
 
   cout << "solo awp auto started, initial position:" << endl;
@@ -136,7 +137,7 @@ void Autonomous::solo_awp()
 
   // Score on alliance stake
   thread allianceStakeScore = thread([]()
-                                     {  ladyBrown.allianceStakeScore();   
+                                     {  soloAwpLadyBrown.allianceStakeScore();   
                                         this_thread::yield(); });
   chassis.drive_distance(7, chassis.get_absolute_heading(), DriveParams().set_settle_time(0).set_timeout(400));
 
@@ -160,7 +161,7 @@ void Autonomous::solo_awp()
 
   // Pull the lady brown back
   thread autonLoadingThread = thread([]()
-                                     { ladyBrown.autonLoading(); cout << "brought it back..." << endl; this_thread::yield(); });
+                                     { soloAwpLadyBrown.autonLoading(); cout << "brought it back..." << endl; this_thread::yield(); });
 
   // Turn towards the mogo
   chassis.turn_to_point(-20.099 * reversed, 16.6367, 180, TurnParams().set_timeout(800).set_settle_error(2).set_settle_time(10));
@@ -190,7 +191,7 @@ void Autonomous::solo_awp()
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
 
   // Drive back from the stack
-  chassis.drive_to_pose(-18.462 * reversed, 23.588, 210, 0.1, 0, temporaryDriveWithMogoParams.set_max_voltage(7).set_timeout(900));
+  chassis.drive_to_pose(-18.462 * reversed, 23.588, (allianceColor == vex::color::red ? 210 : (360 - 210)), 0.1, 0, temporaryDriveWithMogoParams.set_max_voltage(7).set_timeout(900));
 
   // Turn towards the **first** 2 stack of rings (alliance color on bottom) and intake it
   chassis.turn_to_point(-23.2508 * reversed, 45.0579, 0, TurnParams().set_settle_time(0).set_settle_error(3).set_timeout(800));
@@ -224,7 +225,11 @@ void Autonomous::solo_awp()
   intakeToLadyBrownAuton = false;
 
   intakeSort = true;
-  chassis.turn_to_angle((allianceColor == vex::color::red ? 20 : 340), this->turnParams.set_timeout(1500).set_settle_time(0).set_settle_error(2));
+  chassis.turn_to_angle((this->allianceColor == vex::color::red ? 20 : 340), this->turnParams.set_timeout(1500).set_settle_time(0).set_settle_error(2));
+  autonLoadingThread.interrupt();
+  autonLoadingThread.~thread();
+  allianceStakeScore.interrupt();
+  allianceStakeScore.~thread();
   LadyBrownMotor.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   wait(100, vex::timeUnits::sec);
 }
@@ -331,14 +336,14 @@ void Autonomous::negative_ring_rush()
   else
     RightDoinker.set(true);
   keepAllianceRing = true;
-  chassis.drive_to_point(-9.75801 * reversed, 41.9829, DriveParams().set_settle_time(0).set_settle_error(2).set_drive_slew(0.6));
+  chassis.drive_to_point(-9.75801 * reversed, 41.9829, DriveParams().set_settle_time(0).set_settle_error(2).set_drive_slew(0.6).set_timeout(1100));
   keepAllianceRing = true;
 
   // Drive and clamp into the goal
-  chassis.turn_to_point(-22.8325 * reversed, 16.795, 180, TurnParams().set_settle_time(20).set_settle_error(2));
+  chassis.turn_to_point(-22.8325 * reversed, 16.795, 180, TurnParams().set_settle_time(0).set_settle_error(2));
   mogoClampDelay = 1000;
   mogoClamp = true;
-  chassis.drive_to_point(-22.8325 * reversed, 16.795, DriveParams().set_drive_slew(12).set_settle_time(0).set_settle_error(1.5).set_timeout(1000));
+  chassis.drive_to_point(-22.8325 * reversed, 16.795, DriveParams().set_drive_slew(12).set_settle_time(0).set_settle_error(1.5).set_timeout(1000).set_drive_slew(12));
   wait(100, vex::timeUnits::msec);
 
   // Turn, let go of the ring, and then intake both of them
@@ -348,39 +353,39 @@ void Autonomous::negative_ring_rush()
   LeftDoinker.set(false);
   RightDoinker.set(false);
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.drive_to_point(-20.8112 * reversed, 52.399, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(2).set_timeout(1100));
+  chassis.drive_to_point(-20.8112 * reversed, 52.399, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(3).set_timeout(1100));
 
   // Line up in front of the corner
   chassis.turn_to_point(-54 * reversed, 54, 0, TurnParams().set_settle_time(0).set_settle_error(2));
-  chassis.drive_to_point(-54 * reversed, 54, temporaryDriveWithMogoParams.set_max_voltage(10).set_settle_time(0).set_settle_error(2));
+  chassis.drive_to_point(-54 * reversed, 54, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(3));
 
   // Turn and drive into the corner
-  chassis.turn_to_point(-64.5711 * reversed, 64.7478, 0, TurnParams().set_settle_time(0).set_settle_error(2));
-  chassis.drive_to_point(-64.5711 * reversed, 64.7478, temporaryDriveWithMogoParams.set_max_voltage(3.5).set_timeout(1500));
-  chassis.drive_distance(100000, chassis.get_absolute_heading(), DriveParams().set_timeout(500).set_drive_slew(12));
-  wait(500, vex::timeUnits::msec);
+  chassis.turn_to_point(-65.5711 * reversed, 65.7478, 0, TurnParams().set_settle_time(0).set_settle_error(2));
+  chassis.drive_to_point(-65.5711 * reversed, 65.7478, temporaryDriveWithMogoParams.set_max_voltage(6).set_timeout(1500));
+  chassis.drive_distance(100000, chassis.get_absolute_heading(), DriveParams().set_timeout(300).set_drive_slew(12));
+  wait(200, vex::timeUnits::msec);
 
   // Move back from the corner
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.drive_distance(-25, chassis.get_absolute_heading(), DriveParams().set_min_voltage(5));
-  chassis.drive_distance(21, chassis.get_absolute_heading(), DriveParams());
+  chassis.drive_distance(-25 * reversed, chassis.get_absolute_heading(), DriveParams().set_min_voltage(5).set_drive_slew(12).set_timeout(500));
+  chassis.drive_distance(21 * reversed, chassis.get_absolute_heading(), DriveParams().set_timeout(500));
 
   // Turn and intake the preload to lady brown
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.turn_to_point(-57.6043, 22.4858, 0, TurnParams());
+  chassis.turn_to_point(-57.6043 * reversed, 22.4858, 0, TurnParams().set_settle_time(0).set_settle_error(2));
   thread ladyBrownLoading = thread([]()
-                                   { ladyBrown.autonLoading(); });
+                                   { negativeRingRushLadyBrown.autonLoading(); });
   shouldAntiJam = false;
-  chassis.drive_to_point(-57.6043, 22.4858, temporaryDriveWithMogoParams);
+  chassis.drive_to_point(-57.6043 * reversed, 22.4858, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(3).set_timeout(1000));
 
   // Move forward and hook onto the top ring in the flipped two stack
-  chassis.drive_distance(8, chassis.get_absolute_heading(), DriveParams());
+  chassis.drive_distance(8, chassis.get_absolute_heading(), DriveParams().set_timeout(800).set_drive_slew(12));
   LeftDoinker.set(true);
   wait(200, vex::timeUnits::msec);
-  chassis.drive_distance(-10, chassis.get_absolute_heading(), DriveParams());
+  chassis.drive_distance(-10, chassis.get_absolute_heading(), DriveParams().set_timeout(800).set_drive_slew(12));
 
   // Turn left and take it off the stack
-  chassis.turn_to_angle(202.289);
+  chassis.turn_to_angle(this->allianceColor == vex::color::red ? 195.289 : (360 - 195.289), TurnParams().set_settle_time(0).set_timeout(500));
   LeftDoinker.set(false);
   wait(200, vex::timeUnits::msec);
 
@@ -388,32 +393,31 @@ void Autonomous::negative_ring_rush()
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
   ladyBrownLoading.interrupt();
   ladyBrownLoading.~thread();
-  ladyBrown.resetLadyBrownPID();
+  negativeRingRushLadyBrown.resetLadyBrownPID();
   intakeSort = false;
   intakeRevSlow = true;
-  // Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
   thread ladyBrownHoldUp = thread([]()
-                                  { ladyBrown.holdUp(); });
-  chassis.turn_to_point(-60.1594, -0.227565, 0, TurnParams());
+                                  { negativeRingRushLadyBrown.holdUp(); });
+  chassis.turn_to_point(-58.1594 * reversed, -0.227565, 0, TurnParams().set_settle_error(2).set_settle_time(0));
   intakeRevSlow = false;
   intakeSort = true;
-  chassis.drive_to_point(-60.1594, -0.227565, temporaryDriveWithMogoParams);
+  chassis.drive_to_point(-58.1594 * reversed, -0.227565, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(2).set_drive_slew(12));
 
   // Turn towards the alliance stake and score
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(10, chassis.get_absolute_heading(), DriveParams());
-  chassis.drive_distance(-12, chassis.get_absolute_heading(), DriveParams());
+  chassis.turn_to_angle(this->allianceColor == vex::color::red ? 270 : (360 - 270), TurnParams().set_settle_time(0).set_settle_error(2));
+  chassis.drive_distance(10, (this->allianceColor == vex::color::red ? 270 : (360 - 270)), DriveParams().set_settle_time(0).set_settle_error(1).set_drive_slew(12));
+  chassis.drive_distance(-12, chassis.get_absolute_heading(), DriveParams().set_settle_time(0).set_settle_error(1).set_drive_slew(12));
   ladyBrownHoldUp.interrupt();
   ladyBrownHoldUp.~thread();
-  ladyBrown.resetLadyBrownPID();
-  ladyBrown.allianceStakeScore();
+  negativeRingRushLadyBrown.resetLadyBrownPID();
+  negativeRingRushLadyBrown.allianceStakeScore();
   wait(100, vex::timeUnits::msec);
-  ladyBrown.holdUp();
+  negativeRingRushLadyBrown.holdUp();
 
   // Turn towards and ladder and touch it all over
   temporaryDriveWithMogoParams = this->driveParamsWithMogo;
-  chassis.turn_to_point(-33.9902, 2.93012, 0, TurnParams());
-  chassis.drive_to_point(-33.9902, 2.93012, temporaryDriveWithMogoParams);
+  chassis.turn_to_point(-33.9902 * reversed, 2.93012, 0, TurnParams().set_settle_time(0).set_settle_error(5));
+  chassis.drive_to_point(-33.9902 * reversed, 2.93012, temporaryDriveWithMogoParams.set_settle_time(0).set_settle_error(5).set_drive_slew(12).set_kp(1000));
 }
 
 // hi jinay
@@ -488,9 +492,9 @@ void Autonomous::auton_skills()
   cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
 
   // Score twice on wall stake
-  ladyBrown.autonScore(0);
+  negativeRingRushLadyBrown.autonScore(0);
   vex::wait(1000, msec);
-  ladyBrown.autonLoading();
+  negativeRingRushLadyBrown.autonLoading();
   vex::wait(1000, msec);
 
   // Clean up the rest of the rings in the corner

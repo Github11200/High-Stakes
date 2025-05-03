@@ -110,7 +110,6 @@ void IntakeControl::intakeAutonTask()
   static int timeout;
   if (intakeSort) // the variable that the autonomous sets to true to spin the intake
   {
-    cout << "intaking the frick in" << endl;
     OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
     if (shouldEjectRing())
       ejectRing();
@@ -155,6 +154,7 @@ void IntakeControl::intakeAutonTask()
     while (true)
     {
       Intake.spin(vex::directionType::fwd, 9, vex::voltageUnits::volt);
+      cout << "keeping ring..." << endl;
       // We've got the ring we want
       if (OpticalSensor.isNearObject() && !this->shouldEjectRing())
         break;

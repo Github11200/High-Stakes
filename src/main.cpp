@@ -257,7 +257,7 @@ void pre_auton(void)
 void autonomous(void)
 {
   pre_match = false;
-  autonomousClass.setAllianceColor(vex::color::red);
+  autonomousClass.setAllianceColor(vex::color::blue);
 
   autonomousClass.solo_awp();
   return;
@@ -404,7 +404,7 @@ void usercontrol(void)
   //   Brain.Screen.printAt(0, 100, "Theta: %.5f", chassis.get_absolute_heading());
   //   wait(20, vex::timeUnits::msec);
   // }
-  autonomousClass.setAllianceColor(vex::color::red);
+  autonomousClass.setAllianceColor(vex::color::blue);
 
   chassis.calibrate_robot();
   wait(3000, msec);
