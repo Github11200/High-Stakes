@@ -38,7 +38,7 @@ public:
   void solo_awp();
   void positive_six_ring();
   void negative_ring_rush();
-  void positive_goal_rush();
+  void positive_baker();
   void auton_skills();
 
   void testing();

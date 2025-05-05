@@ -282,7 +282,7 @@ void autonomous(void)
       autonomousClass.negative_ring_rush();
       break;
     case 3:
-      autonomousClass.positive_goal_rush();
+      autonomousClass.positive_baker();
       break;
     case 4:
       autonomousClass.testing();
