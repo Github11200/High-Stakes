@@ -132,7 +132,6 @@ bool PID::is_settled()
     // equivalent of setting it to infinity.
   if (time_spent_settled > settle_time)
   {
-    cout << "good" << endl;
     return (true);
   }
   return (false);

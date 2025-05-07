@@ -39,7 +39,6 @@ void LadyBrown::raise(double speed)
 {
   while (LadyBrownRaiseButton.pressing() || LadyBrownForwardButton.pressing())
   {
-    Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
     double voltageOutput = slew(speed, LadyBrownMotor.voltage(), this->slewChange);
     ringStopped = false;
     LadyBrownMotor.spin(vex::directionType::fwd, voltageOutput, volt);
@@ -54,6 +53,10 @@ void LadyBrown::loading()
   while (LadyBrownLoadButton.pressing())
   {
     double error = this->loadingPositionAngle - LadyBrownRotation.position(vex::rotationUnits::deg);
+    if (LadyBrownRotation.position(vex::rotationUnits::deg) > 208)
+    {
+      error = -abs(error);
+    }
     double output = this->ladyBrownPID->compute(error);
 
     output = clamp(output, -this->maxVoltage, this->maxVoltage);

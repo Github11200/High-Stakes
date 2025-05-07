@@ -173,6 +173,9 @@ void pre_auton(void)
 
   chassis.calibrate_robot();
   vex::wait(3000, vex::timeUnits::msec);
+  LadyBrownRotation.resetPosition();
+  wait(0.5, vex::timeUnits::sec);
+  Controller.rumble("--");
 
   updateScreen();
 
@@ -319,6 +322,13 @@ void recordyThingy()
   }
 }
 
+void intakeKaboom()
+{
+  Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
+  wait(50, vex::timeUnits::msec);
+  Intake.stop(vex::brakeType::coast);
+}
+
 int buttonsWrapper()
 {
   LadyBrownMotor.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
@@ -332,14 +342,17 @@ int buttonsWrapper()
   LadyBrownRotation.resetPosition();
   wait(0.5, vex::timeUnits::sec);
   cout << "lowered, and reset position" << endl;
-  LadyBrownMotor.spin(vex::directionType::fwd, 1, vex::voltageUnits::volt);
-  wait(0.1, vex::timeUnits::sec);
-  LadyBrownMotor.stop(vex::brakeType::coast);
+  // LadyBrownMotor.spin(vex::directionType::fwd, 1, vex::voltageUnits::volt);
+  // wait(0.1, vex::timeUnits::sec);
+  // LadyBrownMotor.stop(vex::brakeType::coast);
 
   IntakeControl intakeControl(12);
   //                                         kP  kD
   LadyBrown ladyBrown(28, 166, 207, 116, 12, 0.35, 1.5, 0.5, 10, 500000000000000000, 12, 360, 2);
   MogoControl mogoControl;
+
+  LadyBrownRaiseButton.pressed(intakeKaboom);
+  LadyBrownForwardButton.pressed(intakeKaboom);
   while (true)
   {
     // Doinker
@@ -382,7 +395,8 @@ int buttonsWrapper()
     else
     {
       OpticalSensor.setLightPower(0, pct);
-      Intake.stop(coast);
+      if (!LadyBrownRaiseButton.pressing())
+        Intake.stop(coast);
     }
 
     // Lady Brown
@@ -404,7 +418,7 @@ int buttonsWrapper()
     else if (BlueAllianceButton.pressing())
       alliance = "blue";
 
-    recordyThingy();
+    // recordyThingy();
 
     vex::wait(50, vex::timeUnits::msec);
   }
@@ -427,12 +441,11 @@ void usercontrol(void)
   // }
   autonomousClass.setAllianceColor(vex::color::blue);
 
-  // chassis.calibrate_robot();
   // wait(3000, msec);
   // LadyBrownRotation.setReversed(true);
   // LadyBrownRotation.resetPosition();
   // wait(0.5, vex::timeUnits::sec);
-  // // autonomousClass.testing();
+  //  autonomousClass.testing();
   // autonomousClass.negative_ring_rush();
   autonomousClass.~Autonomous();
   // return;
@@ -448,7 +461,7 @@ void usercontrol(void)
   ringStopped = false;
   OpticalSensor.setLightPower(0, vex::percentUnits::pct);
 
-  // LadyBrownRotation.resetPosition();
+  LadyBrownRotation.resetPosition();
   chassis.stop_position_track_task();
   task buttons = task(buttonsWrapper);
 

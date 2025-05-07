@@ -13,18 +13,20 @@ bool IntakeControl::shouldEjectRing()
   color ringColor = NULL;
   if (isNear)
   {
-    if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
-      ringColor = blue;
-
-    else if (OpticalSensor.hue() < 30)
-      ringColor = red;
+    while (OpticalSensor.isNearObject() && ringColor == NULL)
+    {
+      cout << "optical: " << OpticalSensor.hue() << endl;
+      if (OpticalSensor.hue() > 100 && OpticalSensor.hue() < 280)
+        ringColor = blue;
+      else if (OpticalSensor.hue() < 30)
+        ringColor = red;
+      wait(10, vex::timeUnits::msec);
+    }
 
     if (alliance == "red")
       return ringColor == blue;
-
     else if (alliance == "blue")
       return ringColor == red;
-
     else if (alliance == "skills")
       return false;
   }
@@ -154,11 +156,10 @@ void IntakeControl::intakeAutonTask()
     while (true)
     {
       Intake.spin(vex::directionType::fwd, 9, vex::voltageUnits::volt);
-      cout << "keeping ring..." << endl;
       // We've got the ring we want
-      if (OpticalSensor.isNearObject() && !this->shouldEjectRing())
+      if (!this->shouldEjectRing() && OpticalSensor.isNearObject())
         break;
-      if (Intake.velocity(pct) < 5 && timeout == 1500)
+      if (Intake.velocity(pct) < 5 && timeout == 100)
       {
         Intake.spin(vex::directionType::rev, 2, vex::voltageUnits::volt);
         wait(150, vex::timeUnits::msec);
