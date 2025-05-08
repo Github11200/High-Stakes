@@ -553,8 +553,6 @@ void Autonomous::auton_skills()
 
   alliance = "red";
 
-  Pursuit *purePursuit = new Pursuit(11.375);
-
   // Score on first alliance stake
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
   vex::wait(0.8, vex::timeUnits::sec);
@@ -569,158 +567,110 @@ void Autonomous::auton_skills()
   vex::wait(100, msec);
   Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
 
-  // Eat a couple of rings, end up facing pile of blue
-  chassis.turn_to_point(45.321, -22.851, 0, TurnParams());
-  purePursuit->followPath(skills[0], 14, 10000, true, 17, 0.5, 0.8);
+  // Intake red rings in first corner
+  chassis.turn_to_point(-23.376, -23.701, 0);
+  chassis.drive_to_point(-23.376, -23.701);
 
-  // Grab two red rings from under blue rings, holding one for frog
-  chassis.turn_to_point(58.962, -47.269, 0, TurnParams().set_settle_error(2).set_timeout(800));
-  chassis.drive_to_point(58.962, -47.269, DriveParams().set_timeout(800));
+  chassis.turn_to_point(-23.376, -47.141, 0);
+  chassis.drive_to_point(-23.376, -47.141);
 
-  // Align to wall stake
-  // chassis.turn_to_point(0, -41.202, 180, TurnParams());
-  // chassis.drive_to_point(6, -41.202, DriveParams());
+  chassis.turn_to_point(0, -58.86, 0);
+  chassis.drive_to_point(0, -58.86);
 
-  // Turn to the actual wall stake position, then drive forward
-  // chassis.turn_to_point(0, -69.388, 0, TurnParams().set_settle_error(0.5));
-  // chassis.drive_distance(30, chassis.get_absolute_heading(), DriveParams());
-  // wait(100, vex::timeUnits::msec);
-  // cout << "X: " << chassis.get_X_position() << "\nY: " << chassis.get_Y_position() << endl;
+  chassis.turn_to_point(-47.411, -58.86, 0);
+  chassis.drive_to_point(-47.411, -58.86);
 
-  // Clean up the rest of the rings in the corner
-  chassis.drive_to_point(0, -30.269, DriveParams().set_timeout(1500));
-  chassis.turn_to_point(-100, -30.269, 0, TurnParams());
-  intakeSort = true;
-  purePursuit->followPath(skills[1], 14, 10000, true, 17, 0.5, 0.8);
+  // Back up a bit to intake the two rings in a row in the first corner
+  chassis.turn_to_point(-23.376, -47.141, 180);
+  chassis.drive_to_point(-23.376, -47.141);
 
-  // Drop the goal in the corner
-  intakeSort = false;
-  vex::wait(100, msec);
+  chassis.turn_to_point(-59.13, -47.339, 0);
+  chassis.drive_to_point(-59.13, -47.339);
+
+  // Turn around and put goal in corner
+  chassis.turn_to_point(-61.911, -56.874, 180);
+  chassis.drive_to_point(-61.911, -56.874);
   Clamp.set(false);
-  chassis.drive_distance(-10, chassis.get_absolute_heading(), DriveParams().set_timeout(600));
 
-  return;
+  // Go across field and clamp 2nd goal
+  chassis.turn_to_point(-47.014, -34.627, 0);
+  chassis.drive_to_point(-47.014, -34.627);
 
-  // Eat the ring in front of ladder
-  chassis.turn_to_point(1.576, -46.908, 0, TurnParams().set_timeout(400));
-  chassis.drive_to_point(1.576, -46.908, DriveParams());
-  chassis.turn_to_point(23.764, -23.764, 0, TurnParams());
-  chassis.drive_to_point(23.764, -23.764, DriveParams().set_timeout(1100));
+  chassis.turn_to_point(-47.014, 9.428, 0); // real far
+  chassis.drive_to_point(-47.014, 9.428);
 
-  // Clamp the far goal
-  chassis.turn_to_point(47.141, 0, 180, TurnParams());
-  chassis.drive_to_point(47.141, 0, DriveParams().set_max_voltage(5));
+  chassis.turn_to_point(-47.014, 23.574, 180);
+  chassis.drive_to_point(-47.014, 23.574); // max voltage 6
   Clamp.set(true);
-  vex::wait(200, msec);
-  intakeSort = true;
 
-  // Line up in front of the ladder
-  chassis.drive_to_point(23.764, -23.764, DriveParams());
-  intakeSort = false;
+  // Intake red rings in first corner
+  chassis.turn_to_point(-23.376, 23.701, 0);
+  chassis.drive_to_point(-23.376, 23.701);
 
-  // Go through the ladder
-  Intake.stop();
-  chassis.turn_to_point(-23.764, 23.764, 0, TurnParams());
-  chassis.drive_to_point(-23.764, 23.764, DriveParams());
+  chassis.turn_to_point(-23.376, 47.141, 0);
+  chassis.drive_to_point(-23.376, 47.141);
 
-  // Eat up the two stored rings, and eat the corner of the corner rings
-  intakeSort = true;
-  chassis.drive_to_point(-44.1, 44.1, DriveParams());
+  chassis.turn_to_point(0, 58.86, 0);
+  chassis.drive_to_point(0, 58.86);
 
-  chassis.turn_to_point(-45.86, 56.571, 0, TurnParams());
-  chassis.drive_to_point(-45.86, 56.571, DriveParams());
+  chassis.turn_to_point(-47.411, 58.86, 0);
+  chassis.drive_to_point(-47.411, 58.86);
 
-  // Put the goal in the corner
-  chassis.turn_to_point(-54.7, 61, 180, TurnParams());
-  intakeSort = false;
+  // Back up a bit to intake the two rings in a row in the second corner
+  chassis.turn_to_point(-23.376, 47.141, 180);
+  chassis.drive_to_point(-23.376, 47.141);
+
+  chassis.turn_to_point(-59.13, 47.339, 0);
+  chassis.drive_to_point(-59.13, 47.339);
+
+  // Turn around and put goal in corner
+  chassis.turn_to_point(-61.911, 56.874, 180);
+  chassis.drive_to_point(-61.911, 56.874);
   Clamp.set(false);
-  chassis.drive_distance(-18, chassis.get_absolute_heading(), DriveParams().set_timeout(600));
 
-  // Clamp onto the final fillable goal
-  chassis.drive_to_point(-47.141, 48, DriveParams());
-  chassis.turn_to_point(-47.141, 23.574, 180, TurnParams());
-  chassis.drive_to_point(-47.141, 23.574, DriveParams().set_max_voltage(6));
+  chassis.turn_to_point(0, 47.411, 0);
+  chassis.drive_to_point(0, 47.411);
+
+  // Drive into and intake a ring into holding height
+  chassis.turn_to_point(30.058, 17.019, 0);
+  chassis.drive_to_point(30.058, 17.019);
+
+  // Clamp 3rd goal
+  chassis.turn_to_point(47.141, 0, 180);
+  chassis.drive_to_point(47.141, 0); // max voltage 6
   Clamp.set(true);
-  vex::wait(100, msec);
-  intakeSort = true;
 
-  // Pick up one ring for frog
-  chassis.turn_to_point(-23.503 - 2, 46.931 + 3, 0, TurnParams());
-  chassis.drive_to_point(-23.503 - 2, 46.931 + 3, DriveParams());
-  intakeSort = true;
+  // Get 2 red rings away from corner
+  chassis.turn_to_point(23.503, -23.701, 0);
+  chassis.drive_to_point(23.503, -23.701);
 
-  // Align in front of wall stake
-  chassis.turn_to_point(0.75, 41.202, 0, TurnParams());
-  chassis.drive_to_point(0.75, 41.202, DriveParams());
+  chassis.turn_to_point(23.503, -46.942, 0);
+  chassis.drive_to_point(23.503, -46.942);
 
-  // Turn to the actual wall stake position, then drive forward
-  chassis.turn_to_point(0.75, 69.388, 0, TurnParams().set_settle_error(0.5));
-  chassis.drive_distance(26, chassis.get_absolute_heading(), DriveParams());
+  // Eat the blue-red stacks in the corner
+  chassis.turn_to_point(46.942, -58.86, 0);
+  chassis.drive_to_point(46.942, -58.86);
 
-  // Eat two rings before the blue corner
-  intakeSort = true;
-  chassis.drive_to_point(0, 53.127, DriveParams().set_timeout(800));
-  chassis.turn_to_point(23.381, 47.007, 0, TurnParams());
-  chassis.drive_to_point(23.381, 47.007, DriveParams());
+  chassis.turn_to_point(46.942, -46.942, 0);
+  chassis.drive_to_point(46.942, -46.942);
 
-  chassis.turn_to_point(23.381, 23.481, 0, TurnParams());
-  chassis.drive_to_point(23.381, 23.481, DriveParams());
+  chassis.turn_to_point(59.054, -46.942, 0);
+  chassis.drive_to_point(59.054, -46.942);
 
-  // First ring is the corner one in the triangle
-  chassis.turn_to_point(44.1, 44.1, 0, TurnParams());
-  chassis.drive_to_point(44.1, 44.1, DriveParams().set_timeout(1100));
-
-  // Back up and eat a ring x2
-  chassis.turn_to_point(45.86, 56.571, 0, TurnParams());
-  chassis.drive_to_point(45.86, 56.571, DriveParams().set_timeout(800));
-  chassis.turn_to_point(42.6, 42.6, 180, TurnParams().set_timeout(200));
-  chassis.drive_to_point(42.6, 42.6, DriveParams());
-  chassis.turn_to_point(56.571, 45.86, 0, TurnParams());
-  RightDoinker.set(true);
-  chassis.drive_to_point(56.571, 45.86, DriveParams());
-
-  // Doinker out the corner
-  chassis.turn_to_point(60.449, 56.51, 0, TurnParams());
-  chassis.drive_distance(15, chassis.get_absolute_heading(), DriveParams().set_timeout(600));
-  chassis.turn_to_angle(270, TurnParams().set_timeout(400));
-
-  // Put last full mogo in corner
-  chassis.turn_to_point(62.449, 58.51, 180, TurnParams());
+  // Put 3rd goal in corner
+  chassis.turn_to_point(62.436, -55.881, 180);
+  chassis.drive_to_point(62.436, -55.881);
   Clamp.set(false);
-  RightDoinker.set(false);
-  chassis.drive_distance(-16.5, chassis.get_absolute_heading(), DriveParams().set_timeout(400));
 
   // Get out of the corner
-  chassis.drive_distance(8, chassis.get_absolute_heading(), DriveParams());
+  chassis.turn_to_point(42.373, -34.627, 0);
+  chassis.drive_to_point(42.373, -34.627);
 
-  // Clamp the final goal
-  intakeSort = false;
-  chassis.turn_to_point(59.149, 23.481, 180, TurnParams());
-  chassis.drive_to_point(59.149, 23.481, DriveParams());
-  Clamp.set(true);
-  vex::wait(100, msec);
+  // Push 4th goal in corner
+  chassis.turn_to_point(62.634, 52.575, 0);
+  chassis.drive_to_point(59.054, 52.575); // hella long movement
 
-  // Doinker and path to the last corner
-  chassis.turn_to_point(56.559, 18.069, 0, TurnParams());
-  RightDoinker.set(true);
-  purePursuit->followPath(skills[4], 20, 10000, true, 17, 4, 0.8);
-
-  chassis.turn_to_angle(0, TurnParams());
-  chassis.turn_to_point(70, -70, 180, TurnParams());
-  RightDoinker.set(false);
-  Clamp.set(false);
-  chassis.drive_distance(-18, chassis.get_absolute_heading(), DriveParams().set_timeout(500));
-  chassis.drive_distance(10, chassis.get_absolute_heading(), DriveParams());
-
-  // // Push last goal into corner
-  // chassis.drive_timeout = 4000;
-  // chassis.drive_to_point(65.449, -55.733);
-  // default_constants();
-
-  // chassis.drive_distance(20);
-
-  // cout << "Final X: " << chassis.get_X_position() << endl;
-  // cout << "Final Y: " << chassis.get_Y_position() << endl;
+  wait(500, sec);
 }
 
 DriveParams changeThingy(float drive_max_voltage, float drive_kp, float drive_ki, float drive_kd, float drive_starti)
