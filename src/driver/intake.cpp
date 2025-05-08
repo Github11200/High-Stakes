@@ -116,8 +116,9 @@ void IntakeControl::intakeAutonTask()
     if (shouldEjectRing())
       ejectRing();
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
-    if (Intake.velocity(pct) < 5 && timeout >= 200 && shouldAntiJam)
+    if (Intake.velocity(pct) < 5 && timeout >= 150 && shouldAntiJam)
     {
+      cout << "anti jam?" << endl;
       Intake.spin(vex::directionType::rev, 12, vex::voltageUnits::volt);
       wait(150, vex::timeUnits::msec);
       Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);

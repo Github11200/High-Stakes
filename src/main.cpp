@@ -342,9 +342,9 @@ int buttonsWrapper()
   LadyBrownRotation.resetPosition();
   wait(0.5, vex::timeUnits::sec);
   cout << "lowered, and reset position" << endl;
-  // LadyBrownMotor.spin(vex::directionType::fwd, 1, vex::voltageUnits::volt);
-  // wait(0.1, vex::timeUnits::sec);
-  // LadyBrownMotor.stop(vex::brakeType::coast);
+  LadyBrownMotor.spin(vex::directionType::fwd, 1, vex::voltageUnits::volt);
+  wait(0.1, vex::timeUnits::sec);
+  LadyBrownMotor.stop(vex::brakeType::coast);
 
   IntakeControl intakeControl(12);
   //                                         kP  kD
@@ -454,7 +454,6 @@ void usercontrol(void)
 
   // intakeSort = false;
   // Intake.stop(vex::brakeType::coast);
-  // Hooks.stop(vex::brakeType::coast);
   // Auton testing code end
 
   pre_match = false;
