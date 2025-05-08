@@ -546,7 +546,7 @@ void Autonomous::auton_skills()
 {
   shouldAntiJam = true;
   intakeSort = true;
-  chassis.set_coordinates(-61, 0, 90);
+  chassis.set_coordinates(-59, 0, 90);
 
   cout << "skills auto started, initial position:" << endl;
   cout << chassis.get_X_position() << ", " << chassis.get_Y_position() << endl;
