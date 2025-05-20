@@ -53,8 +53,8 @@ void IntakeControl::intake()
   while (IntakeButton.pressing())
   {
     OpticalSensor.setLightPower(100, pct); // turn the light on to see the color
-    // if (shouldEjectRing())
-    //   ejectRing();
+    if (shouldEjectRing())
+      ejectRing();
     Intake.spin(vex::directionType::fwd, 12, vex::voltageUnits::volt);
     wait(10, vex::timeUnits::msec);
   }
